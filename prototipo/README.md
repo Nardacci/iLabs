@@ -11,6 +11,10 @@ Abra `index.html` no navegador (duplo clique, sem servidor). Ele é o **mapa das
 | `index.html` | Mapa do protótipo, com o estado de cada tela (pronta ou planejada) |
 | `entrar.html` | Entrada: e-mail e senha, verificação em duas etapas, recuperação de senha |
 | `inicio.html` | Página inicial por perfil |
+| `convite.html` | Primeiro acesso: criar a senha pelo link do convite (estados: vencido e já usado; perfil que aprova vai às duas etapas) |
+| `redefinir.html` | Nova senha pelo link do e-mail (estado: link vencido) |
+| `seguranca.html` | Minha segurança: alterar senha, duas etapas (aplicativo e códigos de recuperação), sessões e aviso de inatividade de 10 minutos |
+| `senha.js` | Regras de senha compartilhadas pelas três telas acima (12 caracteres, fora da lista de comuns, sem o e-mail) |
 | `prototipo.css`, `common.js`, `entrar.js`, `inicio.js` | Estilos e comportamento compartilhados |
 | `entrar.png`, `entrar-escuro.png`, `entrar-celular.png`, `inicio.png` | Capturas |
 

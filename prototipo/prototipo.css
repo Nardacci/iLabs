@@ -231,3 +231,50 @@ tr:last-child td { border-bottom: 0; }
 .grupo { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; color: var(--muted); margin: 10px 0 0; }
 .btn-link { display: inline-block; text-decoration: none; }
 @media (max-width: 560px) { .tela-item { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- Telas de acesso: senha, convite, duas etapas, sessões ---------- */
+.policy { list-style: none; margin: 8px 0 14px; padding: 0; font-size: 13px; color: var(--muted); }
+.policy li { display: flex; gap: 8px; align-items: center; padding: 2px 0; }
+.policy li::before { content: "○"; font-weight: 700; width: 14px; text-align: center; }
+.policy li.ok { color: var(--ok); }
+.policy li.ok::before { content: "✓"; }
+.strength { height: 6px; border-radius: 99px; background: var(--line); overflow: hidden; margin: 8px 0 4px; }
+.strength i { display: block; height: 100%; width: 0; background: var(--bad); transition: width .2s; }
+.strength[data-n="1"] i { width: 34%; background: var(--bad); }
+.strength[data-n="2"] i { width: 68%; background: var(--warn); }
+.strength[data-n="3"] i { width: 100%; background: var(--ok); }
+.strength-txt { font-size: 12px; color: var(--muted); min-height: 16px; }
+.check { display: flex; gap: 10px; align-items: flex-start; font-size: 13.5px; margin: 12px 0 16px; }
+.check input { margin-top: 3px; width: 16px; height: 16px; }
+.quem { background: var(--accent-soft); border-radius: 10px; padding: 10px 12px; font-size: 13.5px; margin-bottom: 16px; }
+.quem strong { display: block; }
+.btn-grad[disabled] { opacity: .5; cursor: not-allowed; }
+
+.seg-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--line); background: var(--surface); }
+.seg-top .marca { font-family: var(--font-display); font-weight: 700; font-size: 18px; }
+.seg-top .marca span { color: var(--brand); }
+.seg { max-width: 760px; margin: 0 auto; padding: 24px 20px 48px; display: grid; gap: 20px; }
+.seg h1 { font-family: var(--font-display); font-size: 28px; letter-spacing: -0.02em; margin: 0 0 4px; }
+.seg .sub { color: var(--muted); margin: 0; font-size: 14px; }
+.sec { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px; }
+.sec h2 { font-family: var(--font-display); font-size: 20px; margin: 0 0 4px; }
+.sec .lead { color: var(--muted); margin: 0 0 16px; font-size: 14px; }
+.sec .campos { max-width: 380px; }
+.sec-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
+.passos { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.passos > li { border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+.passos > li[hidden] { display: none; }
+.passos > li > h3 { margin: 0 0 6px; font-size: 15px; }
+.qr { width: 168px; height: 168px; background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 8px; }
+.chave { font-family: var(--font-mono); font-size: 14px; letter-spacing: .06em; background: var(--bg); border-radius: 8px; padding: 8px 10px; display: inline-block; }
+.codes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; font-family: var(--font-mono); font-size: 14px; margin: 10px 0; padding: 0; list-style: none; }
+.codes li { background: var(--bg); border-radius: 8px; padding: 8px 10px; text-align: center; }
+.sessoes { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.sessoes li { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; font-size: 14px; }
+.sessoes small { color: var(--muted); display: block; }
+.modal-fundo { position: fixed; inset: 0; background: rgba(0,0,0,.55); display: grid; place-items: center; z-index: 60; padding: 16px; }
+.modal-fundo[hidden] { display: none; }
+.modal { background: var(--surface); color: var(--ink); border-radius: 16px; padding: 24px; max-width: 420px; width: 100%; }
+.modal h2 { font-family: var(--font-display); margin: 0 0 8px; font-size: 22px; }
+.modal .acoes { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+.btn.primary { background: var(--grad-btn); color: #fff; border-color: transparent; }

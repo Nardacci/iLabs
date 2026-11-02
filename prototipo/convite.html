@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Primeiro acesso · iLabPharma Nova Versão</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="prototipo.css">
+</head>
+<body>
+<main id="tela-convite" class="entrar">
+  <div class="shell">
+  <section class="entrar-panel" aria-label="Apresentação">
+    <div><svg class="logo-svg" style="width:170px" viewBox="0 0 851 162" role="img" aria-label="iLabPharma"><defs><linearGradient id="ig-c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff8015"/><stop offset="0.55" stop-color="#f2f4f8"/><stop offset="1" stop-color="#ff8015"/></linearGradient></defs><g font-family="Arial, Helvetica, sans-serif" font-weight="800" letter-spacing="-7"><text x="0" y="125" font-size="154" fill="url(#ig-c)">i</text><text x="43" y="125" font-size="154" fill="#ff8015" textLength="340" lengthAdjust="spacingAndGlyphs">Lab</text><text x="398" y="125" font-size="154" fill="#f2f4f8" textLength="440" lengthAdjust="spacingAndGlyphs">Pharma</text></g></svg></div>
+    <div>
+      <p class="eyebrow">Qualidade &amp; rastreabilidade</p>
+      <h1>Cada lote.<span>Toda a história.</span></h1>
+      <p class="lead-p">Do recebimento à liberação, estoque, produção e qualidade em um só lugar.</p>
+    </div>
+    <div class="callout">
+      <i class="ck" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i>
+      <div><strong>Cada passo fica registrado</strong><span>Quem fez, quando e o valor anterior, como pedem a RDC 658/2022 e o Guia 33/2020 da ANVISA.</span></div>
+    </div>
+  </section>
+  <section class="entrar-form" aria-label="Primeiro acesso">
+    <div class="entrar-top"><a class="theme-toggle btn-link" href="index.html">Mapa do protótipo</a> <button type="button" class="theme-toggle" data-theme-toggle>Tema</button></div>
+    <div class="card" id="c-ok">
+      <p class="eyebrow">Convite</p>
+      <h2>Crie a sua senha</h2>
+      <p class="lead">Você foi convidado para a <strong>Empresa Lab Teste</strong>.</p>
+      <div class="quem"><strong id="c-perfil">Aprovador do CQ</strong><span id="c-conv">Convidado por Marcos Lima (administrador). O link vale por 48 horas e só pode ser usado uma vez.</span></div>
+      <div id="c-msg" role="alert" aria-live="assertive"></div>
+      <form id="form-convite" novalidate>
+        <div class="field">
+          <label for="c-email">E-mail</label>
+          <input id="c-email" class="input" type="email" value="carla.dias@lab-teste.com.br" readonly aria-describedby="c-email-dica">
+          <span id="c-email-dica" class="hint">O e-mail do convite não pode ser trocado aqui.</span>
+        </div>
+        <div class="field">
+          <label for="nova">Nova senha</label>
+          <div class="input-wrap">
+            <input id="nova" class="input" type="password" autocomplete="new-password" >
+            <button type="button" class="reveal" data-ver="nova" aria-label="Mostrar a senha" aria-pressed="false"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="conf">Repita a nova senha</label>
+          <div class="input-wrap">
+            <input id="conf" class="input" type="password" autocomplete="new-password" >
+            <button type="button" class="reveal" data-ver="conf" aria-label="Mostrar a senha" aria-pressed="false"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          </div>
+        </div>
+        <ul class="policy" id="politica" aria-label="Regras da senha">
+          <li data-k="tam">12 caracteres ou mais</li>
+          <li data-k="comum">Fora da lista de senhas comuns e sem o seu e-mail</li>
+          <li data-k="igual">As duas senhas são iguais</li>
+        </ul>
+        <div class="strength" id="forca" data-n="0" aria-hidden="true"><i></i></div>
+        <p class="strength-txt" id="forca-txt" aria-live="polite"></p>
+        <label class="check"><input type="checkbox" id="termos"> <span>Li e aceito os <strong>termos de uso</strong> e a <strong>política de privacidade</strong>.</span></label>
+        <button type="submit" class="btn-grad" id="enviar" disabled>Criar senha e continuar →</button>
+      </form>
+      <p class="demo-note">Protótipo. Outros estados: <a class="mono" href="convite.html?estado=expirado">?estado=expirado</a>, <a class="mono" href="convite.html?estado=usado">?estado=usado</a>. Quem <em>não</em> aprova entra direto: <a class="mono" href="convite.html?perfil=consulta">?perfil=consulta</a>.</p>
+    </div>
+    <div class="card" id="c-fim" hidden>
+      <p class="eyebrow">Convite</p>
+      <h2 id="c-fim-t">Convite indisponível</h2>
+      <p class="lead" id="c-fim-p"></p>
+      <a class="btn-grad btn-link" href="entrar.html" style="display:block;text-align:center">Ir para a entrada</a>
+    </div>
+    <p class="rodape-form">iLabPharma · Protótipo com dados fictícios</p>
+  </section>
+  </div>
+</main>
+<div id="aviso" class="toast" role="status" aria-live="polite" hidden></div>
+<script src="common.js"></script>
+<script src="senha.js"></script>
+<script>
+(function(){var $$=window.proto.$$;$$("[data-ver]").forEach(function(b){b.addEventListener("click",function(){var i=window.proto.$("#"+b.getAttribute("data-ver")),m=i.type==="password";i.type=m?"text":"password";b.setAttribute("aria-label",m?"Ocultar a senha":"Mostrar a senha");b.setAttribute("aria-pressed",String(m));});});})();
+</script>
+<script src="convite.js"></script>
+</body>
+</html>
