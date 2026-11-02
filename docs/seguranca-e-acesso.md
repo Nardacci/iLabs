@@ -1,6 +1,6 @@
 # Segurança e acesso: desenho da nova versão
 
-**Situação:** rascunho de desenho (02/11/2026), para validar com a Qualidade e a diretoria antes de construir. **Origem:** achados SEG-PRI-01 a 17 e DV-PRI do módulo Principal do legado (repositório `LabMedsys_homol`, `homologacao/1.principal/03-achados-de-seguranca.md`). **Normas:** Guia 33/2020 item 9.3.2.3 (segurança, controle de acesso, assinatura eletrônica, mensagens de erro claras) e RDC 658/2022 arts. 124 e 125 (registro no momento, por pessoa identificada, com histórico de qualquer alteração).
+**Situação:** desenho com as 5 decisões do responsável registradas (02/11/2026); falta validar com a Qualidade e a diretoria antes de construir. **Origem:** achados SEG-PRI-01 a 17 e DV-PRI do módulo Principal do legado (repositório `LabMedsys_homol`, `homologacao/1.principal/03-achados-de-seguranca.md`). **Normas:** Guia 33/2020 item 9.3.2.3 (segurança, controle de acesso, assinatura eletrônica, mensagens de erro claras) e RDC 658/2022 arts. 124 e 125 (registro no momento, por pessoa identificada, com histórico de qualquer alteração).
 
 Marcações: **Decidido** (já está no banco ou na decisão do responsável) · **Proposto** (recomendação, a validar) · **Ponto para validar** (depende da Qualidade ou do negócio).
 
@@ -30,26 +30,26 @@ Marcações: **Decidido** (já está no banco ou na decisão do responsável) ·
 
 ## 3. Fluxos
 ### 3.1 Cadastro da empresa (onboarding)
-- **Proposto, versão 1: cadastro assistido.** O dono do SaaS cria a empresa e o primeiro administrador num só ato (`ilab_interno.criar_empresa`, que já existe e só o dono do banco executa). A empresa **não** se cadastra sozinha. Motivo: o contrato e o aceite de termos vêm antes, e o cadastro aberto atrai abuso.
+- **Decidido: cadastro sempre assistido.** Uma pessoa da **equipe iLabPharma** cria a empresa e o primeiro administrador num só ato (hoje `ilab_interno.criar_empresa`, que só o dono do banco executa; para a equipe poder usar, será preciso uma função com permissão própria na migração 3). A empresa **não** se cadastra sozinha. Motivo: o contrato e o aceite de termos vêm antes, e o cadastro aberto atrai abuso.
+- **Quem cria:** qualquer pessoa da equipe com a permissão de criar empresa; o criador fica registrado. **A confirmar com o responsável:** o primeiro administrador do cliente, ao aceitar o convite, passa a ser o **responsável pela empresa** (entendimento do analista).
 - **Dados da empresa:** razão social, nome fantasia, CNPJ válido e único, endereço, e-mail e telefone do responsável, aceite dos termos e da política de privacidade (LGPD).
 - **Primeiro administrador:** nome e e-mail. O sistema envia o **convite**; a pessoa define a senha (3.2).
-- **Ponto para validar:** cadastro self-service com período de teste, como em outros produtos KORbuild, fica para uma versão futura.
 
 ### 3.2 Primeiro acesso (convite)
 O link chega por e-mail e expira (por exemplo, em 48 horas). A pessoa define a senha pela política (3.5), configura a verificação em duas etapas (3.4) e aceita os termos. O convite usado não vale de novo.
 
 ### 3.3 Entrada
-E-mail e senha. Mensagem única para qualquer falha. Bloqueio progressivo depois de tentativas erradas (por exemplo, 5 em 15 minutos), com aviso ao administrador. Sessão encerra por inatividade (**Ponto para validar** o tempo). O registro de acesso guarda quem, quando, resultado e origem, **nunca a senha**.
+E-mail e senha. Mensagem única para qualquer falha. Bloqueio progressivo depois de tentativas erradas (por exemplo, 5 em 15 minutos), com aviso ao administrador. **Decidido:** a sessão encerra após **10 minutos** sem atividade. Como as telas de registro de lote são longas, a tela avisa 1 minuto antes ("continuar conectado?") e guarda o rascunho, para ninguém perder o que digitou. O registro de acesso guarda quem, quando, resultado e origem, **nunca a senha**.
 
 ### 3.4 Verificação em duas etapas (2FA)
-**Proposto:** obrigatória para os perfis que aprovam, reprovam ou liberam (CQ, GQ, liberação do lote) e para administradores; opcional para os demais. Aplicativo autenticador (código de 6 dígitos). Códigos de recuperação guardados pela pessoa. **Ponto para validar:** tornar 2FA obrigatória para todos.
+**Decidido:** obrigatória **só para quem aprova** (aprovar, reprovar, liberar e anular: CQ, GQ e liberação do lote); opcional para os demais. Aplicativo autenticador (código de 6 dígitos). Códigos de recuperação guardados pela pessoa. **Recomendação mantida, a validar:** incluir também os administradores, que criam usuários e mexem em permissões.
 
 ### 3.5 Política de senha, alteração e recuperação
-- **Política proposta:** mínimo de 12 caracteres, sem teto baixo, sem regras de caixa obrigatórias, bloqueio de senhas conhecidas por vazamento (se o plano do Supabase permitir).
+- **Decidido: padrão de boas práticas.** Mínimo de 12 caracteres, sem teto baixo, sem regras de caixa obrigatórias e **sem validade periódica**: a senha só é trocada por vontade da pessoa ou quando há suspeita de vazamento. Bloqueio de senhas conhecidas por vazamento (conferir o plano do Supabase).
 - **Alterar senha** (dentro do sistema): senha atual, nova e confirmação. Encerra as outras sessões.
 - **Esqueci a senha:** link por e-mail, que expira; a resposta da tela é **a mesma** exista o e-mail ou não (corrige SEG-PRI-07).
 - **Redefinição pelo administrador:** envia um link à pessoa; **nunca** mostra senha.
-- **Ponto para validar com a Qualidade:** validade da senha (por exemplo, 90 dias) e histórico de senhas já usadas. A prática atual recomenda não forçar troca periódica; a Qualidade decide se a norma interna exige.
+- **A validar com a Qualidade:** se algum procedimento interno exigir troca periódica, vira parâmetro por empresa (`politica_seguranca`), desligado por padrão.
 
 ### 3.6 Assinatura eletrônica
 **Proposto:** ao aprovar, reprovar, liberar ou anular, a pessoa **digita a senha de novo** (e o código, se tiver 2FA), e o sistema grava o significado da assinatura (autor, revisor, aprovador), a data, a hora e o motivo. Corrige as aprovações sem assinatura do legado (Guia 33, item 9.3.2.3).
@@ -98,9 +98,11 @@ Duas visões para o administrador e a GQ: **acessos** (entradas, falhas, bloquei
 | RF-ACE-009 | Mudança de perfil e de permissão deixa histórico com antes, depois e motivo | SEG-PRI-14 |
 | RF-ACE-010 | Depois do limite de tentativas erradas, o acesso é bloqueado e o administrador é avisado | SEG-PRI-12 |
 
-## 7. Decisões que precisam de resposta
-1. **2FA** obrigatória só para quem aprova e administra, ou para todos?
-2. **Validade da senha:** quantos dias, ou nunca expira?
-3. **Inatividade da sessão:** quantos minutos?
-4. **Cadastro de empresa:** assistido na versão 1, e self-service depois?
-5. **Quem pode criar empresa:** só o dono do SaaS?
+## 7. Decisões do responsável (02/11/2026)
+| # | Pergunta | Decisão |
+|---|---|---|
+| 1 | Verificação em duas etapas | Obrigatória **apenas para quem aprova** (recomendação de incluir administradores fica a validar) |
+| 2 | Validade da senha | **Padrão de boas práticas**: sem expiração periódica; troca por vontade ou suspeita |
+| 3 | Inatividade da sessão | **10 minutos**, com aviso antes de encerrar |
+| 4 | Cadastro de empresa | **Sempre assistido** (criado pela equipe iLabPharma) |
+| 5 | Quem cria empresa | **Qualquer pessoa da equipe** autorizada; o criador fica registrado. A confirmar: o primeiro administrador do cliente é o responsável pela empresa |
