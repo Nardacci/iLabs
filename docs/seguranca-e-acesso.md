@@ -104,5 +104,5 @@ Duas visões para o administrador e a GQ: **acessos** (entradas, falhas, bloquei
 | 1 | Verificação em duas etapas | Obrigatória **apenas para quem aprova** (recomendação de incluir administradores fica a validar) |
 | 2 | Validade da senha | **Padrão de boas práticas**: sem expiração periódica; troca por vontade ou suspeita |
 | 3 | Inatividade da sessão | **10 minutos**, com aviso antes de encerrar |
-| 4 | Cadastro de empresa | **Sempre assistido** (criado pela equipe iLabPharma) |
-| 5 | Quem cria empresa | **Qualquer pessoa da equipe** autorizada; o criador fica registrado. A confirmar: o primeiro administrador do cliente é o responsável pela empresa |
+| 4 | Cadastro de empresa | ~~Sempre assistido~~ **Revisto em 02/11/2026:** autocadastro com "Deseja se cadastrar?" e passo a passo, como nos produtos KORbuild (ver `referencia-korbuild-cadastro.md`) |
+| 5 | Quem cria empresa | ~~Qualquer pessoa da equipe~~ **Revisto em 02/11/2026:** quem faz o cadastro cria a empresa e vira o **responsável** por ela |

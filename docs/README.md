@@ -4,4 +4,5 @@
 |---|---|
 | `decisoes.md` | O que foi decidido e por quê |
 | `seguranca-e-acesso.md` | Desenho de login, senha, cadastro de empresa, usuários, perfis e assinatura eletrônica |
+| `referencia-korbuild-cadastro.md` | Como o KORbuild Finances cadastra (autocadastro, e-mail, passo a passo, teste) e como o iLabs adapta |
 | `requisitos-do-legado.md` | Onde estão os requisitos que nascem dos achados do legado (ponteiros para o repositório privado) |
