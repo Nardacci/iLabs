@@ -2,6 +2,7 @@
   var $ = window.proto.$, $$ = window.proto.$$;
   var CHAVE = "ilabs-proto-empresa";
   var etapa = 1, TOTAL = 4;
+  var DIAS_TESTE = 365; /* valor TEMPORÁRIO de desenvolvimento; o valor de lançamento está em docs/antes-de-lancar.md */
   var CAMPOS = ["v-cargo", "v-tel", "e-razao", "e-fantasia", "e-cnpj", "e-tel", "e-email", "f-cep", "f-log", "f-num", "f-comp", "f-cidade", "f-uf", "f-afe", "f-rt", "f-crf"];
   var ROT = {
     "v-cargo": "Cargo", "v-tel": "Telefone", "e-razao": "Razão social", "e-fantasia": "Nome fantasia", "e-cnpj": "CNPJ", "e-tel": "Telefone da empresa", "e-email": "E-mail da empresa",
@@ -58,6 +59,8 @@
       marca(erro("f-cep", $("#f-cep").value.replace(/\D/g, "").length === 8 ? "" : "Informe o CEP com 8 números."), "f-cep");
       marca(obrig("f-log", "Informe o logradouro."), "f-log"); marca(obrig("f-num", "Informe o número."), "f-num"); marca(obrig("f-cidade", "Informe a cidade."), "f-cidade"); marca(obrig("f-uf", "Escolha a UF."), "f-uf");
       var a = ativSel().length > 0; $("#e-ativ").textContent = a ? "" : "Marque pelo menos uma atividade."; marca(a, "ativ");
+      marca(erro("f-rt", $("#f-rt").value.trim().split(/\s+/).length >= 2 ? "" : "Informe o nome completo do responsável técnico."), "f-rt");
+      marca(erro("f-crf", /^[A-Za-z]{2}\s?\d{3,7}$/.test($("#f-crf").value.trim()) ? "" : "Informe o CRF com a UF e o número, por exemplo SP 12345."), "f-crf");
     }
     if (primeiro) { var el = $("#" + primeiro); if (el && el.focus) el.focus(); }
     return ok;
@@ -72,7 +75,7 @@
     $("#resumo").innerHTML =
       bloco("Você", 1, [["Nome", "Carla Dias"], ["E-mail", "carla.dias@lab-teste.com.br"], ["Cargo", esc(v("v-cargo"))], ["Telefone", esc(v("v-tel"))]]) +
       bloco("A empresa", 2, [["Razão social", esc(v("e-razao"))], ["Nome fantasia", esc(v("e-fantasia"))], ["CNPJ", esc(v("e-cnpj"))], ["Telefone", esc(v("e-tel"))], ["E-mail", esc(v("e-email"))]]) +
-      bloco("A fábrica", 3, [["Endereço", esc(v("f-log") + ", " + v("f-num") + " · " + v("f-cidade") + "/" + v("f-uf") + " · CEP " + v("f-cep"))], ["Atividades", esc(ativSel().join(", ") || "—")], ["AFE (ANVISA)", esc(v("f-afe"))], ["Resp. técnico", esc(v("f-rt") + (v("f-crf") !== "—" ? " (CRF " + v("f-crf") + ")" : ""))]]);
+      bloco("A fábrica", 3, [["Endereço", esc(v("f-log") + ", " + v("f-num") + " · " + v("f-cidade") + "/" + v("f-uf") + " · CEP " + v("f-cep"))], ["Atividades", esc(ativSel().join(", ") || "—")], ["AFE (ANVISA)", esc(v("f-afe"))], ["Resp. técnico", esc(v("f-rt") + " (CRF " + v("f-crf") + ")")]]);
     $$("[data-ir]").forEach(function (b) { b.addEventListener("click", function () { ir(+b.getAttribute("data-ir")); }); });
   }
   function ir(n) {
@@ -92,7 +95,8 @@
     $("#rasc").innerHTML = "";
     if (etapa < TOTAL) { if (validar(etapa)) ir(etapa + 1); return; }
     /* Criar empresa: no banco será uma única chamada atômica (empresa, responsável, perfis, armazém e teste). */
-    var fim = new Date(); fim.setDate(fim.getDate() + 15);
+    var fim = new Date(); fim.setDate(fim.getDate() + DIAS_TESTE);
+    $("#p-dias").textContent = String(DIAS_TESTE);
     $("#p-razao").textContent = $("#e-razao").value.trim();
     $("#p-fim").textContent = fim.toLocaleDateString("pt-BR");
     limpar(); $("#wiz").hidden = true; $("#pronto").hidden = false;

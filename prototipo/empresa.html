@@ -75,11 +75,11 @@
           </div><div class="err" id="e-ativ" aria-live="polite"></div>
         </fieldset>
         <div class="grid2" style="margin-top:14px">
-          <div class="field full"><label for="f-afe">Nº da autorização de funcionamento (AFE) da ANVISA</label><input id="f-afe" class="input" type="text" placeholder="Opcional por enquanto" autocomplete="off" inputmode=numeric><div class="err" id="e-f-afe" aria-live="polite"></div></div>
-          <div class="field "><label for="f-rt">Responsável técnico</label><input id="f-rt" class="input" type="text" placeholder="Nome completo" autocomplete="off" ><div class="err" id="e-f-rt" aria-live="polite"></div></div>
-          <div class="field "><label for="f-crf">CRF (UF e número)</label><input id="f-crf" class="input" type="text" placeholder="Ex.: SP 12345" autocomplete="off" ><div class="err" id="e-f-crf" aria-live="polite"></div></div>
+          <div class="field full"><label for="f-afe">Nº da autorização de funcionamento (AFE) da ANVISA</label><input id="f-afe" class="input" type="text" placeholder="Opcional durante o teste" autocomplete="off" inputmode=numeric><div class="err" id="e-f-afe" aria-live="polite"></div></div>
+          <div class="field "><label for="f-rt">Responsável técnico (obrigatório)</label><input id="f-rt" class="input" type="text" placeholder="Nome completo" autocomplete="name" ><div class="err" id="e-f-rt" aria-live="polite"></div></div>
+          <div class="field "><label for="f-crf">CRF do responsável técnico (UF e número)</label><input id="f-crf" class="input" type="text" placeholder="Ex.: SP 12345" autocomplete="off" ><div class="err" id="e-f-crf" aria-live="polite"></div></div>
         </div>
-        <p class="hint">AFE e responsável técnico: a Qualidade vai definir se são obrigatórios neste cadastro.</p>
+        <p class="hint"><strong>O responsável técnico é obrigatório:</strong> a norma (RDC 658/2022, art. 29) pede que o fabricante mostre a posição dele na hierarquia. A AFE pode ser informada depois, mas será exigida ao fim do teste.</p>
       </section>
 
       <section data-etapa="4" aria-labelledby="t4" hidden>
@@ -103,8 +103,9 @@
       <h2>Empresa criada</h2>
       <p class="lead"><strong id="p-razao"></strong> já está no iLabPharma.</p>
       <ul>
-        <li><strong>Teste de 15 dias</strong>, com tudo liberado, até <strong id="p-fim"></strong>.</li>
-        <li>Você é o <strong>Administrador</strong> e o responsável pela empresa.</li>
+        <li><strong>Teste de <span id="p-dias"></span> dias</strong>, com tudo liberado, até <strong id="p-fim"></strong>. <small>(Prazo temporário de desenvolvimento.)</small></li>
+        <li>Você é o <strong>Administrador</strong> e o responsável pela conta.</li>
+        <li><strong>Falta designar</strong>, em Usuários: o Responsável pela Produção, o Responsável pelo Controle de Qualidade e a(s) Pessoa(s) Delegada(s) que liberam os lotes.</li>
         <li><strong>Perfis padrão</strong> criados: Administrador, Aprovador do CQ, Analista, Almoxarife e Consulta.</li>
         <li><strong>Armazém padrão</strong> criado: Quarentena, Aprovado, Reprovado e Produção.</li>
       </ul>

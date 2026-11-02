@@ -30,7 +30,7 @@ Marcações: **Decidido** (já está no banco ou na decisão do responsável) ·
 
 ## 3. Fluxos
 ### 3.1 Cadastro da empresa (onboarding)
-**Revisto em 02/11/2026** (ver `referencia-korbuild-cadastro.md`): o cadastro é **aberto**. Na entrada há **"Deseja se cadastrar?"**. A pessoa cria a conta (nome, e-mail, senha pela política do iLabs, aceite dos termos), **confirma o e-mail** e segue para um **passo a passo de 4 etapas** com as informações necessárias para criar a empresa (você, a empresa, a fábrica, revisar e criar). **Quem cadastra vira o responsável** pela empresa (perfil Administrador). O CNPJ é validado e só vale uma vez. A empresa nasce com **15 dias de teste**, com tudo liberado.
+**Revisto em 02/11/2026** (ver `referencia-korbuild-cadastro.md`): o cadastro é **aberto**. Na entrada há **"Deseja se cadastrar?"**. A pessoa cria a conta (nome, e-mail, senha pela política do iLabs, aceite dos termos), **confirma o e-mail** e segue para um **passo a passo de 4 etapas** com as informações necessárias para criar a empresa (você, a empresa, a fábrica com o responsável técnico, revisar e criar). **Quem cadastra vira o responsável** pela empresa (perfil Administrador). O CNPJ é validado e só vale uma vez. A empresa nasce com um **período de teste** (hoje **365 dias**, valor temporário de desenvolvimento), com tudo liberado, e com o **responsável técnico** informado (obrigatório).
 
 ### 3.2 Primeiro acesso de quem o responsável cadastrou
 O responsável cadastra a pessoa dentro do sistema (tela Usuários). O link para ela definir a senha chega por e-mail e expira (por exemplo, em 48 horas). A pessoa define a senha pela política (3.5), configura a verificação em duas etapas (3.4) e aceita os termos. O convite usado não vale de novo.

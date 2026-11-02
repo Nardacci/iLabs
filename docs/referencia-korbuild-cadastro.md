@@ -33,7 +33,7 @@ O passo a passo reúne **apenas as informações necessárias para criar a empre
 |---|---|---|
 | 1 | **Você** | Cargo e telefone do responsável (nome e e-mail já vieram do cadastro) |
 | 2 | **A empresa** | Razão social, nome fantasia, **CNPJ** (formato e dígitos verificadores conferidos; um CNPJ só pode ter uma empresa), telefone e e-mail da empresa |
-| 3 | **A fábrica** | Endereço (CEP, logradouro, número, cidade, UF), **atividades** (fabricar, embalar, controle de qualidade, armazenar e distribuir, importar), número da **autorização de funcionamento (AFE)** da ANVISA, **responsável técnico** (nome e CRF). *Ponto para validar com a Qualidade: AFE e responsável técnico obrigatórios ou opcionais no cadastro* |
+| 3 | **A fábrica** | Endereço (CEP, logradouro, número, cidade, UF), **atividades** (fabricar, embalar, controle de qualidade, armazenar e distribuir, importar), **responsável técnico obrigatório** (nome completo e CRF com UF e número) e número da **autorização de funcionamento (AFE)** da ANVISA, **opcional durante o teste** e exigida ao fim dele |
 | 4 | **Revisar e criar** | Resumo de tudo, aceite final e **"Criar empresa"** |
 
 - Cada etapa **guarda rascunho**; se a pessoa parar, **retoma de onde parou**.
@@ -45,12 +45,26 @@ O passo a passo reúne **apenas as informações necessárias para criar a empre
 - Tabelas novas na migração 3: rascunho do cadastro, situação de acesso da empresa (teste, carência, ativa, suspensa, bloqueada), registro de acessos, assinaturas e política de segurança.
 - **Proteção contra abuso** (agora que o cadastro é aberto): e-mail confirmado, limite de empresas por pessoa, limite de tentativas, e verificação de que o CNPJ não existe.
 
-## 3. Decisões do responsável (02/11/2026)
+## 3. Os responsáveis no sistema
+São papéis diferentes, e o cadastro precisa separá-los.
+
+| Papel | Quem é | Para que serve no sistema | Base na norma |
+|---|---|---|---|
+| **Responsável pela conta** (Administrador) | Quem fez o cadastro | Gerencia usuários, perfis e a contratação; não aprova lote só por ser administrador | Decisão do produto |
+| **Responsável técnico** | Farmacêutico, com **CRF** | Aparece no cadastro da empresa e nos documentos; é a posição que o fabricante deve mostrar na hierarquia. **Obrigatório** | RDC 658/2022, **art. 29** |
+| **Pessoal-chave** | Responsável pela Produção, Responsável pelo Controle de Qualidade e **Pessoa(s) Delegada(s)** que liberam os lotes | Designados dentro do sistema, depois do cadastro. A liberação do lote só pode ser feita pela Pessoa Delegada | **Art. 33**; art. 8º XV; art. 14 VII |
+| **Independência** | Responsável pela Produção ≠ Pessoa Delegada | O sistema **impede** que a mesma pessoa produza e libere o lote | **Art. 33, parágrafo único** (ver `RF-ACE-007`) |
+
+**Por que o responsável técnico é obrigatório:** sem ele a empresa não consegue mostrar a quem a norma atribui a responsabilidade técnica, e o iLabPharma seria usado por quem nem tem essa figura definida. Por isso o cadastro pede **nome completo e CRF** (UF e número). O sistema confere o formato; a **conferência do CRF no conselho** fica como melhoria futura.
+
+## 4. Decisões do responsável (02/11/2026)
 | # | Pergunta | Decisão |
 |---|---|---|
 | 1 | Como a equipe entra na empresa | **O responsável pela empresa cadastra os usuários** (a pessoa define a própria senha por um link) |
 | 2 | Como saber que a empresa existe | **Validar o CNPJ** (formato e dígitos verificadores, e um CNPJ por empresa). *Consulta à Receita Federal fica como melhoria futura* |
 | 3 | O que o período de teste inclui | **Tudo liberado** |
-| 4 | Dias de teste | **15 dias**. *Carência depois do teste: a confirmar (no KORbuild são 6 dias)* |
+| 4 | Dias de teste | **365 dias, valor temporário de desenvolvimento** (decisão de 02/11/2026: enquanto o produto é testado). O valor de lançamento volta a ser ajustado (ver `antes-de-lancar.md`). A duração é um **parâmetro** do banco, e não fica escrita no código |
+| 5 | Carência depois do teste | **6 dias**, como no KORbuild |
+| 6 | Responsável técnico no cadastro | **Obrigatório** (nome completo e CRF). AFE **opcional durante o teste** e exigida ao fim dele |
 
 **Consequência de "tudo liberado":** no teste, uma empresa pode aprovar e liberar lotes de mentira. Ao sair do teste, os registros feitos durante ele precisam ser **identificados como de teste** (a decidir: marcar ou limpar). Ponto para validar.

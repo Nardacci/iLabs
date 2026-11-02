@@ -12,7 +12,7 @@ Abra `index.html` no navegador (duplo clique, sem servidor). Ele é o **mapa das
 | `entrar.html` | Entrada: e-mail e senha, verificação em duas etapas, recuperação de senha |
 | `inicio.html` | Página inicial por perfil |
 | `cadastro.html` | "Deseja se cadastrar?": criar a conta e confirmar o e-mail |
-| `empresa.html` | Passo a passo de 4 etapas para criar a empresa (CNPJ conferido, rascunho, 15 dias de teste) |
+| `empresa.html` | Passo a passo de 4 etapas para criar a empresa (CNPJ e responsável técnico conferidos, rascunho, período de teste) |
 | `convite.html` | Primeiro acesso de quem o responsável cadastrou: criar a senha pelo link (estados: vencido e já usado; perfil que aprova vai às duas etapas) |
 | `redefinir.html` | Nova senha pelo link do e-mail (estado: link vencido) |
 | `seguranca.html` | Minha segurança: alterar senha, duas etapas (aplicativo e códigos de recuperação), sessões e aviso de inatividade de 10 minutos |
