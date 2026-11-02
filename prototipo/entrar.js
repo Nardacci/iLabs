@@ -42,6 +42,8 @@
       return;
     }
     tentativas = 0; msg("#entrar-msg", "", "");
+    /* decisão de 02/11/2026: duas etapas só para quem aprova; no protótipo, e-mail com "consulta" não aprova */
+    if (email.toLowerCase().indexOf("consulta") >= 0) { location.href = "inicio.html"; return; }
     $("#mfa-email").textContent = email;
     $("#codigo").value = ""; msg("#mfa-msg", "", "");
     passo("mfa");

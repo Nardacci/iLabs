@@ -67,17 +67,17 @@ Duas visões para o administrador e a GQ: **acessos** (entradas, falhas, bloquei
 | # | Tela | Situação |
 |---|---|---|
 | 1 | Entrar | Protótipo feito |
-| 2 | Primeiro acesso (convite): definir senha e 2FA | A desenhar |
-| 3 | Esqueci minha senha | A desenhar |
-| 4 | Redefinir senha (pelo link) | A desenhar |
-| 5 | Alterar senha | A desenhar |
-| 6 | Verificação em duas etapas (configurar e usar) | A desenhar |
+| 2 | Primeiro acesso (convite): definir senha e 2FA | Protótipo feito (`convite.html`) |
+| 3 | Esqueci minha senha | Protótipo feito (dentro de `entrar.html`) |
+| 4 | Redefinir senha (pelo link) | Protótipo feito (`redefinir.html`) |
+| 5 | Alterar senha | Protótipo feito (`seguranca.html`) |
+| 6 | Verificação em duas etapas (configurar e usar) | Protótipo feito (configurar em `seguranca.html`, usar em `entrar.html`) |
 | 7 | Cadastro da empresa (visão do dono do SaaS) | A desenhar |
 | 8 | Usuários: lista, convite e edição | A desenhar |
 | 9 | Perfis e permissões (matriz) | A desenhar |
 | 10 | Registro de acessos | A desenhar |
 | 11 | Assinatura eletrônica (janela de confirmação) | A desenhar |
-| 12 | Meu perfil e minhas sessões | A desenhar |
+| 12 | Meu perfil e minhas sessões | Protótipo feito (sessões e aviso de inatividade em `seguranca.html`) |
 
 ## 5. O que o banco já tem e o que falta
 - **Já existe (Decidido):** `empresas`, `usuarios`, `perfis`, `perfil_funcoes`, `usuario_perfis`, `funcoes`, `auditoria` imutável por gatilho, isolamento por `empresa_id`, `ilab_interno.criar_empresa`.

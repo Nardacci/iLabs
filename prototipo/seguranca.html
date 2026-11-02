@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Minha segurança · iLabPharma Nova Versão</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="prototipo.css">
+</head>
+<body>
+<header class="seg-top">
+  <span class="marca">i<span>Lab</span>Pharma</span>
+  <div><a class="theme-toggle btn-link" href="inicio.html">← Início</a> <button type="button" class="theme-toggle" data-theme-toggle>Tema</button></div>
+</header>
+<main id="tela-seguranca" class="seg">
+  <div>
+    <h1>Minha segurança</h1>
+    <p class="sub">Ana Souza · Analista do CQ · Empresa Lab Teste</p>
+  </div>
+
+  <div class="msg warn" id="banner-obrig" hidden role="status">Seu perfil <strong>aprova</strong> registros, então a verificação em duas etapas é <strong>obrigatória</strong>. Configure abaixo para continuar.</div>
+
+  <section class="sec" aria-labelledby="s-senha">
+    <h2 id="s-senha">Alterar senha</h2>
+    <p class="lead">Ao salvar, as suas outras sessões são encerradas. A senha não tem prazo de validade: troque quando quiser ou se desconfiar de vazamento.</p>
+    <div class="campos">
+      <div id="s-msg" role="alert" aria-live="assertive"></div>
+      <form id="form-senha" novalidate>
+        <input id="s-email" type="hidden" value="ana.souza@lab-teste.com.br">
+        <div class="field">
+          <label for="atual">Senha atual</label>
+          <div class="input-wrap">
+            <input id="atual" class="input" type="password" autocomplete="current-password" >
+            <button type="button" class="reveal" data-ver="atual" aria-label="Mostrar a senha" aria-pressed="false"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="nova">Nova senha</label>
+          <div class="input-wrap">
+            <input id="nova" class="input" type="password" autocomplete="new-password" >
+            <button type="button" class="reveal" data-ver="nova" aria-label="Mostrar a senha" aria-pressed="false"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="conf">Repita a nova senha</label>
+          <div class="input-wrap">
+            <input id="conf" class="input" type="password" autocomplete="new-password" >
+            <button type="button" class="reveal" data-ver="conf" aria-label="Mostrar a senha" aria-pressed="false"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          </div>
+        </div>
+        <ul class="policy" id="politica" aria-label="Regras da senha">
+          <li data-k="tam">12 caracteres ou mais</li>
+          <li data-k="comum">Fora da lista de senhas comuns e sem o seu e-mail</li>
+          <li data-k="igual">As duas senhas são iguais</li>
+        </ul>
+        <div class="strength" id="forca" data-n="0" aria-hidden="true"><i></i></div>
+        <p class="strength-txt" id="forca-txt" aria-live="polite"></p>
+        <button type="submit" class="btn-grad" id="enviar-senha" disabled>Alterar senha</button>
+      </form>
+      <p class="demo-note">Protótipo: qualquer senha atual vale, menos <span class="mono">errada</span>.</p>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="s-2fa" id="duas-etapas">
+    <div class="sec-head">
+      <h2 id="s-2fa">Verificação em duas etapas</h2>
+      <span class="pill warn" id="pill-2fa">Não configurada</span>
+    </div>
+    <p class="lead">Além da senha, você digita um código de 6 dígitos gerado por um aplicativo no celular. É obrigatória para quem aprova, reprova, libera ou anula registros.</p>
+    <div id="f-inicio"><button type="button" class="btn small primary" id="comecar-2fa">Configurar agora</button></div>
+    <ol class="passos" id="f-passos" hidden>
+      <li id="f1">
+        <h3>1. Instale um aplicativo autenticador</h3>
+        <p>Por exemplo Google Authenticator, Microsoft Authenticator ou Authy.</p>
+        <button type="button" class="btn small" data-prox="f2">Já instalei</button>
+      </li>
+      <li id="f2" hidden>
+        <h3>2. Leia o código QR</h3>
+        <p>No aplicativo, escolha “adicionar conta” e aponte a câmera. Se não conseguir, digite a chave.</p>
+        <svg class="qr" viewBox="0 0 21 21" role="img" aria-label="Código QR de exemplo, sem validade" shape-rendering="crispEdges"><rect width="21" height="21" fill="#fff"/><g fill="#111"><rect x="0" y="0" width="7" height="1"/><rect x="0" y="6" width="7" height="1"/><rect x="0" y="0" width="1" height="7"/><rect x="6" y="0" width="1" height="7"/><rect x="2" y="2" width="3" height="3"/><rect x="14" y="0" width="7" height="1"/><rect x="14" y="6" width="7" height="1"/><rect x="14" y="0" width="1" height="7"/><rect x="20" y="0" width="1" height="7"/><rect x="16" y="2" width="3" height="3"/><rect x="0" y="14" width="7" height="1"/><rect x="0" y="20" width="7" height="1"/><rect x="0" y="14" width="1" height="7"/><rect x="6" y="14" width="1" height="7"/><rect x="2" y="16" width="3" height="3"/><rect x="9" y="1" width="1" height="2"/><rect x="11" y="3" width="2" height="1"/><rect x="9" y="8" width="3" height="1"/><rect x="13" y="9" width="1" height="3"/><rect x="9" y="11" width="2" height="2"/><rect x="15" y="12" width="4" height="1"/><rect x="9" y="15" width="1" height="4"/><rect x="12" y="16" width="3" height="1"/><rect x="16" y="15" width="1" height="5"/><rect x="18" y="17" width="3" height="1"/><rect x="11" y="19" width="4" height="1"/><rect x="1" y="9" width="3" height="1"/><rect x="5" y="10" width="1" height="3"/></g></svg>
+        <p>Chave manual (exemplo, não funciona): <span class="chave">DEMO K2PQ WX5R 7TNB</span></p>
+        <button type="button" class="btn small" data-prox="f3">Já adicionei</button>
+      </li>
+      <li id="f3" hidden>
+        <h3>3. Digite o código que o aplicativo mostra</h3>
+        <div id="f-msg" role="alert" aria-live="assertive"></div>
+        <form id="form-2fa" novalidate>
+          <div class="field" style="max-width:220px">
+            <label for="f-codigo" class="sr">Código de 6 dígitos</label>
+            <input id="f-codigo" class="input code-input" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="000000">
+          </div>
+          <button type="submit" class="btn small primary">Confirmar código</button>
+        </form>
+        <p class="demo-note">Protótipo: qualquer código de 6 dígitos vale.</p>
+      </li>
+      <li id="f4" hidden>
+        <h3>4. Guarde os códigos de recuperação</h3>
+        <p>Se perder o celular, cada código abaixo vale <strong>uma vez</strong> no lugar do código do aplicativo. Guarde em lugar seguro, fora do computador do trabalho. (Códigos de exemplo.)</p>
+        <ul class="codes" aria-label="Códigos de recuperação de exemplo"><li>K7M2-9QXA</li><li>P4TR-5WBN</li><li>H8CJ-2ZLE</li><li>V3YD-6FGU</li><li>N9SA-4KRM</li><li>X2QE-7HTB</li><li>B5LW-8DJC</li><li>R6UF-3PNY</li></ul>
+        <label class="check"><input type="checkbox" id="guardei"> <span>Guardei os códigos em lugar seguro.</span></label>
+        <button type="button" class="btn small primary" id="concluir-2fa" disabled>Concluir</button>
+      </li>
+    </ol>
+    <div id="f-continuar" hidden style="margin-top:14px"><a class="btn-grad btn-link" style="display:inline-block;padding:10px 18px" href="inicio.html">Continuar para o início →</a></div>
+  </section>
+
+  <section class="sec" aria-labelledby="s-sess">
+    <h2 id="s-sess">Minhas sessões</h2>
+    <p class="lead">A sessão encerra sozinha depois de <strong>10 minutos</strong> sem atividade. Se você não reconhece alguma entrada, encerre e troque a senha.</p>
+    <ul class="sessoes" id="lista-sessoes">
+      <li><div><strong>Este computador</strong> (Windows · Edge)<small>Ativa agora · entrada às 08:12</small></div><span class="pill ok">Atual</span></li>
+      <li data-sess><div><strong>Celular</strong> (Android · Chrome)<small>Última atividade ontem às 17:40</small></div><button type="button" class="btn small" data-encerrar>Encerrar</button></li>
+      <li data-sess><div><strong>Notebook da sala de análise</strong> (Windows · Chrome)<small>Última atividade há 3 dias</small></div><button type="button" class="btn small" data-encerrar>Encerrar</button></li>
+    </ul>
+    <p style="margin-top:14px"><button type="button" class="btn small" id="encerrar-outras">Encerrar todas as outras</button> <button type="button" class="btn small" id="simular-inativ">Simular aviso de inatividade</button></p>
+  </section>
+</main>
+
+<div class="modal-fundo" id="modal-inativ" hidden role="dialog" aria-modal="true" aria-labelledby="m-t">
+  <div class="modal">
+    <h2 id="m-t">Você ainda está aí?</h2>
+    <p>Por segurança, a sessão encerra em <strong id="m-seg">60</strong> segundos sem atividade. O que você digitou fica guardado como rascunho.</p>
+    <div class="acoes"><button type="button" class="btn small primary" id="m-continuar">Continuar conectado</button> <a class="btn small btn-link" href="entrar.html">Sair agora</a></div>
+  </div>
+</div>
+<div id="aviso" class="toast" role="status" aria-live="polite" hidden></div>
+<script src="common.js"></script>
+<script src="senha.js"></script>
+<script>
+(function(){var $$=window.proto.$$;$$("[data-ver]").forEach(function(b){b.addEventListener("click",function(){var i=window.proto.$("#"+b.getAttribute("data-ver")),m=i.type==="password";i.type=m?"text":"password";b.setAttribute("aria-label",m?"Ocultar a senha":"Mostrar a senha");b.setAttribute("aria-pressed",String(m));});});})();
+</script>
+<script src="seguranca.js"></script>
+</body>
+</html>

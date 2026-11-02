@@ -50,7 +50,7 @@
         <button type="submit" class="btn-grad">Entrar →</button>
       </form>
       <hr class="sep">
-      <p class="alt">Primeiro acesso? <strong>Peça seu convite ao administrador da empresa.</strong></p>
+      <p class="alt">Primeiro acesso? <strong>Use o link do convite que chegou ao seu e-mail</strong> (<a href="convite.html">ver a tela de convite</a>).</p>
       <p class="demo-note">Protótipo: qualquer senha entra. Digite <span class="mono">errada</span> para ver o bloqueio.</p>
     </div>
 
@@ -67,13 +67,13 @@
         <button type="submit" class="btn-grad">Enviar link →</button>
       </form>
       <hr class="sep">
-      <p class="alt"><button type="button" class="link" data-voltar>Voltar para entrar</button></p>
+      <p class="alt"><button type="button" class="link" data-voltar>Voltar para entrar</button> · <a href="redefinir.html">Ver a tela do link recebido</a></p>
     </div>
 
     <div class="card" id="passo-mfa" hidden>
       <p class="eyebrow">Segurança</p>
       <h2>Código de verificação</h2>
-      <p class="lead">Enviamos um código de 6 dígitos para <span class="mono" id="mfa-email"></span>.</p>
+      <p class="lead">Abra o aplicativo autenticador e digite o código de 6 dígitos da conta <span class="mono" id="mfa-email"></span>. Se perdeu o celular, use um dos códigos de recuperação guardados.</p>
       <div id="mfa-msg" role="alert" aria-live="assertive"></div>
       <form id="form-mfa" novalidate>
         <div class="field">
@@ -84,7 +84,7 @@
       </form>
       <hr class="sep">
       <p class="alt"><button type="button" class="link" data-voltar>Usar outro e-mail</button></p>
-      <p class="demo-note">Protótipo: qualquer código de 6 dígitos vale.</p>
+      <p class="demo-note">Protótipo: qualquer código de 6 dígitos vale. As duas etapas só aparecem para quem aprova; um e-mail com <span class="mono">consulta</span> entra direto.</p>
     </div>
     <p class="rodape-form">iLabPharma · Protótipo com dados fictícios</p>
   </section>
