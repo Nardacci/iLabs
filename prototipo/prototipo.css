@@ -278,3 +278,28 @@ tr:last-child td { border-bottom: 0; }
 .modal h2 { font-family: var(--font-display); margin: 0 0 8px; font-size: 22px; }
 .modal .acoes { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
 .btn.primary { background: var(--grad-btn); color: #fff; border-color: transparent; }
+
+/* ---------- Cadastro e passo a passo da empresa ---------- */
+.card.larga { max-width: 600px; }
+.etapas { list-style: none; display: flex; gap: 8px; margin: 0 0 20px; padding: 0; }
+.etapas li { flex: 1; display: flex; flex-direction: column; gap: 6px; font-size: 12px; color: var(--muted); }
+.etapas li::before { content: ""; height: 5px; border-radius: 99px; background: var(--line); }
+.etapas li.feita::before, .etapas li.atual::before { background: var(--accent); }
+.etapas li.atual { color: var(--ink); font-weight: 700; }
+.etapas li.feita { color: var(--ok); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
+.grid2 .full { grid-column: 1 / -1; }
+@media (max-width: 520px) { .grid2 { grid-template-columns: 1fr; } }
+.err { color: var(--bad); font-size: 12.5px; margin-top: 4px; min-height: 0; }
+.input[aria-invalid="true"] { border-color: var(--bad); }
+.ativ { display: grid; gap: 6px; margin: 6px 0 4px; }
+.ativ label { display: flex; gap: 8px; align-items: center; font-size: 14px; }
+.resumo { margin: 0 0 14px; }
+.resumo h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 14px 0 6px; display: flex; justify-content: space-between; align-items: center; }
+.resumo dl { display: grid; grid-template-columns: 150px 1fr; gap: 4px 12px; margin: 0; font-size: 14px; }
+.resumo dt { color: var(--muted); }
+.resumo dd { margin: 0; word-break: break-word; }
+.nav-etapas { display: flex; justify-content: space-between; gap: 10px; margin-top: 8px; }
+.nav-etapas .btn-link, .nav-etapas button { min-width: 110px; }
+.criado ul { padding-left: 18px; margin: 8px 0 16px; font-size: 14px; }
+.ico-grande { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: var(--ok-soft); color: var(--ok); font-size: 26px; margin-bottom: 12px; }

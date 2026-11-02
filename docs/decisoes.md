@@ -8,5 +8,7 @@
 | 02/11/2026 | **Isolamento por `empresa_id` (RLS), permissão por função e ação, auditoria imutável por gatilhos, sem exclusão física nos cadastros** | A regra mora no banco; o front só mostra ou esconde telas (RDC 658 art. 125 e Guia 33) |
 | 02/11/2026 | **Telas e cadastros unificados entre módulos** | O legado repete telas e tabelas entre módulos (por exemplo água e ambiente no CQ e na Produção) |
 | 02/11/2026 | **Repositório independente `iLabs`** (privado) | Separar a construção do produto da análise do legado |
+| 02/11/2026 | **Autocadastro com passo a passo de 4 etapas**; o responsável cadastra os usuários; CNPJ conferido; **responsável técnico obrigatório** | Segue a jornada dos produtos KORbuild; a norma pede o responsável técnico (RDC 658, art. 29) |
+| 02/11/2026 | **Teste de 365 dias, temporário**, carência de 6 dias | Enquanto o produto é testado; o valor de lançamento volta a ser ajustado (`antes-de-lancar.md`) |
 
 O detalhe das decisões do banco está em `../banco/README.md` e `../banco/modelo-de-dados.md`.

@@ -11,7 +11,9 @@ Abra `index.html` no navegador (duplo clique, sem servidor). Ele é o **mapa das
 | `index.html` | Mapa do protótipo, com o estado de cada tela (pronta ou planejada) |
 | `entrar.html` | Entrada: e-mail e senha, verificação em duas etapas, recuperação de senha |
 | `inicio.html` | Página inicial por perfil |
-| `convite.html` | Primeiro acesso: criar a senha pelo link do convite (estados: vencido e já usado; perfil que aprova vai às duas etapas) |
+| `cadastro.html` | "Deseja se cadastrar?": criar a conta e confirmar o e-mail |
+| `empresa.html` | Passo a passo de 4 etapas para criar a empresa (CNPJ e responsável técnico conferidos, rascunho, período de teste) |
+| `convite.html` | Primeiro acesso de quem o responsável cadastrou: criar a senha pelo link (estados: vencido e já usado; perfil que aprova vai às duas etapas) |
 | `redefinir.html` | Nova senha pelo link do e-mail (estado: link vencido) |
 | `seguranca.html` | Minha segurança: alterar senha, duas etapas (aplicativo e códigos de recuperação), sessões e aviso de inatividade de 10 minutos |
 | `senha.js` | Regras de senha compartilhadas pelas três telas acima (12 caracteres, fora da lista de comuns, sem o e-mail) |
