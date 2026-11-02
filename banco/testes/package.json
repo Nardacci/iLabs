@@ -1,0 +1,7 @@
+{
+  "name": "ilabpharma-banco-testes",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "node rodar_com_pglite.mjs" },
+  "dependencies": { "@electric-sql/pglite": "0.2.17" }
+}

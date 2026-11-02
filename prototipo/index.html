@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Protótipo da nova versão · iLabPharma</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="prototipo.css">
+</head>
+<body>
+<main class="hub">
+  <div class="hub-top">
+    <div><div class="logo-claro-s"><svg class="logo-svg" style="width:150px" viewBox="0 0 851 162" role="img" aria-label="iLabPharma"><defs><linearGradient id="ig-c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff8015"/><stop offset="0.55" stop-color="#f2f4f8"/><stop offset="1" stop-color="#ff8015"/></linearGradient></defs><g font-family="Arial, Helvetica, sans-serif" font-weight="800" letter-spacing="-7"><text x="0" y="125" font-size="154" fill="url(#ig-c)">i</text><text x="43" y="125" font-size="154" fill="#ff8015" textLength="340" lengthAdjust="spacingAndGlyphs">Lab</text><text x="398" y="125" font-size="154" fill="#f2f4f8" textLength="440" lengthAdjust="spacingAndGlyphs">Pharma</text></g></svg></div><div class="logo-escuro-s"><svg class="logo-svg" style="width:150px" viewBox="0 0 851 162" role="img" aria-label="iLabPharma"><defs><linearGradient id="ig-e" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff8015"/><stop offset="0.55" stop-color="#2b2b2b"/><stop offset="1" stop-color="#ff8015"/></linearGradient></defs><g font-family="Arial, Helvetica, sans-serif" font-weight="800" letter-spacing="-7"><text x="0" y="125" font-size="154" fill="url(#ig-e)">i</text><text x="43" y="125" font-size="154" fill="#ff8015" textLength="340" lengthAdjust="spacingAndGlyphs">Lab</text><text x="398" y="125" font-size="154" fill="#2b2b2b" textLength="440" lengthAdjust="spacingAndGlyphs">Pharma</text></g></svg></div></div>
+    <button type="button" class="theme-toggle" data-theme-toggle>Tema</button>
+  </div>
+  <header>
+    <h1>Protótipo da nova versão</h1>
+    <p class="sub">Mapa das telas. As telas prontas abrem; as planejadas mostram o que vem a seguir. Todos os dados são fictícios.</p>
+  </header>
+  <section class="telas" aria-label="Telas do protótipo"><p class="grupo">Acesso</p><article class="tela-item"><div><h3>Entrada</h3><p>E-mail e senha, verificação em duas etapas, recuperação de senha e bloqueio com tentativas restantes. Digite <span class="mono">errada</span> na senha para ver o bloqueio.</p></div><div class="acao"><span class="pill ok">Pronta</span> <a class="btn small primary btn-link" href="entrar.html">Abrir</a></div></article><p class="grupo">Início</p><article class="tela-item"><div><h3>Página inicial</h3><p>Tarefas do perfil, conformidade, corrente do lote e trilha de auditoria. Use “Ver como” para trocar entre analista do CQ, almoxarife e gestor.</p></div><div class="acao"><span class="pill ok">Pronta</span> <a class="btn small primary btn-link" href="inicio.html">Abrir</a></div></article><p class="grupo">Cadastros base (um só lugar)</p><article class="tela-item plan"><div><h3>Unidades de medida</h3><p>Um cadastro único no lugar das três telas que existem hoje em módulos diferentes.</p></div><div class="acao"><span class="pill warn">Planejada</span></div></article><article class="tela-item plan"><div><h3>Almoxarifados e endereços</h3><p>Estrutura de armazenagem usada por Estoque e Produção.</p></div><div class="acao"><span class="pill warn">Planejada</span></div></article><article class="tela-item plan"><div><h3>Usuários, perfis e permissões</h3><p>Um só lugar para quem acessa o quê, com histórico de cada mudança.</p></div><div class="acao"><span class="pill warn">Planejada</span></div></article><p class="grupo">Estoque e Qualidade</p><article class="tela-item plan"><div><h3>Quarentena do lote</h3><p>Lotes aguardando análise, com prazo, responsável e a decisão do CQ.</p></div><div class="acao"><span class="pill warn">Planejada</span></div></article><article class="tela-item plan"><div><h3>Amostragem e laudo</h3><p>Do registro da amostragem à assinatura do laudo, com a trilha de auditoria à vista.</p></div><div class="acao"><span class="pill warn">Planejada</span></div></article></section>
+  <p class="foot">Fonte no git: <span class="mono">prototipo/</span>. Cada tela é um arquivo HTML; abra <span class="mono">index.html</span> no navegador para navegar.</p>
+</main>
+<div id="aviso" class="toast" role="status" aria-live="polite" hidden></div>
+<script src="common.js"></script>
+</body>
+</html>

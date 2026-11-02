@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Entrar · iLabPharma Nova Versão</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="prototipo.css">
+</head>
+<body>
+<main id="tela-entrar" class="entrar">
+  <div class="shell">
+  <section class="entrar-panel" aria-label="Apresentação">
+    <div><svg class="logo-svg" style="width:170px" viewBox="0 0 851 162" role="img" aria-label="iLabPharma"><defs><linearGradient id="ig-c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff8015"/><stop offset="0.55" stop-color="#f2f4f8"/><stop offset="1" stop-color="#ff8015"/></linearGradient></defs><g font-family="Arial, Helvetica, sans-serif" font-weight="800" letter-spacing="-7"><text x="0" y="125" font-size="154" fill="url(#ig-c)">i</text><text x="43" y="125" font-size="154" fill="#ff8015" textLength="340" lengthAdjust="spacingAndGlyphs">Lab</text><text x="398" y="125" font-size="154" fill="#f2f4f8" textLength="440" lengthAdjust="spacingAndGlyphs">Pharma</text></g></svg></div>
+    <div>
+      <p class="eyebrow">Qualidade &amp; rastreabilidade</p>
+      <h1>Cada lote.<span>Toda a história.</span></h1>
+      <p class="lead-p">Do recebimento à liberação, estoque, produção e qualidade em um só lugar.</p>
+    </div>
+    <div class="callout">
+      <i class="ck" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i>
+      <div><strong>Cada passo fica registrado</strong><span>Quem fez, quando e o valor anterior, como pedem a RDC 658/2022 e o Guia 33/2020 da ANVISA.</span></div>
+    </div>
+  </section>
+
+  <section class="entrar-form" aria-label="Entrar">
+    <div class="entrar-top"><a class="theme-toggle btn-link" href="index.html">Mapa do protótipo</a> <button type="button" class="theme-toggle" data-theme-toggle>Tema</button></div>
+
+    <div class="card" id="passo-cred">
+      <p class="eyebrow">Bem-vindo de volta</p>
+      <h2>Entrar</h2>
+      <p class="lead">Acesse o ambiente da sua empresa e continue o trabalho do dia.</p>
+      <div id="entrar-msg" role="alert" aria-live="assertive"></div>
+      <form id="form-cred" novalidate>
+        <div class="field">
+          <label for="email">E-mail</label>
+          <input id="email" class="input" type="email" value="ana.souza@lab-teste.com.br" placeholder="voce@empresa.com.br" autocomplete="username">
+        </div>
+        <div class="field">
+          <label for="senha">Senha</label>
+          <div class="input-wrap">
+            <input id="senha" class="input" type="password" placeholder="Sua senha" autocomplete="current-password" aria-describedby="caps">
+            <button type="button" class="reveal" id="ver-senha" aria-label="Mostrar a senha" aria-pressed="false">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <span id="caps" class="hint" hidden>Caps Lock está ligado.</span>
+        </div>
+        <div class="row-end"><button type="button" class="link" id="abrir-esqueci">Esqueci a senha</button></div>
+        <button type="submit" class="btn-grad">Entrar →</button>
+      </form>
+      <hr class="sep">
+      <p class="alt">Primeiro acesso? <strong>Peça seu convite ao administrador da empresa.</strong></p>
+      <p class="demo-note">Protótipo: qualquer senha entra. Digite <span class="mono">errada</span> para ver o bloqueio.</p>
+    </div>
+
+    <div class="card" id="passo-esqueci" hidden>
+      <p class="eyebrow">Recuperar acesso</p>
+      <h2>Nova senha</h2>
+      <p class="lead">Informe o e-mail. Se ele estiver cadastrado, enviamos um link para criar uma nova senha.</p>
+      <div id="esqueci-msg" role="status" aria-live="polite"></div>
+      <form id="form-esqueci" novalidate>
+        <div class="field">
+          <label for="email-rec">E-mail</label>
+          <input id="email-rec" class="input" type="email" placeholder="voce@empresa.com.br" autocomplete="username">
+        </div>
+        <button type="submit" class="btn-grad">Enviar link →</button>
+      </form>
+      <hr class="sep">
+      <p class="alt"><button type="button" class="link" data-voltar>Voltar para entrar</button></p>
+    </div>
+
+    <div class="card" id="passo-mfa" hidden>
+      <p class="eyebrow">Segurança</p>
+      <h2>Código de verificação</h2>
+      <p class="lead">Enviamos um código de 6 dígitos para <span class="mono" id="mfa-email"></span>.</p>
+      <div id="mfa-msg" role="alert" aria-live="assertive"></div>
+      <form id="form-mfa" novalidate>
+        <div class="field">
+          <label for="codigo" class="sr">Código</label>
+          <input id="codigo" class="input code-input" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="000000">
+        </div>
+        <button type="submit" class="btn-grad">Entrar →</button>
+      </form>
+      <hr class="sep">
+      <p class="alt"><button type="button" class="link" data-voltar>Usar outro e-mail</button></p>
+      <p class="demo-note">Protótipo: qualquer código de 6 dígitos vale.</p>
+    </div>
+    <p class="rodape-form">iLabPharma · Protótipo com dados fictícios</p>
+  </section>
+  </div>
+</main>
+<div id="aviso" class="toast" role="status" aria-live="polite" hidden></div>
+<script src="common.js"></script>
+<script src="entrar.js"></script>
+</body>
+</html>

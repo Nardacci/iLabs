@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Início · iLabPharma Nova Versão</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="prototipo.css">
+</head>
+<body>
+<div id="tela-inicio" class="app">
+  <aside class="side" id="menu-lateral" aria-label="Menu principal">
+    <div><div class="logo-claro-s"><svg class="logo-svg" style="width:128px" viewBox="0 0 851 162" role="img" aria-label="iLabPharma"><defs><linearGradient id="ig-c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff8015"/><stop offset="0.55" stop-color="#f2f4f8"/><stop offset="1" stop-color="#ff8015"/></linearGradient></defs><g font-family="Arial, Helvetica, sans-serif" font-weight="800" letter-spacing="-7"><text x="0" y="125" font-size="154" fill="url(#ig-c)">i</text><text x="43" y="125" font-size="154" fill="#ff8015" textLength="340" lengthAdjust="spacingAndGlyphs">Lab</text><text x="398" y="125" font-size="154" fill="#f2f4f8" textLength="440" lengthAdjust="spacingAndGlyphs">Pharma</text></g></svg></div><div class="logo-escuro-s"><svg class="logo-svg" style="width:128px" viewBox="0 0 851 162" role="img" aria-label="iLabPharma"><defs><linearGradient id="ig-e" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff8015"/><stop offset="0.55" stop-color="#2b2b2b"/><stop offset="1" stop-color="#ff8015"/></linearGradient></defs><g font-family="Arial, Helvetica, sans-serif" font-weight="800" letter-spacing="-7"><text x="0" y="125" font-size="154" fill="url(#ig-e)">i</text><text x="43" y="125" font-size="154" fill="#ff8015" textLength="340" lengthAdjust="spacingAndGlyphs">Lab</text><text x="398" y="125" font-size="154" fill="#2b2b2b" textLength="440" lengthAdjust="spacingAndGlyphs">Pharma</text></g></svg></div></div>
+    <div class="env"><span class="tag">Teste</span> Empresa Lab Teste</div>
+    <nav class="nav" aria-label="Módulos">
+      <a href="#inicio" aria-current="page">Início</a>
+      <h3>Cadastros base <small>(um só lugar)</small></h3>
+      <a href="#inicio" data-fora>Unidades de medida</a>
+      <a href="#inicio" data-fora>Pessoas e fornecedores</a>
+      <a href="#inicio" data-fora>Almoxarifados</a>
+      <a href="#inicio" data-fora>Equipamentos e ambientes</a>
+      <a href="#inicio" data-fora>Usuários e permissões</a>
+      <h3>Estoque</h3>
+      <a href="#inicio" data-fora>Recebimento <span class="count">4</span></a>
+      <a href="#inicio" data-fora>Quarentena <span class="count hot">7</span></a>
+      <a href="#inicio" data-fora>Movimentação interna</a>
+      <a href="#inicio" data-fora>Inventário</a>
+      <h3>Produção</h3>
+      <a href="#inicio" data-fora>Ordens de produção <span class="count">3</span></a>
+      <a href="#inicio" data-fora>Lote padrão</a>
+      <a href="#inicio" data-fora>Limpeza e preparação</a>
+      <h3>Qualidade</h3>
+      <a href="#inicio" data-fora>Amostragem e análise <span class="count hot">5</span></a>
+      <a href="#inicio" data-fora>Desvios e mudanças <span class="count">2</span></a>
+      <a href="#inicio" data-fora>Treinamentos</a>
+      <h3>Documentos e rastreio</h3>
+      <a href="#inicio" data-fora>Documentos controlados</a>
+      <a href="#inicio" data-fora>Rastreabilidade do lote</a>
+    </nav>
+    <a class="btn small btn-link" href="index.html" style="text-align:center">Mapa do protótipo</a>
+  </aside>
+
+  <div class="main">
+    <header class="top">
+      <button type="button" class="btn menu-btn" id="abrir-menu" aria-controls="menu-lateral" aria-expanded="false">Menu</button>
+      <div class="search">
+        <label for="busca" class="sr">Buscar</label>
+        <input id="busca" class="input" placeholder="Buscar lote, material, documento ou tela" autocomplete="off">
+        <kbd aria-hidden="true">/</kbd>
+      </div>
+      <div class="top-actions">
+        <button type="button" class="theme-toggle" data-theme-toggle>Tema</button>
+        <button type="button" class="bell" data-fora aria-label="Notificações: 3 novas">Avisos <span class="count">3</span></button>
+        <div class="me">
+          <button type="button" id="abrir-eu" aria-expanded="false" aria-controls="menu-eu">
+            <span class="avatar" id="avatar">AS</span>
+            <span class="who"><strong id="nome-eu">Ana Souza</strong><small id="papel-eu">Analista do CQ</small></span>
+          </button>
+          <div class="menu" id="menu-eu" hidden>
+            <label for="ver-como">Ver como</label>
+            <select id="ver-como" class="input">
+              <option value="cq">Analista do CQ</option>
+              <option value="almox">Almoxarife</option>
+              <option value="gestor">Gestor da Qualidade</option>
+            </select>
+            <button type="button" class="btn small" id="sair">Sair</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="hello">
+        <h1 id="saudacao">Bom dia, Ana</h1>
+        <p id="subsaudacao">terça-feira, 3 de novembro de 2026 · Analista do CQ</p>
+      </div>
+
+      <div class="cols">
+        <section class="panel" aria-labelledby="t-tarefas">
+          <h2 id="t-tarefas">Para você agora</h2>
+          <p class="sub" id="sub-tarefas">O que depende do seu perfil, do mais urgente ao menos.</p>
+          <ul class="tasks" id="lista-tarefas"></ul>
+        </section>
+        <section class="panel" aria-labelledby="t-kpi">
+          <h2 id="t-kpi">Conformidade</h2>
+          <p class="sub">O que a inspeção pergunta primeiro.</p>
+          <div class="kpis" id="lista-kpi"></div>
+        </section>
+      </div>
+
+      <section class="panel" aria-labelledby="t-corrente">
+        <h2 id="t-corrente">A corrente do lote</h2>
+        <p class="sub">Onde os lotes estão agora. Selecione uma etapa para ver quais são.</p>
+        <div class="flow" id="corrente"></div>
+        <div class="scroll-x">
+          <table>
+            <caption class="sr">Lotes da etapa selecionada</caption>
+            <thead><tr><th>Lote</th><th>Material</th><th>Fornecedor</th><th>Validade</th><th>Parado há</th><th>Situação</th></tr></thead>
+            <tbody id="lotes"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="t-trilha">
+        <h2 id="t-trilha">Atividade recente</h2>
+        <p class="sub">Trilha de auditoria: quem fez o quê, quando e sobre qual registro.</p>
+        <ul class="audit" id="trilha"></ul>
+      </section>
+
+      <p class="foot">Protótipo para validação. Todos os dados são fictícios.</p>
+    </div>
+  </div>
+</div>
+<div id="aviso" class="toast" role="status" aria-live="polite" hidden></div>
+<script src="common.js"></script>
+<script src="inicio.js"></script>
+</body>
+</html>
