@@ -30,13 +30,10 @@ Marcações: **Decidido** (já está no banco ou na decisão do responsável) ·
 
 ## 3. Fluxos
 ### 3.1 Cadastro da empresa (onboarding)
-- **Decidido: cadastro sempre assistido.** Uma pessoa da **equipe iLabPharma** cria a empresa e o primeiro administrador num só ato (hoje `ilab_interno.criar_empresa`, que só o dono do banco executa; para a equipe poder usar, será preciso uma função com permissão própria na migração 3). A empresa **não** se cadastra sozinha. Motivo: o contrato e o aceite de termos vêm antes, e o cadastro aberto atrai abuso.
-- **Quem cria:** qualquer pessoa da equipe com a permissão de criar empresa; o criador fica registrado. **A confirmar com o responsável:** o primeiro administrador do cliente, ao aceitar o convite, passa a ser o **responsável pela empresa** (entendimento do analista).
-- **Dados da empresa:** razão social, nome fantasia, CNPJ válido e único, endereço, e-mail e telefone do responsável, aceite dos termos e da política de privacidade (LGPD).
-- **Primeiro administrador:** nome e e-mail. O sistema envia o **convite**; a pessoa define a senha (3.2).
+**Revisto em 02/11/2026** (ver `referencia-korbuild-cadastro.md`): o cadastro é **aberto**. Na entrada há **"Deseja se cadastrar?"**. A pessoa cria a conta (nome, e-mail, senha pela política do iLabs, aceite dos termos), **confirma o e-mail** e segue para um **passo a passo de 4 etapas** com as informações necessárias para criar a empresa (você, a empresa, a fábrica, revisar e criar). **Quem cadastra vira o responsável** pela empresa (perfil Administrador). O CNPJ é validado e só vale uma vez. A empresa nasce com **15 dias de teste**, com tudo liberado.
 
-### 3.2 Primeiro acesso (convite)
-O link chega por e-mail e expira (por exemplo, em 48 horas). A pessoa define a senha pela política (3.5), configura a verificação em duas etapas (3.4) e aceita os termos. O convite usado não vale de novo.
+### 3.2 Primeiro acesso de quem o responsável cadastrou
+O responsável cadastra a pessoa dentro do sistema (tela Usuários). O link para ela definir a senha chega por e-mail e expira (por exemplo, em 48 horas). A pessoa define a senha pela política (3.5), configura a verificação em duas etapas (3.4) e aceita os termos. O convite usado não vale de novo.
 
 ### 3.3 Entrada
 E-mail e senha. Mensagem única para qualquer falha. Bloqueio progressivo depois de tentativas erradas (por exemplo, 5 em 15 minutos), com aviso ao administrador. **Decidido:** a sessão encerra após **10 minutos** sem atividade. Como as telas de registro de lote são longas, a tela avisa 1 minuto antes ("continuar conectado?") e guarda o rascunho, para ninguém perder o que digitou. O registro de acesso guarda quem, quando, resultado e origem, **nunca a senha**.
@@ -72,7 +69,7 @@ Duas visões para o administrador e a GQ: **acessos** (entradas, falhas, bloquei
 | 4 | Redefinir senha (pelo link) | Protótipo feito (`redefinir.html`) |
 | 5 | Alterar senha | Protótipo feito (`seguranca.html`) |
 | 6 | Verificação em duas etapas (configurar e usar) | Protótipo feito (configurar em `seguranca.html`, usar em `entrar.html`) |
-| 7 | Cadastro da empresa (visão do dono do SaaS) | A desenhar |
+| 7 | Cadastro da empresa: "Deseja se cadastrar?" e passo a passo de 4 etapas | Protótipo feito (`cadastro.html` e `empresa.html`) |
 | 8 | Usuários: lista, convite e edição | A desenhar |
 | 9 | Perfis e permissões (matriz) | A desenhar |
 | 10 | Registro de acessos | A desenhar |

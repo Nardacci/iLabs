@@ -26,27 +26,31 @@ O iLabs aproveita a mesma jornada, trocando as etapas pelo que uma fábrica de m
 - A conta só vale depois da **confirmação do e-mail**. Quem confirma entra direto no passo a passo da empresa.
 - **Quem cria a empresa vira o responsável por ela** (resolve a dúvida que ficou aberta na decisão 5).
 
-### 2.2 Passo a passo da empresa (proposta, 6 etapas)
+### 2.2 Passo a passo da empresa (decidido: só o necessário para criar a empresa)
+O passo a passo reúne **apenas as informações necessárias para criar a empresa**. O que pode nascer com um padrão (armazém, perfis) **não é etapa**; a equipe e os ajustes ficam para dentro do sistema.
+
 | Etapa | Nome | O que se preenche |
 |---|---|---|
-| 1 | **A empresa** | Razão social, nome fantasia, **CNPJ válido e único**, telefone, e-mail do responsável |
-| 2 | **A fábrica** | Endereço da unidade, tipos de produção (medicamentos, insumos, produtos para saúde), nº da autorização de funcionamento (AFE) da ANVISA |
-| 3 | **O armazém** | Estrutura mínima de estoque, já sugerida: quarentena, aprovado, reprovado, produção. A pessoa confirma ou ajusta |
-| 4 | **A equipe** | Perfis padrão já criados (administrador, aprovador do CQ, analista, almoxarife, consulta). **Pode pular** e fazer depois |
-| 5 | **A segurança** | Resumo das regras do iLabs (sessão de 10 minutos, senha, duas etapas para quem aprova) e configuração das duas etapas do responsável, se ele aprova |
-| 6 | **Revisar e criar** | Resumo de tudo, aceite final e **"Criar empresa"** |
+| 1 | **Você** | Cargo e telefone do responsável (nome e e-mail já vieram do cadastro) |
+| 2 | **A empresa** | Razão social, nome fantasia, **CNPJ** (formato e dígitos verificadores conferidos; um CNPJ só pode ter uma empresa), telefone e e-mail da empresa |
+| 3 | **A fábrica** | Endereço (CEP, logradouro, número, cidade, UF), **atividades** (fabricar, embalar, controle de qualidade, armazenar e distribuir, importar), número da **autorização de funcionamento (AFE)** da ANVISA, **responsável técnico** (nome e CRF). *Ponto para validar com a Qualidade: AFE e responsável técnico obrigatórios ou opcionais no cadastro* |
+| 4 | **Revisar e criar** | Resumo de tudo, aceite final e **"Criar empresa"** |
 
-- Cada etapa **salva rascunho**; se a pessoa parar, **retoma de onde parou**.
-- A gravação final é **uma só chamada ao banco, atômica** (a empresa, o responsável, os perfis, o armazém e o período de teste nascem juntos, ou nada nasce).
-- Ao criar, começa o **período de teste** (valores a definir; o KORbuild usa 14 dias mais carência).
+- Cada etapa **guarda rascunho**; se a pessoa parar, **retoma de onde parou**.
+- A gravação final é **uma só chamada ao banco, atômica**: a empresa, o responsável (perfil Administrador), os **perfis padrão**, o **armazém padrão** (quarentena, aprovado, reprovado, produção) e o **período de teste** nascem juntos, ou nada nasce.
+- **Equipe:** depois de criada a empresa, **o responsável cadastra os usuários** dentro do sistema (tela Usuários). Cada pessoa cadastrada recebe um **link para definir a própria senha**; ninguém vê a senha de outra pessoa.
 
 ### 2.3 O que o banco precisa
 - Uma função de cadastro por autoatendimento, para **usuário autenticado e com e-mail confirmado**, que cria empresa, responsável, perfis padrão e armazém, e **substitui** o uso de `ilab_interno.criar_empresa` (que continua para a equipe, em casos de suporte).
 - Tabelas novas na migração 3: rascunho do cadastro, situação de acesso da empresa (teste, carência, ativa, suspensa, bloqueada), registro de acessos, assinaturas e política de segurança.
 - **Proteção contra abuso** (agora que o cadastro é aberto): e-mail confirmado, limite de empresas por pessoa, limite de tentativas, e verificação de que o CNPJ não existe.
 
-## 3. Pontos que precisam da sua decisão
-1. **Usuários além do responsável.** Você disse "não tem convite". Como a equipe entra na empresa? **(a)** o administrador cria o acesso e o sistema manda um **link para a pessoa definir a senha** (é um convite, mesmo que não se chame assim); **(b)** a pessoa se cadastra sozinha e **pede acesso** à empresa, e o administrador aprova. A (a) é a mais simples e segura; a (b) é a mais parecida com "Deseja se cadastrar".
-2. **Verificar que a empresa existe.** Com cadastro aberto, qualquer pessoa pode criar uma empresa com um CNPJ que não é dela. Opções: só validar o formato do CNPJ; consultar a Receita; ou deixar a empresa em **teste restrito** até alguém da nossa equipe confirmar.
-3. **O que o período de teste inclui.** Tudo liberado, ou sem as funções que "aprovam" (liberar lote, assinar laudo), para o teste não gerar registro que pareça real?
-4. **Quantos dias** de teste e de carência.
+## 3. Decisões do responsável (02/11/2026)
+| # | Pergunta | Decisão |
+|---|---|---|
+| 1 | Como a equipe entra na empresa | **O responsável pela empresa cadastra os usuários** (a pessoa define a própria senha por um link) |
+| 2 | Como saber que a empresa existe | **Validar o CNPJ** (formato e dígitos verificadores, e um CNPJ por empresa). *Consulta à Receita Federal fica como melhoria futura* |
+| 3 | O que o período de teste inclui | **Tudo liberado** |
+| 4 | Dias de teste | **15 dias**. *Carência depois do teste: a confirmar (no KORbuild são 6 dias)* |
+
+**Consequência de "tudo liberado":** no teste, uma empresa pode aprovar e liberar lotes de mentira. Ao sair do teste, os registros feitos durante ele precisam ser **identificados como de teste** (a decidir: marcar ou limpar). Ponto para validar.
