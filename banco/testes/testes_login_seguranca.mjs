@@ -454,7 +454,8 @@ export async function rodar({ db, registrar, como, tenta, dono, n, A, B, X, eA, 
   registrar('só consultar_convite fica aberta ao visitante entre as funções do schema ilab', JSON.stringify(abertas) === '["consultar_convite"]', abertas.join(','));
   registrar('o visitante não tem privilégio em nenhuma tabela', await n(`select count(*)::int n from information_schema.role_table_grants where table_schema = 'ilab' and grantee = 'anon'`) === 0);
   const internas = (await q(`select p.proname from pg_proc p join pg_namespace s on s.oid = p.pronamespace where s.nspname = 'ilab_interno' and has_function_privilege('authenticated', p.oid, 'EXECUTE') order by 1`)).map((x) => x.proname);
-  registrar('quem está logado só chama empresa_atual e pode no schema interno', JSON.stringify(internas) === '["empresa_atual","pode"]', internas.join(','));
+  // conferir_inatividade (migração 6) é o portão que o PostgREST chama antes de toda chamada; precisa ser executável por quem está logado.
+  registrar('quem está logado só chama empresa_atual, pode e o portão de inatividade no schema interno', JSON.stringify(internas) === '["conferir_inatividade","empresa_atual","pode"]', internas.join(','));
   registrar('toda função com security definer tem o caminho de busca fixo', await n(`select count(*)::int n from pg_proc p join pg_namespace s on s.oid = p.pronamespace
     where s.nspname in ('ilab','ilab_interno') and p.prosecdef and not coalesce(p.proconfig::text ~ 'search_path', false)`) === 0);
 }

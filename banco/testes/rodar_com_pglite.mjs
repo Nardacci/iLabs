@@ -13,7 +13,7 @@ const migracao = readdirSync(pasta).filter((f) => f.endsWith('.sql')).sort().map
 const db = new PGlite();
 
 await db.exec(`
-  create role anon nologin; create role authenticated nologin; create role service_role nologin;
+  create role anon nologin; create role authenticated nologin; create role service_role nologin; create role authenticator nologin;
   create schema auth;
   create table auth.users (id uuid primary key, email text, encrypted_password text);
   create table auth.sessions (id uuid primary key default gen_random_uuid(), user_id uuid);
@@ -146,6 +146,8 @@ const m4 = await import('./testes_criar_empresa.mjs');
 await m4.rodar({ db, registrar, como, tenta, dono });
 const m5 = await import('./testes_inativar_cadastro.mjs');
 await m5.rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB });
+const m6 = await import('./testes_inatividade_servidor.mjs');
+await m6.rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB });
 
 console.log(`\n${ok} testes passaram, ${falhas} falharam.`);
 process.exit(falhas ? 1 : 0);
