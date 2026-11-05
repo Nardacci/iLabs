@@ -6,11 +6,14 @@ Primeira migração do banco do iLabPharma: **empresas, acesso, cadastros base e
 
 | Arquivo | Para quê |
 |---|---|
-| `migracoes/` | Três arquivos, aplicados em ordem: `..._base.sql` (tabelas, regras de acesso, auditoria, catálogo), `..._corrigir_search_path.sql` (aviso de segurança) e `..._desempenho.sql` (índices e políticas mais eficientes) |
+| `migracoes/` | Quatro arquivos, em ordem: `..._base.sql` (tabelas, regras de acesso, auditoria, catálogo), `..._corrigir_search_path.sql` (aviso de segurança), `..._desempenho.sql` (índices e políticas mais eficientes) e `20261105090000_login_seguranca.sql` (**migração 3**, ainda não aplicada) |
 | `modelo-de-dados.md` | Cada tabela, para que serve e que falha do legado ela resolve |
-| `PROMPT-APLICAR-BANCO.md` | Passo a passo para o robô do seu PC aplicar no Supabase e registrar o resultado |
-| `testes/rodar_com_pglite.mjs` | 32 testes de isolamento, permissão, integridade e auditoria, num PostgreSQL de teste (sem tocar no Supabase) |
-| `testes/verificar_estrutura.sql` | Consultas de leitura para conferir a estrutura no Supabase depois de aplicar |
+| `PROMPT-APLICAR-BANCO.md` | Passo a passo para o robô do seu PC aplicar as migrações 1, 1.1 e 1.2 no Supabase e registrar o resultado |
+| `PROMPT-APLICAR-BANCO-3.md` | Passo a passo para aplicar a **migração 3** (só com autorização do responsável) |
+| `testes/rodar_com_pglite.mjs` | 215 testes (32 da migração 1 e 183 da migração 3), num PostgreSQL de teste (sem tocar no Supabase) |
+| `testes/testes_login_seguranca.mjs` | Os 183 testes da migração 3: critérios RF-ACE-001 a 010 e demais regras de login e segurança |
+| `testes/verificar_estrutura.sql` | Consultas de leitura para conferir a estrutura no Supabase depois de aplicar (a parte da migração 3 está no fim) |
+| `execucao/` | Registro de cada aplicação e de cada rodada de testes (sem credenciais) |
 
 ## Decisões
 
@@ -27,11 +30,13 @@ Primeira migração do banco do iLabPharma: **empresas, acesso, cadastros base e
 
 ## O que já foi testado
 
-32 testes passam no PostgreSQL de teste (com as três migrações em sequência): isolamento entre empresas, permissão por perfil (inclui só consulta e sem perfil), visitante sem login, integridade entre empresas, CNPJ, ausência de exclusão física, e auditoria (valor anterior, novo, autor, motivo, e **nem o dono do banco** consegue alterar ou apagar a auditoria). Para repetir: `cd testes && npm install && npm test`.
+**215 testes passam** no PostgreSQL de teste com as quatro migrações em sequência (registro em `execucao/2026-11-05-migracao-3/`). Os 32 primeiros cobrem (com as três primeiras migrações): isolamento entre empresas, permissão por perfil (inclui só consulta e sem perfil), visitante sem login, integridade entre empresas, CNPJ, ausência de exclusão física, e auditoria (valor anterior, novo, autor, motivo, e **nem o dono do banco** consegue alterar ou apagar a auditoria). Os 183 novos cobrem a migração 3: convites, registro de acessos sem senha, assinatura eletrônica, quem elabora não aprova, inativar encerra sessões, mudança de perfil com motivo, bloqueio por tentativas, perfil só de consulta recusado em toda tabela, prazo de teste como parâmetro, entre outros. Para repetir: `cd testes && npm install && npm test`.
 
 Os testes **não substituem** a verificação no Supabase de verdade: o PostgreSQL de teste simula só o `auth.uid()` e os papéis `anon` e `authenticated`.
 
 ## Situação
+
+**Migração 3 (login e segurança): escrita e testada, NÃO aplicada.** Depende da autorização do responsável e de `PROMPT-APLICAR-BANCO-3.md`. Traz convites, registro de acessos, política de segurança, assinaturas, situação de acesso da empresa e funções do servidor (resumo em `modelo-de-dados.md`).
 
 **Migrações 1, 1.1 e 1.2 aplicadas em 03/11/2026** no projeto `LabPharma` do Supabase, na região **São Paulo** (registro em `execucao/2026-11-03-aplicacao-1/resultado.md`). Conferido: 12 tabelas com RLS, 32 políticas, 7 funções no catálogo, nenhum privilégio para visitante, e **nenhum aviso de segurança** do Supabase. Falta o que depende do painel (expor o schema `ilab`, desligar o cadastro público) e criar a primeira empresa.
 
@@ -53,5 +58,5 @@ Os testes **não substituem** a verificação no Supabase de verdade: o PostgreS
 1. **Migração 2, a cadeia do lote:** recebimento, quarentena, amostragem, análise e laudo, aprovação, produção e liberação, ligadas por lote e usando os cadastros desta migração.
 2. **Equipamentos e ambientes**, pontos de água e tipo de água (um só cadastro, sem a colisão que quebrou o CQ no legado).
 3. **Planos e cobrança:** reaproveitar do KORbuild Finances o ciclo teste, carência e bloqueio (`workspace_subscriptions` e `get_workspace_access_status`) e a lista de super administradores da plataforma.
-4. **Motivo da alteração:** hoje a auditoria lê o motivo de uma configuração da mesma transação (`ilab.motivo`). Para o navegador informar o motivo, entram funções (RPC) que gravam e informam o motivo juntos.
-5. **Assinatura eletrônica** do laudo e da aprovação, com a identidade da pessoa e a data e hora.
+4. ~~Motivo da alteração por funções (RPC)~~ e ~~assinatura eletrônica~~: **feitos na migração 3** (`inativar_usuario`, `trocar_perfil_usuario`, `definir_permissao_perfil`, `assinar_registro` e outras). Falta aplicar a migração e ligar o app.
+5. **Camada do app para o login:** função de borda que chama `registrar_acesso`, `bloquear_por_tentativas` e `registrar_troca_de_senha` com a chave de serviço, e envio dos e-mails de convite, aviso e nova senha.

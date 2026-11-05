@@ -4,10 +4,12 @@ Lista de coisas que estão **de um jeito provisório** durante o desenvolvimento
 
 | Item | Hoje (provisório) | No lançamento | Onde mudar |
 |---|---|---|---|
-| Dias de teste da empresa nova | **365** | A definir pelo responsável (a proposta anterior era 15) | Parâmetro do banco (a criar na migração 3) e a constante `DIAS_TESTE` do protótipo (`prototipo/empresa.js`) |
-| Carência depois do teste | 6 dias | Confirmar | Parâmetro do banco |
+| Dias de teste da empresa nova | **365** | A definir pelo responsável (a proposta anterior era 15) | Parâmetro `dias_teste` em `ilab.parametros_plataforma` (criado na migração 3, ainda não aplicada) e a constante `DIAS_TESTE` do protótipo (`prototipo/empresa.js`) |
+| Carência depois do teste | 6 dias | Confirmar | Parâmetro `dias_carencia` em `ilab.parametros_plataforma` (migração 3). Em carência a empresa só lê; passada a carência, é suspensa |
 | AFE da ANVISA no cadastro | Opcional durante o teste | Exigida ao fim do teste | Regra do cadastro e da conversão do teste |
 | Registros feitos durante o teste | Sem tratamento definido | Marcar como "de teste" ou limpar ao sair do teste | Decisão pendente |
 | Consulta do CNPJ na Receita | Só formato e dígitos | Avaliar consultar a Receita | Cadastro da empresa |
 | Conferência do CRF no conselho | Só formato (UF e número) | Avaliar conferir no conselho | Cadastro da empresa |
-| Duas etapas para administradores | Só quem aprova (decisão do responsável) | Rever a recomendação de incluir administradores | Política de segurança |
+| Duas etapas para administradores | Só quem aprova (decisão do responsável) | Rever a recomendação de incluir administradores | `dupla_etapa_admin` em `ilab.politica_seguranca` (migração 3; desligada por padrão) |
+| Administrador do sistema sem poder de aprovar | Proposta, a validar com a Qualidade | Confirmar. Numa empresa nova com uma só pessoa, ninguém aprova até existir outro perfil com a função de aprovar | Função `criar_empresa` e perfis (migração 3) |
+| Perfis de teste (`T-...`) | Existem só para teste (`criar_perfis_de_teste`) | Não criar em empresa real; definir a matriz final com a Qualidade | `ilab_interno.criar_perfis_de_teste` |

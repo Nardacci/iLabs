@@ -1,6 +1,6 @@
 # Segurança e acesso: desenho da nova versão
 
-**Situação:** desenho com as 5 decisões do responsável registradas (02/11/2026); falta validar com a Qualidade e a diretoria antes de construir. **Origem:** achados SEG-PRI-01 a 17 e DV-PRI do módulo Principal do legado (repositório `LabMedsys_homol`, `homologacao/1.principal/03-achados-de-seguranca.md`). **Normas:** Guia 33/2020 item 9.3.2.3 (segurança, controle de acesso, assinatura eletrônica, mensagens de erro claras) e RDC 658/2022 arts. 124 e 125 (registro no momento, por pessoa identificada, com histórico de qualquer alteração).
+**Situação:** desenho com as 5 decisões do responsável registradas (02/11/2026); falta validar com a Qualidade e a diretoria antes de construir. **Em 05/11/2026:** migração 3 do banco escrita e testada (215 testes, ainda **não aplicada**) e as telas 8 a 11 prontas no protótipo. **Origem:** achados SEG-PRI-01 a 17 e DV-PRI do módulo Principal do legado (repositório `LabMedsys_homol`, `homologacao/1.principal/03-achados-de-seguranca.md`). **Normas:** Guia 33/2020 item 9.3.2.3 (segurança, controle de acesso, assinatura eletrônica, mensagens de erro claras) e RDC 658/2022 arts. 124 e 125 (registro no momento, por pessoa identificada, com histórico de qualquer alteração).
 
 Marcações: **Decidido** (já está no banco ou na decisão do responsável) · **Proposto** (recomendação, a validar) · **Ponto para validar** (depende da Qualidade ou do negócio).
 
@@ -70,15 +70,24 @@ Duas visões para o administrador e a GQ: **acessos** (entradas, falhas, bloquei
 | 5 | Alterar senha | Protótipo feito (`seguranca.html`) |
 | 6 | Verificação em duas etapas (configurar e usar) | Protótipo feito (configurar em `seguranca.html`, usar em `entrar.html`) |
 | 7 | Cadastro da empresa: "Deseja se cadastrar?" e passo a passo de 4 etapas | Protótipo feito (`cadastro.html` e `empresa.html`) |
-| 8 | Usuários: lista, convite e edição | A desenhar |
-| 9 | Perfis e permissões (matriz) | A desenhar |
-| 10 | Registro de acessos | A desenhar |
-| 11 | Assinatura eletrônica (janela de confirmação) | A desenhar |
+| 8 | Usuários: lista, convite e edição | Protótipo feito (`usuarios.html`) |
+| 9 | Perfis e permissões (matriz) | Protótipo feito (`perfis.html`) |
+| 10 | Registro de acessos e auditoria | Protótipo feito (`registros.html`) |
+| 11 | Assinatura eletrônica (janela de confirmação) | Protótipo feito (`assinatura.html`) |
 | 12 | Meu perfil e minhas sessões | Protótipo feito (sessões e aviso de inatividade em `seguranca.html`) |
 
 ## 5. O que o banco já tem e o que falta
-- **Já existe (Decidido):** `empresas`, `usuarios`, `perfis`, `perfil_funcoes`, `usuario_perfis`, `funcoes`, `auditoria` imutável por gatilho, isolamento por `empresa_id`, `ilab_interno.criar_empresa`.
-- **Falta (migração 3, Proposto):** `convites` (token com validade e uso único), `acessos` (registro de entradas, sem senha), `politica_seguranca` por empresa (tamanho da senha, validade, inatividade, 2FA obrigatória), `assinaturas` (quem assinou, significado, hora, motivo) e o estado "senha a trocar".
+- **Já existe (Decidido):** `empresas`, `usuarios`, `perfis`, `perfil_funcoes`, `usuario_perfis`, `funcoes`, `auditoria` imutável por gatilho, isolamento por `empresa_id`, `ilab_interno.criar_empresa`. Aplicado no Supabase em 03/11/2026.
+- **A migração 3 trouxe (escrita e testada, NÃO aplicada; Proposto):**
+  - `convites`: token guardado só como resumo, validade de 48 horas (da política), uso único, quem convidou, perfil proposto. Convite vencido, usado, cancelado, de outro e-mail ou com token errado é recusado.
+  - `acessos`: entradas, falhas, bloqueios, trocas e redefinições de senha, com quem, quando, resultado e origem; **sem campo de senha**; imutável.
+  - `politica_seguranca` por empresa: senha mínima de 12, validade da senha desligada, 10 minutos de inatividade, 5 tentativas em 15 minutos, 2FA obrigatória para quem aprova (sim) e para administradores (não, a validar).
+  - `assinaturas`: quem assinou (o usuário autenticado, nunca informado pelo cliente), significado, hora do servidor, motivo e registro assinado; imutável.
+  - Estado "senha a trocar" (a sessão inteira é recusada até trocar), bloqueio por tentativas com aviso ao administrador (`avisos_admin`) e **situação de acesso da empresa** (teste, ativa, em carência, suspensa), com o prazo de teste (365 dias) e a carência (6 dias) como **parâmetros do banco** (`parametros_plataforma`), nunca no código.
+  - Funções do servidor que conferem função e ação do perfil em toda gravação: `criar_convite`, `aceitar_convite`, `assinar_registro` (confere a senha de novo e recusa quem elaborou o registro), `inativar_usuario` (encerra as sessões na hora), `trocar_perfil_usuario` e `definir_permissao_perfil` (exigem motivo e deixam antes e depois), `registrar_acesso` e `bloquear_por_tentativas` (só do servidor).
+  - **Segregação de funções no banco:** quem elabora não revisa, aprova, reprova, libera nem anula o próprio registro.
+  - **Perfis:** a lista devolve todos os perfis (sem limite de 10) e o vínculo gravado do usuário aparece sempre, mesmo de perfil inativo (defeito N-006, N-037 e N-038 da versão nova testada). Usuário com mais de um perfil. 22 perfis de teste, um por papel da matriz proposta, só em dados de teste.
+  - Detalhes de tabela e de função: `../banco/modelo-de-dados.md`. Testes e limites: `../banco/execucao/2026-11-05-migracao-3/resultado.md`.
 - **No painel do Supabase, não em código** (conferir o que o plano permite): desligar cadastro público, ligar 2FA, definir tamanho mínimo da senha, e-mail próprio (SMTP) para os convites, limites de tentativas e tempo de sessão.
 
 ## 6. Critérios de aceite (viram casos de teste)
@@ -103,3 +112,16 @@ Duas visões para o administrador e a GQ: **acessos** (entradas, falhas, bloquei
 | 3 | Inatividade da sessão | **10 minutos**, com aviso antes de encerrar |
 | 4 | Cadastro de empresa | ~~Sempre assistido~~ **Revisto em 02/11/2026:** autocadastro com "Deseja se cadastrar?" e passo a passo, como nos produtos KORbuild (ver `referencia-korbuild-cadastro.md`) |
 | 5 | Quem cria empresa | ~~Qualquer pessoa da equipe~~ **Revisto em 02/11/2026:** quem faz o cadastro cria a empresa e vira o **responsável** por ela |
+
+## 8. Pontos para o responsável decidir ou autorizar (05/11/2026)
+| # | Ponto | Situação no desenho |
+|---|---|---|
+| 1 | **Aplicar a migração 3 no Supabase** | Escrita e testada, não aplicada. Passo a passo em `../banco/PROMPT-APLICAR-BANCO-3.md` |
+| 2 | O administrador do sistema **não aprova nada** na Qualidade | Está assim no banco (a validar com a Qualidade). Efeito: numa empresa nova com uma só pessoa, ninguém aprova até existir um segundo perfil com a função de aprovar |
+| 3 | Duas etapas para administradores | Desligada por padrão (`dupla_etapa_admin`), a validar |
+| 4 | Papéis e matriz de permissões | 22 papéis em proposta; hoje só têm as funções de cadastro, acesso e assinatura. As funções da cadeia do lote entram com a migração 2 |
+| 5 | Senha mínima de 12 caracteres como piso | A política da empresa pode aumentar, mas não diminuir para menos de 12 |
+| 6 | Motivo com pelo menos 5 caracteres | Regra do banco para qualquer decisão que exige motivo |
+| 7 | Bloqueio: a 5ª falha em 15 minutos bloqueia por 15 minutos | Tempos da política da empresa; o desbloqueio é do administrador, com motivo |
+| 8 | Camada do app para o login | A função de borda que chama `registrar_acesso`, `bloquear_por_tentativas` e `registrar_troca_de_senha`, e o envio dos e-mails de convite, aviso e nova senha, ainda não existem |
+| 9 | Valores provisórios de teste e carência | 365 e 6 dias, como em `antes-de-lancar.md` |
