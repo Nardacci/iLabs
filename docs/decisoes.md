@@ -14,3 +14,4 @@
 | 05/11/2026 | **Login e segurança no banco:** permissão conferida no servidor em toda gravação, quem elabora não aprova o próprio registro, assinatura eletrônica com senha conferida de novo, convite com token só em resumo, registro de acessos sem senha, bloqueio por tentativas e prazo de teste como parâmetro do banco | Corrige os achados SEG-PRI do legado e os defeitos de permissão e de lista de perfis da versão nova testada (`seguranca-e-acesso.md`). Migração 3 escrita e testada, **ainda não aplicada** |
 
 O detalhe das decisões do banco está em `../banco/README.md` e `../banco/modelo-de-dados.md`.
+| 05/11/2026 | **Regra de negócio nunca no front**: front apresenta, back (banco e funções de servidor) decide, segurança é do banco | O legado e a versão testada deixavam o servidor sem conferir (a tela abria e a API não checava a função); validação só no front não vale como controle |
