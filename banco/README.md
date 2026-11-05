@@ -39,6 +39,8 @@ Os testes **não substituem** a verificação no Supabase de verdade: o PostgreS
 
 ## Situação
 
+**Migrações 6 e 7 (inatividade conferida pelo servidor; próximo passo do login e tamanhos de unidade de medida): escritas e testadas (309 de 309), NÃO aplicadas.** Registro em `execucao/2026-11-07-inatividade-servidor/`. Dependem da autorização do responsável; a 6 liga o portão ao PostgREST e agenda o encerramento (pg_cron).
+
 **Migrações 4 e 5 (empresa criada pela própria pessoa; inativar cadastro com motivo): escritas e testadas (249 de 249), NÃO aplicadas.** Registro em `execucao/2026-11-06-migracoes-4-e-5/`. Dependem da autorização do responsável.
 
 **Migração 3 (login e segurança): escrita e testada, NÃO aplicada.** Depende da autorização do responsável e de `PROMPT-APLICAR-BANCO-3.md`. Traz convites, registro de acessos, política de segurança, assinaturas, situação de acesso da empresa e funções do servidor (resumo em `modelo-de-dados.md`).

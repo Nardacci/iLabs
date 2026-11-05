@@ -89,7 +89,8 @@ TypeScript estrito; nada de `any`; componentes standalone (sem escrever `standal
 - Nenhuma senha, chave, string de conexão ou endereço de servidor em arquivo ou commit. URL e chave pública entram por variável de ambiente; o script recusa a chave de serviço.
 - A senha digitada só viaja para a função de servidor `login` (`../supabase/functions/`). O navegador nunca recebe a chave de serviço.
 - O token do convite viaja no fragmento do link (`#token=`), que o navegador não envia a servidor algum, e sai do endereço assim que a tela abre.
-- Sessão encerra com 10 minutos sem atividade, com aviso 1 minuto antes e rascunho guardado.
+- Inatividade: **quem encerra a sessão é o servidor** (migração 6). O app lê limite, aviso e renovação de `minha_sessao`, avisa o servidor da atividade (`registrar_atividade`, no máximo 1 vez por minuto), mostra o aviso e guarda o rascunho; se o servidor recusar (HTTP 401, código PT401), limpa a sessão e vai para `/entrar?motivo=inatividade`.
+- Regra de negócio nunca no front: ver `execucao/auditoria-regras-no-front.md`.
 
 ## O que a aplicação faz hoje, tela por tela
 | Tela | Chama no banco ou no Supabase |
