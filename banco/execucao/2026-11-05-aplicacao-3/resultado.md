@@ -40,7 +40,7 @@
 **Avisos do Supabase (conferidos pelo responsável em 05/11/2026):**
 - **Health Advisor:** 0 erros, 0 avisos, 0 sugestões.
 - **Security Advisor:** **0 erros, 0 avisos, 0 sugestões** (nenhum aviso de segurança, como esperado).
-- **Performance Advisor:** 0 erros, 0 avisos e **13 sugestões (nível "Info")**. **Pendente:** o conteúdo das 13 sugestões (aba Info) ainda não foi lido; a causa mais provável é índices ainda sem uso ou chave estrangeira sem índice nas tabelas novas, mas **isto é suposição**, a confirmar pela lista.
+- **Performance Advisor:** 0 erros, 0 avisos e **13 sugestões "Info", todas do tipo "Unused Index"** (índice que ainda nunca foi usado, candidato a remoção), nas tabelas `auditoria`, `enderecos_almoxarifado`, `materiais`, `perfil_funcoes`, `usuario_perfis`, `convites`, `acessos`, `avisos_admin`, `assinaturas` e mais uma (a 13ª linha estava cortada na captura). **Leitura:** é o esperado num banco novo, sem dados e sem uso: nenhum índice foi usado ainda. **Decisão: não remover nenhum índice agora.** Eles protegem consultas de chaves estrangeiras e de busca que ainda não rodaram. Rever a lista depois de semanas de uso real, ou com a carga de teste.
 
 ## O que este resultado prova e o que não prova
 
