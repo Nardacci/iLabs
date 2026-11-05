@@ -56,7 +56,7 @@ export class InatividadeService {
       this.ativo = false;
       return;
     }
-    if (!this.ativo || regras.minutos <= 0) return; // foi parado enquanto esperava, ou o servidor não informou
+    if (this.foiParado() || regras.minutos <= 0) return; // foi parado enquanto esperava, ou o servidor não informou
     this.limiteMs = regras.minutos * 60_000;
     this.avisoMs = Math.min(regras.aviso * 1000, this.limiteMs);
     this.renovarMs = regras.renovar * 1000;
@@ -84,6 +84,11 @@ export class InatividadeService {
     this.ultimoAviso = Date.now();
     this.avisando.set(false);
     this.reiniciar();
+  }
+
+  /** Depois de uma espera (await) o serviço pode ter sido parado por outra parte da tela. */
+  private foiParado(): boolean {
+    return !this.ativo;
   }
 
   private pessoaAtiva(): void {
@@ -119,14 +124,14 @@ export class InatividadeService {
     try {
       await this.banco.rpc('minha_sessao');
     } catch (erro) {
-      if (!this.ativo) return; // a recusa por inatividade já encerrou tudo
+      if (this.foiParado()) return; // a recusa por inatividade já encerrou tudo
       if (erro instanceof ErroDeInatividade) return;
       this.parar();
       await this.sessao.sair();
       await this.router.navigate(['/entrar'], { queryParams: { motivo: 'inatividade' } });
       return;
     }
-    if (!this.ativo) return;
+    if (this.foiParado()) return;
     this.limparTemporizadores();
     this.temporizadorFim = setTimeout(
       () => void this.perguntarAoServidor(),

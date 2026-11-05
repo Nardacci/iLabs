@@ -15,7 +15,7 @@ import { SessaoService } from '../compartilhado/sessao/sessao.service';
         }}.
       </p>
     }
-    @if (situacao() === 'carencia') {
+    @if (situacao() === 'em_carencia') {
       <p class="msg bad" role="status">
         O período de teste terminou. Por enquanto você só consegue consultar. Fale com o responsável
         pela empresa.

@@ -4,7 +4,7 @@
 //  - Qualquer falha devolve SEMPRE a mesma mensagem e demora aproximadamente o mesmo tempo.
 //  - Toda tentativa vira um registro em ilab.registrar_acesso (sem senha).
 //  - Falha chama ilab.bloquear_por_tentativas (5 falhas em 15 minutos bloqueiam e avisam o administrador).
-//  - Sucesso confere ilab.meu_estado e diz ao app o que fazer.
+//  - Sucesso pergunta ao banco (ilab.proximo_passo) e repassa ao app o que fazer; a função não decide nada.
 //
 // As dependências entram por parâmetro: em produção são o Supabase de verdade; no teste, uma simulação.
 
@@ -22,15 +22,12 @@ export interface Sessao {
   token_type: string;
 }
 
-export interface EstadoDaConta {
-  usuario_id: string;
-  empresa_id: string;
+/** Resposta de ilab.proximo_passo: QUEM decide o que a pessoa pode fazer ao entrar é o banco. */
+export interface PassoDaConta {
+  /** null = a pessoa não deve entrar (conta inativa, bloqueada ou sem cadastro). */
+  proximo: Proximo | null;
   nome: string;
-  ativo: boolean;
-  senha_a_trocar: boolean;
-  bloqueado_ate: string | null;
   situacao_empresa: string;
-  teste_ate: string | null;
   dias_restantes: number | null;
 }
 
@@ -39,8 +36,8 @@ export type Proximo = 'entrar' | 'trocar_senha' | 'empresa_em_carencia' | 'empre
 export interface Dependencias {
   /** Tenta entrar no Supabase Auth. Devolve a sessão ou null em qualquer erro. */
   entrar(email: string, senha: string): Promise<Sessao | null>;
-  /** Lê ilab.meu_estado com a sessão da própria pessoa (é o banco que sabe o estado). */
-  estadoDaConta(tokenDeAcesso: string): Promise<EstadoDaConta | null>;
+  /** Lê ilab.proximo_passo com a sessão da própria pessoa (o banco decide o próximo passo). */
+  passoDaConta(tokenDeAcesso: string): Promise<PassoDaConta | null>;
   /** Encerra uma sessão recém-criada que não deve ser entregue. */
   encerrarSessao(tokenDeAcesso: string): Promise<void>;
   registrarAcesso(
@@ -68,16 +65,6 @@ function lerCredenciais(corpo: unknown): Credenciais | null {
   const limpo = email.trim();
   if (limpo.length === 0 || limpo.length > 254 || senha.length === 0 || senha.length > 1024) return null;
   return { email: limpo, senha };
-}
-
-/** Decide o que o app faz depois de um login com senha certa. Devolve null se a pessoa não deve entrar. */
-export function decidirProximo(estado: EstadoDaConta | null, agora: number): Proximo | null {
-  if (!estado || !estado.ativo) return null;
-  if (estado.bloqueado_ate && Date.parse(estado.bloqueado_ate) > agora) return null;
-  if (estado.situacao_empresa === 'suspensa') return 'empresa_suspensa';
-  if (estado.senha_a_trocar) return 'trocar_senha';
-  if (estado.situacao_empresa === 'carencia') return 'empresa_em_carencia';
-  return 'entrar';
 }
 
 export function criarManipuladorLogin(dep: Dependencias): (req: Request) => Promise<Response> {
@@ -127,13 +114,13 @@ export function criarManipuladorLogin(dep: Dependencias): (req: Request) => Prom
       return terminarComFalha();
     }
 
-    let estado: EstadoDaConta | null = null;
+    let passo: PassoDaConta | null = null;
     try {
-      estado = await dep.estadoDaConta(sessao.access_token);
+      passo = await dep.passoDaConta(sessao.access_token);
     } catch {
-      console.error('login: erro ao consultar o estado da conta');
+      console.error('login: erro ao consultar o próximo passo da conta');
     }
-    const proximo = decidirProximo(estado, dep.agora());
+    const proximo = passo?.proximo ?? null;
     if (!proximo) {
       // Senha certa, mas conta inativa, bloqueada ou sem cadastro: mesma resposta de qualquer erro.
       try {
@@ -155,8 +142,8 @@ export function criarManipuladorLogin(dep: Dependencias): (req: Request) => Prom
       ok: true,
       proximo,
       sessao,
-      usuario: { nome: estado?.nome ?? '' },
-      empresa: { situacao: estado?.situacao_empresa ?? '', dias_restantes: estado?.dias_restantes ?? null },
+      usuario: { nome: passo?.nome ?? '' },
+      empresa: { situacao: passo?.situacao_empresa ?? '', dias_restantes: passo?.dias_restantes ?? null },
     });
   };
 }

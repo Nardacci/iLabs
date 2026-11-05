@@ -148,6 +148,8 @@ const m5 = await import('./testes_inativar_cadastro.mjs');
 await m5.rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB });
 const m6 = await import('./testes_inatividade_servidor.mjs');
 await m6.rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB });
+const m7 = await import('./testes_regras_no_banco.mjs');
+await m7.rodar({ db, registrar, como, tenta, dono, eA });
 
 console.log(`\n${ok} testes passaram, ${falhas} falharam.`);
 process.exit(falhas ? 1 : 0);

@@ -4,12 +4,35 @@ import { assert, assertEquals, assertNotEquals } from 'jsr:@std/assert@1';
 import {
   criarManipuladorLogin,
   type Dependencias,
-  type EstadoDaConta,
+  type PassoDaConta,
+  type Proximo,
   MENSAGEM_GENERICA,
   TEMPO_MINIMO_MS,
 } from './manipulador.ts';
 
 const SENHA_CERTA = 'uma-senha-bem-longa-123';
+
+/** Estado da conta como o BANCO a conhece (a decisão do próximo passo é do banco: ilab.proximo_passo, migração 7). */
+interface EstadoDaConta {
+  usuario_id: string;
+  empresa_id: string;
+  nome: string;
+  ativo: boolean;
+  senha_a_trocar: boolean;
+  bloqueado_ate: string | null;
+  situacao_empresa: string;
+  teste_ate: string | null;
+  dias_restantes: number | null;
+}
+
+/** Imita ilab.proximo_passo só para a simulação; a regra de verdade e seus testes estão em banco/testes. */
+function proximoPassoSimulado(e: EstadoDaConta, agora: number): Proximo | null {
+  if (!e.ativo || (e.bloqueado_ate && Date.parse(e.bloqueado_ate) > agora)) return null;
+  if (e.situacao_empresa === 'suspensa') return 'empresa_suspensa';
+  if (e.senha_a_trocar) return 'trocar_senha';
+  if (e.situacao_empresa === 'em_carencia') return 'empresa_em_carencia';
+  return 'entrar';
+}
 
 interface Conta {
   senha: string;
@@ -53,15 +76,21 @@ function criarSimulacao(contas: Record<string, Conta>) {
         token_type: 'bearer',
       });
     },
-    estadoDaConta(token) {
+    passoDaConta(token): Promise<PassoDaConta | null> {
       chamadas.push('estado');
       const email = token.replace('token-', '');
       const conta = contas[email];
       const bloqueado = (falhasPorEmail[email] ?? 0) >= 5;
       if (!conta) return Promise.resolve(null);
-      return Promise.resolve({
+      const estado = {
         ...conta.estado,
         bloqueado_ate: bloqueado ? new Date(relogio + 15 * 60_000).toISOString() : conta.estado.bloqueado_ate,
+      };
+      return Promise.resolve({
+        proximo: proximoPassoSimulado(estado, relogio),
+        nome: estado.nome,
+        situacao_empresa: estado.situacao_empresa,
+        dias_restantes: estado.dias_restantes,
       });
     },
     encerrarSessao(token) {
@@ -198,7 +227,7 @@ Deno.test('sucesso registra o acesso com IP e navegador dos cabeçalhos e devolv
 Deno.test('senha a trocar e carência orientam o app', async () => {
   const sim = criarSimulacao({
     'a@e.com': { senha: SENHA_CERTA, estado: estadoBase({ senha_a_trocar: true }) },
-    'b@e.com': { senha: SENHA_CERTA, estado: estadoBase({ situacao_empresa: 'carencia', dias_restantes: 0 }) },
+    'b@e.com': { senha: SENHA_CERTA, estado: estadoBase({ situacao_empresa: 'em_carencia', dias_restantes: 0 }) },
   });
   const manipular = criarManipuladorLogin(sim.dep);
   assertEquals((await (await manipular(pedido('a@e.com', SENHA_CERTA))).json()).proximo, 'trocar_senha');

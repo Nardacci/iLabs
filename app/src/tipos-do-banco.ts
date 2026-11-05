@@ -755,6 +755,7 @@ export type Database = {
       minha_sessao: { Args: never; Returns: { inatividade_minutos: number | null; aviso_segundos: number | null; renovar_segundos: number | null }[] }
       minhas_permissoes: { Args: never; Returns: { funcao_chave: string | null; consultar: boolean | null; incluir: boolean | null; alterar: boolean | null; excluir: boolean | null; imprimir: boolean | null; consultar_historico: boolean | null }[] }
       mudar_situacao_cadastro: { Args: { p_tabela: string; p_id: string; p_ativo: boolean; p_motivo: string }; Returns: undefined }
+      proximo_passo: { Args: never; Returns: { proximo: string | null; nome: string | null; situacao_empresa: string | null; dias_restantes: number | null }[] }
       reativar_usuario: { Args: { p_usuario_id: string; p_motivo: string }; Returns: undefined }
       registrar_acesso: { Args: { p_email: string; p_evento: string; p_resultado: string; p_ip?: string; p_navegador?: string; p_detalhe?: string }; Returns: number }
       registrar_atividade: { Args: never; Returns: undefined }

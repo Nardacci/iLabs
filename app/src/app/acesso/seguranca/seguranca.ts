@@ -115,7 +115,7 @@ interface Inscricao {
     <section class="sec" aria-labelledby="t-sessoes">
       <h2 id="t-sessoes">Sessões</h2>
       <p class="lead">
-        Você está conectado neste aparelho. A sessão encerra sozinha depois de 10 minutos sem
+        Você está conectado neste aparelho. A sessão encerra sozinha {{ prazoDaSessao() }} sem
         atividade. Se perdeu um aparelho ou suspeita de acesso indevido, encerre as outras sessões.
       </p>
       <button type="button" class="btn" [disabled]="trabalhando()" (click)="encerrarOutras()">
@@ -134,6 +134,8 @@ export class Seguranca implements OnInit {
   protected readonly erro = signal<string | null>(null);
   protected readonly aviso = signal<string | null>(null);
   protected readonly trabalhando = signal(false);
+  /** O limite de inatividade vem do servidor (minha_sessao); a tela só escreve o texto. */
+  protected readonly prazoDaSessao = signal('depois de um tempo');
   protected readonly fatorAtivo = signal<string | null>(null);
   protected readonly inscricao = signal<Inscricao | null>(null);
 
@@ -159,6 +161,13 @@ export class Seguranca implements OnInit {
   }
 
   private async aoIniciar(): Promise<void> {
+    void this.banco
+      .rpc('minha_sessao')
+      .then(([r]) => {
+        if (r?.inatividade_minutos)
+          this.prazoDaSessao.set(`depois de ${r.inatividade_minutos} minutos`);
+      })
+      .catch(() => undefined);
     this.formSenha.controls.nova.valueChanges.subscribe(() =>
       this.formSenha.controls.confirmacao.updateValueAndValidity(),
     );

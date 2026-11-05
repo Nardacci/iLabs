@@ -1,7 +1,7 @@
 // Ponto de entrada da função "login" no Supabase. SUPABASE_URL, SUPABASE_ANON_KEY e SUPABASE_SERVICE_ROLE_KEY
 // são injetadas pelo próprio ambiente das Edge Functions: nenhuma chave fica neste arquivo.
 import { createClient } from 'npm:@supabase/supabase-js@2.119.0';
-import { criarManipuladorLogin, type EstadoDaConta, type Sessao } from './manipulador.ts';
+import { criarManipuladorLogin, type PassoDaConta, type Sessao } from './manipulador.ts';
 import { esperar } from '../_compartilhado/http.ts';
 
 const url = Deno.env.get('SUPABASE_URL') ?? '';
@@ -26,15 +26,15 @@ Deno.serve(
         token_type: s.token_type,
       };
     },
-    async estadoDaConta(tokenDeAcesso): Promise<EstadoDaConta | null> {
+    async passoDaConta(tokenDeAcesso): Promise<PassoDaConta | null> {
       const cliente = createClient(url, chavePublica, {
         ...opcoes,
         db: { schema: 'ilab' },
         global: { headers: { Authorization: `Bearer ${tokenDeAcesso}` } },
       });
-      const { data, error } = await cliente.rpc('meu_estado');
+      const { data, error } = await cliente.rpc('proximo_passo');
       if (error || !Array.isArray(data) || data.length === 0) return null;
-      return data[0] as EstadoDaConta;
+      return data[0] as PassoDaConta;
     },
     async encerrarSessao(tokenDeAcesso): Promise<void> {
       await servico.auth.admin.signOut(tokenDeAcesso);
