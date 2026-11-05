@@ -10,7 +10,13 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, FormRecord, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormRecord,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import type { LinhaDe } from '../dados/banco';
 import { BancoService } from '../dados/banco';
@@ -188,7 +194,7 @@ const TAMANHO_DA_PAGINA = 10;
           @if (erroDaJanela(); as texto) {
             <p class="msg bad" role="alert">{{ texto }}</p>
           }
-          <form (ngSubmit)="confirmarMotivo()" novalidate>
+          <form [formGroup]="grupoMotivo" (ngSubmit)="confirmarMotivo()" novalidate>
             <il-campo
               rotulo="Motivo (obrigatório)"
               tipo="textolongo"
@@ -247,6 +253,7 @@ export class Cadastro {
     nonNullable: true,
     validators: [Validators.required, Validators.minLength(5)],
   });
+  protected readonly grupoMotivo = new FormGroup({ motivo: this.motivo });
   protected formulario = new FormRecord<FormControl<string>>({});
 
   protected readonly linhas = signal<Linha[]>([]);
@@ -309,8 +316,8 @@ export class Cadastro {
   }
 
   protected resumo(linha: Linha | null): string {
-    const campo = this.cadastro().campos[0];
-    return campo && linha ? this.texto(linha[campo.nome]) : '';
+    const nome = this.cadastro().identificador ?? this.cadastro().campos[0]?.nome;
+    return nome && linha ? this.texto(linha[nome]) : '';
   }
 
   protected tipoDoCampo(c: CampoDeCadastro): 'text' | 'email' | 'lista' | 'textolongo' {

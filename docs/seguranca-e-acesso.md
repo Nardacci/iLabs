@@ -123,5 +123,5 @@ Duas visões para o administrador e a GQ: **acessos** (entradas, falhas, bloquei
 | 5 | Senha mínima de 12 caracteres como piso | A política da empresa pode aumentar, mas não diminuir para menos de 12 |
 | 6 | Motivo com pelo menos 5 caracteres | Regra do banco para qualquer decisão que exige motivo |
 | 7 | Bloqueio: a 5ª falha em 15 minutos bloqueia por 15 minutos | Tempos da política da empresa; o desbloqueio é do administrador, com motivo |
-| 8 | Camada do app para o login | A função de borda que chama `registrar_acesso`, `bloquear_por_tentativas` e `registrar_troca_de_senha`, e o envio dos e-mails de convite, aviso e nova senha, ainda não existem |
+| 8 | Camada do app para o login | **Feita em 05/11/2026** (`supabase/functions/login` e `senha-alterada`, `app/`), com testes. **Falta publicar a função** (só o responsável) e o envio dos e-mails de convite, aviso e nova senha |
 | 9 | Valores provisórios de teste e carência | 365 e 6 dias, como em `antes-de-lancar.md` |

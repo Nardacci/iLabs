@@ -6,6 +6,7 @@ export const unidadesMedida = definirCadastro({
   titulo: 'Unidades de medida',
   singular: 'unidade de medida',
   funcao: 'cadastros.unidades_medida',
+  identificador: 'nome',
   busca: ['sigla', 'nome'],
   ordenarPor: 'nome',
   campos: [

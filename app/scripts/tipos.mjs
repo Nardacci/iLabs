@@ -23,8 +23,7 @@ const CABECALHO = `// ARQUIVO GERADO por \`npm run tipos\`. NÃO EDITE À MÃO.
 
 function viaSupabase() {
   const projeto = process.env.ILABS_SUPABASE_PROJETO;
-  const bin = join(aqui, '..', 'node_modules', '.bin', process.platform === 'win32' ? 'supabase.cmd' : 'supabase');
-  const saida = execFileSync(bin, ['gen', 'types', 'typescript', '--project-id', projeto, '--schema', 'ilab'], {
+  const saida = execFileSync('npx', ['--yes', 'supabase', 'gen', 'types', 'typescript', '--project-id', projeto, '--schema', 'ilab'], {
     encoding: 'utf8',
     shell: process.platform === 'win32',
     env: process.env,

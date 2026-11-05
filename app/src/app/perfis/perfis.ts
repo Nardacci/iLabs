@@ -6,7 +6,7 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   BancoService,
   ErroDoBanco,
@@ -149,7 +149,7 @@ const vazio = (): Marcas => ({
           </table>
         </div>
         @if (podeAlterar()) {
-          <form (ngSubmit)="salvarMatriz()" novalidate>
+          <form [formGroup]="grupoMotivo" (ngSubmit)="salvarMatriz()" novalidate>
             <il-campo
               rotulo="Motivo da mudança (obrigatório)"
               tipo="textolongo"
@@ -182,7 +182,7 @@ const vazio = (): Marcas => ({
         @if (erroDaJanela(); as texto) {
           <p class="msg bad" role="alert">{{ texto }}</p>
         }
-        <form (ngSubmit)="confirmarSituacao()" novalidate>
+        <form [formGroup]="grupoMotivo" (ngSubmit)="confirmarSituacao()" novalidate>
           <il-campo rotulo="Motivo (obrigatório)" tipo="textolongo" [controle]="motivo" />
           <div class="acoes">
             <button type="submit" class="btn primary" [disabled]="trabalhando()">Confirmar</button>
@@ -202,6 +202,7 @@ export class Perfis implements OnInit {
     nonNullable: true,
     validators: [Validators.required, Validators.minLength(5)],
   });
+  protected readonly grupoMotivo = new FormGroup({ motivo: this.motivo });
   protected readonly perfis = signal<Perfil[]>([]);
   protected readonly funcoes = signal<Funcao[]>([]);
   protected readonly marcas = signal<Map<string, Marcas>>(new Map());

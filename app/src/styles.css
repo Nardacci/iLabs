@@ -9,6 +9,7 @@
   --accent: #c24f00;
   --accent-ink: #ffffff;
   --accent-soft: #fff0e2;
+  --accent-text: #9a3d00;
   --brand: #ff8015;
   --panel: #15181b;
   --ok: #17703f;
@@ -38,6 +39,7 @@
     --accent: #ff8f33;
     --accent-ink: #1b1100;
     --accent-soft: #2b1c0d;
+    --accent-text: #ff8f33;
     --panel: #0b0d0f;
     --ok: #55c98a;
     --ok-soft: #12261b;
@@ -62,6 +64,7 @@
   --accent: #ff8f33;
   --accent-ink: #1b1100;
   --accent-soft: #2b1c0d;
+  --accent-text: #ff8f33;
   --panel: #0b0d0f;
   --ok: #55c98a;
   --ok-soft: #12261b;
@@ -503,7 +506,7 @@ h3 {
 }
 .nav a.ativo {
   background: var(--accent-soft);
-  color: var(--accent);
+  color: var(--accent-text);
   font-weight: 700;
 }
 .main {
@@ -534,10 +537,14 @@ h3 {
 .content {
   padding: 24px 24px 48px;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 20px;
   max-width: 1240px;
   width: 100%;
   align-content: start;
+}
+.content > * {
+  min-width: 0;
 }
 .content h1 {
   font-size: clamp(24px, 3vw, 32px);
@@ -571,6 +578,7 @@ h3 {
 }
 .scroll-x {
   overflow-x: auto;
+  position: relative; /* contém os textos .sr (posição absoluta) dentro da rolagem */
 }
 table {
   width: 100%;

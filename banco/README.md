@@ -13,6 +13,9 @@ Primeira migração do banco do iLabPharma: **empresas, acesso, cadastros base e
 | `testes/rodar_com_pglite.mjs` | 215 testes (32 da migração 1 e 183 da migração 3), num PostgreSQL de teste (sem tocar no Supabase) |
 | `testes/testes_login_seguranca.mjs` | Os 183 testes da migração 3: critérios RF-ACE-001 a 010 e demais regras de login e segurança |
 | `testes/verificar_estrutura.sql` | Consultas de leitura para conferir a estrutura no Supabase depois de aplicar (a parte da migração 3 está no fim) |
+| `migracoes/20261106090000_criar_minha_empresa.sql` | **Migração 4 (não aplicada):** a pessoa logada cria a própria empresa (`ilab.criar_minha_empresa`), com CNPJ validado, responsável técnico e perfis, de forma atômica |
+| `migracoes/20261106100000_inativar_cadastro_com_motivo.sql` | **Migração 5 (não aplicada):** inativar e reativar cadastros com motivo obrigatório (`ilab.mudar_situacao_cadastro`) |
+| `testes/testes_criar_empresa.mjs`, `testes/testes_inativar_cadastro.mjs` | Os 34 testes das migrações 4 e 5 (total do banco: **249 testes**) |
 | `execucao/` | Registro de cada aplicação e de cada rodada de testes (sem credenciais) |
 
 ## Decisões
@@ -35,6 +38,8 @@ Primeira migração do banco do iLabPharma: **empresas, acesso, cadastros base e
 Os testes **não substituem** a verificação no Supabase de verdade: o PostgreSQL de teste simula só o `auth.uid()` e os papéis `anon` e `authenticated`.
 
 ## Situação
+
+**Migrações 4 e 5 (empresa criada pela própria pessoa; inativar cadastro com motivo): escritas e testadas (249 de 249), NÃO aplicadas.** Registro em `execucao/2026-11-06-migracoes-4-e-5/`. Dependem da autorização do responsável.
 
 **Migração 3 (login e segurança): escrita e testada, NÃO aplicada.** Depende da autorização do responsável e de `PROMPT-APLICAR-BANCO-3.md`. Traz convites, registro de acessos, política de segurança, assinaturas, situação de acesso da empresa e funções do servidor (resumo em `modelo-de-dados.md`).
 

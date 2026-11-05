@@ -27,6 +27,8 @@ export interface DescricaoDeCadastro {
   singular: string;
   /** Função do banco (ilab.funcoes) que libera a tela e as ações. */
   funcao: string;
+  /** Campo que nomeia o registro nas ações e no histórico (padrão: o primeiro campo). */
+  identificador?: string;
   /** Colunas em que a busca procura. */
   busca: readonly string[];
   ordenarPor: string;

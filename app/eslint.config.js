@@ -5,7 +5,7 @@ const tseslint = require('typescript-eslint');
 const angular = require('angular-eslint');
 
 module.exports = defineConfig([
-  globalIgnores(['src/tipos-do-banco.ts', 'src/ambiente.gerado.ts', 'dist/**', 'node_modules/**', 'e2e/**', 'scripts/**', 'playwright-report/**', 'test-results/**']),
+  globalIgnores(['src/tipos-do-banco.ts', 'src/ambiente.gerado.ts', 'dist/**', 'node_modules/**', 'e2e/**', 'playwright.config.ts', 'scripts/**', 'playwright-report/**', 'test-results/**']),
   {
     files: ['**/*.ts'],
     extends: [eslint.configs.recommended, tseslint.configs.strictTypeChecked, tseslint.configs.stylisticTypeChecked, angular.configs.tsRecommended],
@@ -32,7 +32,9 @@ module.exports = defineConfig([
   },
   {
     files: ['**/*.spec.ts'],
-    rules: { '@typescript-eslint/no-non-null-assertion': 'off', '@typescript-eslint/explicit-function-return-type': 'off', '@typescript-eslint/no-floating-promises': 'off' },
+    rules: { '@typescript-eslint/no-non-null-assertion': 'off',
+      '@typescript-eslint/no-unnecessary-condition': 'off',
+      '@typescript-eslint/require-await': 'off', '@typescript-eslint/explicit-function-return-type': 'off', '@typescript-eslint/no-floating-promises': 'off' },
   },
   {
     files: ['**/*.html'],
