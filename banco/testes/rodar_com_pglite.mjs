@@ -22,6 +22,8 @@ await db.exec(`
   create function extensions.crypt(senha text, hash text) returns text language sql immutable as $$ select 'h:' || senha $$;
   create function auth.uid() returns uuid language sql stable as $$
     select nullif(current_setting('request.jwt.claim.sub', true), '')::uuid $$;
+  create function auth.jwt() returns jsonb language sql stable as $$
+    select coalesce(nullif(current_setting('request.jwt.claims', true), ''), '{}')::jsonb $$;
   grant usage on schema auth to anon, authenticated;
   
 `);
@@ -139,6 +141,11 @@ registrar('empresa com código repetido é recusada', !!t.erro);
 
 const { rodar } = await import('./testes_login_seguranca.mjs');
 await rodar({ db, registrar, como, tenta, dono, n, A, B, X, eA, eB });
+
+const m4 = await import('./testes_criar_empresa.mjs');
+await m4.rodar({ db, registrar, como, tenta, dono });
+const m5 = await import('./testes_inativar_cadastro.mjs');
+await m5.rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB });
 
 console.log(`\n${ok} testes passaram, ${falhas} falharam.`);
 process.exit(falhas ? 1 : 0);

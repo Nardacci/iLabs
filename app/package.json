@@ -1,0 +1,50 @@
+{
+  "name": "ilabs-app",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "ambiente": "node scripts/ambiente.mjs",
+    "tipos": "node scripts/tipos.mjs",
+    "tipos:conferir": "node scripts/tipos.mjs --conferir",
+    "start": "npm run ambiente && ng serve",
+    "build": "npm run ambiente && ng build",
+    "lint": "eslint .",
+    "formatar": "prettier --write \"src/**/*.{ts,html,css}\" \"e2e/**/*.ts\"",
+    "formatar:conferir": "prettier --check \"src/**/*.{ts,html,css}\" \"e2e/**/*.ts\"",
+    "tipagem": "npm run ambiente && tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.spec.json",
+    "test": "npm run ambiente && ng test --watch=false",
+    "e2e": "npm run build && playwright test",
+    "nova-tela": "node scripts/nova-tela.mjs",
+    "verificar": "node scripts/verificar.mjs"
+  },
+  "private": true,
+  "packageManager": "npm@11.20.0",
+  "dependencies": {
+    "@angular/common": "^22.2.0",
+    "@angular/compiler": "^22.2.0",
+    "@angular/core": "^22.2.0",
+    "@angular/forms": "^22.2.0",
+    "@angular/platform-browser": "^22.2.0",
+    "@angular/router": "^22.2.0",
+    "@supabase/supabase-js": "^2.119.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^22.2.6",
+    "@angular/cli": "^22.2.6",
+    "@angular/compiler-cli": "^22.2.0",
+    "@axe-core/playwright": "^4.14.0",
+    "@electric-sql/pglite": "^0.2.17",
+    "@playwright/test": "^1.65.0",
+    "angular-eslint": "^22.6.0",
+    "axe-core": "^4.14.0",
+    "eslint": "^9.39.5",
+    "jsdom": "^30.0.0",
+    "prettier": "^3.8.1",
+    "supabase": "^3.0.0",
+    "typescript": "~6.0.2",
+    "typescript-eslint": "^8.72.1",
+    "vitest": "^5.0.0"
+  }
+}
