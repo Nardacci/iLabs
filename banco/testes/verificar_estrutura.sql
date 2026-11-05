@@ -63,7 +63,8 @@ where s.nspname = 'ilab_interno' and has_function_privilege('authenticated', p.o
 select s.nspname, p.proname from pg_proc p join pg_namespace s on s.oid = p.pronamespace
 where s.nspname in ('ilab', 'ilab_interno') and p.prosecdef and not coalesce(p.proconfig::text ~ 'search_path', false);
 
--- 15. Gatilhos de imutabilidade de acessos e assinaturas (esperado: 6 linhas: update/delete e truncate nas duas tabelas)
+-- 15. Gatilhos de imutabilidade de acessos e assinaturas (esperado: 4 linhas: update e delete nas duas tabelas. Os de truncate
+--     não aparecem em information_schema.triggers; conferir por pg_trigger: 4 gatilhos, 2 de esvaziar e 2 de alterar/apagar)
 select event_object_table as tabela, trigger_name from information_schema.triggers
 where trigger_schema = 'ilab' and event_object_table in ('acessos', 'assinaturas') order by 1, 2;
 

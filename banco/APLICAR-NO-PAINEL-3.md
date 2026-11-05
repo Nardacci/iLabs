@@ -2,6 +2,8 @@
 
 Para quem tem acesso ao projeto **LabPharma** (organização iLabPharma, região São Paulo). A conexão do Claude desta sessão não enxerga essa organização, por isso a aplicação é feita aqui, pela pessoa responsável. **Autorização dada pelo responsável em 05/11/2026.** Nada neste arquivo tem senha, chave ou endereço de servidor.
 
+**Atenção ao escrever o texto:** na primeira linha vai `begin;` e na última `commit;`, **os dois com ponto e vírgula**. O arquivo da migração termina na linha `grant update (nome, descricao) on ilab.perfis to authenticated;` e não tem `end`.
+
 **Antes de começar:** o plano gratuito não tem cópia automática. O banco é novo e quase vazio; o responsável aceitou seguir assim.
 
 ## Passo 1. Conferir o ponto de partida (só leitura)
@@ -53,7 +55,7 @@ union all select 'funções que o visitante executa', coalesce(string_agg(p.pron
 union all select 'security definer sem caminho de busca fixo', count(*)::text, '0'
   from pg_proc p join pg_namespace s on s.oid = p.pronamespace
  where s.nspname in ('ilab','ilab_interno') and p.prosecdef and not coalesce(p.proconfig::text ~ 'search_path', false)
-union all select 'gatilhos de imutabilidade (acessos e assinaturas)', count(*)::text, '6'
+union all select 'gatilhos de imutabilidade (alterar e apagar; o de esvaziar não aparece nesta visão)', count(*)::text, '4'
   from information_schema.triggers where trigger_schema = 'ilab' and event_object_table in ('acessos','assinaturas');
 ```
 
@@ -70,6 +72,16 @@ order by 1;
 ```
 
 Depois, no painel: **Advisors** (Security e Performance). Anote cada aviso. Esperado: nenhum de segurança.
+
+Terceira conferência (imutabilidade completa, inclusive o bloqueio de esvaziar a tabela). Esperado: **4 linhas**, 2 `esvaziar` e 2 `alterar/apagar`, duas por tabela.
+
+```sql
+select tgrelid::regclass as tabela, tgname as gatilho,
+       case when (tgtype & 32) <> 0 then 'esvaziar' else 'alterar/apagar' end as protege
+from pg_trigger
+where not tgisinternal and tgrelid in ('ilab.acessos'::regclass, 'ilab.assinaturas'::regclass)
+order by 1, 2;
+```
 
 ## Passo 4. O que me enviar
 
