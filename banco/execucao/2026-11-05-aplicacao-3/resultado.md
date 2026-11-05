@@ -37,7 +37,10 @@
 
 **Tabelas que aceitam gravação direta pelo papel logado:** exatamente **7**: `almoxarifados`, `enderecos_almoxarifado`, `materiais`, `perfis`, `pessoas_juridicas`, `unidades_medida` e `usuarios`. Nenhuma tabela de segurança aceita gravação direta. Conforme o esperado.
 
-**Avisos do Supabase:** o **Health Advisor** mostrou 0 erros, 0 avisos e 0 sugestões. **Pendente:** as abas **Security Advisor** e **Performance Advisor** ainda não foram conferidas (o Health Advisor é uma visão diferente delas).
+**Avisos do Supabase (conferidos pelo responsável em 05/11/2026):**
+- **Health Advisor:** 0 erros, 0 avisos, 0 sugestões.
+- **Security Advisor:** **0 erros, 0 avisos, 0 sugestões** (nenhum aviso de segurança, como esperado).
+- **Performance Advisor:** 0 erros, 0 avisos e **13 sugestões (nível "Info")**. **Pendente:** o conteúdo das 13 sugestões (aba Info) ainda não foi lido; a causa mais provável é índices ainda sem uso ou chave estrangeira sem índice nas tabelas novas, mas **isto é suposição**, a confirmar pela lista.
 
 ## O que este resultado prova e o que não prova
 
