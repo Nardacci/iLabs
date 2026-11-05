@@ -1,0 +1,84 @@
+/* iLabPharma, protótipo: estilos das telas de administração (usuários, perfis, registros, assinatura) */
+.seg.larga { max-width: 1120px; }
+.seg-top .nav-topo { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+.faixa { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 0 0 6px; }
+.faixa a { font-size: 13px; }
+.sec h2 + .lead { margin-top: 4px; }
+
+/* barra de ferramentas e filtros */
+.barra { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; margin-bottom: 14px; }
+.barra .field { margin: 0; min-width: 150px; flex: 1 1 150px; }
+.barra .field.larga { flex: 2 1 240px; }
+.barra .acoes-barra { display: flex; gap: 8px; flex-wrap: wrap; margin-left: auto; }
+select.input { appearance: auto; padding: 11px 12px; }
+textarea.input { min-height: 84px; resize: vertical; font: inherit; }
+.contagem { color: var(--muted); font-size: 13px; margin: 0 0 8px; }
+.vazio { padding: 22px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: 12px; }
+
+/* tabelas administrativas */
+.tab-adm { min-width: 680px; }
+.tab-adm td { vertical-align: top; }
+.tab-adm td small, .sub-linha { display: block; color: var(--muted); font-size: 12.5px; font-variant-numeric: normal; }
+.tab-adm .acoes-linha { display: flex; gap: 6px; flex-wrap: wrap; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { display: inline-block; font-size: 12px; font-weight: 600; border: 1px solid var(--line); border-radius: 999px; padding: 1px 9px; background: var(--bg); }
+.chip.inativo { border-style: dashed; color: var(--muted); }
+.valor-inteiro { white-space: pre-wrap; word-break: break-word; font-size: 12.5px; max-width: 46ch; }
+.ant, .dep { display: block; margin-top: 2px; }
+.ant::before { content: "antes: "; font-weight: 700; color: var(--muted); }
+.dep::before { content: "depois: "; font-weight: 700; color: var(--muted); }
+
+/* abas */
+.abas { display: flex; gap: 4px; border-bottom: 1px solid var(--line); margin-bottom: 14px; overflow-x: auto; }
+.abas button { border: 0; background: none; padding: 10px 16px; font-weight: 700; border-bottom: 3px solid transparent; color: var(--muted); white-space: nowrap; }
+.abas button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--brand); }
+.painel-aba[hidden] { display: none; }
+.somente-leitura { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 10px; border-radius: 999px; background: var(--warn-soft); color: var(--warn); }
+
+/* perfis: lista + detalhe */
+.duas-colunas { display: grid; grid-template-columns: minmax(240px, 320px) minmax(0, 1fr); gap: 18px; align-items: start; }
+@media (max-width: 860px) { .duas-colunas { grid-template-columns: minmax(0, 1fr); } }
+.lista-perfis { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; max-height: 480px; overflow: auto; }
+.lista-perfis button { width: 100%; text-align: left; border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 9px 12px; display: grid; gap: 2px; }
+.lista-perfis button[aria-current="true"] { border-color: var(--brand); background: var(--accent-soft); }
+.lista-perfis button strong { font-size: 14px; }
+.lista-perfis button span { font-size: 12.5px; color: var(--muted); }
+.matriz-caixa { overflow: auto; border: 1px solid var(--line); border-radius: 12px; }
+table.matriz { min-width: 640px; }
+table.matriz th, table.matriz td { text-align: center; padding: 6px 8px; }
+table.matriz th:first-child, table.matriz td:first-child { text-align: left; position: sticky; left: 0; background: var(--surface); z-index: 1; min-width: 190px; }
+table.matriz tr.grupo-linha td { background: var(--bg); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); text-align: left; }
+table.matriz input[type=checkbox] { width: 20px; height: 20px; }
+table.matriz td.mudou { background: var(--warn-soft); }
+table.matriz td.nao-se-aplica { color: var(--muted); }
+.pendencias { margin: 12px 0; }
+.historico { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.historico li { border-left: 3px solid var(--brand); padding: 4px 0 4px 10px; font-size: 13.5px; }
+.historico time { color: var(--muted); font-size: 12px; display: block; }
+
+/* janelas */
+.modal.larga { max-width: 560px; max-height: 92vh; overflow: auto; }
+.modal .sub-modal { color: var(--muted); margin: 0 0 12px; font-size: 14px; }
+.checks-perfis { max-height: 220px; overflow: auto; border: 1px solid var(--line); border-radius: 10px; padding: 6px 10px; margin-bottom: 14px; }
+.checks-perfis .check { margin: 6px 0; }
+.quadro { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; font-size: 13.5px; margin-bottom: 14px; }
+.quadro dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 3px 12px; }
+.quadro dt { color: var(--muted); }
+.quadro dd { margin: 0; }
+.recibo { border: 2px solid var(--ok); background: var(--ok-soft); color: var(--ink); border-radius: 12px; padding: 14px; margin: 12px 0; }
+.recibo strong { color: var(--ok); }
+.modo-demo { background: var(--accent-soft); border: 1px dashed var(--brand); border-radius: 12px; padding: 12px 14px; display: grid; gap: 10px; }
+.botoes { display: flex; gap: 10px; flex-wrap: wrap; }
+.ajuda-campo { font-size: 12.5px; color: var(--muted); }
+.sr-live { position: absolute; left: -9999px; }
+@media (max-width: 560px) {
+  .barra .acoes-barra { margin-left: 0; width: 100%; }
+  .seg.larga { padding-inline: 14px; }
+}
+
+/* Contraste AA: o botão principal das telas de administração usa a cor sólida da marca (o degradê termina em laranja claro, abaixo de 4,5:1 com texto branco pequeno) */
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+
+/* Celular: as seções nunca passam da largura da tela; só a tabela rola para o lado dentro da própria caixa */
+.seg { grid-template-columns: minmax(0, 1fr); }
+.seg > *, .duas-colunas > * { min-width: 0; }
