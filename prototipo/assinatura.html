@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Assinatura eletrônica · iLabPharma Nova Versão</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="prototipo.css">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<header class="seg-top">
+  <span class="marca">i<span>Lab</span>Pharma</span>
+  <nav class="nav-topo" aria-label="Navegação">
+    <a class="theme-toggle btn-link" href="inicio.html">← Início</a>
+    <a class="theme-toggle btn-link" href="registros.html">Registros</a>
+    <button type="button" class="theme-toggle" data-theme-toggle>Tema</button>
+  </nav>
+</header>
+<main class="seg" id="tela-assinatura">
+  <div>
+    <h1>Assinatura eletrônica</h1>
+    <p class="sub">Decisão crítica (aprovar, reprovar, liberar, anular) exige que <strong>a pessoa logada</strong> digite a senha de novo, e o código se tiver duas etapas. O sistema grava quem assinou, o significado, a data e a hora do servidor e o motivo.</p>
+  </div>
+
+  <section class="sec" aria-labelledby="h-demo">
+    <h2 id="h-demo">Como ver no protótipo</h2>
+    <div class="modo-demo">
+      <div class="field" style="margin:0"><label for="persona">Estou logado como</label>
+        <select id="persona" class="input">
+          <option value="rui">Rui Tavares · Chefe do CQ (aprova, com duas etapas)</option>
+          <option value="lucia">Lúcia Prado · Aprovador (elaborou este laudo)</option>
+          <option value="carla">Carla Mendes · Administrador (não assina aprovações)</option>
+          <option value="marina">Marina Reis · Gestor da GQ (aprova, reprova e anula)</option>
+        </select></div>
+      <p class="ajuda-campo" style="margin:0">A pessoa vem do login, e nunca é digitada. Senha: qualquer uma vale, menos <span class="mono">errada</span>. Código: 6 dígitos quaisquer. O botão não é escondido de propósito: quem recusa é o servidor.</p>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-reg">
+    <div class="sec-head"><h2 id="h-reg">Laudo do lote T-2611-0142</h2><span class="pill warn" id="situacao-laudo">Aguardando decisão</span></div>
+    <div class="quadro">
+      <dl>
+        <dt>Material</dt><dd>Lactose monoidratada · T-Química</dd>
+        <dt>Resultado</dt><dd>Todos os ensaios dentro da especificação</dd>
+        <dt>Elaborado por</dt><dd>Lúcia Prado, em 05/11/2026 09:10</dd>
+      </dl>
+    </div>
+    <div class="botoes">
+      <button type="button" class="btn primary" data-sig="aprovador">Aprovar</button>
+      <button type="button" class="btn" data-sig="reprovador">Reprovar</button>
+      <button type="button" class="btn" data-sig="liberador">Liberar</button>
+      <button type="button" class="btn" data-sig="anulador">Anular</button>
+    </div>
+    <div id="faixa-bloqueio" role="alert"></div>
+    <h3 style="margin:20px 0 6px;font-size:15px">Assinaturas deste laudo</h3>
+    <ul class="historico" id="assinaturas"><li class="ajuda-campo" style="border:0" id="sem-assin">Nenhuma assinatura ainda. As assinaturas não podem ser alteradas nem apagadas.</li></ul>
+  </section>
+</main>
+
+<div class="modal-fundo" id="m-assina" hidden role="dialog" aria-modal="true" aria-labelledby="m-assina-t">
+  <div class="modal larga">
+    <h2 id="m-assina-t">Assinar eletronicamente</h2>
+    <div class="quadro">
+      <dl>
+        <dt>Registro</dt><dd>Laudo do lote T-2611-0142</dd>
+        <dt>Assinando como</dt><dd><strong id="a-quem"></strong></dd>
+        <dt>Significado</dt><dd><strong id="a-sig"></strong></dd>
+        <dt>Data e hora</dt><dd>gravadas pelo servidor ao confirmar</dd>
+      </dl>
+    </div>
+    <div id="a-msg" role="alert" aria-live="assertive"></div>
+    <form id="f-assina" novalidate autocomplete="off">
+      <div class="field"><label for="a-senha">Digite a sua senha de novo</label>
+        <div class="input-wrap"><input id="a-senha" class="input" type="password" autocomplete="current-password">
+          <button type="button" class="reveal" id="ver-senha" aria-label="Mostrar a senha" aria-pressed="false"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
+      <div class="field" id="campo-codigo"><label for="a-codigo">Código do aplicativo (6 dígitos)</label><input id="a-codigo" class="input code-input" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="000000" style="max-width:220px">
+        <span class="ajuda-campo">Obrigatório para quem tem duas etapas e para quem aprova, reprova, libera ou anula.</span></div>
+      <div class="field"><label for="a-motivo">Motivo (obrigatório)</label><textarea id="a-motivo" class="input" placeholder="Ex.: ensaios conferidos e dentro da especificação"></textarea></div>
+      <div class="acoes"><button type="submit" class="btn primary">Assinar</button> <button type="button" class="btn" id="a-cancelar">Cancelar</button></div>
+    </form>
+  </div>
+</div>
+<div id="aviso" class="toast" role="status" aria-live="polite" hidden></div>
+<script src="common.js"></script>
+<script src="admin-dados.js"></script>
+<script src="assinatura.js"></script>
+</body>
+</html>

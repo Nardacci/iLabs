@@ -15,7 +15,11 @@ const db = new PGlite();
 await db.exec(`
   create role anon nologin; create role authenticated nologin; create role service_role nologin;
   create schema auth;
-  create table auth.users (id uuid primary key, email text);
+  create table auth.users (id uuid primary key, email text, encrypted_password text);
+  create table auth.sessions (id uuid primary key default gen_random_uuid(), user_id uuid);
+  create table auth.mfa_factors (id uuid primary key default gen_random_uuid(), user_id uuid, status text);
+  create schema extensions;
+  create function extensions.crypt(senha text, hash text) returns text language sql immutable as $$ select 'h:' || senha $$;
   create function auth.uid() returns uuid language sql stable as $$
     select nullif(current_setting('request.jwt.claim.sub', true), '')::uuid $$;
   grant usage on schema auth to anon, authenticated;
@@ -28,8 +32,9 @@ const registrar = (nome, passou, detalhe = '') => {
   if (passou) { ok++; console.log('  ok     ' + nome); }
   else { falhas++; console.log('  FALHOU ' + nome + (detalhe ? ' -> ' + detalhe : '')); }
 };
-const como = async (uuid) => {
+const como = async (uuid, aal = 'aal1') => {
   await db.exec('reset role');
+  await db.exec(`select set_config('request.jwt.claims', '{"aal":"${aal}"}', false)`);
   if (uuid === 'anon') { await db.exec("select set_config('request.jwt.claim.sub', '', false); set role anon"); return; }
   await db.exec(`select set_config('request.jwt.claim.sub', '${uuid}', false); set role authenticated`);
 };
@@ -131,6 +136,9 @@ registrar('motivo da alteração vai para a auditoria quando informado',
 console.log('Primeira empresa');
 t = await tenta(`select ilab_interno.criar_empresa('EMP-A','Duplicada','${A}','x','x@x.com')`);
 registrar('empresa com código repetido é recusada', !!t.erro);
+
+const { rodar } = await import('./testes_login_seguranca.mjs');
+await rodar({ db, registrar, como, tenta, dono, n, A, B, X, eA, eB });
 
 console.log(`\n${ok} testes passaram, ${falhas} falharam.`);
 process.exit(falhas ? 1 : 0);

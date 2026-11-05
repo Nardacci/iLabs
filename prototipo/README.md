@@ -17,6 +17,11 @@ Abra `index.html` no navegador (duplo clique, sem servidor). Ele é o **mapa das
 | `redefinir.html` | Nova senha pelo link do e-mail (estado: link vencido) |
 | `seguranca.html` | Minha segurança: alterar senha, duas etapas (aplicativo e códigos de recuperação), sessões e aviso de inatividade de 10 minutos |
 | `senha.js` | Regras de senha compartilhadas pelas três telas acima (12 caracteres, fora da lista de comuns, sem o e-mail) |
+| `usuarios.html`, `usuarios.js` | Usuários: lista com busca (sem limite), convite com validade, edição de perfis (mais de um, sempre mostrando o vínculo gravado), inativação com motivo, desbloqueio e nova senha |
+| `perfis.html`, `perfis.js` | Perfis e permissões: lista sem limite e com busca, matriz de funções por ações, quem tem cada perfil, motivo obrigatório ao mudar e histórico de antes e depois |
+| `registros.html`, `registros.js` | Registro de acessos e auditoria: duas abas só de leitura, com filtros por pessoa, data e resultado |
+| `assinatura.html`, `assinatura.js` | Assinatura eletrônica: janela de confirmação (senha de novo, código das duas etapas, significado e motivo) e as recusas do servidor |
+| `admin.css`, `admin-dados.js` | Estilos e dados fictícios compartilhados pelas quatro telas acima (22 papéis da matriz proposta, pessoas, convites, acessos e auditoria) |
 | `prototipo.css`, `common.js`, `entrar.js`, `inicio.js` | Estilos e comportamento compartilhados |
 | `entrar.png`, `entrar-escuro.png`, `entrar-celular.png`, `inicio.png` | Capturas |
 
@@ -40,6 +45,15 @@ A cópia de visualização publicada como Artifact do Claude é só um arquivo e
 - **Atividade recente:** trilha de auditoria (quem, o quê, quando, valor anterior).
 - Tema claro e escuro, celular, teclado (`/` busca) e menu em gaveta no celular.
 
+## Telas de administração (login e segurança)
+
+Dados fictícios, no mesmo padrão das outras telas. Valem para celular (390 px), tema claro e escuro e teclado. O desenho está em `../docs/seguranca-e-acesso.md` (telas 8 a 11) e as regras que elas mostram estão na migração 3 do banco.
+
+- **Usuários:** a lista não tem limite e mostra **sempre o perfil gravado**, mesmo de um perfil que a empresa inativou depois (defeito N-006, N-037 e N-038 da versão nova testada). Convite vale 48 horas e uma vez. Editar perfis pede motivo e mostra antes e depois. Inativar pede motivo e encerra as sessões. Ninguém altera ou inativa a si mesmo. Marina Reis aparece bloqueada para mostrar o aviso e o desbloqueio.
+- **Perfis e permissões:** matriz de 16 funções por 6 ações (consultar, incluir, alterar, excluir, imprimir, histórico), mudanças marcadas antes de salvar, motivo obrigatório, histórico e aviso quando um perfil administra acessos e também aprova (regra "a validar").
+- **Registros:** aba de **acessos** (nunca guarda senha; mostra IP e navegador) e aba de **auditoria** (valor anterior e novo inteiros, sem corte). Só leitura.
+- **Assinatura eletrônica:** use "Estou logado como" para ver as recusas na mesma ordem do servidor: sem permissão, sem motivo, quem elaborou não aprova, falta o código das duas etapas, senha errada (senha `errada`; na 5ª o acesso bloqueia).
+
 ## Decisões de desenho
 
 | Decisão | Motivo |
@@ -53,6 +67,6 @@ A cópia de visualização publicada como Artifact do Claude é só um arquivo e
 
 ## Limites e próximos passos
 
-- Só estas duas telas funcionam. Os demais itens do menu avisam que não fazem parte do protótipo.
+- Funcionam as telas listadas na tabela acima; os demais itens do menu da página inicial avisam que não fazem parte do protótipo.
 - Pontos para decidir com a diretoria e a Qualidade: se a verificação em duas etapas é obrigatória para todos os perfis; como o cliente chega ao ambiente da empresa (hoje: pelo domínio do e-mail; alternativas: endereço próprio ou código); quais indicadores de conformidade entram na página inicial de cada perfil.
 - Próximas telas sugeridas: um cadastro base (unidades de medida) e a tela da quarentena do lote, que mostram como fica a unificação e a rastreabilidade.
