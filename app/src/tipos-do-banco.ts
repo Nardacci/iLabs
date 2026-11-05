@@ -606,6 +606,33 @@ export type Database = {
         }
         Relationships: []
       }
+      sessoes_atividade: {
+        Row: {
+          sessao_id: string
+          usuario_id: string
+          empresa_id: string | null
+          iniciada_em: string
+          ultima_atividade: string
+          encerrada_em: string | null
+        }
+        Insert: {
+          sessao_id: string
+          usuario_id: string
+          empresa_id?: string | null
+          iniciada_em?: string
+          ultima_atividade?: string
+          encerrada_em?: string | null
+        }
+        Update: {
+          sessao_id?: string
+          usuario_id?: string
+          empresa_id?: string | null
+          iniciada_em?: string
+          ultima_atividade?: string
+          encerrada_em?: string | null
+        }
+        Relationships: []
+      }
       unidades_medida: {
         Row: {
           id: string
@@ -725,10 +752,12 @@ export type Database = {
       listar_usuarios: { Args: never; Returns: { id: string | null; nome: string | null; email: string | null; ativo: boolean | null; senha_a_trocar: boolean | null; bloqueado: boolean | null; perfis: Json | null }[] }
       marcar_aviso_lido: { Args: { p_aviso_id: string }; Returns: undefined }
       meu_estado: { Args: never; Returns: { usuario_id: string | null; empresa_id: string | null; nome: string | null; ativo: boolean | null; senha_a_trocar: boolean | null; bloqueado_ate: string | null; situacao_empresa: string | null; teste_ate: string | null; dias_restantes: number | null }[] }
+      minha_sessao: { Args: never; Returns: { inatividade_minutos: number | null; aviso_segundos: number | null; renovar_segundos: number | null }[] }
       minhas_permissoes: { Args: never; Returns: { funcao_chave: string | null; consultar: boolean | null; incluir: boolean | null; alterar: boolean | null; excluir: boolean | null; imprimir: boolean | null; consultar_historico: boolean | null }[] }
       mudar_situacao_cadastro: { Args: { p_tabela: string; p_id: string; p_ativo: boolean; p_motivo: string }; Returns: undefined }
       reativar_usuario: { Args: { p_usuario_id: string; p_motivo: string }; Returns: undefined }
       registrar_acesso: { Args: { p_email: string; p_evento: string; p_resultado: string; p_ip?: string; p_navegador?: string; p_detalhe?: string }; Returns: number }
+      registrar_atividade: { Args: never; Returns: undefined }
       registrar_troca_de_senha: { Args: { p_usuario_id: string; p_ip?: string; p_navegador?: string }; Returns: undefined }
       trocar_perfil_usuario: { Args: { p_usuario_id: string; p_perfil_ids: string[]; p_motivo: string }; Returns: undefined }
       vinculos_do_usuario: { Args: { p_usuario_id: string }; Returns: { perfil_id: string | null; nome: string | null; perfil_ativo: boolean | null }[] }

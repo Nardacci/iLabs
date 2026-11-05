@@ -1,10 +1,17 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { ambiente } from '../../../ambiente.gerado';
 import type { Database, Funcoes, Tabelas } from '../../../tipos-do-banco';
 
 /** Erro de uma função do banco. A mensagem já vem em português (o banco escreve para a pessoa). */
 export class ErroDoBanco extends Error {}
+
+/** O servidor recusou a sessão por ficar parada além do limite da empresa. */
+export class ErroDeInatividade extends ErroDoBanco {}
+
+/** Código com que o servidor recusa a sessão parada além do limite da empresa (HTTP 401 do PostgREST, migração 6). */
+export const CODIGO_DE_INATIVIDADE = 'PT401';
 
 export type NomeDaFuncao = keyof Funcoes;
 export type ArgumentosDe<N extends NomeDaFuncao> = Funcoes[N]['Args'];
@@ -32,6 +39,23 @@ export function ambienteConfigurado(): boolean {
 export class BancoService {
   private instancia: ClienteDoBanco | null = null;
 
+  /** Avisa quando o SERVIDOR recusa a sessão por inatividade. A decisão é dele; a aplicação só reage. */
+  readonly recusaPorInatividade = new Subject<void>();
+
+  /** Olha toda resposta da API: se o servidor recusou por inatividade, avisa uma vez e segue entregando a resposta. */
+  private readonly buscar: typeof fetch = async (entrada, init) => {
+    const resposta = await fetch(entrada, init);
+    if (resposta.status === 401) {
+      try {
+        const corpo = (await resposta.clone().json()) as { code?: string };
+        if (corpo.code === CODIGO_DE_INATIVIDADE) this.recusaPorInatividade.next();
+      } catch {
+        /* corpo que não é JSON: não é a recusa do portão */
+      }
+    }
+    return resposta;
+  };
+
   /** Cliente do Supabase (carregado só quando alguém precisa). */
   get cliente(): ClienteDoBanco {
     this.instancia ??= createClient<Database, 'ilab'>(
@@ -39,6 +63,7 @@ export class BancoService {
       ambiente.supabaseChavePublica,
       {
         db: { schema: 'ilab' },
+        global: { fetch: this.buscar },
         auth: {
           persistSession: true,
           autoRefreshToken: true,
@@ -70,8 +95,9 @@ export class BancoService {
     const chamar = this.cliente.rpc.bind(this.cliente) as (
       n: string,
       a?: unknown,
-    ) => PromiseLike<{ data: unknown; error: { message: string } | null }>;
+    ) => PromiseLike<{ data: unknown; error: { message: string; code?: string } | null }>;
     const { data, error } = await chamar(nome, parametros[0]);
+    if (error?.code === CODIGO_DE_INATIVIDADE) throw new ErroDeInatividade(error.message);
     if (error) throw new ErroDoBanco(error.message);
     return data as RetornoDe<N>;
   }

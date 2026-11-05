@@ -76,8 +76,8 @@ import { TemaService } from '../ui/tema';
         >
           <h2 id="aviso-titulo">Continuar conectado?</h2>
           <p id="aviso-texto">
-            Por segurança, a sessão encerra em 1 minuto por falta de atividade. O que você digitou
-            foi guardado como rascunho.
+            Por segurança, a sessão encerra em {{ prazoDoAviso() }} por falta de atividade. O que
+            você digitou foi guardado como rascunho.
           </p>
           <div class="acoes">
             <button type="button" class="btn primary" (click)="inatividade.continuar()">
@@ -97,10 +97,15 @@ export class Layout implements OnInit, OnDestroy {
   private readonly router = inject(Router);
 
   protected readonly menuAberto = signal(false);
+  /** O prazo vem do servidor; aqui só vira texto. */
+  protected readonly prazoDoAviso = computed(() => {
+    const s = this.inatividade.avisoSegundos();
+    return s % 60 === 0 ? `${s / 60} ${s === 60 ? 'minuto' : 'minutos'}` : `${s} segundos`;
+  });
   protected readonly menu = computed(() => menuDasRotas(rotasInternas, (f) => this.sessao.pode(f)));
 
   ngOnInit(): void {
-    this.inatividade.iniciar();
+    void this.inatividade.iniciar();
   }
 
   ngOnDestroy(): void {

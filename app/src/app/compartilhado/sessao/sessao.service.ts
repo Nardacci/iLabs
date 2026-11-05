@@ -1,5 +1,11 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { BancoService, ambienteConfigurado, type RetornoDe } from '../dados/banco';
+import { Router } from '@angular/router';
+import {
+  BancoService,
+  ErroDeInatividade,
+  ambienteConfigurado,
+  type RetornoDe,
+} from '../dados/banco';
 
 export type EstadoDaConta = RetornoDe<'meu_estado'>[number];
 export type Permissao = RetornoDe<'minhas_permissoes'>[number];
@@ -38,6 +44,13 @@ export function destinoObrigatorio(
 @Injectable({ providedIn: 'root' })
 export class SessaoService {
   private readonly banco = inject(BancoService);
+  private readonly router = inject(Router);
+  private encerrando = false;
+
+  constructor() {
+    // O servidor recusou a sessão por inatividade: a aplicação só obedece (limpa e volta para a entrada).
+    this.banco.recusaPorInatividade.subscribe(() => void this.encerradaPeloServidor());
+  }
 
   private readonly _logado = signal(false);
   private readonly _estado = signal<EstadoDaConta | null>(null);
@@ -86,7 +99,12 @@ export class SessaoService {
     const { data } = await this.banco.auth.getSession();
     if (data.session) {
       this._logado.set(true);
-      await this.carregarContexto();
+      try {
+        await this.carregarContexto();
+      } catch (erro) {
+        // Recusa por inatividade: a assinatura já limpou a sessão e abriu a entrada. Outros erros seguem para quem chamou.
+        if (!(erro instanceof ErroDeInatividade)) throw erro;
+      }
     }
   }
 
@@ -140,6 +158,18 @@ export class SessaoService {
     if (error) return false;
     await this.carregarContexto();
     return true;
+  }
+
+  /** Resposta à recusa do servidor por inatividade (vem de qualquer chamada da API, inclusive a primeira ao abrir). */
+  private async encerradaPeloServidor(): Promise<void> {
+    if (this.encerrando) return;
+    this.encerrando = true;
+    try {
+      await this.sair().catch(() => undefined); // a sessão local é limpa de qualquer jeito
+      await this.router.navigate(['/entrar'], { queryParams: { motivo: 'inatividade' } });
+    } finally {
+      this.encerrando = false;
+    }
   }
 
   async sair(): Promise<void> {

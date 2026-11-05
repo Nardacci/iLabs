@@ -229,3 +229,70 @@ test.describe('Telas de acesso logadas', () => {
     await conferirAcessibilidade(page, 'minha segurança (escuro)');
   });
 });
+
+test.describe('Inatividade: quem decide é o servidor', () => {
+  const MENSAGEM = /encerrada por falta de atividade/;
+
+  test('o servidor recusa a chamada: a aplicação limpa a sessão e volta à entrada com o aviso', async ({
+    page,
+  }) => {
+    const inatividade = { recusar: false };
+    const chamadas = await preparar(page, {});
+    // preparar() não aceita o portão; reabre o roteiro com ele ligado
+    await page.unroute('http://127.0.0.1:54321/**');
+    await simularSupabase(page, {
+      chamadas,
+      inatividade,
+      rpc: {
+        meu_estado: ESTADO_NORMAL,
+        minhas_permissoes: PERMISSOES_DO_ADMIN,
+        listar_perfis: PERFIS,
+      },
+    });
+    await page.goto('/perfis');
+    await expect(page.getByRole('heading', { name: 'Perfis e permissões' })).toBeVisible();
+    inatividade.recusar = true; // o relógio do servidor passou do limite
+    await page.getByRole('link', { name: 'Usuários' }).click();
+    await expect(page).toHaveURL(/\/entrar\?motivo=inatividade/);
+    await expect(page.getByText(MENSAGEM)).toBeVisible();
+    expect(await page.evaluate(() => localStorage.getItem('sb-127-auth-token'))).toBeNull();
+    await conferirAcessibilidade(page, 'entrar com aviso de inatividade do servidor');
+  });
+
+  test('ao abrir o app com a sessão já vencida no servidor, vai direto para a entrada com o aviso', async ({
+    page,
+  }) => {
+    await entrarComSessaoDeTeste(page);
+    await simularSupabase(page, { inatividade: { recusar: true } });
+    await page.goto('/usuarios');
+    await expect(page).toHaveURL(/\/entrar\?motivo=inatividade/);
+    await expect(page.getByText(MENSAGEM)).toBeVisible();
+  });
+
+  test('o aviso usa o limite que o servidor informou e "Continuar conectado" é decidido pelo servidor', async ({
+    page,
+  }) => {
+    const inatividade = { recusar: false };
+    const chamadas: NonNullable<Roteiro['chamadas']> = [];
+    await page.clock.install();
+    await entrarComSessaoDeTeste(page);
+    await simularSupabase(page, {
+      chamadas,
+      inatividade,
+      rpc: {
+        meu_estado: ESTADO_NORMAL,
+        minhas_permissoes: PERMISSOES_DO_ADMIN,
+        minha_sessao: [{ inatividade_minutos: 2, aviso_segundos: 30, renovar_segundos: 60 }],
+      },
+    });
+    await page.goto('/inicio');
+    await expect(page.getByRole('main')).toBeVisible();
+    await page.clock.fastForward('01:31'); // 2 min - 30 s = 1 min 30 s sem atividade
+    const janela = page.getByRole('alertdialog');
+    await expect(janela).toContainText('encerra em 30 segundos');
+    inatividade.recusar = true; // o servidor já passou do limite dele
+    await janela.getByRole('button', { name: 'Continuar conectado' }).click();
+    await expect(page).toHaveURL(/\/entrar\?motivo=inatividade/);
+    await expect(page.getByText(MENSAGEM)).toBeVisible();
+  });
+});

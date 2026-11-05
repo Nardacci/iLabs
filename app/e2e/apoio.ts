@@ -36,6 +36,8 @@ export interface Roteiro {
   rpc?: Record<string, unknown>;
   /** Respostas de leitura de tabelas, por nome da tabela. */
   tabelas?: Record<string, { linhas: unknown[]; total?: number }>;
+  /** Quando `recusar` vira verdadeiro, o "servidor" recusa toda chamada da API por inatividade (HTTP 401, código PT401). */
+  inatividade?: { recusar: boolean };
   /** Registro das chamadas feitas, para conferir nos testes. */
   chamadas?: { alvo: string; corpo: unknown }[];
 }
@@ -109,6 +111,18 @@ export async function simularSupabase(page: Page, roteiro: Roteiro = {}): Promis
       });
     }
     if (url.pathname === '/auth/v1/logout') return rota.fulfill({ status: 204, headers: CORS });
+    if (url.pathname.startsWith('/rest/v1/') && roteiro.inatividade?.recusar) {
+      registrar('recusada-por-inatividade', url.pathname);
+      return json(
+        {
+          code: 'PT401',
+          message: 'Sessão encerrada por inatividade. Entre novamente.',
+          details: 'inatividade',
+          hint: 'Faça login de novo.',
+        },
+        401,
+      );
+    }
     if (url.pathname.startsWith('/rest/v1/rpc/')) {
       const nome = url.pathname.split('/').pop() ?? '';
       registrar(`rpc:${nome}`, req.postDataJSON());

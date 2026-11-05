@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { comBancoFalso, permissao } from '../../../testing/apoio';
 import { destinoObrigatorio, type EstadoDaConta, SessaoService } from './sessao.service';
 
@@ -74,5 +75,23 @@ describe('SessaoService', () => {
     vi.stubGlobal('fetch', () => Promise.reject(new Error('rede')));
     const r = await sessao.entrar('a@b.com', 'x');
     expect(r.ok).toBe(false);
+  });
+
+  it('o servidor recusa por inatividade: a sessão é limpa e a pessoa vai para a entrada com o motivo', async () => {
+    const banco = comBancoFalso();
+    banco.respostas['meu_estado'] = [estado()];
+    const navegar = vi.fn(() => Promise.resolve(true));
+    TestBed.overrideProvider(Router, { useValue: { navigate: navegar } });
+    const sessao = TestBed.inject(SessaoService);
+    await sessao.carregarContexto();
+    expect(sessao.estado()).not.toBeNull();
+    banco.recusaPorInatividade.next(); // o banco devolveu o erro único de inatividade
+    banco.recusaPorInatividade.next(); // uma segunda chamada recusada ao mesmo tempo não duplica
+    await vi.waitFor(() => expect(navegar).toHaveBeenCalled());
+    expect(navegar).toHaveBeenCalledTimes(1);
+    expect(navegar).toHaveBeenCalledWith(['/entrar'], { queryParams: { motivo: 'inatividade' } });
+    expect(sessao.logado()).toBe(false);
+    expect(sessao.estado()).toBeNull();
+    expect(sessao.permissoes()).toEqual([]);
   });
 });

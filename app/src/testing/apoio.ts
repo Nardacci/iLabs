@@ -1,7 +1,8 @@
 import type { Type } from '@angular/core';
+import { Subject } from 'rxjs';
 import { type ComponentFixture, TestBed } from '@angular/core/testing';
 import axe from 'axe-core';
-import { BancoService } from '../app/compartilhado/dados/banco';
+import { BancoService, ErroDeInatividade } from '../app/compartilhado/dados/banco';
 import type { Permissao } from '../app/compartilhado/sessao/sessao.service';
 
 /** Banco de mentira para testes: nenhuma rede, nenhuma chave. Guarda as chamadas e devolve respostas combinadas. */
@@ -9,20 +10,30 @@ export class BancoFalso {
   readonly chamadas: { nome: string; args: unknown }[] = [];
   respostas: Record<string, unknown> = {};
   erros: Record<string, string> = {};
+  /** Quando verdadeiro, o "servidor" recusa toda chamada por inatividade (como o portão do banco faz). */
+  recusarPorInatividade = false;
 
   rpc(nome: string, args?: unknown): Promise<unknown> {
     this.chamadas.push({ nome, args });
+    if (this.recusarPorInatividade) {
+      this.recusaPorInatividade.next();
+      return Promise.reject(
+        new ErroDeInatividade('Sessão encerrada por inatividade. Entre novamente.'),
+      );
+    }
     const erro = this.erros[nome];
     if (erro) return Promise.reject(new (class extends Error {})(erro));
     return Promise.resolve(this.respostas[nome] ?? []);
   }
 
   // O resto do BancoService não é usado pelos testes de tela.
+  readonly recusaPorInatividade = new Subject<void>();
   readonly urlDasFuncoes = 'https://exemplo.invalid/functions/v1';
   readonly chavePublica = 'chave-de-teste';
   readonly auth = {
     onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => undefined } } }),
     getSession: () => Promise.resolve({ data: { session: null } }),
+    signOut: () => Promise.resolve({ error: null }),
     mfa: { getAuthenticatorAssuranceLevel: () => Promise.resolve({ data: null }) },
   };
 }
