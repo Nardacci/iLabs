@@ -1,6 +1,6 @@
 # Prompt: login e segurança do iLabs (migração 3, testes e telas que faltam)
 
-Para o **Claude Code** (ou o Codex) no repositório `iLabs`. Não precisa de VPN. Nenhuma credencial é necessária: o banco é testado em memória (PGlite).
+Para o **Claude Code** (ou o Codex) no repositório **`iLabs`** (remoto `Nardacci/iLabs`), **abra a sessão na pasta do `iLabs`**, e não na do `ilabpharma-novo` (que é só o app Angular e não tem `banco/`, `prototipo/`, `docs/` nem `DIARIO-DE-BORDO.md`). Não precisa de VPN. Nenhuma credencial é necessária: o banco é testado em memória (PGlite).
 
 ## Preparação do ramo
 ```
@@ -13,6 +13,8 @@ git checkout -b claude/login-seguranca
 
 ## Prompt (colar no agente)
 ```
+Trabalhe SÓ no repositório iLabs (a pasta que tem banco/, prototipo/, docs/ e DIARIO-DE-BORDO.md). Se a sessão estiver aberta em outra pasta, por exemplo a do app Angular ilabpharma-novo, NÃO copie a estrutura para lá: entre na pasta do iLabs e crie o ramo claude/login-seguranca a partir do main dela.
+
 Tarefa: preparar toda a parte de LOGIN E SEGURANÇA do iLabs: migração 3 do banco, testes e as telas que faltam no protótipo. Quem conduz é analista de negócio, não desenvolvedor: documentos em português claro. Trabalhe em etapas pequenas, com commit e push ao fim de cada uma, no ramo claude/login-seguranca. Não crie pull request (o responsável pede).
 
 Antes de começar, leia: CLAUDE.md, a primeira entrada de DIARIO-DE-BORDO.md, docs/seguranca-e-acesso.md (desenho e decisões de 02/11/2026), docs/referencia-korbuild-cadastro.md, docs/antes-de-lancar.md, docs/decisoes.md, banco/README.md, banco/modelo-de-dados.md, banco/migracoes/*.sql (a base com empresas, usuarios, perfis, funcoes, perfil_funcoes, usuario_perfis, auditoria, ilab_interno.criar_empresa), banco/testes/ e prototipo/README.md.
