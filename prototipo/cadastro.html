@@ -73,8 +73,13 @@
       <p class="hint">Por segurança, esta mensagem é a mesma exista ou não uma conta com esse e-mail.</p>
       <p class="alt" style="margin-top:14px">Não recebeu? <button type="button" class="link" id="reenviar">Reenviar e-mail</button></p>
       <hr class="sep">
-      <a class="btn-grad btn-link" href="empresa.html" style="display:block;text-align:center">Já confirmei: cadastrar a empresa →</a>
-      <p class="demo-note">Protótipo: o botão acima simula o clique no link do e-mail.</p>
+      <div class="demo-note" id="caixa-email" style="text-align:left;margin:0 0 12px">
+        <strong>Caixa de e-mail (simulação do protótipo)</strong><br>
+        No sistema de verdade, esta mensagem chega ao seu e-mail e o link só vale uma vez.<br>
+        <button type="button" class="link" id="abrir-link-email">Abrir o link de confirmação do e-mail (simulação)</button>
+      </div>
+      <p class="hint" id="aguardando" role="status">Confirme o e-mail para continuar. A próxima etapa só abre depois da confirmação.</p>
+      <button type="button" class="btn-grad" id="seguir-empresa" style="display:block;width:100%;text-align:center" disabled>Cadastrar a empresa →</button>
     </div>
     <p class="rodape-form">iLabPharma · Protótipo com dados fictícios</p>
   </section>
