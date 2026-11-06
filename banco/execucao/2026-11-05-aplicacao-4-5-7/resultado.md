@@ -38,11 +38,22 @@ Arquivo `20261107090000_inatividade_no_servidor.sql`, como script, com `begin;` 
 | funções que o visitante executa | `consultar_convite` | `consultar_convite` |
 | visitante sem privilégio em tabela | 0 | 0 |
 
-**Prova de que a API continua respondendo (Passo D): PENDENTE.** A primeira tentativa deu erro **local** do PowerShell (`NullReferenceException` em `Invoke-RestMethod`): as variáveis `ILABS_SUPABASE_URL` e `ILABS_SUPABASE_CHAVE_PUBLICA` não estavam definidas na janela, então a chamada nem saiu da máquina. Não é erro da API. Repetir depois de definir as variáveis (nunca registrar os valores). Se a API falhar com 500: `alter role authenticator reset pgrst.db_pre_request;` e `notify pgrst, 'reload config';`.
+## Prova de que a API continua respondendo com o portão ligado (Passo D): FEITA
+
+| Tentativa | Resultado |
+|---|---|
+| 1 | Erro **local** do PowerShell (`NullReferenceException`): as variáveis `ILABS_SUPABASE_URL` e `ILABS_SUPABASE_CHAVE_PUBLICA` não estavam definidas na janela. Não saiu da máquina |
+| 2 | Variáveis definidas: **HTTP 406**, `PGRST106 — Invalid schema: ilab` (só `public` e `graphql_public` expostos). Prova que a API estava viva e respondendo com erro normal; faltava expor o schema |
+| 3 | Recarga (`notify pgrst, 'reload config'` e `'reload schema'`) sem a lista alterada: continuou `PGRST106` |
+| 4 | Schema exposto **por SQL**: `alter role authenticator set pgrst.db_schemas = 'public, graphql_public, ilab';` + recarga. A chamada de visitante `consultar_convite` com token inválido **respondeu normalmente** (`situacao: invalido`, nome da empresa vazio) |
+
+**Leitura:** a API do projeto responde com o portão ligado e o schema `ilab` exposto. **O que isto NÃO prova:** a chamada foi de visitante (`anon`), e o portão sai cedo para visitante (sem `auth.uid()` não há sessão para conferir). O caminho de uma **pessoa logada** (sessão parada recusada com HTTP 401, código `PT401`, `session_id` e `iat` no token, `pg_cron` registrando o fim em `acessos`) só se prova com o app rodando e a função `login` publicada.
+
+**Atenção para quem mexer no painel:** o `ilab` foi exposto por SQL, não pelo painel do Supabase. Se alguém alterar "Exposed schemas" no painel, a lista pode ser sobrescrita e o `ilab` sair. `ilab_interno` **não** é exposto, de propósito. Para desfazer: `alter role authenticator reset pgrst.db_schemas;` e `notify pgrst, 'reload config';`.
 
 ## Ocorrências
 1. A conferência da migração 4 foi rodada **antes** de a migração ser aplicada, dentro de `begin;`, e a função `ilab_interno.cnpj_valido` ainda não existia: a consulta falhou e deixou a transação quebrada ("current transaction is aborted"). Resolvido com `rollback;`. Causa: a ordem em que o roteiro foi passado (conferência junto da migração). Nada foi gravado.
 2. O visualizador da sessão não abre arquivos do repositório `iLabs`; os arquivos para rodar foram enviados como anexos, já com `begin;` e `commit;`.
 
 ## Falta
-Passo D (API responde com o portão ligado); `pg_cron` e Exposed schemas conferidos no painel; Advisors depois de tudo; função `login` publicada; variáveis do app; painel (confirmar e-mail, SMTP, duas etapas, política de senha com mínimo de 12).
+Conferir `pg_cron` ativo (`select jobname, schedule from cron.job;`); Advisors depois de tudo; prova do portão com pessoa logada; função `login` publicada; variáveis do app; painel (confirmar e-mail, SMTP, duas etapas, política de senha com mínimo de 12).
