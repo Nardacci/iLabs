@@ -9,7 +9,7 @@ Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê
 - **App:** o motor de cadastros mostra as três situações e "em uso (N)", filtro de situação, Excluir (desabilitado se já foi usado) e Restaurar (só com a função), tudo pela função nova. Tipos do banco regenerados; testes do app 50 de 50, lint, tipagem e formatação limpos (rodados com Node 22.22.3 instalado à parte, pois o do ambiente é 22.22.0)
 - **Correção de passagem:** `scripts/tipos.mjs` não criava `auth.jwt()` no banco de teste e quebrava com as migrações 6 em diante
 - **Fora desta parte, a fazer:** motivo obrigatório também na ALTERAÇÃO de cadastro (RN-PRI-070; hoje só inativar e excluir pedem motivo); casca nova no app; cadastros dos 4 grupos, um a um
-- **Depende do responsável:** autorizar a aplicação da migração 9 no Supabase (`LabPharma`). Depois de aplicada, registrar em `banco/execucao/`
+- **Migração 9 APLICADA** no Supabase (`LabPharma`) com a autorização do responsável, conferida e provada no banco real (12 provas dentro de um bloco que desfaz tudo; 0 sobras). Registro em `banco/execucao/2026-11-06-migracao-9/resultado.md`
 
 ## 2026-11-06 · Claude · Principal: análise dos 4 primeiros grupos e Marco 1A aprovado
 
