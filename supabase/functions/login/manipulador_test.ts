@@ -12,10 +12,10 @@ import {
 
 const SENHA_CERTA = 'uma-senha-bem-longa-123';
 
-/** Estado da conta como o BANCO a conhece (a decisão do próximo passo é do banco: ilab.proximo_passo, migração 7). */
+/** Estado da conta como o BANCO a conhece (a decisão do próximo passo é do banco: ilab.proximo_passo, migrações 7 e 8). */
 interface EstadoDaConta {
   usuario_id: string;
-  empresa_id: string;
+  empresa_id: string | null; // null = confirmou o e-mail e ainda não criou a empresa
   nome: string;
   ativo: boolean;
   senha_a_trocar: boolean;
@@ -27,6 +27,7 @@ interface EstadoDaConta {
 
 /** Imita ilab.proximo_passo só para a simulação; a regra de verdade e seus testes estão em banco/testes. */
 function proximoPassoSimulado(e: EstadoDaConta, agora: number): Proximo | null {
+  if (e.empresa_id === null) return 'criar_empresa';
   if (!e.ativo || (e.bloqueado_ate && Date.parse(e.bloqueado_ate) > agora)) return null;
   if (e.situacao_empresa === 'suspensa') return 'empresa_suspensa';
   if (e.senha_a_trocar) return 'trocar_senha';
@@ -232,6 +233,18 @@ Deno.test('senha a trocar e carência orientam o app', async () => {
   const manipular = criarManipuladorLogin(sim.dep);
   assertEquals((await (await manipular(pedido('a@e.com', SENHA_CERTA))).json()).proximo, 'trocar_senha');
   assertEquals((await (await manipular(pedido('b@e.com', SENHA_CERTA))).json()).proximo, 'empresa_em_carencia');
+});
+
+Deno.test('quem confirmou o e-mail e ainda não criou a empresa entra e é levado a criar a empresa', async () => {
+  const sim = criarSimulacao({
+    'nova@e.com': { senha: SENHA_CERTA, estado: estadoBase({ empresa_id: null, situacao_empresa: '', dias_restantes: null }) },
+  });
+  const manipular = criarManipuladorLogin(sim.dep);
+  const resposta = await manipular(pedido('nova@e.com', SENHA_CERTA));
+  const corpo = await resposta.json();
+  assertEquals(resposta.status, 200);
+  assertEquals(corpo.ok, true);
+  assertEquals(corpo.proximo, 'criar_empresa');
 });
 
 Deno.test('a senha nunca aparece em log, registro de acesso nem resposta de erro', async () => {

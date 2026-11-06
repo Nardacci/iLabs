@@ -31,7 +31,7 @@ export interface PassoDaConta {
   dias_restantes: number | null;
 }
 
-export type Proximo = 'entrar' | 'trocar_senha' | 'empresa_em_carencia' | 'empresa_suspensa';
+export type Proximo = 'entrar' | 'trocar_senha' | 'empresa_em_carencia' | 'empresa_suspensa' | 'criar_empresa';
 
 export interface Dependencias {
   /** Tenta entrar no Supabase Auth. Devolve a sessão ou null em qualquer erro. */
@@ -122,7 +122,8 @@ export function criarManipuladorLogin(dep: Dependencias): (req: Request) => Prom
     }
     const proximo = passo?.proximo ?? null;
     if (!proximo) {
-      // Senha certa, mas conta inativa, bloqueada ou sem cadastro: mesma resposta de qualquer erro.
+      // Senha certa, mas conta inativa ou bloqueada: mesma resposta de qualquer erro. (Conta sem empresa NÃO é erro:
+      // o banco devolve `criar_empresa` para a pessoa continuar o cadastro.)
       try {
         await dep.encerrarSessao(sessao.access_token);
       } catch {
