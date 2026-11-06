@@ -41,3 +41,7 @@ O detalhe das decisões do banco está em `../banco/README.md` e `../banco/model
 | 06/11/2026 | **Almoxarifado em tela única com abas**, cadastros separados no banco | Protótipo + Estoque do legado (7 cadastros) |
 | 06/11/2026 | **Linhas de produção ficam para a análise da Produção** | Não existe no Principal |
 | 06/11/2026 | **Só o cadastro de Ambiente**, com classificação; sem Áreas, Salas limpas e Ambientes controlados separados | No legado já é um cadastro (`TBL_AMBIENTE`); evita tabelas duplicadas |
+| 06/11/2026 | **Qualificação de fornecedores mora na Garantia da Qualidade**; o recebimento e a terceirização **bloqueiam** fornecedor não qualificado (regra no banco) | RDC 658/2022, art. 8º, VI; DV-EST-022 |
+| 06/11/2026 | **Tipos de fornecimento** = materiais e serviços aprovados por fornecedor, dentro da qualificação | Qualificação por material (arts. 179 a 182) |
+| 06/11/2026 | **Contas bancárias, financeiras, contábeis e gerenciais num só cadastro com tipo** | DV-PRI-047/048; faixa da taxa com a Contabilidade |
+

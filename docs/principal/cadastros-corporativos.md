@@ -44,8 +44,8 @@
 4. `contas` com tipo (bancária, financeira, contábil, gerencial).
 5. Tudo com RLS por `empresa_id` e auditoria por gatilho.
 
-## 4. Perguntas
-1. **Avaliação de fornecedores mora na Garantia da Qualidade** (e não no Principal nem no Estoque): aprova?
-2. **O recebimento deve bloquear** fornecedor não qualificado, ou só alertar? (Pergunta que o Estoque também espera.)
-3. **Tipos de fornecimento:** vira a lista de **materiais e serviços aprovados por fornecedor**, dentro da qualificação. Faz sentido, ou o item significava outra coisa?
-4. **Contas bancárias e financeiras:** posso juntar as quatro telas (bancária, financeira, contábil, gerencial) num só cadastro com tipo? Confirmo com a Contabilidade?
+## 4. Respostas do responsável (06/11/2026)
+1. **Avaliação de fornecedores mora na Garantia da Qualidade.** Decidido.
+2. **O recebimento bloqueia** fornecedor não qualificado (regra no banco). Decidido.
+3. **Tipos de fornecimento** = lista de materiais e serviços aprovados por fornecedor, dentro da qualificação. Decidido.
+4. **Contas** juntas num só cadastro com tipo (bancária, financeira, contábil, gerencial). Decidido; faixa da taxa e confirmação ficam com a Contabilidade.
