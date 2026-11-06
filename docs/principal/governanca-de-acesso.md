@@ -2,6 +2,15 @@
 
 **Rascunho para validação do responsável (06/11/2026).** Primeiro grupo do "Principal" analisado: as 10 páginas do protótipo `Governança_Acesso` (5 cadastros, lista e cadastro de cada um) cruzadas com o legado, os defeitos da versão nova testada, a matriz de papéis e o iLabs de hoje. **Nada aqui está decidido.** O que é inferência vem marcado. As normas citadas são as já usadas no projeto (RDC 658/2022 e Guia 33/2020); números de artigo a conferir estão marcados.
 
+## 0. Decisões do responsável (06/11/2026, sobre este rascunho)
+| # | Decisão |
+|---|---|
+| 1 | **Profissional é separado de Conta de usuário.** A conta passa a ser opcional e se liga ao profissional |
+| 2 | **Grupo de usuários** liga a pessoa a **almoxarifados** (no Estoque, o grupo da pessoa define quais almoxarifados ela enxerga). Portanto **não é só organizacional**: é **escopo** de onde ela atua |
+| 3 | **Tirar nome da mãe e nome do pai** do cadastro de profissional, já que a norma e a operação não os exigem |
+| 4 | **Validade da conta (de, até)** entra no iLabs |
+| 5 | **"Excluir" não é exclusão física** e **é diferente de "inativo"**: terá **situação própria** ("excluído"). Não se apaga nada do banco |
+
 ## 1. Resumo
 | Cadastro | Protótipo | Legado | iLabs hoje | Classe | Veredito |
 |---|---|---|---|---|---|
@@ -16,6 +25,12 @@
 ### 2.1 Funções profissionais
 - **Protótipo:** código, data do cadastro, descrição, ativo. Lista com filtros, imprimir e paginação.
 - **Por que importa (inferência):** a função profissional é o que liga a pessoa ao que ela **pode decidir**. No legado, a Lote Padrão ficou sem aprovador porque nenhuma função profissional estava ligada à configuração 19 (DV-EST-076). Também alimenta qualificação e treinamento.
+- **Como funciona no legado (pergunta 5, conferido nos documentos do `LabMedsys_homol`):**
+  - Cada pessoa pode ter **ocupações (CBO)** e **funções profissionais**, uma delas marcada como **cargo principal** (RN-PRI-033; tabelas `SIS_OCUPACAO_USUARIO` e `SIS_ATIVIDADE_USUARIO`).
+  - Na **Produção**, a função profissional decide **quem assina cada campo e cada subetapa** do registro do lote. Quem não tem a função recebe "NÃO TEM PERMISSÃO." (`Autenticacao.cs:14-44`; `SubEtapaProducao.cs:81`; casos CT-PRO-087 e CT-PRO-026). A autorização do CQ também registra a função exigida.
+  - No **Estoque**, a aprovação do Lote Padrão depende de ligar uma função profissional à configuração 19 (e às 28 e 29). Sem isso ninguém aprova (DV-EST-076).
+  - **Resumo:** o **Perfil** libera telas e ações; a **Função profissional** diz **quem tem competência para assinar** aquela etapa ou campo. São duas camadas, e a segunda não aparece nas telas de permissão.
+  - **Lacuna no iLabs:** a migração 3 cobre o **significado** da assinatura (autor, revisor, aprovador...), mas **não** a exigência por **campo ou etapa**. Isso se desenha junto com Produção e CQ.
 - **Defeitos a não repetir:** DV-PRI-027 (histórico sem a justificativa), DV-PRI-028 (duas funções com a mesma descrição).
 - **Ajustes:** descrição única por empresa; só inativar (nunca excluir) com motivo; histórico completo; ligação explícita com os papéis da matriz (`transversal/09`, no `LabMedsys_homol`).
 
@@ -23,7 +38,8 @@
 - **Protótipo:** código, nome, ativo, data.
 - **Legado:** `TBL_GRUPO_USUARIO` (RN-PRI-034: a pessoa pertence a um grupo e é responsável por locais). **Não é a mesma coisa** que o Grupo Perfil da Garantia da Qualidade (níveis 1 a 3), que o protótipo parece listar em "Gov. Organizacional › Grupos de perfil".
 - **Defeitos a não repetir:** DV-PRI-035 (dois grupos com o mesmo código), DV-PRI-036 (exclusão sem justificativa), DV-PRI-033 (troca de grupo da pessoa sem histórico), N-024 (exclusão recusada sem mensagem) e, no Grupo Perfil da GQ, a autopromoção a Nível 3 (SEG-GQ-10).
-- **Decisão pendente:** no iLabs o **papel** é o **Perfil** (22 papéis da matriz). O Grupo de usuários fica só como **agrupamento organizacional** (equipe, área), para notificações e responsabilidade de locais? Se sim, **nunca concede permissão**.
+- **Decisão (06/11/2026):** no Estoque, o grupo da pessoa define **quais almoxarifados ela enxerga** (legado: `grupo_usuario_local`, "define quais almoxarifados cada grupo enxerga", CT-EST-014; ligação por visões `VW_GRUPO_USUARIO_*`). Então o grupo é **escopo de dados** (onde a pessoa atua), e **não** é só organização. A regra do iLabs fica em duas camadas: **Perfil = o que a pessoa pode fazer** (função e ação); **Grupo = onde ela pode fazer** (almoxarifados e, depois, outros locais). O grupo **nunca** libera função nem ação; só **restringe o alcance**.
+- **A desenhar quando o Estoque entrar:** a tabela de ligação grupo × almoxarifado, conferida **no banco** em toda leitura e gravação (e não só na tela).
 
 ### 2.3 Perfis de acesso
 - **Protótipo:** lista (código, descrição, ativo, ações, log) e cadastro em 2 etapas: dados e funções, com **10 abas de módulo** (Principal, Produção, Estoque, Controle da Qualidade, Comercial, Patrimônio, Controle de Documentos, Configurador OPE, Garantia da Qualidade, Rastreabilidade) e **5 ações** por função (incluir, alterar, excluir, imprimir/Excel, consultar log).
@@ -37,7 +53,8 @@
 - **Defeitos a não repetir:** DV-PRI-004 (histórico sem valor antigo e novo), DV-PRI-006 (exclui profissional com conta sem avisar), DV-PRI-032 (perde números do nome), DV-PRI-033 (troca de grupo sem histórico), DV-PRI-049 (inativo não pode ser excluído), N-015 (alterar sem justificativa), **N-016 (CPF não validado)**, N-039 (o Excel traz CPF e e-mail de todos, ignorando o filtro).
 - **Por que importa:** quem **executa, confere e assina** precisa ser identificado de forma inequívoca (ALCOA+: atribuível), e a qualificação e o treinamento recaem sobre a **pessoa**, tenha ou não login (RDC 658/2022, capítulo de pessoal e treinamento; **artigo a conferir**). Um operador pode não ter conta.
 - **LGPD (a validar):** **nome da mãe e do pai** é dado em excesso para o fim. A identificação inequívoca se faz com nome, CPF e data de nascimento. **CPF** na lista deve vir **mascarado** e a exportação respeitar o filtro e a permissão.
-- **Decisão pendente:** o iLabs hoje tem só `usuarios`. Manter **Profissional (pessoa)** separado de **Conta (acesso)**? Recomendação: **sim**, porque treinamento, qualificação e assinatura se prendem à pessoa, e porque a Conta passa a ser opcional.
+- **Decisões (06/11/2026):** Profissional **separado** de Conta (sim) e **sem nome da mãe nem do pai**. O texto abaixo fica como justificativa.
+- **Antes da decisão:** o iLabs hoje tem só `usuarios`. Manter **Profissional (pessoa)** separado de **Conta (acesso)**? Recomendação: **sim**, porque treinamento, qualificação e assinatura se prendem à pessoa, e porque a Conta passa a ser opcional.
 
 ### 2.5 Contas de usuário
 - **Protótipo:** lista (nome, CPF, ativo, perfil). Cadastro: nome do profissional, CPF, ocupação, função, ativo, **login**, data de expiração, **validade da senha**, **validade da conta (de, até)**, **Reset de senha** e **Remover todos** (perfis).
@@ -49,6 +66,7 @@
 - **O que aproveitar:** a **validade da conta (de, até)**. Funciona (RG-PRI-005 conferido nas duas pontas) e serve a terceirizados, auditores e temporários. **Ainda não existe no iLabs**; entraria como campos novos, conferidos pelo banco no login.
 - **Defeitos a não repetir:** DV-PRI-017/N-019 (reset e troca de senha sem histórico), N-006/N-037/N-038 (vínculo de perfil invisível), DV-PRI-022 (troca de senha obrigatória pulável).
 - **"Remover todos":** vira ação com **motivo** e histórico.
+- **Decisão (06/11/2026):** a **validade da conta (de, até)** entra no iLabs.
 
 ## 3. Padrões de tela do protótipo (valem para os 5)
 | Padrão | Veredito | Observação |
@@ -56,7 +74,7 @@
 | Lista com filtros, **Incluir**, Pesquisar, Limpar, Imprimir, paginação | **Aproveitar** | É o que o componente por metadados já entrega |
 | Cadastro com **Voltar** e **Salvar** | **Aproveitar** | Acrescentar **justificativa** nas ações críticas |
 | Modal **LOG** (histórico) | **Aproveitar** | Mostrar quem, quando, antes, depois e **motivo** (N-029) |
-| Modal **Excluir** | **Descartar** | Sem exclusão física: **Inativar** com motivo (CLAUDE.md do iLabs) |
+| Modal **Excluir** | **Ajustar** | Passa a marcar a situação **"excluído"** (distinta de **inativo**), com **motivo**. **Nada é apagado do banco** (CLAUDE.md do iLabs) |
 | **Imprimir / Excel** | **Ajustar** | Respeitar o filtro (N-025, N-039), mascarar CPF e registrar a exportação |
 | Menu lateral e cabeçalho por página | **Ajustar** | Um menu só, montado pelas permissões (`minhas_permissoes`) |
 
@@ -65,11 +83,12 @@
 2. **Função profissional** e **Grupo de usuários** como cadastros globais, com unicidade, histórico e inativação.
 3. **Validade da conta** (de, até) em `usuarios`, conferida no login.
 4. **Máscara de CPF** e **validação de CPF** no servidor.
+5. **Situação** dos cadastros com três valores (**ativo**, **inativo**, **excluído**) no lugar do `ativo` verdadeiro/falso, e a função `ilab.mudar_situacao_cadastro` aceitando as três, sempre com motivo.
+6. **Grupo × almoxarifado** (quando o Estoque entrar).
 Todos entram como **migrações novas**, com testes, e só se aplicam com a autorização do responsável.
 
-## 5. Perguntas
-1. **Profissional separado de Conta?** (Recomendado: sim.)
-2. **Grupo de usuários** é só **agrupamento organizacional** (sem conceder permissão)? E "Grupos de perfil" da Gov. Organizacional é o **Grupo Perfil da GQ** (níveis 1 a 3)?
-3. Quais dados da pessoa a **norma e a operação realmente exigem**? Podemos tirar **nome da mãe e do pai**?
-4. **Validade da conta** entra no iLabs?
-5. **Função profissional** deve ligar-se **diretamente aos papéis** da matriz (por exemplo, "Pessoa Delegada")?
+## 5. Perguntas que continuam abertas
+1. **Quando uma coisa pode ser "excluída"?** Proposta: só se **nunca foi usada** (sem movimentação, sem vínculo, sem assinatura). Se já foi usada, só **inativa**. **"Excluído" pode ser restaurado?** (Proposta: só por quem tem uma função própria, com motivo.)
+2. **Função profissional:** manter **ocupação (CBO)** e **cargo principal** como no legado?
+3. Na **Produção e no CQ**, a exigência de "função profissional por campo ou etapa" **continua** como no legado? (Desenho com esses módulos.)
+4. O **grupo** vale só para almoxarifados, ou também para outros locais (por exemplo, ambientes e salas)? No legado ele aparece também como responsável por locais (RN-PRI-034).
