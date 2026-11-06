@@ -53,7 +53,8 @@
     ["Controle de Documentos", "Documentos eletrônicos, revisões e registros regulatórios.", "docs", "docs"],
     ["Rastreabilidade", "Rastreabilidade completa de lotes e genealogia.", "rastro", "rastro"],
     ["Comercial", "Pedidos, cotações, faturamento e contratos.", "comercial", "comercial"],
-    ["Patrimônio", "Gestão de ativos, manutenções e calibrações.", "patrimonio", "patrimonio"] ];
+    ["Patrimônio", "Gestão de ativos, manutenções e calibrações.", "patrimonio", "patrimonio"],
+    ["Construtor OPE", "Monta e configura as ordens de produção do cliente (a rever quando chegarmos nele).", "config", "ope"] ];
   var abertos = {};
 
   /* ---------- menu único (uma vez só, para todas as telas) ---------- */
