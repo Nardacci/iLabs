@@ -138,7 +138,9 @@ export class Entrar {
         ? '/seguranca'
         : resultado.proximo === 'empresa_suspensa'
           ? '/empresa-suspensa'
-          : '/inicio',
+          : resultado.proximo === 'criar_empresa'
+            ? '/empresa'
+            : '/inicio',
     );
     if (resultado.precisaSegundaEtapa) {
       this.etapa.set('codigo');

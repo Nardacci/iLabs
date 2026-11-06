@@ -3,6 +3,12 @@
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
 
+## 2026-11-06 · Claude · Login sem empresa corrigido (migração 8 e `login` v3)
+
+- **Primeiro uso real:** o cadastro funcionou depois de corrigir o SMTP (usuário e senha da caixa) e o e-mail digitado errado; o e-mail de confirmação chegou. Ao entrar, o responsável foi recusado: `proximo_passo` não devolvia linha para quem não tinha empresa e a função `login` derrubava a sessão.
+- **Corrigido com autorização do responsável**, pelo conector do Supabase: migração 8 aplicada e `login` v3 publicada. Banco 318 de 318. Detalhe em `banco/execucao/2026-11-06-migracao-8/resultado.md`.
+- **Pendente:** entrar pelo app e criar a empresa; modelos de e-mail em português com a marca; campo "Repita o e-mail" no cadastro; mensagem do app para falha de servidor (hoje diz "confira a senha"); proteção contra senhas vazadas (plano pago).
+
 ## 2026-11-05 · Claude · Migrações 4, 5, 7 e 6 aplicadas no Supabase
 
 - **Feito pelo responsável** (projeto `LabPharma`), com arquivos prontos (begin e commit incluídos): provas reais da migração 3 (8 de 8, limpeza 0 e 0); migrações 4, 5 e 7 sem erro; conferência: 3 funções, CNPJ correto, 18 de 18 RLS, visitante só `consultar_convite`. Registro em `banco/execucao/2026-11-05-aplicacao-4-5-7/resultado.md`.

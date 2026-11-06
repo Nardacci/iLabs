@@ -62,6 +62,17 @@ describe('tela Entrar', () => {
     expect(ir).toHaveBeenCalledWith('/seguranca');
   });
 
+  it('quem ainda não criou a empresa vai para o cadastro da empresa', async () => {
+    const entrar = vi.fn(() =>
+      Promise.resolve({ ok: true, proximo: 'criar_empresa', precisaSegundaEtapa: false }),
+    );
+    const f = preparar(entrar);
+    const ir = vi.spyOn(TestBed.inject(Router), 'navigateByUrl').mockResolvedValue(true);
+    digitar(f, 'nova@empresa.com', 'qualquer-senha-12');
+    await f.whenStable();
+    expect(ir).toHaveBeenCalledWith('/empresa');
+  });
+
   it('quem tem duas etapas vê o campo do código', async () => {
     const entrar = vi.fn(() =>
       Promise.resolve({ ok: true, proximo: 'entrar', precisaSegundaEtapa: true }),
