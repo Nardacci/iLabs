@@ -43,7 +43,7 @@ Os testes **não substituem** a verificação no Supabase de verdade: o PostgreS
 
 **Migrações 4 e 5 (empresa criada pela própria pessoa; inativar cadastro com motivo): escritas e testadas (249 de 249), NÃO aplicadas.** Registro em `execucao/2026-11-06-migracoes-4-e-5/`. Dependem da autorização do responsável.
 
-**Migração 3 (login e segurança): escrita e testada, NÃO aplicada.** Depende da autorização do responsável e de `PROMPT-APLICAR-BANCO-3.md`. Traz convites, registro de acessos, política de segurança, assinaturas, situação de acesso da empresa e funções do servidor (resumo em `modelo-de-dados.md`).
+**Migração 3 (login e segurança): aplicada em 05/11/2026** no projeto `LabPharma` (São Paulo), pelo responsável (registro em `execucao/2026-11-05-aplicacao-3/resultado.md`). Conferido: 18 tabelas com RLS, 38 políticas, 16 funções no catálogo, visitante sem privilégio em tabela e só com `consultar_convite`, 4 gatilhos de imutabilidade, só 7 tabelas com gravação direta, Health e Security Advisor sem avisos; Performance Advisor só com 13 sugestões Info de índice ainda sem uso (esperado em banco novo). **Pendentes:** as provas reais de senha, segundo fator e sessões, e o que depende do painel e do app.
 
 **Migrações 1, 1.1 e 1.2 aplicadas em 03/11/2026** no projeto `LabPharma` do Supabase, na região **São Paulo** (registro em `execucao/2026-11-03-aplicacao-1/resultado.md`). Conferido: 12 tabelas com RLS, 32 políticas, 7 funções no catálogo, nenhum privilégio para visitante, e **nenhum aviso de segurança** do Supabase. Falta o que depende do painel (expor o schema `ilab`, desligar o cadastro público) e criar a primeira empresa.
 
