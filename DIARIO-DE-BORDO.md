@@ -3,11 +3,11 @@
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
 
-## 2026-11-06 · Claude · Marco 1B, parte 2: motivo obrigatório na alteração (migração 10, NÃO aplicada)
+## 2026-11-06 · Claude · Marco 1B, parte 2: motivo obrigatório na alteração (migração 10, aplicada)
 
 - **Banco:** `ilab.alterar_cadastro(tabela, id, valores, motivo)` (permissão, motivo, só colunas editáveis de lista fechada, recusa excluído e "nada mudou", grava e audita numa transação) e gatilho que impede a pessoa autenticada de alterar os dados de um cadastro por outra via. A inclusão continua direta. O dono do banco (DBA) segue podendo corrigir, e a auditoria registra. Arquivo `migracoes/20261110090000_motivo_na_alteracao.sql`; **398 testes de 398** no PGlite (31 novos); um teste antigo que alterava direto foi trocado para usar a função (mudança de regra)
 - **App:** a janela de edição pede o motivo, manda só o que mudou e chama a função; o app não tem mais como alterar cadastro direto (`ConsultaService.alterar` saiu). Testes do app 52 de 52, lint, tipagem e formatação limpos
-- **Depende do responsável:** autorizar a aplicação da migração 10 no Supabase (`LabPharma`). Até lá, o app novo e o banco real divergem: o banco real ainda aceita alterar direto
+- **Migração 10 APLICADA** no Supabase (`LabPharma`) com a autorização do responsável, conferida e provada no banco real (8 provas dentro de um bloco que desfaz tudo; 0 sobras). Registro em `banco/execucao/2026-11-06-migracao-10/resultado.md`. Banco real e app voltaram a coincidir
 - **Próximo:** casca nova no app; cadastros dos 4 grupos, um a um
 
 ## 2026-11-06 · Claude · Marco 1B, parte 1: situação de três valores (banco e motor de cadastros)
