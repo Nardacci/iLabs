@@ -77,3 +77,16 @@ Depois de o responsável ligar a organização do projeto ao conector do Claude,
 **Performance Advisor (INFO):** 7 índices ainda sem uso (esperado em banco novo) e 1 chave estrangeira sem índice (`sessoes_atividade.empresa_id`), da migração 6. Volume ainda zero; avaliar um índice em migração nova quando houver uso real.
 
 **Limite da conferência:** o ambiente da sessão não alcança o endereço da API do projeto (rede restrita), então o teste HTTP do `login` (Passo 4 do roteiro) continua sendo feito pelo responsável no PowerShell.
+
+## Teste do login pela função publicada (06/11/2026)
+
+O responsável chamou `POST /functions/v1/login` com um e-mail inventado e uma senha qualquer. A resposta foi **exatamente a mensagem única** (`ok: false`, "E-mail ou senha incorretos. Confira os dados e tente de novo."). A sessão leu `ilab.acessos` pelo conector (só leitura) e confirmou:
+
+| Conferência | Resultado |
+|---|---|
+| Tentativa registrada | Sim: `evento = falha`, `resultado = falha`, detalhe "Credenciais não aceitas", com IP e navegador gravados |
+| Colunas de `acessos` com nome de senha ou token | 0 |
+| Senha digitada gravada em algum campo | Não (0 ocorrências) |
+| Outra tentativa no mesmo minuto | Sim, e-mail real, também `falha` (esperado: ainda não há conta cadastrada) |
+
+**Provado no banco real:** a função `login` publicada registra cada tentativa pelo servidor, sem senha, e devolve sempre a mesma mensagem. **Ainda não provado:** o bloqueio na 5ª falha em 15 minutos, o caminho de sucesso (entrada com sessão e `sessoes_atividade`) e a inatividade com pessoa logada; dependem do primeiro cadastro no app.
