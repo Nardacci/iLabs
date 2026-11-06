@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { profissionais } from '../../cadastros/profissionais';
 import { unidadesMedida } from '../../cadastros/unidades-medida';
 import { comBancoFalso, permissao, violacoesDeAcessibilidade } from '../../../testing/apoio';
 import { ConsultaService } from '../dados/consulta';
@@ -274,5 +275,116 @@ describe('cadastro por metadados (unidades de medida)', () => {
     f.detectChanges();
     await f.whenStable();
     expect(await violacoesDeAcessibilidade(f)).toEqual([]);
+  });
+});
+
+describe('cadastro por metadados (profissionais, com listas vindas de outros cadastros)', () => {
+  const FUNCOES = [
+    { id: 'f1', descricao: 'Responsável técnico', situacao: 'ativo' },
+    { id: 'f2', descricao: 'Função antiga', situacao: 'inativo' },
+  ];
+  const GRUPOS = [{ id: 'g1', nome: 'Operadores', situacao: 'ativo' }];
+  const PROFISSIONAIS = [
+    {
+      id: 'p1',
+      codigo: 'P1',
+      nome: 'Carla Teste',
+      cpf: '12345678062',
+      funcao_profissional_id: 'f1',
+      grupo_id: null,
+      cbo: null,
+      situacao: 'ativo',
+    },
+  ];
+
+  function prepararProfissionais() {
+    const banco = comBancoFalso();
+    banco.respostas['usos_cadastros'] = [{ registro_id: 'p1', usos: 0 }];
+    const consulta = {
+      listar: vi.fn((p: { tabela: string }) =>
+        Promise.resolve(
+          p.tabela === 'funcoes_profissionais'
+            ? { linhas: FUNCOES, total: 2 }
+            : p.tabela === 'grupos_usuarios'
+              ? { linhas: GRUPOS, total: 1 }
+              : { linhas: PROFISSIONAIS, total: 1 },
+        ),
+      ),
+      incluir: vi.fn(() => Promise.resolve()),
+      historico: vi.fn(() => Promise.resolve([])),
+    };
+    TestBed.overrideProvider(ConsultaService, { useValue: consulta });
+    (
+      TestBed.inject(SessaoService) as unknown as { _permissoes: { set: (p: unknown) => void } }
+    )._permissoes.set([
+      permissao('acesso.profissionais', { incluir: true, alterar: true, excluir: true }),
+    ]);
+    return { banco, consulta };
+  }
+
+  async function abrirProfissionais() {
+    const f = TestBed.createComponent(Cadastro);
+    f.componentRef.setInput('cadastro', profissionais);
+    f.detectChanges();
+    await f.whenStable();
+    await new Promise((r) => setTimeout(r, 0));
+    f.detectChanges();
+    return f;
+  }
+
+  it('a lista mostra o nome da função (não o id) e o CPF formatado', async () => {
+    prepararProfissionais();
+    const f = await abrirProfissionais();
+    const linha = (f.nativeElement as HTMLElement).querySelector('tbody tr')?.textContent ?? '';
+    expect(linha).toContain('Responsável técnico');
+    expect(linha).not.toContain('f1');
+    expect(linha).toContain('123.456.780-62');
+  });
+
+  it('o formulário oferece só funções ativas', async () => {
+    prepararProfissionais();
+    const f = await abrirProfissionais();
+    const el = f.nativeElement as HTMLElement;
+    [...el.querySelectorAll('button')]
+      .find((b) => b.textContent?.includes('Novo profissional'))
+      ?.click();
+    f.detectChanges();
+    const opcoes = [...el.querySelectorAll('form select option')].map((o) => o.textContent?.trim());
+    expect(opcoes).toContain('Responsável técnico');
+    expect(opcoes).not.toContain('Função antiga');
+  });
+
+  it('ao incluir, o CPF vai só com dígitos e o campo opcional vazio vai como nulo', async () => {
+    const { consulta } = prepararProfissionais();
+    const f = await abrirProfissionais();
+    const el = f.nativeElement as HTMLElement;
+    [...el.querySelectorAll('button')]
+      .find((b) => b.textContent?.includes('Novo profissional'))
+      ?.click();
+    f.detectChanges();
+    const digitar = (rotulo: RegExp, valor: string): void => {
+      const campo = [...el.querySelectorAll<HTMLInputElement>('form input')].find((i) =>
+        rotulo.test(el.querySelector(`label[for="${i.id}"]`)?.textContent ?? ''),
+      )!;
+      campo.value = valor;
+      campo.dispatchEvent(new Event('input'));
+    };
+    digitar(/Código/, 'P9');
+    digitar(/Nome completo/, 'Rui Teste');
+    digitar(/CPF/, '234.567.890-92');
+    const funcao = el.querySelector<HTMLSelectElement>('form select')!;
+    funcao.value = 'f1';
+    funcao.dispatchEvent(new Event('change'));
+    f.detectChanges();
+    [...el.querySelectorAll('button')].find((b) => b.textContent?.trim() === 'Salvar')?.click();
+    await f.whenStable();
+    expect(consulta.incluir).toHaveBeenCalledWith('profissionais', {
+      codigo: 'P9',
+      nome: 'Rui Teste',
+      cpf: '23456789092',
+      funcao_profissional_id: 'f1',
+      cbo: null,
+      grupo_id: null,
+    });
   });
 });

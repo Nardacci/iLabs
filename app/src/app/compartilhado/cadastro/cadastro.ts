@@ -24,7 +24,7 @@ import { ConsultaService } from '../dados/consulta';
 import { mensagemDeErro } from '../dados/mensagem';
 import { RascunhoService } from '../sessao/rascunho.service';
 import { SessaoService } from '../sessao/sessao.service';
-import { Campo } from '../ui/campo';
+import { Campo, type OpcaoDeLista } from '../ui/campo';
 import { Janela } from '../ui/janela';
 import type { CampoDeCadastro, DescricaoDeCadastro } from './descricao';
 import { type Diferenca, diferencas, ROTULO_DA_ACAO } from './historico';
@@ -107,7 +107,7 @@ const TAMANHO_DA_PAGINA = 10;
         </button>
         @if (podeIncluir()) {
           <button type="button" class="btn primary" (click)="abrirFormulario(null)">
-            Nova {{ cadastro().singular }}
+            {{ novo() }} {{ cadastro().singular }}
           </button>
         }
       </div>
@@ -137,7 +137,7 @@ const TAMANHO_DA_PAGINA = 10;
             @for (linha of linhas(); track linha['id']) {
               <tr>
                 @for (c of colunas(); track c.nome) {
-                  <td>{{ texto(linha[c.nome]) }}</td>
+                  <td>{{ celula(linha, c) }}</td>
                 }
                 <td>
                   <span
@@ -235,7 +235,7 @@ const TAMANHO_DA_PAGINA = 10;
     @switch (janela()) {
       @case ('formulario') {
         <il-janela
-          [titulo]="(editando() ? 'Editar ' : 'Nova ') + cadastro().singular"
+          [titulo]="(editando() ? 'Editar ' : novo() + ' ') + cadastro().singular"
           (fechar)="fechar()"
         >
           @if (erroDaJanela(); as texto) {
@@ -246,7 +246,7 @@ const TAMANHO_DA_PAGINA = 10;
               <il-campo
                 [rotulo]="c.rotulo"
                 [tipo]="tipoDoCampo(c)"
-                [opcoes]="c.opcoes ?? []"
+                [opcoes]="opcoesDoCampo(c)"
                 [dica]="c.dica"
                 [maximo]="c.max"
                 [obrigatorio]="c.obrigatorio === true"
@@ -349,6 +349,10 @@ export class Cadastro {
   protected readonly alvo = signal<Linha | null>(null);
   protected readonly acao = signal<AcaoDeSituacao>('inativar');
   protected readonly usos = signal<Record<string, number>>({});
+  /** Opções vindas de outros cadastros (todas as situações), por campo. Servem à lista (nomes) e ao formulário (só os ativos). */
+  protected readonly opcoesDeReferencia = signal<
+    Record<string, (OpcaoDeLista & { ativo: boolean })[]>
+  >({});
   protected readonly filtroSituacao = new FormControl<FiltroDeSituacao>('vivos', {
     nonNullable: true,
   });
@@ -363,6 +367,7 @@ export class Cadastro {
   protected readonly editando = computed(
     () => this.alvo() !== null && this.janela() === 'formulario',
   );
+  protected readonly novo = computed(() => (this.cadastro().genero === 'm' ? 'Novo' : 'Nova'));
   protected readonly tituloDaAcao = computed(() => TITULO_DA_ACAO[this.acao()]);
   protected readonly explicacaoDaAcao = computed(() => EXPLICACAO_DA_ACAO[this.acao()]);
 
@@ -389,6 +394,7 @@ export class Cadastro {
     effect(() => {
       this.cadastro();
       this.pagina.set(1);
+      void this.carregarReferencias();
       void this.carregar();
     });
     this.busca.valueChanges.pipe(debounceTime(300), takeUntilDestroyed()).subscribe(() => {
@@ -430,6 +436,28 @@ export class Cadastro {
     const n = this.usos()[String(linha['id'])];
     if (n === undefined) return null;
     return n > 0 ? `em uso (${n})` : 'nunca usado';
+  }
+
+  /** O que aparece na célula: nome (no lugar do id) e CPF formatado. */
+  protected celula(linha: Linha, c: CampoDeCadastro): string {
+    const valor = linha[c.nome];
+    if (valor === null || valor === undefined || valor === '') return '—';
+    if (c.referencia) {
+      return this.opcoesDeReferencia()[c.nome]?.find((o) => o.valor === valor)?.rotulo ?? '—';
+    }
+    if (c.formato === 'cpf' && typeof valor === 'string') {
+      return valor.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
+    }
+    return this.texto(valor);
+  }
+
+  /** Opções do formulário: de apoio fixas, ou as de outro cadastro (só ativos, mais o que já estava escolhido). */
+  protected opcoesDoCampo(c: CampoDeCadastro): readonly OpcaoDeLista[] {
+    if (!c.referencia) return c.opcoes ?? [];
+    const escolhido = this.alvo()?.[c.nome];
+    return (this.opcoesDeReferencia()[c.nome] ?? []).filter(
+      (o) => o.ativo || o.valor === escolhido,
+    );
   }
 
   protected resumo(linha: Linha | null): string {
@@ -481,6 +509,36 @@ export class Cadastro {
     } finally {
       this.carregando.set(false);
     }
+  }
+
+  /** O banco guarda o CPF só com dígitos; a pessoa pode digitar com pontos e traço. */
+  private normalizar(c: CampoDeCadastro, valor: string): string {
+    return c.formato === 'cpf' ? valor.replace(/\D/g, '') : valor.trim();
+  }
+
+  private async carregarReferencias(): Promise<void> {
+    const novas: Record<string, (OpcaoDeLista & { ativo: boolean })[]> = {};
+    for (const c of this.cadastro().campos) {
+      if (!c.referencia) continue;
+      try {
+        const r = await this.consulta.listar({
+          tabela: c.referencia.tabela,
+          colunasDeBusca: [],
+          busca: '',
+          pagina: 1,
+          tamanho: 500,
+          ordenarPor: c.referencia.rotulo,
+        });
+        novas[c.nome] = (r.linhas as unknown as Linha[]).map((l) => ({
+          valor: String(l['id']),
+          rotulo: this.texto(l[c.referencia?.rotulo ?? 'id']),
+          ativo: l['situacao'] === 'ativo',
+        }));
+      } catch {
+        novas[c.nome] = []; // sem as opções a lista mostra "—"; o banco continua conferindo cada gravação
+      }
+    }
+    this.opcoesDeReferencia.set(novas);
   }
 
   private async carregarUsos(linhas: readonly Linha[]): Promise<void> {
@@ -575,7 +633,7 @@ export class Cadastro {
         const mudou: Record<string, string | null> = {};
         for (const c of this.cadastro().campos) {
           const antes = this.texto(atual[c.nome]).replace('—', '');
-          const depois = valores[c.nome] ?? '';
+          const depois = this.normalizar(c, valores[c.nome] ?? '');
           if (antes !== depois)
             mudou[c.nome] = depois === '' && c.obrigatorio !== true ? null : depois;
         }
@@ -590,7 +648,12 @@ export class Cadastro {
           p_motivo: this.motivo.value,
         });
       } else {
-        await this.consulta.incluir(this.cadastro().tabela, valores);
+        const novos: Record<string, string | null> = {};
+        for (const c of this.cadastro().campos) {
+          const v = this.normalizar(c, valores[c.nome] ?? '');
+          novos[c.nome] = v === '' && c.obrigatorio !== true ? null : v;
+        }
+        await this.consulta.incluir(this.cadastro().tabela, novos);
       }
       this.fechar();
       this.aviso.set(atual ? 'Alteração salva e registrada no histórico.' : 'Registro salvo.');

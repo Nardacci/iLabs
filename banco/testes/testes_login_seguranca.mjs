@@ -104,8 +104,8 @@ export async function rodar({ db, registrar, como, tenta, dono, n, A, B, X, eA, 
            or has_table_privilege('authenticated', c.oid, 'DELETE') or has_table_privilege('authenticated', c.oid, 'TRUNCATE')
            or has_any_column_privilege('authenticated', c.oid, 'UPDATE') or has_any_column_privilege('authenticated', c.oid, 'INSERT'))
     order by 1`)).map((x) => x.t);
-  registrar('só 7 tabelas aceitam gravação pela API (cadastros, perfis e o nome do usuário)',
-    JSON.stringify(gravaveis) === JSON.stringify(['almoxarifados', 'enderecos_almoxarifado', 'materiais', 'perfis', 'pessoas_juridicas', 'unidades_medida', 'usuarios']), gravaveis.join(','));
+  registrar('só 10 tabelas aceitam gravação pela API (cadastros, perfis, profissionais e o nome do usuário)',
+    JSON.stringify(gravaveis) === JSON.stringify(['almoxarifados', 'enderecos_almoxarifado', 'funcoes_profissionais', 'grupos_usuarios', 'materiais', 'perfis', 'pessoas_juridicas', 'profissionais', 'unidades_medida', 'usuarios']), gravaveis.join(','));
   registrar('toda política de gravação confere função e ação (pode)',
     await n(`select count(*)::int n from pg_policies where schemaname = 'ilab' and cmd in ('INSERT','UPDATE','DELETE','ALL')
              and (coalesce(qual,'') || coalesce(with_check,'')) !~ 'pode'`) === 0);
@@ -455,7 +455,7 @@ export async function rodar({ db, registrar, como, tenta, dono, n, A, B, X, eA, 
   registrar('o visitante não tem privilégio em nenhuma tabela', await n(`select count(*)::int n from information_schema.role_table_grants where table_schema = 'ilab' and grantee = 'anon'`) === 0);
   const internas = (await q(`select p.proname from pg_proc p join pg_namespace s on s.oid = p.pronamespace where s.nspname = 'ilab_interno' and has_function_privilege('authenticated', p.oid, 'EXECUTE') order by 1`)).map((x) => x.proname);
   // conferir_inatividade (migração 6) é o portão que o PostgREST chama antes de toda chamada; precisa ser executável por quem está logado.
-  registrar('quem está logado só chama empresa_atual, pode e o portão de inatividade no schema interno', JSON.stringify(internas) === '["conferir_inatividade","empresa_atual","pode"]', internas.join(','));
+  registrar('quem está logado só chama empresa_atual, pode, o portão de inatividade e a conferência de CPF (usada pela restrição da tabela) no schema interno', JSON.stringify(internas) === '["conferir_inatividade","cpf_valido","empresa_atual","pode"]', internas.join(','));
   registrar('toda função com security definer tem o caminho de busca fixo', await n(`select count(*)::int n from pg_proc p join pg_namespace s on s.oid = p.pronamespace
     where s.nspname in ('ilab','ilab_interno') and p.prosecdef and not coalesce(p.proconfig::text ~ 'search_path', false)`) === 0);
 }
