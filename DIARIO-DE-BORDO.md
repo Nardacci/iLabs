@@ -3,6 +3,14 @@
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
 
+## 2026-11-06 · Claude · Marco 1B, parte 1: situação de três valores (banco e motor de cadastros)
+
+- **Banco (migração 9, NÃO aplicada):** `situacao` (ativo, inativo, excluído) nos 5 cadastros; `ativo` vira coluna calculada; gatilho só deixa mudar a situação pela função `ilab.mudar_situacao` (com motivo); excluir só o que nunca foi usado (conta quem aponta para o registro, em qualquer situação); restaurar com a função própria `cadastros.restaurar_excluidos` (volta como inativo); código, sigla e CNPJ repetidos só valem entre registros não excluídos; `ilab.usos_cadastro(s)` informa os usos ao app. A função antiga da migração 5 continua, como atalho. **367 testes de 367** no PGlite (49 novos)
+- **App:** o motor de cadastros mostra as três situações e "em uso (N)", filtro de situação, Excluir (desabilitado se já foi usado) e Restaurar (só com a função), tudo pela função nova. Tipos do banco regenerados; testes do app 50 de 50, lint, tipagem e formatação limpos (rodados com Node 22.22.3 instalado à parte, pois o do ambiente é 22.22.0)
+- **Correção de passagem:** `scripts/tipos.mjs` não criava `auth.jwt()` no banco de teste e quebrava com as migrações 6 em diante
+- **Fora desta parte, a fazer:** motivo obrigatório também na ALTERAÇÃO de cadastro (RN-PRI-070; hoje só inativar e excluir pedem motivo); casca nova no app; cadastros dos 4 grupos, um a um
+- **Depende do responsável:** autorizar a aplicação da migração 9 no Supabase (`LabPharma`). Depois de aplicada, registrar em `banco/execucao/`
+
 ## 2026-11-06 · Claude · Principal: análise dos 4 primeiros grupos e Marco 1A aprovado
 
 - **Analisados e decididos com o responsável** (`docs/principal/`): Governança de Acesso, Governança Organizacional, Estrutura Física e Cadastros Corporativos. Decisões em `docs/decisoes.md` (Profissional separado de Conta; grupo = escopo; situação "excluído" distinta de "inativo", só para o nunca usado; árvore organizacional única; Ambiente único; qualificação de fornecedor na GQ com bloqueio no recebimento; contas num cadastro com tipo)

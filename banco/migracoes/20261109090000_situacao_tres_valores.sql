@@ -104,7 +104,7 @@ end $$;
 -- 4. Quantos lugares usam o cadastro (qualquer registro que aponte para ele, em qualquer situação)
 -- ---------------------------------------------------------------------------
 create function ilab_interno.contar_usos(p_tabela text, p_id uuid) returns integer
-language plpgsql security definer set search_path = '' as $$
+language plpgsql stable security definer set search_path = '' as $$
 declare
   r       record;
   v_cond  text;
@@ -214,6 +214,21 @@ begin
 end $$;
 revoke execute on function ilab.usos_cadastro(text, uuid) from public, anon;
 grant execute on function ilab.usos_cadastro(text, uuid) to authenticated;
+
+-- Os usos de vários cadastros de uma vez (a lista do app mostra "em uso (N)" sem uma chamada por linha)
+create function ilab.usos_cadastros(p_tabela text, p_ids uuid[]) returns table (registro_id uuid, usos integer)
+language plpgsql stable security definer set search_path = '' as $$
+declare
+  v_funcao text := ilab_interno.funcao_do_cadastro(p_tabela);
+  v_emp    uuid := ilab_interno.empresa_atual();
+begin
+  if v_funcao is null then raise exception 'Cadastro desconhecido.'; end if;
+  if v_emp is null or not ilab_interno.pode(v_funcao, 'consultar') then raise exception 'Sem permissão para consultar este cadastro.'; end if;
+  return query execute format('select t.id, ilab_interno.contar_usos(%L, t.id) from ilab.%I t where t.id = any ($1) and t.empresa_id = $2', p_tabela, p_tabela)
+    using p_ids, v_emp;
+end $$;
+revoke execute on function ilab.usos_cadastros(text, uuid[]) from public, anon;
+grant execute on function ilab.usos_cadastros(text, uuid[]) to authenticated;
 
 -- A função da migração 5 continua valendo (verdadeiro = ativo, falso = inativo) e passa pela nova.
 create or replace function ilab.mudar_situacao_cadastro(p_tabela text, p_id uuid, p_ativo boolean, p_motivo text)

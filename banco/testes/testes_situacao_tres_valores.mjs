@@ -58,6 +58,9 @@ export async function rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB 
   registrar('o quilograma aparece em uso (confere com os materiais que o usam)', !t.erro && esperado >= 1 && t.r.rows[0].n === esperado, (t.erro ?? JSON.stringify(t.r?.rows)) + ' esperado ' + esperado);
   t = await tenta(`select ilab.usos_cadastro('unidades_medida', '${tst1}') n`);
   registrar('a unidade nova aparece como nunca usada (0)', !t.erro && t.r.rows[0].n === 0, t.erro);
+  t = await tenta(`select registro_id, usos from ilab.usos_cadastros('unidades_medida', array['${kg}', '${tst1}']::uuid[])`);
+  const porId = Object.fromEntries((t.r?.rows ?? []).map((r) => [r.registro_id, r.usos]));
+  registrar('os usos de várias unidades vêm numa chamada só', !t.erro && porId[kg] === esperado && porId[tst1] === 0, t.erro ?? JSON.stringify(porId));
   t = await mudar('unidades_medida', kg, 'excluido', 'Tentando excluir unidade em uso');
   registrar('excluir cadastro já usado é recusado, com o número de usos', !!t.erro && new RegExp('já foi usado em ' + esperado + ' lugar').test(t.erro), t.erro);
   registrar('o quilograma continua ativo', (await sit(kg)).situacao === 'ativo');
@@ -126,6 +129,8 @@ export async function rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB 
 
   console.log('  isolamento e acesso');
   await como(B);
+  t = await tenta(`select registro_id, usos from ilab.usos_cadastros('unidades_medida', array['${kg}']::uuid[])`);
+  registrar('empresa B não vê os usos de cadastro da empresa A (lista vazia)', !t.erro && t.r.rows.length === 0, t.erro);
   t = await mudar('unidades_medida', kg, 'inativo', 'Empresa B tentando mexer na empresa A');
   registrar('empresa B não muda a situação de cadastro da empresa A', !!t.erro && /não encontrado/.test(t.erro), t.erro);
   t = await tenta(`select ilab.usos_cadastro('unidades_medida', '${kg}')`);

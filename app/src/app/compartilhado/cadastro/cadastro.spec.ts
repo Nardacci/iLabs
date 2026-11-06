@@ -6,12 +6,22 @@ import { SessaoService } from '../sessao/sessao.service';
 import { Cadastro } from './cadastro';
 
 const LINHAS = [
-  { id: '1', sigla: 'g', nome: 'Grama', grandeza: 'massa', ativo: true },
-  { id: '2', sigla: 'L', nome: 'Litro', grandeza: 'volume', ativo: false },
+  { id: '1', sigla: 'g', nome: 'Grama', grandeza: 'massa', situacao: 'ativo' },
+  { id: '2', sigla: 'L', nome: 'Litro', grandeza: 'volume', situacao: 'inativo' },
+  { id: '3', sigla: 'mL', nome: 'Mililitro', grandeza: 'volume', situacao: 'ativo' },
+  { id: '4', sigla: 'x', nome: 'Excluída', grandeza: 'massa', situacao: 'excluido' },
+];
+/** Usos que o banco informa: o Grama já foi usado em 2 lugares; o Mililitro nunca foi usado. */
+const USOS = [
+  { registro_id: '1', usos: 2 },
+  { registro_id: '2', usos: 1 },
+  { registro_id: '3', usos: 0 },
+  { registro_id: '4', usos: 0 },
 ];
 
-function preparar(permitidas: Partial<ReturnType<typeof permissao>> = {}) {
+function preparar(permitidas: Partial<ReturnType<typeof permissao>> = {}, restaurar = true) {
   const banco = comBancoFalso();
+  banco.respostas['usos_cadastros'] = USOS;
   const consulta = {
     listar: vi.fn(() => Promise.resolve({ linhas: LINHAS, total: 25 })),
     incluir: vi.fn(() => Promise.resolve()),
@@ -24,10 +34,12 @@ function preparar(permitidas: Partial<ReturnType<typeof permissao>> = {}) {
     permissao('cadastros.unidades_medida', {
       incluir: true,
       alterar: true,
+      excluir: true,
       imprimir: true,
       consultar_historico: true,
       ...permitidas,
     }),
+    ...(restaurar ? [permissao('cadastros.restaurar_excluidos', { alterar: true })] : []),
   ]);
   return { banco, consulta };
 }
@@ -37,6 +49,7 @@ async function abrir() {
   fixture.componentRef.setInput('cadastro', unidadesMedida);
   fixture.detectChanges();
   await fixture.whenStable();
+  await new Promise((resolver) => setTimeout(resolver, 0)); // a lista e, em seguida, os usos (duas idas ao banco)
   fixture.detectChanges();
   return fixture;
 }
@@ -63,6 +76,9 @@ describe('cadastro por metadados (unidades de medida)', () => {
     ]);
     expect(el.textContent).toContain('Grama');
     expect(el.textContent).toContain('25 registro(s) · página 1 de 3');
+    expect(consulta.listar).toHaveBeenCalledWith(
+      expect.objectContaining({ situacoes: ['ativo', 'inativo'] }),
+    );
   });
 
   it('sem permissão de incluir/alterar a tela não oferece os botões (o banco recusaria de qualquer forma)', async () => {
@@ -103,7 +119,7 @@ describe('cadastro por metadados (unidades de medida)', () => {
         ?.click();
     confirmar();
     await f.whenStable();
-    expect(banco.chamadas.filter((c) => c.nome === 'mudar_situacao_cadastro')).toHaveLength(0);
+    expect(banco.chamadas.filter((c) => c.nome === 'mudar_situacao')).toHaveLength(0);
 
     const area = el.querySelector<HTMLTextAreaElement>('textarea');
     area!.value = 'Unidade fora de uso na farmácia';
@@ -111,12 +127,83 @@ describe('cadastro por metadados (unidades de medida)', () => {
     f.detectChanges();
     confirmar();
     await f.whenStable();
-    expect(banco.chamadas.find((c) => c.nome === 'mudar_situacao_cadastro')?.args).toEqual({
+    expect(banco.chamadas.find((c) => c.nome === 'mudar_situacao')?.args).toEqual({
       p_tabela: 'unidades_medida',
       p_id: '1',
-      p_ativo: false,
+      p_situacao: 'inativo',
       p_motivo: 'Unidade fora de uso na farmácia',
     });
+  });
+
+  it('mostra as três situações e quantos lugares usam cada registro (a informação vem do banco)', async () => {
+    preparar();
+    const f = await abrir();
+    const linhas = [...(f.nativeElement as HTMLElement).querySelectorAll('tbody tr')].map(
+      (tr) => tr.textContent?.replace(/\s+/g, ' ').trim() ?? '',
+    );
+    expect(linhas[0]).toContain('Ativo');
+    expect(linhas[0]).toContain('em uso (2)');
+    expect(linhas[1]).toContain('Inativo');
+    expect(linhas[2]).toContain('nunca usado');
+    expect(linhas[3]).toContain('Excluído');
+  });
+
+  it('Excluir fica desabilitado para o que já foi usado e habilitado para o que nunca foi usado', async () => {
+    preparar();
+    const f = await abrir();
+    const botoes = [...(f.nativeElement as HTMLElement).querySelectorAll('tbody tr')].map((tr) =>
+      [...tr.querySelectorAll('button')].find((b) => b.textContent?.includes('Excluir')),
+    );
+    expect(botoes[0]?.disabled).toBe(true); // Grama: em uso
+    expect(botoes[1]?.disabled).toBe(true); // Litro: em uso
+    expect(botoes[2]?.disabled).toBe(false); // Mililitro: nunca usado
+    expect(botoes[3]).toBeUndefined(); // excluído não se exclui de novo
+  });
+
+  it('excluir pede o motivo e chama a função com a situação "excluido"', async () => {
+    const { banco } = preparar();
+    const f = await abrir();
+    const el = f.nativeElement as HTMLElement;
+    const linha = el.querySelectorAll('tbody tr')[2];
+    [...(linha?.querySelectorAll('button') ?? [])]
+      .find((b) => b.textContent?.includes('Excluir'))
+      ?.click();
+    f.detectChanges();
+    expect(el.textContent).toContain('Nada é apagado do banco');
+    const area = el.querySelector<HTMLTextAreaElement>('textarea');
+    area!.value = 'Cadastrada por engano, nunca usada';
+    area!.dispatchEvent(new Event('input'));
+    f.detectChanges();
+    [...el.querySelectorAll('button')].find((b) => b.textContent?.trim() === 'Confirmar')?.click();
+    await f.whenStable();
+    expect(banco.chamadas.find((c) => c.nome === 'mudar_situacao')?.args).toEqual({
+      p_tabela: 'unidades_medida',
+      p_id: '3',
+      p_situacao: 'excluido',
+      p_motivo: 'Cadastrada por engano, nunca usada',
+    });
+  });
+
+  it('quem tem a função própria vê "Restaurar" nos excluídos; quem não tem, não vê', async () => {
+    preparar();
+    const com = await abrir();
+    expect((com.nativeElement as HTMLElement).textContent).toContain('Restaurar');
+    TestBed.resetTestingModule();
+    preparar({}, false);
+    const sem = await abrir();
+    expect((sem.nativeElement as HTMLElement).textContent).not.toContain('Restaurar');
+  });
+
+  it('trocar o filtro de situação consulta de novo, só com as situações escolhidas', async () => {
+    const { consulta } = preparar();
+    const f = await abrir();
+    const select = (f.nativeElement as HTMLElement).querySelector<HTMLSelectElement>('select')!;
+    select.value = 'excluido';
+    select.dispatchEvent(new Event('change'));
+    await f.whenStable();
+    expect(consulta.listar).toHaveBeenLastCalledWith(
+      expect.objectContaining({ situacoes: ['excluido'] }),
+    );
   });
 
   it('passa na verificação de acessibilidade (axe)', async () => {

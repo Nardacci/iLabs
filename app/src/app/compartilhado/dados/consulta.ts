@@ -9,6 +9,8 @@ export interface PedidoDeLista {
   pagina: number;
   tamanho: number;
   ordenarPor: string;
+  /** Só estas situações (ativo, inativo, excluido). Sem isto, vêm todas. */
+  situacoes?: readonly string[];
 }
 
 export interface Pagina<L> {
@@ -45,6 +47,9 @@ export class ConsultaService {
       .select('*', { count: 'exact' })
       .order(p.ordenarPor)
       .range(de, de + p.tamanho - 1);
+    if (p.situacoes && p.situacoes.length > 0) {
+      consulta = consulta.in('situacao' as never, [...p.situacoes] as never);
+    }
     const termo = p.busca.trim().replace(/[%,()*]/g, ' ');
     if (termo && p.colunasDeBusca.length > 0) {
       consulta = consulta.or(p.colunasDeBusca.map((c) => `${c}.ilike.%${termo}%`).join(','));
