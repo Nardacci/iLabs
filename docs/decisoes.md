@@ -37,7 +37,6 @@ O detalhe das decisões do banco está em `../banco/README.md` e `../banco/model
 | 06/11/2026 | **Departamentos e Setores numa só árvore** (estrutura organizacional, com tipo de nível) | Evita cadastros repetidos; no legado já é uma árvore (`SIS_LOCAL`) |
 | 06/11/2026 | **Sem cadastro "Grupos de perfil"** no Principal; níveis da GQ viram papéis da matriz | No legado só existe na GQ (DV-GQ-009, R-GQ-34) |
 | 06/11/2026 | **Centro de custos segue o legado, corrigido** (código com letras, motivo, histórico) | DV-PRI-043/044. Filiais da fábrica: **em aberto, a pesquisar** |
-
 | 06/11/2026 | **Sistema preparado para mais de uma planta ou prédio** (níveis da árvore organizacional), mesmo sem a informação hoje | Fábrica pode crescer; evita refazer a estrutura |
 | 06/11/2026 | **Almoxarifado em tela única com abas**, cadastros separados no banco | Protótipo + Estoque do legado (7 cadastros) |
 | 06/11/2026 | **Linhas de produção ficam para a análise da Produção** | Não existe no Principal |
