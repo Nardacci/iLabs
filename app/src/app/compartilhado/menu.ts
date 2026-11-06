@@ -1,4 +1,5 @@
 import type { Route } from '@angular/router';
+import type { NomeDeIcone } from './ui/icone';
 
 /** O que cada rota declara em `data` (única descrição: serve ao título, ao menu e à guarda de permissão). */
 export interface DadosDaRota {
@@ -16,8 +17,21 @@ export interface ItemDeMenu {
 
 export interface GrupoDeMenu {
   grupo: string;
+  icone: NomeDeIcone;
   itens: ItemDeMenu[];
 }
+
+/** Ícone de cada grupo do menu. Grupo novo sem ícone aqui usa o de cadastros. */
+const ICONE_DO_GRUPO: Record<string, NomeDeIcone> = {
+  Geral: 'inicio',
+  Acesso: 'acesso',
+  Cadastros: 'cadastros',
+  'Minha conta': 'conta',
+  'Governança de Acesso': 'acesso',
+  'Governança Organizacional': 'organizacao',
+  'Estrutura Física': 'fisica',
+  'Cadastros Corporativos': 'corporativo',
+};
 
 /** O menu é GERADO das rotas: criar a rota com `data.menu` já cria o item. `pode` é o resultado de minhas_permissoes. */
 export function menuDasRotas(
@@ -32,5 +46,9 @@ export function menuDasRotas(
     lista.push({ rotulo: d.titulo, rota: `/${r.path}` });
     grupos.set(d.menu.grupo, lista);
   }
-  return [...grupos].map(([grupo, itens]) => ({ grupo, itens }));
+  return [...grupos].map(([grupo, itens]) => ({
+    grupo,
+    icone: ICONE_DO_GRUPO[grupo] ?? 'cadastros',
+    itens,
+  }));
 }
