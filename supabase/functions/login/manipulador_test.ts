@@ -4,9 +4,9 @@ import { assert, assertEquals, assertNotEquals } from 'jsr:@std/assert@1';
 import {
   criarManipuladorLogin,
   type Dependencias,
+  MENSAGEM_GENERICA,
   type PassoDaConta,
   type Proximo,
-  MENSAGEM_GENERICA,
   TEMPO_MINIMO_MS,
 } from './manipulador.ts';
 
@@ -237,7 +237,10 @@ Deno.test('senha a trocar e carência orientam o app', async () => {
 
 Deno.test('quem confirmou o e-mail e ainda não criou a empresa entra e é levado a criar a empresa', async () => {
   const sim = criarSimulacao({
-    'nova@e.com': { senha: SENHA_CERTA, estado: estadoBase({ empresa_id: null, situacao_empresa: '', dias_restantes: null }) },
+    'nova@e.com': {
+      senha: SENHA_CERTA,
+      estado: estadoBase({ empresa_id: null, situacao_empresa: '', dias_restantes: null }),
+    },
   });
   const manipular = criarManipuladorLogin(sim.dep);
   const resposta = await manipular(pedido('nova@e.com', SENHA_CERTA));

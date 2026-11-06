@@ -27,6 +27,8 @@ jobs:
         run: npm run tipos:conferir
       - name: Formatação
         run: npm run formatar:conferir
+      - name: Arquivo de ambiente (vazio; é gerado e não vai para o git, e o lint precisa dele)
+        run: npm run ambiente
       - name: Lint
         run: npm run lint
       - name: Checagem de tipos
