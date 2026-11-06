@@ -45,7 +45,7 @@ Os testes **não substituem** a verificação no Supabase de verdade: o PostgreS
 
 **Migração 10 (motivo obrigatório na alteração) aplicada em 06/11/2026**, com autorização do responsável (registro em `execucao/2026-11-06-migracao-10/resultado.md`): a alteração de cadastro só vale pela função `ilab.alterar_cadastro`, com motivo; arquivo `migracoes/20261110090000_motivo_na_alteracao.sql`; testes em `testes/testes_motivo_na_alteracao.mjs` (398 de 398 no PGlite).
 
-**Migração 11 (Governança de Acesso: funções profissionais, grupos de usuários e profissionais) escrita em 06/11/2026, NÃO aplicada** (espera a autorização do responsável): arquivo `migracoes/20261111090000_governanca_acesso_cadastros.sql`; testes em `testes/testes_governanca_acesso.mjs` (434 de 434 no PGlite).
+**Migração 11 (Governança de Acesso: funções profissionais, grupos de usuários e profissionais) aplicada em 06/11/2026**, com autorização do responsável (registro em `execucao/2026-11-06-migracao-11/resultado.md`): arquivo `migracoes/20261111090000_governanca_acesso_cadastros.sql`; testes em `testes/testes_governanca_acesso.mjs` (434 de 434 no PGlite).
 
 **Migração 6 (inatividade conferida pelo servidor): aplicada em 05/11/2026** (21:38), sozinha, depois das 4, 5 e 7 (registro em `execucao/2026-11-05-aplicacao-4-5-7/resultado.md`). Conferido: portão ligado ao PostgREST, tabela `sessoes_atividade` com RLS, visitante só com `consultar_convite`. **A API responde com o portão ligado** (chamada de visitante em `consultar_convite`, com o schema `ilab` exposto por SQL em `pgrst.db_schemas`). Falta provar o portão com pessoa logada, que depende do app e da função `login` publicada.
 
