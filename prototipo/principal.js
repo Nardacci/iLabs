@@ -15,29 +15,82 @@
   function campo(it, k) { for (var i = 0; i < it.campos.length; i++) if (it.campos[i].k === k) return it.campos[i]; return {}; }
   function pill(l) { var s = sit(l); return s === "ativo" ? '<span class="pill ok">Ativo</span>' : s === "inativo" ? '<span class="pill warn">Inativo</span>' : '<span class="pill bad">Excluído</span>'; }
 
+  /* ---------- ícones (traço simples, sem biblioteca externa) ---------- */
+  var ICO = {
+    inicio: '<path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10"/>',
+    acesso: '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/>',
+    org: '<path d="M4 21V5l8-2v18M12 8h8v13M8 9h1M8 13h1M8 17h1M16 12h1M16 16h1M3 21h18"/>',
+    fisica: '<path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6M9 11h6"/>',
+    corp: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V4h6v3M3 13h18"/>',
+    farma: '<path d="M10.5 20.5a5 5 0 0 1-7-7l9-9a5 5 0 0 1 7 7z"/><path d="M8.5 8.5l7 7"/>',
+    tabelas: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 4v16"/>',
+    notif: '<path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 21h4"/>',
+    config: '<circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9a7 7 0 0 0 2 1.2L10 21h4l.6-2.6a7 7 0 0 0 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z"/>',
+    producao: '<path d="M3 20V9l6 4V9l6 4V6h3v14zM7 20v-3M12 20v-3M17 20v-3"/>',
+    estoque: '<path d="M21 8l-9-5-9 5v8l9 5 9-5zM3 8l9 5 9-5M12 13v8"/>',
+    cq: '<path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3M8 15h8"/>',
+    gq: '<circle cx="12" cy="9" r="6"/><path d="M9 9l2 2 3-3M8.5 14L7 21l5-3 5 3-1.5-7"/>',
+    docs: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5M9 13h6M9 17h6"/>',
+    rastro: '<circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="12" r="2.5"/><circle cx="6" cy="18" r="2.5"/><path d="M8.5 7l7 4M8.5 17l7-4"/>',
+    comercial: '<path d="M3 4h2l2.4 11h10.2L20 7H6M9 20h.01M17 20h.01"/>',
+    patrimonio: '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 7h6M9 11h6M9 15h3"/>',
+    menu: '<path d="M4 6h16M4 12h16M4 18h16"/>',
+    busca: '<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>',
+    tema: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+    seta: '<path d="M6 9l6 6 6-6"/>'
+  };
+  function svg(nome, cls) { return '<svg class="' + (cls || "p-ico") + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICO[nome] + "</svg>"; }
+  var ICONE_GRUPO = { acesso: "acesso", org: "org", fisica: "fisica", corp: "corp" };
+  var MARCO2 = [["Cadastros Farmacêuticos", "farma"], ["Tabelas Compartilhadas", "tabelas"], ["Central de Notificações", "notif"], ["Configuração da Plataforma", "config"]];
+  var MODULOS = [
+    ["Produção", "Planejamento, ordens de produção e execução industrial.", "producao"],
+    ["Estoque", "Recebimento, armazenamento, movimentações e inventário.", "estoque"],
+    ["Controle da Qualidade", "Ensaios, resultados, especificações e laudos.", "cq"],
+    ["Garantia da Qualidade", "Desvios, mudanças, auditorias e qualificação de fornecedores.", "gq"],
+    ["Controle de Documentos", "Documentos eletrônicos, revisões e registros regulatórios.", "docs"],
+    ["Rastreabilidade", "Rastreabilidade completa de lotes e genealogia.", "rastro"],
+    ["Comercial", "Pedidos, cotações, faturamento e contratos.", "comercial"],
+    ["Patrimônio", "Gestão de ativos, manutenções e calibrações.", "patrimonio"] ];
+  var abertos = {};
+
   /* ---------- menu único (uma vez só, para todas as telas) ---------- */
   function menu(atual) {
-    var h = '<a href="#inicio"' + (atual === "inicio" ? ' aria-current="page"' : "") + ">Visão geral</a>";
+    var h = '<a href="#inicio"' + (atual === "inicio" ? ' aria-current="page"' : "") + ' title="Início">' + svg("inicio") + '<span class="p-rot">Início</span></a>';
     G.forEach(function (g) {
-      h += "<h2>" + esc(g.nome) + "</h2>";
-      g.itens.forEach(function (i) { h += '<a href="#' + i.id + '"' + (atual === i.id ? ' aria-current="page"' : "") + ">" + esc(i.nome) + (i.externo ? '<span class="ext">já pronta ↗</span>' : "") + "</a>"; });
+      var tem = g.itens.some(function (i) { return i.id === atual; });
+      var ab = tem || abertos[g.id];
+      h += '<div class="p-grupo' + (ab ? " aberto" : "") + (tem ? " atual" : "") + '"><button type="button" class="p-grupo-btn" data-g="' + g.id + '" aria-expanded="' + !!ab + '" title="' + esc(g.nome) + '">' + svg(ICONE_GRUPO[g.id]) + '<span class="p-rot">' + esc(g.nome) + "</span>" + svg("seta", "p-seta") + '</button><div class="p-sub">';
+      g.itens.forEach(function (i) { h += '<a href="#' + i.id + '"' + (atual === i.id ? ' aria-current="page"' : "") + ">" + '<span class="p-rot">' + esc(i.nome) + "</span>" + (i.externo ? '<span class="p-etq">pronta</span>' : "") + "</a>"; });
+      h += "</div></div>";
     });
+    MARCO2.forEach(function (m) { h += '<div class="p-grupo em-breve"><button type="button" class="p-grupo-btn" disabled title="' + m[0] + ' (Marco 2)">' + svg(m[1]) + '<span class="p-rot">' + m[0] + '</span><span class="p-etq">Marco 2</span></button></div>'; });
     $("#menu").innerHTML = h;
+    Array.prototype.forEach.call(document.querySelectorAll("#menu .p-grupo-btn[data-g]"), function (b) {
+      b.onclick = function () {
+        var app = $("#app");
+        if (app.classList.contains("recolhido") && window.innerWidth > 880) { app.classList.remove("recolhido"); sincHamb(); abertos[b.getAttribute("data-g")] = true; }
+        else abertos[b.getAttribute("data-g")] = !b.parentNode.classList.contains("aberto");
+        menu(atualId);
+      };
+    });
+    atualId = atual;
   }
+  var atualId = "inicio";
 
   /* ---------- páginas ---------- */
   function topo(titulo, sub) {
-    return '<div class="p-topo" style="justify-content:space-between"><div><h1>' + esc(titulo) + '</h1><p class="sub">' + sub + '</p></div>' +
-      '<div class="field"><label for="papel">Ver como</label><select id="papel" class="input"><option value="admin"' + (estado.papel === "admin" ? " selected" : "") + '>Administrador</option><option value="analista"' + (estado.papel === "analista" ? " selected" : "") + ">Analista (sem função de restaurar)</option></select></div></div>";
+    return '<div class="p-topo"><h1>' + esc(titulo) + '</h1><p class="sub">' + sub + "</p></div>";
   }
   function inicio() {
-    var h = topo("Principal: cadastros globais", "Empresa <strong>Lab Teste</strong> · você é <strong>Carla Mendes</strong>. Dados <strong>fictícios</strong>; tudo vale só nesta página. Recarregue para voltar ao começo.");
-    h += '<div class="p-caixa"><h3>Como ler este protótipo (Marco 1A)</h3><ul><li>Os <strong>4 grupos</strong> já analisados, com as decisões de 06/11 aplicadas. Os outros 4 grupos do Principal ficam para o Marco 2.</li><li>Todo cadastro tem <strong>três situações</strong> (ativo, inativo, excluído). <strong>Nada é apagado.</strong> Excluir só vale para o que <strong>nunca foi usado</strong>.</li><li>Toda mudança pede <strong>motivo</strong> e entra no <strong>histórico</strong>. As recusas aparecem como <em>"O servidor recusou"</em>: no sistema real, quem recusa é o banco, nunca só a tela.</li><li>Em cada tela, a caixa <strong>"O que foi decidido"</strong> mostra o que mudou em relação ao legado. É o que você deve criticar.</li></ul></div>';
-    h += '<div class="p-cards">';
-    G.forEach(function (g) { h += '<div class="card"><h3>' + esc(g.nome) + "</h3><ul>" + g.itens.map(function (i) { return '<li><a href="#' + i.id + '">' + esc(i.nome) + "</a></li>"; }).join("") + "</ul></div>"; });
+    var h = '<section class="p-hero"><small>Bom dia, Carla</small><h1>Central de Governança</h1><p>O cérebro do iLabPharma: acessos, estrutura da empresa, cadastros corporativos e as regras de segurança, num só lugar. Empresa <strong>Lab Teste</strong>, dados <strong>fictícios</strong>.</p></section>';
+    h += '<div class="p-sec-t"><h2>Módulos operacionais</h2><span class="sub-linha">Só a Governança está desenhada neste marco</span></div><div class="p-modulos">';
+    h += '<a class="p-mod" href="#profissionais"><div class="p-mod-topo"><span class="p-mod-ico">' + svg("acesso") + '</span><h3>Governança (Principal)</h3></div><p>Acessos, estrutura organizacional e física, cadastros corporativos.</p><span class="p-entrar">Entrar no módulo →</span></a>';
+    MODULOS.forEach(function (m) { h += '<div class="p-mod em-breve"><div class="p-mod-topo"><span class="p-mod-ico">' + svg(m[2]) + "</span><h3>" + esc(m[0]) + "</h3></div><p>" + esc(m[1]) + '</p><span class="pill warn">Em breve</span></div>'; });
     h += "</div>";
+    h += '<div class="p-caixa"><h3>Como ler este protótipo (Marco 1A)</h3><ul><li>Os <strong>4 grupos</strong> já analisados, com as decisões de 06/11 aplicadas. Os outros 4 grupos do Principal ficam para o Marco 2 (aparecem apagados no menu).</li><li>Todo cadastro tem <strong>três situações</strong> (ativo, inativo, excluído). <strong>Nada é apagado.</strong> Excluir só vale para o que <strong>nunca foi usado</strong>.</li><li>Toda mudança pede <strong>motivo</strong> e entra no <strong>histórico</strong>. As recusas aparecem como <em>"O servidor recusou"</em>: no sistema real, quem recusa é o banco, nunca só a tela.</li><li>Em cada tela, a caixa <strong>"O que foi decidido"</strong> mostra o que mudou em relação ao legado. É o que você deve criticar.</li><li>Teste também: o <strong>hambúrguer</strong> recolhe o menu, <strong>Ctrl + K</strong> pesquisa, o <strong>sino</strong> mostra avisos e o <strong>avatar</strong> troca o papel ("Ver como").</li></ul></div>';
     $("#conteudo").innerHTML = h; menu("inicio"); ligaPapel();
   }
+
   function externa(it) {
     $("#conteudo").innerHTML = topo(it.nome, "Já está pronta em outra tela do protótipo.") + '<div class="p-caixa"><h3>' + esc(it.nome) + "</h3><p>" + esc(it.resumo) + '</p><p><a class="btn primary btn-link" href="' + it.externo + '">Abrir ' + esc(it.nome) + "</a></p></div>";
     menu(it.id); ligaPapel();
@@ -191,7 +244,7 @@
   function fecha(id) { $("#" + id).hidden = true; }
   $$("[data-fechar]").forEach(function (b) { b.addEventListener("click", function () { fecha(b.getAttribute("data-fechar")); }); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") $$(".modal-fundo").forEach(function (m) { m.hidden = true; }); });
-  function ligaPapel() { var s = $("#papel"); if (s) s.onchange = function () { estado.papel = this.value; }; }
+  function ligaPapel() { var s = $("#papel"); if (s) { s.value = estado.papel; s.onchange = function () { estado.papel = this.value; }; } }
   function rota() {
     var id = (location.hash || "#inicio").slice(1), it = item(id);
     estado.busca = ""; estado.filtro = "vivos"; estado.aba = "grupos";
@@ -199,8 +252,63 @@
     if (!it) inicio(); else if (it.externo) externa(it); else lista(it);
     $("#conteudo").focus(); window.scrollTo(0, 0);
   }
-  var bm = document.getElementById("menu-botao");
-  bm.addEventListener("click", function () { var w = bm.parentNode, ab = w.classList.toggle("aberto"); bm.setAttribute("aria-expanded", ab); });
-  window.addEventListener("hashchange", function () { bm.parentNode.classList.remove("aberto"); bm.setAttribute("aria-expanded", "false"); });
+  /* ---------- casca: hambúrguer, busca (Ctrl+K), sino e avatar ---------- */
+  function sincHamb() { var app = $("#app"); $("#hamburguer").setAttribute("aria-expanded", String(!app.classList.contains("recolhido"))); }
+  $("#hamburguer").innerHTML = svg("menu", "");
+  $("#b-tema").innerHTML = svg("tema", "");
+  $("#b-sino").insertAdjacentHTML("afterbegin", svg("notif", ""));
+  $(".p-busca-lupa", $("#abre-busca")).innerHTML = svg("busca", "");
+  $(".p-busca-lupa", $("#busca-fundo")).innerHTML = svg("busca", "");
+  $("#b-avatar .p-chevron").innerHTML = svg("seta", "");
+  $("#hamburguer").onclick = function () {
+    var app = $("#app");
+    if (window.innerWidth <= 880) app.classList.toggle("gaveta"); else app.classList.toggle("recolhido");
+    sincHamb();
+  };
+  $("#fundo-menu").onclick = function () { $("#app").classList.remove("gaveta"); };
+  var AVISOS = [["Qualificação suspensa", "Química Aurora S.A. · Estearato de magnésio: recebimento bloqueado."], ["Qualificação a vencer", "Embalagens Vale Ltda · Frasco âmbar vence em 55 dias."], ["Cadastro sem uso", "Setor Expedição e Centro de custo TCC09 nunca foram usados."]];
+  $("#lista-sino").innerHTML = AVISOS.map(function (a) { return "<li><strong>" + esc(a[0]) + "</strong><small>" + esc(a[1]) + "</small></li>"; }).join("");
+  function pop(btnId, popId) {
+    var b = $("#" + btnId), p = $("#" + popId);
+    b.onclick = function (e) { e.stopPropagation(); var abrir = p.hidden; fechaPops(); p.hidden = !abrir; b.setAttribute("aria-expanded", String(abrir)); };
+  }
+  function fechaPops() { ["pop-sino", "pop-avatar"].forEach(function (id) { $("#" + id).hidden = true; }); $("#b-sino").setAttribute("aria-expanded", "false"); $("#b-avatar").setAttribute("aria-expanded", "false"); }
+  pop("b-sino", "pop-sino"); pop("b-avatar", "pop-avatar");
+  document.addEventListener("click", function (e) { if (!e.target.closest(".p-menu-pop")) fechaPops(); });
+  var bsel = 0, bres = [];
+  function buscaItens() {
+    var r = [["Início", "Visão geral", "#inicio"]];
+    G.forEach(function (g) { g.itens.forEach(function (i) { r.push([i.nome, g.nome, "#" + i.id]); if (!i.externo) r.push(["Novo " + i.singular, i.nome, "#" + i.id + "|novo"]); }); });
+    return r;
+  }
+  function pintaBusca() {
+    var q = $("#busca-global").value.trim().toLowerCase();
+    bres = buscaItens().filter(function (x) { return !q || (x[0] + " " + x[1]).toLowerCase().indexOf(q) >= 0; }).slice(0, 12);
+    bsel = Math.min(bsel, Math.max(bres.length - 1, 0));
+    $("#busca-lista").innerHTML = bres.length ? bres.map(function (x, i) { return '<li role="option" aria-selected="' + (i === bsel) + '" data-i="' + i + '"><span>' + esc(x[0]) + "</span><small>" + esc(x[1]) + "</small></li>"; }).join("") : '<li class="p-busca-vazio">Nada encontrado.</li>';
+    Array.prototype.forEach.call(document.querySelectorAll("#busca-lista [data-i]"), function (li) { li.onclick = function () { vaiBusca(+li.getAttribute("data-i")); }; });
+  }
+  function abreBusca() { $("#busca-fundo").hidden = false; $("#busca-global").value = ""; bsel = 0; pintaBusca(); $("#busca-global").focus(); }
+  function fechaBusca() { $("#busca-fundo").hidden = true; }
+  function vaiBusca(i) {
+    var x = bres[i]; if (!x) return; fechaBusca();
+    var partes = x[2].split("|"), igual = location.hash === partes[0];
+    location.hash = partes[0];
+    var abrirNovo = function () { var n = $("#novo"); if (n) n.click(); };
+    if (partes[1]) { if (igual) abrirNovo(); else setTimeout(abrirNovo, 60); }
+  }
+  $("#abre-busca").onclick = abreBusca;
+  $("#busca-global").oninput = function () { bsel = 0; pintaBusca(); };
+  $("#busca-global").onkeydown = function (e) {
+    if (e.key === "ArrowDown") { bsel = Math.min(bsel + 1, bres.length - 1); pintaBusca(); e.preventDefault(); }
+    else if (e.key === "ArrowUp") { bsel = Math.max(bsel - 1, 0); pintaBusca(); e.preventDefault(); }
+    else if (e.key === "Enter") { vaiBusca(bsel); e.preventDefault(); }
+  };
+  $("#busca-fundo").onclick = function (e) { if (e.target === this) fechaBusca(); };
+  document.addEventListener("keydown", function (e) {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); abreBusca(); }
+    else if (e.key === "Escape") { fechaBusca(); fechaPops(); }
+  });
+  window.addEventListener("hashchange", function () { $("#app").classList.remove("gaveta"); });
   window.addEventListener("hashchange", rota); rota();
 })();
