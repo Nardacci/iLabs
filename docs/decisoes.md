@@ -19,6 +19,7 @@ O detalhe das decisões do banco está em `../banco/README.md` e `../banco/model
 
 | Data | Decisão | Motivo |
 |---|---|---|
+| 05/11/2026 | **Regra de negócio nunca no front**: front apresenta, back (banco e funções de servidor) decide, segurança é do banco | O legado e a versão testada deixavam o servidor sem conferir (a tela abria e a API não checava a função); validação só no front não vale como controle |
 | 05/11/2026 | **O banco é a fonte da verdade; a aplicação só chama `ilab.*` e mostra.** Tipos TypeScript gerados do banco (`npm run tipos`), uma porta única (`BancoService.rpc`) | Nenhuma regra de negócio duplicada no front; se uma função do banco mudar, o build quebra e avisa |
 | 05/11/2026 | **Menu gerado das rotas e guarda de rota com o mesmo resultado de `ilab.minhas_permissoes`** | Uma descrição só por tela; a tela só aparece para quem o banco deixa |
 | 05/11/2026 | **Tela de cadastro dirigida por metadados** (`compartilhado/cadastro`): uma descrição curta entrega lista, busca, paginação, formulário, justificativa, histórico e impressão | Cadastro novo custa cerca de 23 linhas, 12 delas geradas (medido; ver `app/README.md`) |

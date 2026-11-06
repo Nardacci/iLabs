@@ -18,6 +18,6 @@
 - **Aplicar no Supabase:** só com autorização do responsável, depois de passar nos testes de `banco/testes/`.
 - **Documentação no git:** tudo fica no repositório, e não só no chat. Prompts para agentes ficam em arquivos `PROMPT-*.md`.
 - **Mais de um agente:** ao começar, leia a primeira entrada de `DIARIO-DE-BORDO.md`; ao terminar, acrescente a sua no topo.
-- **REGRA DE NEGÓCIO NUNCA NO FRONT:** o front (Angular) e as funções de borda só mostram e repassam; prazos, limites, políticas, permissões, sequência de etapas e quem pode aprovar são decididos no banco. Validação de campo no front só vale se o banco recusar de novo. Auditoria em `app/execucao/auditoria-regras-no-front.md`.
+- **Regra de negócio nunca no front** (decisão do responsável, 05/11/2026). O front só apresenta, coleta e formata. Toda regra (quem pode, quando pode, limites, prazos, sequência, assinatura, segregação de funções, inatividade, bloqueio) mora no banco ou em função de servidor e é conferida **em toda gravação**. Validação no front é só conveniência (aviso rápido) e vem do mesmo contrato do banco, nunca é a única conferência. Se uma regra só existe no front, é defeito.
 - **Código do front-end** (quando existir): Angular com componentes standalone, signals e acessibilidade (WCAG AA).
 - Falha do legado não vira requisito: vira requisito **corrigido**, citando o achado de origem.
