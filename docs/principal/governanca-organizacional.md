@@ -49,8 +49,8 @@
   3. Dados da empresa (CNPJ, razão social, licença/autorização) em tabela própria; filiais só se a pergunta 1 pedir.
   4. Tudo com RLS por `empresa_id`, auditoria por gatilho e mudança de situação só por função com motivo (como nas demais).
 
-## 4. Perguntas
-1. **Filiais:** a fábrica tem mais de um endereço ou unidade fabril que precise ser cadastrada separadamente (cada uma com sua licença)? Ou "filial" aqui só significa filial de **fornecedor** e **cliente**?
-2. **Departamentos e Setores:** posso juntar tudo em **uma só árvore** com tipo de nível?
-3. **Grupos de perfil:** você lembra o que quis dizer com este item? Se não, descartamos.
-4. **Centro de custos:** é só para Compras e Contabilidade? Confirmo com a Contabilidade ou segue o legado?
+## 4. Respostas do responsável (06/11/2026)
+1. **Filiais:** **sem resposta ainda; precisa de pesquisa** (a fábrica tem mais de uma unidade fabril com licença própria?). Fica em aberto.
+2. **Departamentos e Setores:** **uma só árvore** com tipo de nível. Decidido.
+3. **Grupos de perfil:** o responsável não lembra a intenção. **No legado só existe o Grupo Perfil da Garantia da Qualidade** (níveis 1 a 3, `DV-GQ-009`/SEG-GQ-10, risco R-GQ-34); no Principal não há. Fica **sem cadastro próprio**; a hierarquia de níveis da GQ vira papéis da matriz. Decidido, a rever se a ideia original voltar à memória.
+4. **Centro de custos:** só Compras e Contabilidade; **segue o legado**, com as correções. Decidido (confirmar com a Contabilidade na validação).

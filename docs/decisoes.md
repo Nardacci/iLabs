@@ -34,3 +34,6 @@ O detalhe das decisões do banco está em `../banco/README.md` e `../banco/model
 | 06/11/2026 | **Validade da conta (de, até)** entra no iLabs | Funciona no legado e serve a terceirizados e auditores (RG-PRI-005) |
 | 06/11/2026 | **"Excluído" só para o que nunca foi usado**; o que já foi usado só se inativa. Restaurar exige função própria e motivo | Evita perder histórico de uso e assinatura (BPF, trilha de auditoria) |
 | 06/11/2026 | **Função profissional mantém ocupação (CBO) e cargo principal** | Igual ao legado (RN-PRI-033) |
+| 06/11/2026 | **Departamentos e Setores numa só árvore** (estrutura organizacional, com tipo de nível) | Evita cadastros repetidos; no legado já é uma árvore (`SIS_LOCAL`) |
+| 06/11/2026 | **Sem cadastro "Grupos de perfil"** no Principal; níveis da GQ viram papéis da matriz | No legado só existe na GQ (DV-GQ-009, R-GQ-34) |
+| 06/11/2026 | **Centro de custos segue o legado, corrigido** (código com letras, motivo, histórico) | DV-PRI-043/044. Filiais da fábrica: **em aberto, a pesquisar** |
