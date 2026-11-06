@@ -3,6 +3,12 @@
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
 
+## 2026-11-06 · Claude · Robôs: prompt do robô do iLabs (rodada 1) e forma de executar os dois robôs
+
+- **Dois robôs, duas janelas do Claude Code no computador do responsável** (cada um com o seu prompt, em sessões separadas): (1) robô do **iLabs** (este sistema, em Supabase): `PROMPT-ROBO-ILABS-RODADA-1.md`, conta e empresa de teste próprias (cadastro normal do app com e-mail alternativo), app subido localmente, banco real do `LabPharma`; (2) robô da **versão nova do time de devs** (LabMedSys, ambiente só pela VPN): `homologacao/versao-nova/PROMPT-ROBO-ESTOQUE-NOVA-RODADA-1.md` no repositório `LabMedsys_homol`, ramo `claude/gq-controle-desvio` (o plano do Estoque ainda não está no `main` dele)
+- **Por que fora deste chat:** a sessão na nuvem não alcança a VPN do ambiente dos devs, e o app do iLabs ainda não está publicado (roda local)
+- **Pendente do responsável:** criar a conta e a empresa de teste do robô do iLabs; as variáveis de ambiente (só os nomes ficam em arquivo)
+
 ## 2026-11-06 · Claude · Marco 1B, parte 3: casca nova no app Angular (ramo `claude/app-casca-nova`, sem PR)
 
 - **O que veio do protótipo aprovado:** menu lateral escuro e sem margem, com grupos que abrem e fecham e ícones; hambúrguer que recolhe para os ícones (preferência guardada no navegador; no celular vira gaveta); pesquisa de telas com Ctrl + K (só as telas que a pessoa pode abrir); sino com estado vazio (sem notificação inventada); menu do avatar (Minha segurança e Sair); página inicial com a faixa de boas-vindas e os cartões de módulos, sem o módulo atual (`compartilhado/modulos.ts`)
