@@ -13,11 +13,7 @@ export type Acao =
   'consultar' | 'incluir' | 'alterar' | 'excluir' | 'imprimir' | 'consultar_historico';
 
 export type Proximo =
-  | 'entrar'
-  | 'trocar_senha'
-  | 'empresa_em_carencia'
-  | 'empresa_suspensa'
-  | 'criar_empresa';
+  'entrar' | 'trocar_senha' | 'empresa_em_carencia' | 'empresa_suspensa' | 'criar_empresa';
 
 interface RespostaLogin {
   ok: boolean;
