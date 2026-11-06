@@ -81,6 +81,7 @@ test.describe('Entrar', () => {
     await expect(page).toHaveURL(/\/inicio$/);
     await expect(page.getByRole('heading', { name: 'Olá, Ana Souza' })).toBeVisible();
     const menu = page.getByRole('navigation', { name: 'Menu principal' });
+    await menu.getByRole('button', { name: 'Acesso' }).click(); // os grupos abrem e fecham
     await expect(menu.getByRole('link', { name: 'Usuários' })).toBeVisible();
     await expect(menu.getByRole('link', { name: 'Perfis e permissões' })).toHaveCount(0);
     await conferirAcessibilidade(page, 'início');
