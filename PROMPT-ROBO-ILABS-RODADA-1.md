@@ -10,7 +10,7 @@ cd $HOME\Documents\iLabs
 git fetch origin
 git checkout main
 git pull origin main
-git checkout -b claude/robo-ilabs-rodada-1
+git checkout -b claude/robo-ilabs-resultado-1
 cd app
 npm ci
 $env:ILABS_SUPABASE_URL = "<endereço do projeto, do painel do Supabase>"
@@ -45,6 +45,6 @@ Regra permanente: teste que não roda vira registro. Se um caso não puder ser e
 
 Defeitos: ROB-001 em diante, um arquivo por defeito em app/execucao/robo-rodada-1/defeitos/ (título, passo a passo, esperado, obtido, captura, gravidade Alta, Média ou Baixa, e a decisão que contraria, se houver). Não corrija o código nesta rodada: só registre. Não edite migrações aplicadas.
 
-Entrega, no ramo claude/robo-ilabs-rodada-1, em app/execucao/robo-rodada-1/: resultado.md (tabela: fase, caso, resultado Passou/Falhou/Bloqueado, defeito, captura), defeitos/, evidencias/ e a sua entrada no topo de DIARIO-DE-BORDO.md. Faça commit e push ao fim de CADA fase. Se os créditos acabarem, deixe "Parou em: ..." no resultado.md.
+Entrega, no ramo claude/robo-ilabs-resultado-1, em app/execucao/robo-rodada-1/: resultado.md (tabela: fase, caso, resultado Passou/Falhou/Bloqueado, defeito, captura), defeitos/, evidencias/ e a sua entrada no topo de DIARIO-DE-BORDO.md. Faça commit e push ao fim de CADA fase. Se os créditos acabarem, deixe "Parou em: ..." no resultado.md.
 Ao final, em linguagem simples: quantos casos passaram, falharam e ficaram bloqueados; defeitos Alta; o que o responsável deve conferir à mão; confirme com `git ls-remote` que o push chegou.
 ```
