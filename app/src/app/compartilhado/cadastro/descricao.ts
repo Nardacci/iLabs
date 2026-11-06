@@ -42,6 +42,11 @@ export interface DescricaoDeCadastro {
   busca: readonly string[];
   ordenarPor: string;
   campos: readonly CampoDeCadastro[];
+  /**
+   * Cadastro em ÁRVORE: a coluna que guarda o id do nível de cima. A lista mostra os níveis recuados, carregados
+   * de uma vez (sem páginas); com busca, mostra só os que combinam, sem recuo.
+   */
+  arvore?: { pai: string };
 }
 
 /** Só confere o formato da descrição em tempo de compilação. */

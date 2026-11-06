@@ -195,6 +195,45 @@ export type Database = {
         }
         Relationships: []
       }
+      centros_custo: {
+        Row: {
+          id: string
+          empresa_id: string
+          codigo: string
+          descricao: string
+          situacao: string
+          ativo: boolean | null
+          criado_em: string
+          criado_por: string | null
+          atualizado_em: string | null
+          atualizado_por: string | null
+        }
+        Insert: {
+          id?: string
+          empresa_id: string
+          codigo: string
+          descricao: string
+          situacao?: string
+          ativo?: boolean | null
+          criado_em?: string
+          criado_por?: string | null
+          atualizado_em?: string | null
+          atualizado_por?: string | null
+        }
+        Update: {
+          id?: string
+          empresa_id?: string
+          codigo?: string
+          descricao?: string
+          situacao?: string
+          ativo?: boolean | null
+          criado_em?: string
+          criado_por?: string | null
+          atualizado_em?: string | null
+          atualizado_por?: string | null
+        }
+        Relationships: []
+      }
       convites: {
         Row: {
           id: string
@@ -357,6 +396,54 @@ export type Database = {
           atualizado_por?: string | null
           situacao?: string
           ativo?: boolean | null
+        }
+        Relationships: []
+      }
+      estrutura_organizacional: {
+        Row: {
+          id: string
+          empresa_id: string
+          codigo: string
+          nome: string
+          tipo: string
+          pai_id: string | null
+          responsavel_id: string | null
+          situacao: string
+          ativo: boolean | null
+          criado_em: string
+          criado_por: string | null
+          atualizado_em: string | null
+          atualizado_por: string | null
+        }
+        Insert: {
+          id?: string
+          empresa_id: string
+          codigo: string
+          nome: string
+          tipo: string
+          pai_id?: string | null
+          responsavel_id?: string | null
+          situacao?: string
+          ativo?: boolean | null
+          criado_em?: string
+          criado_por?: string | null
+          atualizado_em?: string | null
+          atualizado_por?: string | null
+        }
+        Update: {
+          id?: string
+          empresa_id?: string
+          codigo?: string
+          nome?: string
+          tipo?: string
+          pai_id?: string | null
+          responsavel_id?: string | null
+          situacao?: string
+          ativo?: boolean | null
+          criado_em?: string
+          criado_por?: string | null
+          atualizado_em?: string | null
+          atualizado_por?: string | null
         }
         Relationships: []
       }

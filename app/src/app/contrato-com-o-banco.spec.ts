@@ -23,11 +23,19 @@ describe('contrato com o banco', () => {
     for (const f of usadas) expect(chaves, `função ${f}`).toContain(f);
   });
 
-  it('os cadastros do acesso descrevem colunas que existem nas tabelas', async () => {
+  it('os cadastros do acesso e da organização descrevem colunas que existem nas tabelas', async () => {
     const { funcoesProfissionais } = await import('./cadastros/funcoes-profissionais');
     const { gruposUsuarios } = await import('./cadastros/grupos-usuarios');
     const { profissionais } = await import('./cadastros/profissionais');
-    for (const d of [funcoesProfissionais, gruposUsuarios, profissionais]) {
+    const { estruturaOrganizacional } = await import('./cadastros/estrutura-organizacional');
+    const { centrosCusto } = await import('./cadastros/centros-custo');
+    for (const d of [
+      funcoesProfissionais,
+      gruposUsuarios,
+      profissionais,
+      estruturaOrganizacional,
+      centrosCusto,
+    ]) {
       const tabela =
         new RegExp(`create table ilab\\.${d.tabela} \\(([\\s\\S]*?)\\n\\);`).exec(sql)?.[1] ?? '';
       expect(tabela, `tabela ${d.tabela}`).not.toBe('');
