@@ -1,0 +1,40 @@
+ RUN  v5.1.0 C:/p/iLabs/app
+ ✓  app  src/app/contrato-com-o-banco.spec.ts > contrato com o banco > toda função (ilab.funcoes) usada por uma tela existe nas migrações 6ms
+ ✓  app  src/app/contrato-com-o-banco.spec.ts > contrato com o banco > o cadastro de unidades de medida descreve colunas que existem na tabela 20ms
+ ✓  app  src/app/compartilhado/senha.spec.ts > regras de senha > pede 12 caracteres 4ms
+ ✓  app  src/app/compartilhado/senha.spec.ts > regras de senha > recusa senha comum e senha com o e-mail 2ms
+ ✓  app  src/app/compartilhado/senha.spec.ts > regras de senha > o validador devolve a regra que falhou, em português 9ms
+ ✓  app  src/app/compartilhado/senha.spec.ts > regras de senha > a confirmação precisa ser igual 2ms
+ ✓  app  src/app/compartilhado/cadastro/historico.spec.ts > histórico da auditoria > mostra só o que mudou, sem campos técnicos 2ms
+ ✓  app  src/app/compartilhado/cadastro/historico.spec.ts > histórico da auditoria > inclusão: tudo é novo 0ms
+ ✓  app  src/app/compartilhado/cadastro/historico.spec.ts > histórico da auditoria > guarda valores longos inteiros (sem corte em 255 caracteres, SEG-PRI-13) 1ms
+ ✓  app  src/app/compartilhado/sessao/sessao.service.spec.ts > destino obrigatório da sessão > sem sessão vai para entrar 12ms
+ ✓  app  src/app/compartilhado/sessao/sessao.service.spec.ts > destino obrigatório da sessão > logada sem empresa vai para o cadastro da empresa 1ms
+ ✓  app  src/app/compartilhado/sessao/sessao.service.spec.ts > destino obrigatório da sessão > empresa suspensa vai para a tela própria 12ms
+ ✓  app  src/app/compartilhado/sessao/sessao.service.spec.ts > destino obrigatório da sessão > senha a trocar só deixa abrir Minha segurança 1ms
+ ✓  app  src/app/compartilhado/sessao/sessao.service.spec.ts > destino obrigatório da sessão > conta normal segue 1ms
+ ✓  app  src/app/compartilhado/sessao/sessao.service.spec.ts > SessaoService > pode() vem de minhas_permissoes: ação não liberada é recusada 32ms
+ ✓  app  src/app/compartilhado/sessao/sessao.service.spec.ts > SessaoService > entrar: qualquer erro do servidor mostra a mesma mensagem e não cria sessão 5ms
+ ✓  app  src/app/compartilhado/sessao/sessao.service.spec.ts > SessaoService > entrar: falha de rede também não revela nada sobre a conta 4ms
+ ✓  app  src/app/compartilhado/menu.spec.ts > menu por permissão e guarda de rota (mesmo resultado) > sem nenhuma permissão só aparecem as telas livres (início e mi
+ ✓  app  src/app/compartilhado/menu.spec.ts > menu por permissão e guarda de rota (mesmo resultado) > cada tela aparece só para quem tem a função do banco 2ms
+ ✓  app  src/app/compartilhado/menu.spec.ts > menu por permissão e guarda de rota (mesmo resultado) > a guarda usa o resultado de minhas_permissoes e decide igual ao m
+ ✓  app  src/app/compartilhado/sessao/inatividade.service.spec.ts > InatividadeService (10 minutos, aviso 1 minuto antes) > usa os valores decididos pelo responsável 3
+ ✓  app  src/app/compartilhado/sessao/inatividade.service.spec.ts > InatividadeService (10 minutos, aviso 1 minuto antes) > avisa 1 minuto antes, guarda o rascunho e en
+ ✓  app  src/app/compartilhado/sessao/inatividade.service.spec.ts > InatividadeService (10 minutos, aviso 1 minuto antes) > "continuar conectado" zera a contagem 5ms
+ ✓  app  src/app/compartilhado/sessao/inatividade.service.spec.ts > InatividadeService (10 minutos, aviso 1 minuto antes) > atividade da pessoa reinicia o relógio 5ms
+ ✓  app  src/app/compartilhado/cadastro/cadastro.spec.ts > cadastro por metadados (unidades de medida) > desenha a lista a partir da descrição, com paginação 98ms
+ ✓  app  src/app/compartilhado/cadastro/cadastro.spec.ts > cadastro por metadados (unidades de medida) > sem permissão de incluir/alterar a tela não oferece os botõe
+ ✓  app  src/app/compartilhado/cadastro/cadastro.spec.ts > cadastro por metadados (unidades de medida) > formulário valida os campos obrigatórios antes de gravar 117m
+ ✓  app  src/app/compartilhado/cadastro/cadastro.spec.ts > cadastro por metadados (unidades de medida) > inativar exige justificativa: sem motivo não chama o banco; co
+ ✓  app  src/app/acesso/entrar/entrar.spec.ts > tela Entrar > não chama o servidor com campos vazios 111ms
+ ✓  app  src/app/acesso/entrar/entrar.spec.ts > tela Entrar > mostra a mensagem única devolvida pelo servidor e apaga a senha digitada 30ms
+ ✓  app  src/app/acesso/entrar/entrar.spec.ts > tela Entrar > senha a trocar leva para Minha segurança 22ms
+ ✓  app  src/app/acesso/entrar/entrar.spec.ts > tela Entrar > quem tem duas etapas vê o campo do código 30ms
+ ✓  app  src/app/acesso/entrar/entrar.spec.ts > tela Entrar > passa na verificação de acessibilidade (axe) 189ms
+ ✓  app  src/app/compartilhado/cadastro/cadastro.spec.ts > cadastro por metadados (unidades de medida) > passa na verificação de acessibilidade (axe) 147ms
+ ✓  app  src/app/compartilhado/cadastro/cadastro.spec.ts > cadastro por metadados (unidades de medida) > com a janela de formulário aberta também passa no axe 116ms
+ Test Files  8 passed (8)
+      Tests  35 passed (35)
+   Start at  18:34:03
+   Duration  3.68s (environment 59%, setup 20%, import 12%, tests 5%, transform 4%, worker 1%)

@@ -1,0 +1,283 @@
+
+> test
+> node rodar_com_pglite.mjs
+
+Preparação
+Isolamento por empresa
+  ok     administrador A vê só as unidades da empresa A (6)
+  ok     administrador A vê só a própria empresa
+  ok     A não consegue gravar na empresa B
+  ok     A grava sem informar a empresa (preenchida pelo banco)
+  ok     administrador B vê só as unidades da empresa B (6)
+  ok     B pode ter a mesma sigla que A (empresas diferentes)
+  ok     B não repete a sigla dentro da própria empresa
+Permissão por função e ação
+  ok     perfil só de consulta lê unidades (7)
+  ok     perfil só de consulta não inclui
+  ok     perfil só de consulta não altera (nenhuma linha)
+  ok     perfil só de consulta não lê materiais
+  ok     perfil só de consulta não lê a auditoria
+  ok     minhas_permissoes devolve a permissão do perfil
+  ok     usuário sem perfil lê o próprio cadastro
+  ok     usuário sem perfil não lê unidades
+  ok     visitante sem login não lê nada
+Integridade entre empresas e cadastros
+  ok     material não usa unidade de outra empresa
+  ok     material com unidade da própria empresa grava
+  ok     CNPJ inválido é recusado
+  ok     pessoa jurídica válida grava
+  ok     empresa de um registro não muda
+  ok     cadastros não têm exclusão física
+Trilha de auditoria
+  ok     alteração de cadastro grava
+  ok     auditoria guarda valor anterior, novo e autor
+  ok     administrador A lê só a auditoria da própria empresa
+  ok     auditoria não aceita alteração pela API
+  ok     auditoria não aceita exclusão pela API
+  ok     nem o dono do banco altera a auditoria
+  ok     nem o dono do banco apaga a auditoria
+  ok     nem o dono do banco esvazia a auditoria
+  ok     motivo da alteração vai para a auditoria quando informado
+Primeira empresa
+  ok     empresa com código repetido é recusada
+
+Migração 3: preparação
+  ok     22 perfis de teste, um por papel da matriz
+  ok     perfis de teste não duplicam ao repetir
+RF-ACE-001: mesma resposta para e-mail inexistente e senha errada (lado do banco)
+  ok     registrar falha devolve o mesmo tipo de resposta para e-mail inexistente e existente
+  ok     bloquear_por_tentativas responde igual (falso) para e-mail inexistente e existente com poucas falhas
+  ok     a falha de e-mail inexistente não aparece para nenhuma empresa
+RF-ACE-002: a senha nunca é gravada
+  ok     nenhuma tabela de segurança tem coluna de senha ou token
+  ok     as funções de registro de acesso não recebem senha
+  ok     assinar_registro não recebe o usuário (vem do servidor)
+RF-ACE-003: perfil só de consulta não grava em nenhuma tabela (o banco recusa)
+  ok     consulta não inclui unidade de medida
+  ok     consulta não inclui material
+  ok     consulta não inclui pessoa jurídica
+  ok     consulta não inclui almoxarifado
+  ok     consulta não inclui endereço
+  ok     consulta não inclui perfil
+  ok     consulta não altera unidade
+  ok     consulta não altera material
+  ok     consulta não altera pessoa jurídica
+  ok     consulta não altera almoxarifado
+  ok     consulta não altera endereço
+  ok     consulta não altera perfil
+  ok     consulta não altera o nome de outros usuários
+  ok     ninguém liga ou desliga usuário direto na tabela
+  ok     consulta não grava em perfil_funcoes
+  ok     consulta não grava em usuario_perfis
+  ok     consulta não apaga de usuario_perfis
+  ok     consulta não altera a política de segurança direto
+  ok     consulta não grava convite
+  ok     consulta não grava acesso
+  ok     consulta não grava assinatura direto
+  ok     consulta não grava aviso
+  ok     consulta não grava na auditoria
+  ok     consulta não altera empresa
+  ok     consulta não altera o catálogo de funções
+  ok     consulta não altera parâmetros da plataforma
+  ok     função criar_convite confere a permissão no servidor (consulta recusado)
+  ok     função inativar_usuario confere a permissão no servidor (consulta recusado)
+  ok     função trocar_perfil_usuario confere a permissão no servidor (consulta recusado)
+  ok     função definir_permissao_perfil confere a permissão no servidor (consulta recusado)
+  ok     função alterar_politica_seguranca confere a permissão no servidor (consulta recusado)
+  ok     função exigir_troca_de_senha confere a permissão no servidor (consulta recusado)
+  ok     função listar_perfis confere a permissão no servidor (consulta recusado)
+  ok     função listar_usuarios confere a permissão no servidor (consulta recusado)
+  ok     só 7 tabelas aceitam gravação pela API (cadastros, perfis e o nome do usuário)
+  ok     toda política de gravação confere função e ação (pode)
+  ok     todas as tabelas do schema ilab têm RLS ligada
+RF-ACE-004: a empresa A não lê nem grava dados da B (tabelas novas)
+  ok     administrador B cria convite na empresa B
+  ok     A não lê convites da B
+  ok     A não lê a política da B
+  ok     A não lê acessos da B
+  ok     A não lê assinaturas da B
+  ok     A não convida com perfil da B
+  ok     A não inativa usuário da B
+  ok     A não troca o perfil de usuário da B
+  ok     listar_usuarios da A não traz usuários da B
+RF-ACE-005: convite vencido, usado, com token errado
+  ok     convite vale 48 horas por padrão
+  ok     o token não fica gravado (só o hash de 64 caracteres)
+  ok     a API não lê nem o hash do token
+  ok     a auditoria do convite não guarda o hash
+  ok     convite com token errado é recusado
+  ok     convite de outro e-mail é recusado
+  ok     convite vencido é recusado
+  ok     a tela vê "vencido" sem estar logada
+  ok     token inventado aparece como inválido
+  ok     visitante sem login não aceita convite
+  ok     reenviar o convite cancela o anterior
+  ok     convite válido cria o usuário com o perfil proposto
+  ok     convite já usado é recusado
+  ok     a tela vê "usado" sem estar logada
+  ok     o convite aceito fica registrado nos acessos
+  ok     não convida e-mail que já é usuário
+RF-ACE-006: assinatura exige senha de novo e grava o significado
+  ok     quem aprova precisa do segundo fator (política da empresa)
+  ok     senha errada: assinatura não é gravada
+  ok     senha errada vira falha no registro de acessos
+  ok     motivo curto é recusado
+  ok     perfil sem a função não assina com outro significado
+  ok     não se assina registro da trilha
+  ok     registro inexistente é recusado
+  ok     senha correta: assinatura gravada
+  ok     assinatura grava o usuário autenticado, o significado, o motivo e o segundo fator
+  ok     a data e a hora vêm do servidor
+  ok     a senha digitada não está em nenhum registro
+  ok     o administrador não assina aprovação (a validar com a Qualidade)
+  ok     o administrador lê as assinaturas da empresa
+  ok     autor assina sem segundo fator (não aprova)
+  ok     quem tem 2FA cadastrado precisa confirmar o código para assinar
+  ok     com o código confirmado, assina
+RF-ACE-007: quem elaborou não aprova o próprio registro
+  ok     quem criou o registro não o aprova
+  ok     outra pessoa aprova o mesmo registro
+  ok     quem assinou como autor não aprova o mesmo registro
+  ok     usuário com mais de um perfil aparece com os dois
+  ok     controle: quem tem a função grava o mesmo endereço que a consulta não grava
+  ok     controle: quem tem a função grava a pessoa jurídica
+RF-ACE-008: inativar encerra as sessões
+  ok     inativar sem motivo é recusado
+  ok     ninguém inativa a si mesmo
+  ok     as sessões ainda existem antes de inativar
+  ok     inativar com motivo funciona
+  ok     as sessões da pessoa inativada foram encerradas na hora
+  ok     a inativação e o motivo ficam na auditoria
+  ok     a pessoa inativada não lê mais nada, mesmo com o login ainda válido
+  ok     inativar por qualquer caminho encerra as sessões
+  ok     reativar também exige motivo e funciona
+RF-ACE-009: mudança de perfil e de permissão deixa histórico com antes, depois e motivo
+  ok     trocar perfil sem motivo é recusado
+  ok     ninguém muda o próprio perfil
+  ok     trocar para nenhum perfil é recusado (para retirar o acesso, inativa-se)
+  ok     trocar perfil com motivo funciona (dois perfis)
+  ok     a auditoria guarda os perfis de antes e de depois, o motivo e quem mudou
+  ok     mudar permissão do perfil sem motivo é recusado
+  ok     mudar permissão do perfil com motivo funciona
+  ok     a auditoria da permissão guarda antes, depois e motivo
+  ok     não se altera permissão de perfil de outra empresa
+  ok     depois da operação o motivo não vaza para as gravações seguintes
+RF-ACE-010: depois do limite de tentativas erradas, bloqueia e avisa o administrador
+  ok     4 falhas ainda não bloqueiam
+  ok     a 5ª falha em 15 minutos bloqueia
+  ok     repetir não bloqueia de novo nem duplica o aviso
+  ok     o administrador recebe 1 aviso do bloqueio
+  ok     o bloqueio fica no registro de acessos
+  ok     a pessoa bloqueada não lê nem grava, mesmo com o login certo
+  ok     a pessoa bloqueada consegue ver o próprio estado (a tela explica)
+  ok     falhas antigas (fora dos 15 minutos) não contam
+  ok     o administrador desbloqueia com motivo
+  ok     depois de desbloquear a pessoa volta a ler
+  ok     depois do desbloqueio a contagem recomeça
+  ok     o administrador lê o registro de acessos da empresa
+  ok     quem não tem a função só lê os próprios acessos
+Perfis: lista sem limite e vínculo sempre visível
+  ok     a lista de perfis traz todos (mais de 10)
+  ok     a lista traz os 22 perfis de teste
+  ok     perfil se inativa com motivo (sem exclusão)
+  ok     perfil inativo some da lista padrão
+  ok     perfil inativo aparece quando se pede
+  ok     o vínculo do usuário aparece mesmo com o perfil inativo
+  ok     a lista de usuários também mostra o vínculo gravado
+  ok     cada pessoa vê os próprios vínculos
+  ok     sem a função não se vê o vínculo de outra pessoa
+Papéis de teste da matriz
+  ok     o administrador do sistema não assina nada na Qualidade
+  ok     o administrador criado com a empresa também não assina aprovações
+  ok     o Gestor da GQ aprova, reprova e anula
+  ok     Inspetor e Usuário de consulta não gravam em nada
+Situação da empresa e prazo de teste como parâmetro
+  ok     o prazo de teste é um parâmetro do banco (365, provisório)
+  ok     a empresa nova ganha o prazo do parâmetro (365 dias)
+  ok     mudar o parâmetro muda o prazo da próxima empresa (30 dias)
+  ok     a empresa nova nasce em teste e com política padrão
+  ok     em carência a empresa ainda lê
+  ok     em carência a empresa não grava
+  ok     o estado mostra a carência
+  ok     suspensa, a empresa não lê nada
+  ok     o estado mostra a suspensão
+  ok     empresa ativada volta a gravar
+  ok     a empresa A segue em teste, com dias restantes
+Senha a trocar e validade da senha
+  ok     o administrador exige a troca de senha (sem ver nem definir senha)
+  ok     com a senha a trocar, a sessão inteira é recusada
+  ok     as sessões abertas foram encerradas
+  ok     depois de trocar, a pessoa volta a usar
+  ok     a redefinição e a troca de senha ficam no registro de acessos
+  ok     se a empresa ligar a validade, senha vencida bloqueia o uso até trocar
+  ok     desligando a validade (padrão), a pessoa volta a usar
+Política de segurança
+  ok     padrões: 12 caracteres, sem validade, 10 min, 5 tentativas em 15 min, 2FA a quem aprova e não a administradores
+  ok     alterar a política sem motivo é recusado
+  ok     a política não aceita senha menor que 12
+  ok     administrador altera a política com motivo
+  ok     a mudança da política fica na auditoria com antes, depois e motivo
+  ok     a política da B não mudou a da A
+Acessos e assinaturas são imutáveis; funções do servidor só para o servidor
+  ok     nem o dono do banco consegue atualizar acessos
+  ok     nem o dono do banco consegue apagar acessos
+  ok     nem o dono do banco consegue esvaziar acessos
+  ok     nem o dono do banco consegue atualizar assinaturas
+  ok     nem o dono do banco consegue apagar assinaturas
+  ok     nem o dono do banco consegue esvaziar assinaturas
+  ok     authenticated não chama registrar_acesso
+  ok     authenticated não chama bloquear_por_tentativas
+  ok     authenticated não chama registrar_troca_de_senha
+  ok     authenticated não chama criar_perfis_de_teste
+  ok     authenticated não chama ativar_empresa
+  ok     authenticated não chama verificar_senha
+  ok     anon não chama registrar_acesso
+  ok     anon não chama bloquear_por_tentativas
+  ok     anon não chama registrar_troca_de_senha
+  ok     anon não chama criar_perfis_de_teste
+  ok     anon não chama ativar_empresa
+  ok     anon não chama verificar_senha
+  ok     só consultar_convite fica aberta ao visitante entre as funções do schema ilab
+  ok     o visitante não tem privilégio em nenhuma tabela
+  ok     quem está logado só chama empresa_atual e pode no schema interno
+  ok     toda função com security definer tem o caminho de busca fixo
+
+Migração 4: criar a própria empresa
+  ok     CNPJ válido com máscara é aceito pela conferência
+  ok     CNPJ com dígito errado é recusado pela conferência
+  ok     CNPJ de dígitos repetidos é recusado pela conferência
+  ok     sem login a função é recusada
+  ok     CNPJ inválido é recusado com mensagem clara
+  ok     responsável técnico sem nome completo é recusado
+  ok     CRF sem UF é recusado
+  ok     UF inexistente é recusada
+  ok     razão social curta é recusada
+  ok     as recusas não criaram empresa nenhuma
+  ok     conta nova cria a empresa
+  ok     CNPJ gravado só com dígitos, UF e responsável técnico gravados
+  ok     empresa nasce em teste, com prazo do parâmetro do banco
+  ok     quem cadastrou virou usuário da empresa
+  ok     quem cadastrou tem o perfil Administrador
+  ok     política de segurança e unidades padrão foram criadas
+  ok     a mesma conta não cria uma segunda empresa
+  ok     CNPJ repetido (mesmo com outra máscara) é recusado
+  ok     a recusa de CNPJ repetido não cita o nome da outra empresa
+  ok     segunda empresa com outro CNPJ é criada
+  ok     a empresa nova não enxerga a primeira (isolamento)
+  ok     a auditoria registrou a criação do usuário da empresa
+
+Migração 5: inativar cadastro com motivo
+  ok     motivo curto é recusado
+  ok     sem motivo é recusado
+  ok     tabela fora da lista é recusada
+  ok     administrador inativa com motivo
+  ok     a unidade ficou inativa (não foi apagada)
+  ok     a auditoria guardou antes, depois e o motivo
+  ok     inativar quem já está inativo é recusado
+  ok     reativa com motivo
+  ok     empresa B não altera cadastro da empresa A
+  ok     a unidade da A continua ativa
+  ok     quem não tem a função é recusado
+  ok     visitante não chama a função
+
+249 testes passaram, 0 falharam.

@@ -1,0 +1,23 @@
+
+Running 18 tests using 4 workers
+
+  ok  3 e2e\acesso.spec.ts:93:3 › Entrar › sem sessão qualquer tela interna volta para Entrar (3.5s)
+  ok  4 e2e\acesso.spec.ts:106:5 › Cadastro e demais telas públicas › /cadastro abre e passa no axe (claro e escuro) (6.3s)
+  ok  2 e2e\acesso.spec.ts:53:3 › Entrar › login certo leva ao início e o menu mostra só o que o banco permite (6.7s)
+  ok  5 e2e\acesso.spec.ts:106:5 › Cadastro e demais telas públicas › /redefinir abre e passa no axe (claro e escuro) (4.7s)
+  ok  1 e2e\acesso.spec.ts:14:3 › Entrar › mostra a mesma mensagem para erro de senha, e-mail inexistente e conta bloqueada, e passa no axe (claro, escuro e celular) (9.0s)
+  ok  7 e2e\acesso.spec.ts:116:3 › Cadastro e demais telas públicas › cadastro: a resposta é a mesma e o passo seguinte exige o link do e-mail (4.0s)
+  ok  6 e2e\acesso.spec.ts:106:5 › Cadastro e demais telas públicas › /convite abre e passa no axe (claro e escuro) (5.0s)
+  ok  9 e2e\acesso.spec.ts:183:3 › Cadastro da empresa em 4 etapas › o rascunho volta depois de recarregar a página (3.4s)
+  ok 10 e2e\acesso.spec.ts:194:3 › Empresa suspensa e senha a trocar › empresa suspensa só vê a tela explicativa (3.6s)
+  ok  8 e2e\acesso.spec.ts:141:3 › Cadastro da empresa em 4 etapas › quem confirmou o e-mail e ainda não tem empresa cai no passo a passo, valida cada etapa e cria pelo banco (7.2s)
+  ok 11 e2e\acesso.spec.ts:208:3 › Empresa suspensa e senha a trocar › senha a trocar leva para Minha segurança e nada mais abre (4.6s)
+  ok 13 e2e\telas-logadas.spec.ts:139:3 › Cadastro por metadados (unidades de medida) › no celular a lista cabe na tela e o menu abre por botão (4.3s)
+  ok 15 e2e\telas-logadas.spec.ts:182:3 › Telas de acesso logadas › Usuários: mudar perfis exige motivo e mostra o vínculo gravado (3.4s)
+  ok 12 e2e\telas-logadas.spec.ts:99:3 › Cadastro por metadados (unidades de medida) › lista, busca, paginação, justificativa ao inativar, histórico e axe (8.9s)
+  ok 14 e2e\telas-logadas.spec.ts:154:3 › Telas de acesso logadas › Usuários: lista com vínculo de perfil inativo visível, convite e axe (6.7s)
+  ok 18 e2e\telas-logadas.spec.ts:224:3 › Telas de acesso logadas › Minha segurança: tema escuro também passa no axe (3.5s)
+  ok 16 e2e\telas-logadas.spec.ts:201:3 › Telas de acesso logadas › Perfis: lista sem limite e matriz de permissões (6.2s)
+  ok 17 e2e\telas-logadas.spec.ts:212:3 › Telas de acesso logadas › Registro de acessos e Assinatura eletrônica (8.2s)
+
+  18 passed (35.4s)
