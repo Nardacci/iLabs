@@ -87,8 +87,8 @@
 6. **Grupo × almoxarifado** (quando o Estoque entrar).
 Todos entram como **migrações novas**, com testes, e só se aplicam com a autorização do responsável.
 
-## 5. Perguntas que continuam abertas
-1. **Quando uma coisa pode ser "excluída"?** Proposta: só se **nunca foi usada** (sem movimentação, sem vínculo, sem assinatura). Se já foi usada, só **inativa**. **"Excluído" pode ser restaurado?** (Proposta: só por quem tem uma função própria, com motivo.)
-2. **Função profissional:** manter **ocupação (CBO)** e **cargo principal** como no legado?
-3. Na **Produção e no CQ**, a exigência de "função profissional por campo ou etapa" **continua** como no legado? (Desenho com esses módulos.)
-4. O **grupo** vale só para almoxarifados, ou também para outros locais (por exemplo, ambientes e salas)? No legado ele aparece também como responsável por locais (RN-PRI-034).
+## 5. Respostas às perguntas (06/11/2026)
+1. **Excluído:** só pode ser marcado o que **nunca foi usado** (sem movimentação, vínculo ou assinatura). O que já foi usado só se **inativa**. O restauro de um "excluído" exige função própria e motivo. **Decidido.**
+2. **Função profissional:** mantém **ocupação (CBO)** e **cargo principal**, como no legado. **Decidido.**
+3. **Exigência de função por campo ou etapa (Produção e CQ):** **adiado** para o desenho desses módulos.
+4. **Alcance do grupo além dos almoxarifados (ambientes e salas):** **adiado** para análise mais adiante.

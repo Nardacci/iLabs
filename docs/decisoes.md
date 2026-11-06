@@ -32,3 +32,5 @@ O detalhe das decisões do banco está em `../banco/README.md` e `../banco/model
 | 06/11/2026 | **"Excluído" é situação própria, distinta de "inativo".** Nunca se apaga fisicamente | CLAUDE.md do iLabs (sem exclusão física, trilha imutável); no legado, excluir sem justificativa e sem histórico (DV-PRI-036, N-007) |
 | 06/11/2026 | **Sem nome da mãe nem do pai** no cadastro de profissional | LGPD, minimização: a norma e a operação não exigem |
 | 06/11/2026 | **Validade da conta (de, até)** entra no iLabs | Funciona no legado e serve a terceirizados e auditores (RG-PRI-005) |
+| 06/11/2026 | **"Excluído" só para o que nunca foi usado**; o que já foi usado só se inativa. Restaurar exige função própria e motivo | Evita perder histórico de uso e assinatura (BPF, trilha de auditoria) |
+| 06/11/2026 | **Função profissional mantém ocupação (CBO) e cargo principal** | Igual ao legado (RN-PRI-033) |
