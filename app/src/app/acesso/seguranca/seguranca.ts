@@ -1,9 +1,9 @@
-import { NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BancoService } from '../../compartilhado/dados/banco';
 import { FuncoesDeBorda } from '../../compartilhado/dados/funcoes-de-borda';
+import { qrCodeParaImagem } from '../../compartilhado/qr-code';
 import { regrasDaSenha, senhasIguais, validadorDeSenha } from '../../compartilhado/senha';
 import { SessaoService } from '../../compartilhado/sessao/sessao.service';
 import { Campo } from '../../compartilhado/ui/campo';
@@ -17,7 +17,7 @@ interface Inscricao {
 /** Minha segurança: trocar a senha, duas etapas (aplicativo autenticador) e encerrar outras sessões, tudo no Supabase Auth. */
 @Component({
   selector: 'il-seguranca',
-  imports: [ReactiveFormsModule, NgOptimizedImage, Campo],
+  imports: [ReactiveFormsModule, Campo],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <h1>Minha segurança</h1>
@@ -74,12 +74,15 @@ interface Inscricao {
       </p>
       @if (inscricao(); as i) {
         <p>1. No aplicativo autenticador, leia o QR code (ou digite a chave).</p>
+        <!-- NgOptimizedImage não aceita imagem embutida (data:); o QR vem convertido por qrCodeParaImagem. -->
+        <!-- eslint-disable @angular-eslint/template/prefer-ngsrc -->
         <img
-          [ngSrc]="i.qrCode"
+          [src]="i.qrCode"
           width="168"
           height="168"
           alt="QR code para o aplicativo autenticador"
         />
+        <!-- eslint-enable @angular-eslint/template/prefer-ngsrc -->
         <p>
           Chave: <span class="chave">{{ i.segredo }}</span>
         </p>
@@ -229,7 +232,7 @@ export class Seguranca implements OnInit {
       }
       this.inscricao.set({
         fatorId: data.id,
-        qrCode: data.totp.qr_code,
+        qrCode: qrCodeParaImagem(data.totp.qr_code),
         segredo: data.totp.secret,
       });
     });
