@@ -4,3 +4,6 @@ node_modules/
 *.log
 .DS_Store
 Thumbs.db
+
+# Arquivos temporários da CLI do Supabase (guardam o código do projeto); nunca vão para o git
+supabase/.temp/
