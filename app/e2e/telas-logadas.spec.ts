@@ -150,7 +150,8 @@ test.describe('Cadastro por metadados (unidades de medida)', () => {
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
     ).toBe(true);
-    await page.getByRole('button', { name: 'Menu' }).click();
+    await page.getByRole('button', { name: 'Abrir ou recolher o menu' }).click();
+    await page.getByRole('button', { name: 'Acesso' }).click();
     await expect(page.getByRole('link', { name: 'Usuários' })).toBeVisible();
     await conferirAcessibilidade(page, 'cadastro unidades (celular, menu aberto)');
   });
@@ -293,6 +294,8 @@ test.describe('Inatividade: quem decide é o servidor', () => {
     });
     await page.goto('/inicio');
     await expect(page.getByRole('main')).toBeVisible();
+    // só avança o relógio depois que o app leu as regras da sessão e armou os temporizadores
+    await expect.poll(() => chamadas.some((c) => c.alvo === 'rpc:registrar_atividade')).toBe(true);
     await page.clock.fastForward('01:31'); // 2 min - 30 s = 1 min 30 s sem atividade
     const janela = page.getByRole('alertdialog');
     await expect(janela).toContainText('encerra em 30 segundos');

@@ -3,6 +3,14 @@
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
 
+## 2026-11-06 · Claude · Marco 1B, parte 3: casca nova no app Angular (ramo `claude/app-casca-nova`, sem PR)
+
+- **O que veio do protótipo aprovado:** menu lateral escuro e sem margem, com grupos que abrem e fecham e ícones; hambúrguer que recolhe para os ícones (preferência guardada no navegador; no celular vira gaveta); pesquisa de telas com Ctrl + K (só as telas que a pessoa pode abrir); sino com estado vazio (sem notificação inventada); menu do avatar (Minha segurança e Sair); página inicial com a faixa de boas-vindas e os cartões de módulos, sem o módulo atual (`compartilhado/modulos.ts`)
+- **Componentes novos:** `ui/icone.ts`, `ui/busca.ts`, `layout/layout.ts` reescrito, `inicio.ts`; estilos em `styles.css`. O "Ver como" do protótipo não existe no app (era só para testar)
+- **Verificações:** testes do app 58 de 58 (6 novos da casca, com acessibilidade), ponta a ponta 21 de 21 no navegador (axe com contraste), lint, tipagem, formatação, tipos e build limpos
+- **Achados no caminho:** o axe do navegador pegou o nome do botão do avatar (corrigido); uma corrida antiga no teste de inatividade (o teste avançava o relógio antes do app ler as regras da sessão; agora espera); no tema claro o "Pharma" do logo sumia no menu escuro (corrigido)
+- **Ramo empilhado sobre o do PR #15:** abrir o PR depois que o #15 for mesclado (ou com base nele)
+
 ## 2026-11-06 · Claude · Marco 1B, parte 2: motivo obrigatório na alteração (migração 10, aplicada)
 
 - **Banco:** `ilab.alterar_cadastro(tabela, id, valores, motivo)` (permissão, motivo, só colunas editáveis de lista fechada, recusa excluído e "nada mudou", grava e audita numa transação) e gatilho que impede a pessoa autenticada de alterar os dados de um cadastro por outra via. A inclusão continua direta. O dono do banco (DBA) segue podendo corrigir, e a auditoria registra. Arquivo `migracoes/20261110090000_motivo_na_alteracao.sql`; **398 testes de 398** no PGlite (31 novos); um teste antigo que alterava direto foi trocado para usar a função (mudança de regra)
