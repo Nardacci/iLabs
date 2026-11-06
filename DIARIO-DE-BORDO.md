@@ -3,6 +3,14 @@
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
 
+## 2026-11-06 · Claude · Principal: análise dos 4 primeiros grupos e Marco 1A aprovado
+
+- **Analisados e decididos com o responsável** (`docs/principal/`): Governança de Acesso, Governança Organizacional, Estrutura Física e Cadastros Corporativos. Decisões em `docs/decisoes.md` (Profissional separado de Conta; grupo = escopo; situação "excluído" distinta de "inativo", só para o nunca usado; árvore organizacional única; Ambiente único; qualificação de fornecedor na GQ com bloqueio no recebimento; contas num cadastro com tipo)
+- **Marco 1A (aprovado em 06/11):** protótipo navegável `prototipo/principal.html` (menu lateral recolhível, busca Ctrl + K, sino, avatar, cartões de módulos, 13 cadastros, dados fictícios). Os cartões mostram os outros módulos, nunca o atual
+- **Em aberto:** Filiais da fábrica (a pesquisar); faixa da taxa e centro de custo com a Contabilidade; alcance do grupo além dos almoxarifados; exigência de função por campo ou etapa (Produção e CQ); linhas de produção (Produção)
+- **Próximo:** Marco 1B (migrações novas, regras no banco e testes; levar a casca para o app Angular). **Nada será aplicado no Supabase sem autorização.** Marco 2: os 4 grupos restantes do Principal
+- **Ramo:** `claude/principal-governanca-de-acesso`, sem PR
+
 ## 2026-11-06 · Claude · Login sem empresa corrigido (migração 8 e `login` v3)
 
 - **Primeiro uso real:** o cadastro funcionou depois de corrigir o SMTP (usuário e senha da caixa) e o e-mail digitado errado; o e-mail de confirmação chegou. Ao entrar, o responsável foi recusado: `proximo_passo` não devolvia linha para quem não tinha empresa e a função `login` derrubava a sessão.

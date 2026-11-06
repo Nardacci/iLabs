@@ -42,15 +42,18 @@
   function svg(nome, cls) { return '<svg class="' + (cls || "p-ico") + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICO[nome] + "</svg>"; }
   var ICONE_GRUPO = { acesso: "acesso", org: "org", fisica: "fisica", corp: "corp" };
   var MARCO2 = [["Cadastros Farmacêuticos", "farma"], ["Tabelas Compartilhadas", "tabelas"], ["Central de Notificações", "notif"], ["Configuração da Plataforma", "config"]];
+  /* Cada cartão é um módulo. O módulo em que a pessoa está NÃO aparece nos cartões; os outros, sim. */
+  var MODULO_ATUAL = "principal";
   var MODULOS = [
-    ["Produção", "Planejamento, ordens de produção e execução industrial.", "producao"],
-    ["Estoque", "Recebimento, armazenamento, movimentações e inventário.", "estoque"],
-    ["Controle da Qualidade", "Ensaios, resultados, especificações e laudos.", "cq"],
-    ["Garantia da Qualidade", "Desvios, mudanças, auditorias e qualificação de fornecedores.", "gq"],
-    ["Controle de Documentos", "Documentos eletrônicos, revisões e registros regulatórios.", "docs"],
-    ["Rastreabilidade", "Rastreabilidade completa de lotes e genealogia.", "rastro"],
-    ["Comercial", "Pedidos, cotações, faturamento e contratos.", "comercial"],
-    ["Patrimônio", "Gestão de ativos, manutenções e calibrações.", "patrimonio"] ];
+    ["Principal", "Acessos, estrutura da empresa e física, cadastros corporativos.", "acesso", "principal"],
+    ["Produção", "Planejamento, ordens de produção e execução industrial.", "producao", "producao"],
+    ["Estoque", "Recebimento, armazenamento, movimentações e inventário.", "estoque", "estoque"],
+    ["Controle da Qualidade", "Ensaios, resultados, especificações e laudos.", "cq", "cq"],
+    ["Garantia da Qualidade", "Desvios, mudanças, auditorias e qualificação de fornecedores.", "gq", "gq"],
+    ["Controle de Documentos", "Documentos eletrônicos, revisões e registros regulatórios.", "docs", "docs"],
+    ["Rastreabilidade", "Rastreabilidade completa de lotes e genealogia.", "rastro", "rastro"],
+    ["Comercial", "Pedidos, cotações, faturamento e contratos.", "comercial", "comercial"],
+    ["Patrimônio", "Gestão de ativos, manutenções e calibrações.", "patrimonio", "patrimonio"] ];
   var abertos = {};
 
   /* ---------- menu único (uma vez só, para todas as telas) ---------- */
@@ -84,8 +87,10 @@
   function inicio() {
     var h = '<section class="p-hero"><small>Bom dia, Carla</small><h1>Central de Governança</h1><p>O cérebro do iLabPharma: acessos, estrutura da empresa, cadastros corporativos e as regras de segurança, num só lugar. Empresa <strong>Lab Teste</strong>, dados <strong>fictícios</strong>.</p></section>';
     h += '<div class="p-sec-t"><h2>Módulos operacionais</h2><span class="sub-linha">Só a Governança está desenhada neste marco</span></div><div class="p-modulos">';
-    h += '<a class="p-mod" href="#profissionais"><div class="p-mod-topo"><span class="p-mod-ico">' + svg("acesso") + '</span><h3>Governança (Principal)</h3></div><p>Acessos, estrutura organizacional e física, cadastros corporativos.</p><span class="p-entrar">Entrar no módulo →</span></a>';
-    MODULOS.forEach(function (m) { h += '<div class="p-mod em-breve"><div class="p-mod-topo"><span class="p-mod-ico">' + svg(m[2]) + "</span><h3>" + esc(m[0]) + "</h3></div><p>" + esc(m[1]) + '</p><span class="pill warn">Em breve</span></div>'; });
+    MODULOS.filter(function (m) { return m[3] !== MODULO_ATUAL; }).forEach(function (m) {
+      var pronto = m[3] === "principal";
+      h += (pronto ? '<a class="p-mod" href="#profissionais">' : '<div class="p-mod em-breve">') + '<div class="p-mod-topo"><span class="p-mod-ico">' + svg(m[2]) + "</span><h3>" + esc(m[0]) + "</h3></div><p>" + esc(m[1]) + "</p>" + (pronto ? '<span class="p-entrar">Entrar no módulo →</span></a>' : '<span class="pill warn">Em breve</span></div>');
+    });
     h += "</div>";
     h += '<div class="p-caixa"><h3>Como ler este protótipo (Marco 1A)</h3><ul><li>Os <strong>4 grupos</strong> já analisados, com as decisões de 06/11 aplicadas. Os outros 4 grupos do Principal ficam para o Marco 2 (aparecem apagados no menu).</li><li>Todo cadastro tem <strong>três situações</strong> (ativo, inativo, excluído). <strong>Nada é apagado.</strong> Excluir só vale para o que <strong>nunca foi usado</strong>.</li><li>Toda mudança pede <strong>motivo</strong> e entra no <strong>histórico</strong>. As recusas aparecem como <em>"O servidor recusou"</em>: no sistema real, quem recusa é o banco, nunca só a tela.</li><li>Em cada tela, a caixa <strong>"O que foi decidido"</strong> mostra o que mudou em relação ao legado. É o que você deve criticar.</li><li>Teste também: o <strong>hambúrguer</strong> recolhe o menu, <strong>Ctrl + K</strong> pesquisa, o <strong>sino</strong> mostra avisos e o <strong>avatar</strong> troca o papel ("Ver como").</li></ul></div>';
     $("#conteudo").innerHTML = h; menu("inicio"); ligaPapel();
