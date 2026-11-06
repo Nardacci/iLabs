@@ -57,3 +57,23 @@ Arquivo `20261107090000_inatividade_no_servidor.sql`, como script, com `begin;` 
 
 ## Falta
 Conferir `pg_cron` ativo (`select jobname, schedule from cron.job;`); Advisors depois de tudo; prova do portão com pessoa logada; função `login` publicada; variáveis do app; painel (confirmar e-mail, SMTP, duas etapas, política de senha com mínimo de 12).
+
+## Conferência direta pelo conector do Supabase (06/11/2026, só leitura)
+
+Depois de o responsável ligar a organização do projeto ao conector do Claude, a sessão passou a enxergar o projeto `LabPharma` e conferiu o estado real **sem alterar nada**:
+
+| Item | Obtido |
+|---|---|
+| Tabelas no schema `ilab` | 19 (as 18 anteriores mais `sessoes_atividade`) |
+| Funções no schema `ilab` | 27 |
+| Portão (`pgrst.db_pre_request` do papel `authenticator`) | `ilab_interno.conferir_inatividade` |
+| Schemas expostos (`pgrst.db_schemas`) | `public, graphql_public, ilab` |
+| Tarefa `pg_cron` | `ilabs-encerrar-sessoes-inativas`, `* * * * *` (**ativa**) |
+| Funções de servidor | `login` (versão 2) e `senha-alterada` (versão 1), **ACTIVE**, `verify_jwt` desligado |
+| Empresas, acessos e sessões com atividade | 0, 0 e 0 (nenhum login real ainda) |
+
+**Security Advisor:** 1 aviso de nível INFO: `ilab.sessoes_atividade` tem RLS ligada e nenhuma política. **É o desenho:** nenhuma política significa que os papéis da API não leem nem gravam nela; só o portão (função `security definer`) e o serviço. Não é falha.
+
+**Performance Advisor (INFO):** 7 índices ainda sem uso (esperado em banco novo) e 1 chave estrangeira sem índice (`sessoes_atividade.empresa_id`), da migração 6. Volume ainda zero; avaliar um índice em migração nova quando houver uso real.
+
+**Limite da conferência:** o ambiente da sessão não alcança o endereço da API do projeto (rede restrita), então o teste HTTP do `login` (Passo 4 do roteiro) continua sendo feito pelo responsável no PowerShell.
