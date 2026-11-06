@@ -39,9 +39,9 @@ Os testes **não substituem** a verificação no Supabase de verdade: o PostgreS
 
 ## Situação
 
-**Migrações 6 e 7 (inatividade conferida pelo servidor; próximo passo do login e tamanhos de unidade de medida): escritas e testadas (309 de 309), NÃO aplicadas.** Registro em `execucao/2026-11-07-inatividade-servidor/`. Dependem da autorização do responsável; a 6 liga o portão ao PostgREST e agenda o encerramento (pg_cron).
+**Migração 6 (inatividade conferida pelo servidor): escrita e testada (309 de 309), NÃO aplicada.** (A migração 7, próximo passo do login e tamanhos, já foi aplicada.) Registro em `execucao/2026-11-07-inatividade-servidor/`. Dependem da autorização do responsável; a 6 liga o portão ao PostgREST e agenda o encerramento (pg_cron).
 
-**Migrações 4 e 5 (empresa criada pela própria pessoa; inativar cadastro com motivo): escritas e testadas (249 de 249), NÃO aplicadas.** Registro em `execucao/2026-11-06-migracoes-4-e-5/`. Dependem da autorização do responsável.
+**Migrações 4, 5 e 7 aplicadas em 05/11/2026** no projeto `LabPharma`, pelo responsável (registro em `execucao/2026-11-05-aplicacao-4-5-7/resultado.md`): empresa criada pela própria pessoa (validador de CNPJ), inativar e reativar cadastro com motivo, próximo passo do login e limites de tamanho. Conferido: 3 funções novas, validador de CNPJ correto, 18 de 18 tabelas com RLS, visitante só com `consultar_convite`. Antes delas, as provas reais da migração 3 passaram (8 de 8, limpeza 0 e 0).
 
 **Migração 3 (login e segurança): aplicada em 05/11/2026** no projeto `LabPharma` (São Paulo), pelo responsável (registro em `execucao/2026-11-05-aplicacao-3/resultado.md`). Conferido: 18 tabelas com RLS, 38 políticas, 16 funções no catálogo, visitante sem privilégio em tabela e só com `consultar_convite`, 4 gatilhos de imutabilidade, só 7 tabelas com gravação direta, Health e Security Advisor sem avisos; Performance Advisor só com 13 sugestões Info de índice ainda sem uso (esperado em banco novo). **Pendentes:** as provas reais de senha, segundo fator e sessões, e o que depende do painel e do app.
 
