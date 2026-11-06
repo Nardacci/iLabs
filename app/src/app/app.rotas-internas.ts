@@ -1,6 +1,9 @@
 import type { Routes } from '@angular/router';
 import { guardaPermissao } from './compartilhado/guardas/guardas';
 import type { DadosDaRota } from './compartilhado/menu';
+import { funcoesProfissionais } from './cadastros/funcoes-profissionais';
+import { gruposUsuarios } from './cadastros/grupos-usuarios';
+import { profissionais } from './cadastros/profissionais';
 import { unidadesMedida } from './cadastros/unidades-medida';
 
 /**
@@ -30,9 +33,52 @@ export const rotasInternas: Routes = [
     loadComponent: () => import('./compartilhado/cadastro/cadastro').then((m) => m.Cadastro),
   },
   {
+    path: 'profissionais',
+    canActivate: [guardaPermissao],
+    data: {
+      ...dados({
+        titulo: 'Profissionais',
+        funcao: 'acesso.profissionais',
+        menu: { grupo: 'Governança de Acesso' },
+      }),
+      cadastro: profissionais,
+    },
+    loadComponent: () => import('./compartilhado/cadastro/cadastro').then((m) => m.Cadastro),
+  },
+  {
+    path: 'funcoes-profissionais',
+    canActivate: [guardaPermissao],
+    data: {
+      ...dados({
+        titulo: 'Funções profissionais',
+        funcao: 'acesso.funcoes_profissionais',
+        menu: { grupo: 'Governança de Acesso' },
+      }),
+      cadastro: funcoesProfissionais,
+    },
+    loadComponent: () => import('./compartilhado/cadastro/cadastro').then((m) => m.Cadastro),
+  },
+  {
+    path: 'grupos-usuarios',
+    canActivate: [guardaPermissao],
+    data: {
+      ...dados({
+        titulo: 'Grupos de usuários',
+        funcao: 'acesso.grupos_usuarios',
+        menu: { grupo: 'Governança de Acesso' },
+      }),
+      cadastro: gruposUsuarios,
+    },
+    loadComponent: () => import('./compartilhado/cadastro/cadastro').then((m) => m.Cadastro),
+  },
+  {
     path: 'usuarios',
     canActivate: [guardaPermissao],
-    data: dados({ titulo: 'Usuários', funcao: 'acesso.usuarios', menu: { grupo: 'Acesso' } }),
+    data: dados({
+      titulo: 'Usuários',
+      funcao: 'acesso.usuarios',
+      menu: { grupo: 'Governança de Acesso' },
+    }),
     loadComponent: () => import('./usuarios/usuarios').then((m) => m.Usuarios),
   },
   {
@@ -41,7 +87,7 @@ export const rotasInternas: Routes = [
     data: dados({
       titulo: 'Perfis e permissões',
       funcao: 'acesso.perfis',
-      menu: { grupo: 'Acesso' },
+      menu: { grupo: 'Governança de Acesso' },
     }),
     loadComponent: () => import('./perfis/perfis').then((m) => m.Perfis),
   },
@@ -51,7 +97,7 @@ export const rotasInternas: Routes = [
     data: dados({
       titulo: 'Registro de acessos',
       funcao: 'acesso.registro_acessos',
-      menu: { grupo: 'Acesso' },
+      menu: { grupo: 'Governança de Acesso' },
     }),
     loadComponent: () => import('./registros/registros').then((m) => m.Registros),
   },
@@ -61,7 +107,7 @@ export const rotasInternas: Routes = [
     data: dados({
       titulo: 'Assinatura eletrônica',
       funcao: 'assinatura.consulta',
-      menu: { grupo: 'Acesso' },
+      menu: { grupo: 'Governança de Acesso' },
     }),
     loadComponent: () => import('./assinatura/assinatura').then((m) => m.Assinatura),
   },

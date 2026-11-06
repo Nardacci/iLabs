@@ -156,6 +156,8 @@ const m9 = await import('./testes_situacao_tres_valores.mjs');
 await m9.rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB });
 const m10 = await import('./testes_motivo_na_alteracao.mjs');
 await m10.rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB });
+const m11 = await import('./testes_governanca_acesso.mjs');
+await m11.rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB });
 
 console.log(`\n${ok} testes passaram, ${falhas} falharam.`);
 process.exit(falhas ? 1 : 0);

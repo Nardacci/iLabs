@@ -381,6 +381,87 @@ export type Database = {
         }
         Relationships: []
       }
+      funcoes_profissionais: {
+        Row: {
+          id: string
+          empresa_id: string
+          codigo: string
+          descricao: string
+          pode_assinar: string | null
+          situacao: string
+          ativo: boolean | null
+          criado_em: string
+          criado_por: string | null
+          atualizado_em: string | null
+          atualizado_por: string | null
+        }
+        Insert: {
+          id?: string
+          empresa_id: string
+          codigo: string
+          descricao: string
+          pode_assinar?: string | null
+          situacao?: string
+          ativo?: boolean | null
+          criado_em?: string
+          criado_por?: string | null
+          atualizado_em?: string | null
+          atualizado_por?: string | null
+        }
+        Update: {
+          id?: string
+          empresa_id?: string
+          codigo?: string
+          descricao?: string
+          pode_assinar?: string | null
+          situacao?: string
+          ativo?: boolean | null
+          criado_em?: string
+          criado_por?: string | null
+          atualizado_em?: string | null
+          atualizado_por?: string | null
+        }
+        Relationships: []
+      }
+      grupos_usuarios: {
+        Row: {
+          id: string
+          empresa_id: string
+          codigo: string
+          nome: string
+          situacao: string
+          ativo: boolean | null
+          criado_em: string
+          criado_por: string | null
+          atualizado_em: string | null
+          atualizado_por: string | null
+        }
+        Insert: {
+          id?: string
+          empresa_id: string
+          codigo: string
+          nome: string
+          situacao?: string
+          ativo?: boolean | null
+          criado_em?: string
+          criado_por?: string | null
+          atualizado_em?: string | null
+          atualizado_por?: string | null
+        }
+        Update: {
+          id?: string
+          empresa_id?: string
+          codigo?: string
+          nome?: string
+          situacao?: string
+          ativo?: boolean | null
+          criado_em?: string
+          criado_por?: string | null
+          atualizado_em?: string | null
+          atualizado_por?: string | null
+        }
+        Relationships: []
+      }
       materiais: {
         Row: {
           id: string
@@ -613,6 +694,60 @@ export type Database = {
           convite_validade_horas?: number
           dupla_etapa_aprova?: boolean
           dupla_etapa_admin?: boolean
+          atualizado_em?: string | null
+          atualizado_por?: string | null
+        }
+        Relationships: []
+      }
+      profissionais: {
+        Row: {
+          id: string
+          empresa_id: string
+          codigo: string
+          nome: string
+          cpf: string
+          cbo: string | null
+          funcao_profissional_id: string
+          grupo_id: string | null
+          usuario_id: string | null
+          situacao: string
+          ativo: boolean | null
+          criado_em: string
+          criado_por: string | null
+          atualizado_em: string | null
+          atualizado_por: string | null
+        }
+        Insert: {
+          id?: string
+          empresa_id: string
+          codigo: string
+          nome: string
+          cpf: string
+          cbo?: string | null
+          funcao_profissional_id: string
+          grupo_id?: string | null
+          usuario_id?: string | null
+          situacao?: string
+          ativo?: boolean | null
+          criado_em?: string
+          criado_por?: string | null
+          atualizado_em?: string | null
+          atualizado_por?: string | null
+        }
+        Update: {
+          id?: string
+          empresa_id?: string
+          codigo?: string
+          nome?: string
+          cpf?: string
+          cbo?: string | null
+          funcao_profissional_id?: string
+          grupo_id?: string | null
+          usuario_id?: string | null
+          situacao?: string
+          ativo?: boolean | null
+          criado_em?: string
+          criado_por?: string | null
           atualizado_em?: string | null
           atualizado_por?: string | null
         }

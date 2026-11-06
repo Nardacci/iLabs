@@ -14,6 +14,13 @@ export interface CampoDeCadastro {
   dica?: string;
   /** Aparece como coluna da lista (padrão: sim). */
   naLista?: boolean;
+  /**
+   * Para `tipo: 'lista'` com opções de OUTRO cadastro (a coluna guarda o id): de onde vêm e qual coluna dá o nome.
+   * Para escolher só aparecem os ativos (mais o que já estava gravado); a lista mostra o nome, não o id.
+   */
+  referencia?: { tabela: NomeDaTabela; rotulo: string };
+  /** Como mostrar o valor na lista (o banco guarda só os dígitos). */
+  formato?: 'cpf';
 }
 
 /**
@@ -25,6 +32,8 @@ export interface DescricaoDeCadastro {
   titulo: string;
   /** Para frases como "Nova {singular}". */
   singular: string;
+  /** Gênero do nome, para "Novo" ou "Nova" (padrão: feminino, como "Nova unidade de medida"). */
+  genero?: 'm' | 'f';
   /** Função do banco (ilab.funcoes) que libera a tela e as ações. */
   funcao: string;
   /** Campo que nomeia o registro nas ações e no histórico (padrão: o primeiro campo). */

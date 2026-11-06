@@ -23,6 +23,29 @@ describe('contrato com o banco', () => {
     for (const f of usadas) expect(chaves, `função ${f}`).toContain(f);
   });
 
+  it('os cadastros do acesso descrevem colunas que existem nas tabelas', async () => {
+    const { funcoesProfissionais } = await import('./cadastros/funcoes-profissionais');
+    const { gruposUsuarios } = await import('./cadastros/grupos-usuarios');
+    const { profissionais } = await import('./cadastros/profissionais');
+    for (const d of [funcoesProfissionais, gruposUsuarios, profissionais]) {
+      const tabela =
+        new RegExp(`create table ilab\\.${d.tabela} \\(([\\s\\S]*?)\\n\\);`).exec(sql)?.[1] ?? '';
+      expect(tabela, `tabela ${d.tabela}`).not.toBe('');
+      for (const c of d.campos)
+        expect(tabela, `${d.tabela}.${c.nome}`).toMatch(new RegExp(`\\b${c.nome}\\b`));
+      for (const c of d.campos)
+        if (c.referencia) {
+          const ref =
+            new RegExp(`create table ilab\\.${c.referencia.tabela} \\(([\\s\\S]*?)\\n\\);`).exec(
+              sql,
+            )?.[1] ?? '';
+          expect(ref, `${c.nome} -> ${c.referencia.tabela}.${c.referencia.rotulo}`).toMatch(
+            new RegExp(`\\b${c.referencia.rotulo}\\b`),
+          );
+        }
+    }
+  });
+
   it('o cadastro de unidades de medida descreve colunas que existem na tabela', async () => {
     const { unidadesMedida } = await import('./cadastros/unidades-medida');
     const tabela = /create table ilab\.unidades_medida \(([\s\S]*?)\n\);/.exec(sql)?.[1] ?? '';
