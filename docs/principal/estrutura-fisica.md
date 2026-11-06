@@ -39,8 +39,8 @@
 3. Regras no banco: local de quarentena não recebe material liberado; ambiente **em uso** não é excluído; endereçamento atômico.
 4. Ligação **grupo × almoxarifado** (já decidida) fica para o Estoque.
 
-## 4. Perguntas
-1. **Plantas e Prédios:** a fábrica tem mais de um prédio ou planta a representar? Entram como níveis da árvore organizacional? (Liga-se à pergunta de Filiais, em pesquisa.)
-2. **Linhas de produção:** devem ser cadastro próprio? Deixo para a análise da Produção?
-3. **Ambiente único** (áreas, salas limpas e controlados juntos, com classificação): aprova?
-4. **Almoxarifado em tela única com abas:** aprova reunir os 7 cadastros do Estoque, mantendo-os separados no banco?
+## 4. Respostas do responsável (06/11/2026)
+1. **Plantas e Prédios:** o responsável não tem a informação, mas pode acontecer. **O sistema deve ser preparado** para mais de um prédio ou planta (níveis da árvore organizacional). Decidido.
+2. **Linhas de produção:** **deixar para a análise da Produção.** Decidido.
+3. **Ambiente único:** **ainda em aberto**; o responsável pediu uma explicação mais simples (ver a mensagem do chat).
+4. **Almoxarifado em tela única com abas:** **sim**, mantendo os cadastros separados no banco. Decidido.
