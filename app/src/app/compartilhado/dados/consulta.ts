@@ -64,15 +64,6 @@ export class ConsultaService {
     if (error) throw traduzir(error);
   }
 
-  async alterar(tabela: NomeDaTabela, id: string, valores: Record<string, unknown>): Promise<void> {
-    const { error, count } = await this.banco.cliente
-      .from(tabela)
-      .update(valores as never, { count: 'exact' })
-      .eq('id' as never, id as never); // eslint-disable-line @typescript-eslint/no-unnecessary-type-assertion -- coluna genérica entre várias tabelas
-    if (error) throw traduzir(error);
-    if (count === 0) throw new ErroDoBanco('Você não tem permissão para alterar este registro.');
-  }
-
   /** Histórico de um registro (trilha de auditoria, só leitura). */
   async historico(tabela: string, registroId: string): Promise<LinhaDe<'auditoria'>[]> {
     const { data, error } = await this.banco.cliente

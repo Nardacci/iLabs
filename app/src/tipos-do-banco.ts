@@ -751,6 +751,7 @@ export type Database = {
     Views: { [_ in never]: never }
     Functions: {
       aceitar_convite: { Args: { p_token: string }; Returns: string }
+      alterar_cadastro: { Args: { p_tabela: string; p_id: string; p_valores: Json; p_motivo: string }; Returns: undefined }
       alterar_politica_seguranca: { Args: { p_alteracoes: Json; p_motivo: string }; Returns: undefined }
       assinar_registro: { Args: { p_tabela: string; p_registro_id: string; p_significado: string; p_motivo: string; p_senha: string }; Returns: { ok: boolean | null; assinatura_id: number | null; mensagem: string | null }[] }
       bloquear_por_tentativas: { Args: { p_email: string; p_ip?: string; p_navegador?: string }; Returns: boolean }

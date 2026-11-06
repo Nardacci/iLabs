@@ -25,7 +25,6 @@ function preparar(permitidas: Partial<ReturnType<typeof permissao>> = {}, restau
   const consulta = {
     listar: vi.fn(() => Promise.resolve({ linhas: LINHAS, total: 25 })),
     incluir: vi.fn(() => Promise.resolve()),
-    alterar: vi.fn(() => Promise.resolve()),
     historico: vi.fn(() => Promise.resolve([])),
   };
   TestBed.overrideProvider(ConsultaService, { useValue: consulta });
@@ -133,6 +132,59 @@ describe('cadastro por metadados (unidades de medida)', () => {
       p_situacao: 'inativo',
       p_motivo: 'Unidade fora de uso na farmácia',
     });
+  });
+
+  it('editar exige o motivo e manda só o que mudou, pela função que o banco confere', async () => {
+    const { banco } = preparar();
+    const f = await abrir();
+    const el = f.nativeElement as HTMLElement;
+    const clicar = (rotulo: string): void =>
+      [...el.querySelectorAll('button')]
+        .find((b) => b.textContent?.trim().startsWith(rotulo))
+        ?.click();
+    clicar('Editar');
+    f.detectChanges();
+    expect(el.textContent).toContain('Motivo da alteração (obrigatório)');
+
+    // sem mudar nada: não chama o banco
+    clicar('Salvar');
+    await f.whenStable();
+    f.detectChanges();
+    expect(banco.chamadas.filter((c) => c.nome === 'alterar_cadastro')).toHaveLength(0);
+
+    // muda o nome, mas sem motivo: não chama o banco
+    const campos = el.querySelectorAll<HTMLInputElement>('form input');
+    const nome = [...campos].find((i) => i.value === 'Grama')!;
+    nome.value = 'Grama (g)';
+    nome.dispatchEvent(new Event('input'));
+    f.detectChanges();
+    clicar('Salvar');
+    await f.whenStable();
+    expect(banco.chamadas.filter((c) => c.nome === 'alterar_cadastro')).toHaveLength(0);
+
+    const area = el.querySelector<HTMLTextAreaElement>('form textarea')!;
+    area.value = 'Padronização do nome da unidade';
+    area.dispatchEvent(new Event('input'));
+    f.detectChanges();
+    clicar('Salvar');
+    await f.whenStable();
+    expect(banco.chamadas.find((c) => c.nome === 'alterar_cadastro')?.args).toEqual({
+      p_tabela: 'unidades_medida',
+      p_id: '1',
+      p_valores: { nome: 'Grama (g)' },
+      p_motivo: 'Padronização do nome da unidade',
+    });
+  });
+
+  it('ao incluir um registro novo o motivo não é pedido', async () => {
+    preparar();
+    const f = await abrir();
+    const el = f.nativeElement as HTMLElement;
+    [...el.querySelectorAll('button')]
+      .find((b) => b.textContent?.includes('Nova unidade'))
+      ?.click();
+    f.detectChanges();
+    expect(el.textContent).not.toContain('Motivo da alteração');
   });
 
   it('mostra as três situações e quantos lugares usam cada registro (a informação vem do banco)', async () => {

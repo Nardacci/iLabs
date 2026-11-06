@@ -253,6 +253,14 @@ const TAMANHO_DA_PAGINA = 10;
                 [controle]="controle(c.nome)"
               />
             }
+            @if (editando()) {
+              <il-campo
+                rotulo="Motivo da alteração (obrigatório)"
+                tipo="textolongo"
+                dica="Pelo menos 5 caracteres. Fica registrado no histórico, com o antes e o depois."
+                [controle]="motivo"
+              />
+            }
             <div class="acoes">
               <button type="submit" class="btn primary" [disabled]="trabalhando()">Salvar</button>
               <button type="button" class="btn" (click)="fechar()">Cancelar</button>
@@ -531,6 +539,7 @@ export class Cadastro {
       });
     }
     this.formulario = new FormRecord(controles);
+    this.motivo.reset('');
     this.abrir('formulario', linha);
   }
 
@@ -554,16 +563,37 @@ export class Cadastro {
 
   protected async salvar(): Promise<void> {
     this.formulario.markAllAsTouched();
-    if (this.formulario.invalid || this.trabalhando()) return;
+    const atual = this.alvo();
+    if (atual) this.motivo.markAsTouched();
+    if (this.formulario.invalid || (atual && this.motivo.invalid) || this.trabalhando()) return;
     this.trabalhando.set(true);
     this.erroDaJanela.set(null);
     try {
       const valores = this.formulario.getRawValue();
-      const atual = this.alvo();
-      if (atual) await this.consulta.alterar(this.cadastro().tabela, String(atual['id']), valores);
-      else await this.consulta.incluir(this.cadastro().tabela, valores);
+      if (atual) {
+        // Só vai o que mudou. Campo opcional esvaziado vai como vazio (nulo). O motivo é conferido pelo banco.
+        const mudou: Record<string, string | null> = {};
+        for (const c of this.cadastro().campos) {
+          const antes = this.texto(atual[c.nome]).replace('—', '');
+          const depois = valores[c.nome] ?? '';
+          if (antes !== depois)
+            mudou[c.nome] = depois === '' && c.obrigatorio !== true ? null : depois;
+        }
+        if (Object.keys(mudou).length === 0) {
+          this.erroDaJanela.set('Nada mudou. Altere algum campo ou cancele.');
+          return;
+        }
+        await this.banco.rpc('alterar_cadastro', {
+          p_tabela: this.cadastro().tabela,
+          p_id: String(atual['id']),
+          p_valores: mudou,
+          p_motivo: this.motivo.value,
+        });
+      } else {
+        await this.consulta.incluir(this.cadastro().tabela, valores);
+      }
       this.fechar();
-      this.aviso.set('Registro salvo.');
+      this.aviso.set(atual ? 'Alteração salva e registrada no histórico.' : 'Registro salvo.');
       await this.carregar();
     } catch (e) {
       this.erroDaJanela.set(mensagemDeErro(e));
