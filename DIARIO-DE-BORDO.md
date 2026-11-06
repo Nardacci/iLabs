@@ -3,11 +3,12 @@
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
 
-## 2026-11-05 · Claude · Migrações 4, 5 e 7 aplicadas no Supabase
+## 2026-11-05 · Claude · Migrações 4, 5, 7 e 6 aplicadas no Supabase
 
 - **Feito pelo responsável** (projeto `LabPharma`), com arquivos prontos (begin e commit incluídos): provas reais da migração 3 (8 de 8, limpeza 0 e 0); migrações 4, 5 e 7 sem erro; conferência: 3 funções, CNPJ correto, 18 de 18 RLS, visitante só `consultar_convite`. Registro em `banco/execucao/2026-11-05-aplicacao-4-5-7/resultado.md`.
 - **Ocorrência:** a conferência da 4 foi rodada antes da migração (ordem errada do roteiro), quebrou a transação e foi resolvida com `rollback;`.
-- **Pendente:** migração 6 (portão de inatividade, sozinha e por último), Advisors, função `login`, variáveis do app, painel.
+- **Migração 6** aplicada sozinha às 21:38, conferência OK (portão ligado, RLS, visitante só `consultar_convite`). **Passo D (API responde) pendente:** erro local do PowerShell por variáveis `ILABS_*` vazias.
+- **Pendente:** Passo D, `pg_cron` e Exposed schemas no painel, Advisors, função `login`, variáveis do app, painel.
 
 ## 2026-11-07 · Claude · Regra de negócio nunca no front: inatividade no servidor e auditoria
 

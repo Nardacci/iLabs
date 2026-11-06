@@ -39,7 +39,7 @@ Os testes **não substituem** a verificação no Supabase de verdade: o PostgreS
 
 ## Situação
 
-**Migração 6 (inatividade conferida pelo servidor): escrita e testada (309 de 309), NÃO aplicada.** (A migração 7, próximo passo do login e tamanhos, já foi aplicada.) Registro em `execucao/2026-11-07-inatividade-servidor/`. Dependem da autorização do responsável; a 6 liga o portão ao PostgREST e agenda o encerramento (pg_cron).
+**Migração 6 (inatividade conferida pelo servidor): aplicada em 05/11/2026** (21:38), sozinha, depois das 4, 5 e 7 (registro em `execucao/2026-11-05-aplicacao-4-5-7/resultado.md`). Conferido: portão ligado ao PostgREST, tabela `sessoes_atividade` com RLS, visitante só com `consultar_convite`. **Pendente a prova de que a API continua respondendo (Passo D)**, que falhou por variáveis de ambiente vazias na janela do responsável (erro local, não da API).
 
 **Migrações 4, 5 e 7 aplicadas em 05/11/2026** no projeto `LabPharma`, pelo responsável (registro em `execucao/2026-11-05-aplicacao-4-5-7/resultado.md`): empresa criada pela própria pessoa (validador de CNPJ), inativar e reativar cadastro com motivo, próximo passo do login e limites de tamanho. Conferido: 3 funções novas, validador de CNPJ correto, 18 de 18 tabelas com RLS, visitante só com `consultar_convite`. Antes delas, as provas reais da migração 3 passaram (8 de 8, limpeza 0 e 0).
 

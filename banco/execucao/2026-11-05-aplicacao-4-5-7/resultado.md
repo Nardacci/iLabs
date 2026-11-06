@@ -1,6 +1,6 @@
-# Aplicação das migrações 4, 5 e 7 no Supabase: resultado
+# Aplicação das migrações 4, 5, 7 e 6 no Supabase: resultado
 
-**Aplicadas em 05/11/2026** (entre 21:35 e 21:36, horário de Brasília), pelo responsável, no projeto `LabPharma` (São Paulo), por cliente de banco, como script, com `begin;` e `commit;` (arquivos prontos `aplicar-migracao-4.sql`, `-5.sql` e `-7.sql`, que são o texto do repositório com as duas linhas acrescentadas). A **migração 6 não foi aplicada** (entra sozinha e por último). Este registro não tem endereço do projeto, senha, chave nem string de conexão.
+**Aplicadas em 05/11/2026** (entre 21:35 e 21:36, horário de Brasília), pelo responsável, no projeto `LabPharma` (São Paulo), por cliente de banco, como script, com `begin;` e `commit;` (arquivos prontos `aplicar-migracao-4.sql`, `-5.sql` e `-7.sql`, que são o texto do repositório com as duas linhas acrescentadas). A **migração 6** foi aplicada depois, sozinha, às 21:38 (ver abaixo). Este registro não tem endereço do projeto, senha, chave nem string de conexão.
 
 ## Antes (Passo 0 e Passo 1 de `banco/APLICAR-NO-PAINEL-4-A-7.md`)
 
@@ -27,9 +27,22 @@
 | tabelas com RLS ligada | 18 de 18 | 18 de 18 |
 | `security definer` sem caminho de busca fixo | 0 | 0 |
 
+## Migração 6 (inatividade conferida pelo servidor), aplicada sozinha às 21:38:04
+
+Arquivo `20261107090000_inatividade_no_servidor.sql`, como script, com `begin;` e `commit;`, terminou sem erro (3 linhas gravadas: os 3 parâmetros novos de inatividade).
+
+| Verificação | Obtido | Esperado |
+|---|---|---|
+| portão ligado ao PostgREST (`authenticator` com `ilab_interno.conferir_inatividade`) | 1 | 1 |
+| tabela `sessoes_atividade` com RLS | true | true |
+| funções que o visitante executa | `consultar_convite` | `consultar_convite` |
+| visitante sem privilégio em tabela | 0 | 0 |
+
+**Prova de que a API continua respondendo (Passo D): PENDENTE.** A primeira tentativa deu erro **local** do PowerShell (`NullReferenceException` em `Invoke-RestMethod`): as variáveis `ILABS_SUPABASE_URL` e `ILABS_SUPABASE_CHAVE_PUBLICA` não estavam definidas na janela, então a chamada nem saiu da máquina. Não é erro da API. Repetir depois de definir as variáveis (nunca registrar os valores). Se a API falhar com 500: `alter role authenticator reset pgrst.db_pre_request;` e `notify pgrst, 'reload config';`.
+
 ## Ocorrências
 1. A conferência da migração 4 foi rodada **antes** de a migração ser aplicada, dentro de `begin;`, e a função `ilab_interno.cnpj_valido` ainda não existia: a consulta falhou e deixou a transação quebrada ("current transaction is aborted"). Resolvido com `rollback;`. Causa: a ordem em que o roteiro foi passado (conferência junto da migração). Nada foi gravado.
 2. O visualizador da sessão não abre arquivos do repositório `iLabs`; os arquivos para rodar foram enviados como anexos, já com `begin;` e `commit;`.
 
 ## Falta
-Migração 6 (portão de inatividade, sozinha, por último); Advisors depois de tudo; função `login` publicada; variáveis do app; painel (confirmar e-mail, SMTP, duas etapas, política de senha com mínimo de 12).
+Passo D (API responde com o portão ligado); `pg_cron` e Exposed schemas conferidos no painel; Advisors depois de tudo; função `login` publicada; variáveis do app; painel (confirmar e-mail, SMTP, duas etapas, política de senha com mínimo de 12).
