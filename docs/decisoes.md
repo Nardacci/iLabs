@@ -27,3 +27,21 @@ O detalhe das decisões do banco está em `../banco/README.md` e `../banco/model
 | 05/11/2026 | **Empresa suspensa:** com senha certa a função devolve a ação `empresa_suspensa` (tela própria); com senha errada, conta bloqueada ou inativa, a mensagem genérica de sempre | O pedido listava "empresa suspensa" nos dois lugares; sem a ação o app não conseguiria explicar a situação. Trocar é uma linha em `decidirProximo` |
 | 05/11/2026 | **Token do convite no fragmento do link (`#token=`)**, removido do endereço ao abrir a tela | Corrige SEG-PRI-08 (token no endereço) |
 | 05/11/2026 | **Migração 4** (`criar_minha_empresa`): a pessoa logada cria empresa, responsável técnico e perfis de forma atômica; valida CNPJ e recusa repetido. **Migração 5** (`mudar_situacao_cadastro`): inativar/reativar cadastro com motivo | A API de tabelas não consegue informar o motivo da auditoria; a função faz tudo numa transação. **Escritas e testadas (249 testes), NÃO aplicadas** |
+| 06/11/2026 | **Profissional é cadastro separado de Conta de usuário**; a conta é opcional e se liga ao profissional | Quem executa e assina precisa ser identificado, e o treinamento e a qualificação se prendem à pessoa, tenha ou não login (a versão atual só tem `usuarios`) |
+| 06/11/2026 | **Grupo de usuários = escopo (onde)**; **Perfil = o que se pode fazer.** No Estoque o grupo da pessoa define os almoxarifados que ela enxerga | Legado: `grupo_usuario_local` (CT-EST-014). O grupo restringe alcance, nunca libera função |
+| 06/11/2026 | **"Excluído" é situação própria, distinta de "inativo".** Nunca se apaga fisicamente | CLAUDE.md do iLabs (sem exclusão física, trilha imutável); no legado, excluir sem justificativa e sem histórico (DV-PRI-036, N-007) |
+| 06/11/2026 | **Sem nome da mãe nem do pai** no cadastro de profissional | LGPD, minimização: a norma e a operação não exigem |
+| 06/11/2026 | **Validade da conta (de, até)** entra no iLabs | Funciona no legado e serve a terceirizados e auditores (RG-PRI-005) |
+| 06/11/2026 | **"Excluído" só para o que nunca foi usado**; o que já foi usado só se inativa. Restaurar exige função própria e motivo | Evita perder histórico de uso e assinatura (BPF, trilha de auditoria) |
+| 06/11/2026 | **Função profissional mantém ocupação (CBO) e cargo principal** | Igual ao legado (RN-PRI-033) |
+| 06/11/2026 | **Departamentos e Setores numa só árvore** (estrutura organizacional, com tipo de nível) | Evita cadastros repetidos; no legado já é uma árvore (`SIS_LOCAL`) |
+| 06/11/2026 | **Sem cadastro "Grupos de perfil"** no Principal; níveis da GQ viram papéis da matriz | No legado só existe na GQ (DV-GQ-009, R-GQ-34) |
+| 06/11/2026 | **Centro de custos segue o legado, corrigido** (código com letras, motivo, histórico) | DV-PRI-043/044. Filiais da fábrica: **em aberto, a pesquisar** |
+| 06/11/2026 | **Sistema preparado para mais de uma planta ou prédio** (níveis da árvore organizacional), mesmo sem a informação hoje | Fábrica pode crescer; evita refazer a estrutura |
+| 06/11/2026 | **Almoxarifado em tela única com abas**, cadastros separados no banco | Protótipo + Estoque do legado (7 cadastros) |
+| 06/11/2026 | **Linhas de produção ficam para a análise da Produção** | Não existe no Principal |
+| 06/11/2026 | **Só o cadastro de Ambiente**, com classificação; sem Áreas, Salas limpas e Ambientes controlados separados | No legado já é um cadastro (`TBL_AMBIENTE`); evita tabelas duplicadas |
+| 06/11/2026 | **Qualificação de fornecedores mora na Garantia da Qualidade**; o recebimento e a terceirização **bloqueiam** fornecedor não qualificado (regra no banco) | RDC 658/2022, art. 8º, VI; DV-EST-022 |
+| 06/11/2026 | **Tipos de fornecimento** = materiais e serviços aprovados por fornecedor, dentro da qualificação | Qualificação por material (arts. 179 a 182) |
+| 06/11/2026 | **Contas bancárias, financeiras, contábeis e gerenciais num só cadastro com tipo** | DV-PRI-047/048; faixa da taxa com a Contabilidade |
+| 06/11/2026 | **Marco 1A aprovado**; na home os cartões mostram os outros módulos, nunca o módulo atual | Protótipo `prototipo/principal.html`; casca no layout do protótipo do responsável, nas cores do iLabPharma |

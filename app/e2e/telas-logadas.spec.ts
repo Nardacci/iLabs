@@ -9,8 +9,13 @@ import {
 } from './apoio';
 
 const UNIDADES = [
-  { id: 'u-1', sigla: 'g', nome: 'Grama', grandeza: 'massa', ativo: true },
-  { id: 'u-2', sigla: 'L', nome: 'Litro', grandeza: 'volume', ativo: false },
+  { id: 'u-1', sigla: 'g', nome: 'Grama', grandeza: 'massa', situacao: 'ativo' },
+  { id: 'u-2', sigla: 'L', nome: 'Litro', grandeza: 'volume', situacao: 'inativo' },
+];
+/** Usos que o banco informa para a lista (o app só mostra; quem decide a exclusão é o banco). */
+const USOS = [
+  { registro_id: 'u-1', usos: 2 },
+  { registro_id: 'u-2', usos: 0 },
 ];
 const PERFIS = [
   {
@@ -64,6 +69,7 @@ async function preparar(
       minhas_permissoes: PERMISSOES_DO_ADMIN,
       listar_perfis: PERFIS,
       listar_usuarios: USUARIOS,
+      usos_cadastros: USOS,
       vinculos_do_usuario: [{ perfil_id: 'p-2', nome: 'Consulta', perfil_ativo: false }],
       ...(extra.rpc ?? {}),
     },
@@ -115,15 +121,15 @@ test.describe('Cadastro por metadados (unidades de medida)', () => {
     await conferirAcessibilidade(page, 'cadastro unidades (janela do motivo)');
     await page.getByRole('button', { name: 'Confirmar' }).click();
     await expect(page.getByText('Preencha este campo.')).toBeVisible();
-    expect(chamadas?.some((c) => c.alvo === 'rpc:mudar_situacao_cadastro')).toBe(false);
+    expect(chamadas?.some((c) => c.alvo === 'rpc:mudar_situacao')).toBe(false);
     await page.getByLabel(/Motivo/).fill('Unidade fora de uso na farmácia');
     await page.getByRole('button', { name: 'Confirmar' }).click();
     await expect
-      .poll(() => chamadas?.find((c) => c.alvo === 'rpc:mudar_situacao_cadastro')?.corpo)
+      .poll(() => chamadas?.find((c) => c.alvo === 'rpc:mudar_situacao')?.corpo)
       .toEqual({
         p_tabela: 'unidades_medida',
         p_id: 'u-1',
-        p_ativo: false,
+        p_situacao: 'inativo',
         p_motivo: 'Unidade fora de uso na farmácia',
       });
 

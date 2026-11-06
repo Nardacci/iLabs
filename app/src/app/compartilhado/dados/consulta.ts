@@ -9,6 +9,8 @@ export interface PedidoDeLista {
   pagina: number;
   tamanho: number;
   ordenarPor: string;
+  /** Só estas situações (ativo, inativo, excluido). Sem isto, vêm todas. */
+  situacoes?: readonly string[];
 }
 
 export interface Pagina<L> {
@@ -45,6 +47,9 @@ export class ConsultaService {
       .select('*', { count: 'exact' })
       .order(p.ordenarPor)
       .range(de, de + p.tamanho - 1);
+    if (p.situacoes && p.situacoes.length > 0) {
+      consulta = consulta.in('situacao' as never, [...p.situacoes] as never);
+    }
     const termo = p.busca.trim().replace(/[%,()*]/g, ' ');
     if (termo && p.colunasDeBusca.length > 0) {
       consulta = consulta.or(p.colunasDeBusca.map((c) => `${c}.ilike.%${termo}%`).join(','));
@@ -57,15 +62,6 @@ export class ConsultaService {
   async incluir(tabela: NomeDaTabela, valores: Record<string, unknown>): Promise<void> {
     const { error } = await this.banco.cliente.from(tabela).insert(valores as never);
     if (error) throw traduzir(error);
-  }
-
-  async alterar(tabela: NomeDaTabela, id: string, valores: Record<string, unknown>): Promise<void> {
-    const { error, count } = await this.banco.cliente
-      .from(tabela)
-      .update(valores as never, { count: 'exact' })
-      .eq('id' as never, id as never); // eslint-disable-line @typescript-eslint/no-unnecessary-type-assertion -- coluna genérica entre várias tabelas
-    if (error) throw traduzir(error);
-    if (count === 0) throw new ErroDoBanco('Você não tem permissão para alterar este registro.');
   }
 
   /** Histórico de um registro (trilha de auditoria, só leitura). */

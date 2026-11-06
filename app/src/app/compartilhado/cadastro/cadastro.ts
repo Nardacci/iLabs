@@ -31,6 +31,35 @@ import { type Diferenca, diferencas, ROTULO_DA_ACAO } from './historico';
 
 type Linha = Record<string, unknown>;
 type TipoDeJanela = 'nenhuma' | 'formulario' | 'motivo' | 'historico';
+type AcaoDeSituacao = 'inativar' | 'reativar' | 'excluir' | 'restaurar';
+type FiltroDeSituacao = 'vivos' | 'ativo' | 'inativo' | 'excluido' | 'todos';
+
+const SITUACAO_DA_ACAO: Record<AcaoDeSituacao, string> = {
+  inativar: 'inativo',
+  reativar: 'ativo',
+  excluir: 'excluido',
+  restaurar: 'inativo',
+};
+const TITULO_DA_ACAO: Record<AcaoDeSituacao, string> = {
+  inativar: 'Inativar',
+  reativar: 'Reativar',
+  excluir: 'Excluir',
+  restaurar: 'Restaurar',
+};
+const EXPLICACAO_DA_ACAO: Record<AcaoDeSituacao, string> = {
+  inativar: 'O registro sai das listas de escolha, mas continua no histórico.',
+  reativar: 'O registro volta às listas de escolha.',
+  excluir:
+    'Marca como excluído. Nada é apagado do banco. Só é possível para o que nunca foi usado; o banco confere.',
+  restaurar: 'O registro volta como inativo. Reative em seguida, se for o caso.',
+};
+const SITUACOES_DO_FILTRO: Record<FiltroDeSituacao, readonly string[]> = {
+  vivos: ['ativo', 'inativo'],
+  ativo: ['ativo'],
+  inativo: ['inativo'],
+  excluido: ['excluido'],
+  todos: [],
+};
 
 const TAMANHO_DA_PAGINA = 10;
 
@@ -58,6 +87,20 @@ const TAMANHO_DA_PAGINA = 10;
             [formControl]="busca"
             autocomplete="off"
           />
+        </div>
+        <div class="field">
+          <label [for]="'situacao-' + cadastro().tabela">Situação</label>
+          <select
+            class="input"
+            [id]="'situacao-' + cadastro().tabela"
+            [formControl]="filtroSituacao"
+          >
+            <option value="vivos">Ativos e inativos</option>
+            <option value="ativo">Só ativos</option>
+            <option value="inativo">Só inativos</option>
+            <option value="excluido">Só excluídos</option>
+            <option value="todos">Todos</option>
+          </select>
         </div>
         <button type="button" class="btn" [class.sr]="!podeImprimir()" (click)="imprimir()">
           Imprimir
@@ -99,20 +142,52 @@ const TAMANHO_DA_PAGINA = 10;
                 <td>
                   <span
                     class="pill"
-                    [class.ok]="linha['ativo'] === true"
-                    [class.warn]="linha['ativo'] !== true"
+                    [class.ok]="situacaoDe(linha) === 'ativo'"
+                    [class.warn]="situacaoDe(linha) === 'inativo'"
+                    [class.bad]="situacaoDe(linha) === 'excluido'"
                   >
-                    {{ linha['ativo'] === true ? 'Ativo' : 'Inativo' }}
+                    {{ rotuloDaSituacao(linha) }}
                   </span>
+                  @if (textoDeUsos(linha); as uso) {
+                    <small class="sub-linha">{{ uso }}</small>
+                  }
                 </td>
                 <td class="nao-imprimir">
-                  @if (podeAlterar()) {
+                  @if (podeAlterar() && situacaoDe(linha) !== 'excluido') {
                     <button type="button" class="btn small" (click)="abrirFormulario(linha)">
                       Editar<span class="sr"> {{ resumo(linha) }}</span>
                     </button>
-                    <button type="button" class="btn small" (click)="abrirMotivo(linha)">
-                      {{ linha['ativo'] === true ? 'Inativar' : 'Reativar'
+                    <button
+                      type="button"
+                      class="btn small"
+                      (click)="
+                        abrirMotivo(linha, situacaoDe(linha) === 'ativo' ? 'inativar' : 'reativar')
+                      "
+                    >
+                      {{ situacaoDe(linha) === 'ativo' ? 'Inativar' : 'Reativar'
                       }}<span class="sr"> {{ resumo(linha) }}</span>
+                    </button>
+                    @if (podeExcluir()) {
+                      <button
+                        type="button"
+                        class="btn small"
+                        [disabled]="jaUsado(linha)"
+                        [attr.title]="
+                          jaUsado(linha) ? 'Já foi usado: só pode ser inativado.' : null
+                        "
+                        (click)="abrirMotivo(linha, 'excluir')"
+                      >
+                        Excluir<span class="sr"> {{ resumo(linha) }}</span>
+                      </button>
+                    }
+                  }
+                  @if (podeRestaurar() && situacaoDe(linha) === 'excluido') {
+                    <button
+                      type="button"
+                      class="btn small"
+                      (click)="abrirMotivo(linha, 'restaurar')"
+                    >
+                      Restaurar<span class="sr"> {{ resumo(linha) }}</span>
                     </button>
                   }
                   @if (podeHistorico()) {
@@ -178,6 +253,14 @@ const TAMANHO_DA_PAGINA = 10;
                 [controle]="controle(c.nome)"
               />
             }
+            @if (editando()) {
+              <il-campo
+                rotulo="Motivo da alteração (obrigatório)"
+                tipo="textolongo"
+                dica="Pelo menos 5 caracteres. Fica registrado no histórico, com o antes e o depois."
+                [controle]="motivo"
+              />
+            }
             <div class="acoes">
               <button type="submit" class="btn primary" [disabled]="trabalhando()">Salvar</button>
               <button type="button" class="btn" (click)="fechar()">Cancelar</button>
@@ -186,10 +269,8 @@ const TAMANHO_DA_PAGINA = 10;
         </il-janela>
       }
       @case ('motivo') {
-        <il-janela
-          [titulo]="(alvoAtivo() ? 'Inativar: ' : 'Reativar: ') + resumo(alvo())"
-          (fechar)="fechar()"
-        >
+        <il-janela [titulo]="tituloDaAcao() + ': ' + resumo(alvo())" (fechar)="fechar()">
+          <p>{{ explicacaoDaAcao() }}</p>
           <p>Nada é apagado. Esta ação fica registrada com o seu nome, o horário e o motivo.</p>
           @if (erroDaJanela(); as texto) {
             <p class="msg bad" role="alert">{{ texto }}</p>
@@ -266,6 +347,11 @@ export class Cadastro {
   protected readonly erroDaJanela = signal<string | null>(null);
   protected readonly trabalhando = signal(false);
   protected readonly alvo = signal<Linha | null>(null);
+  protected readonly acao = signal<AcaoDeSituacao>('inativar');
+  protected readonly usos = signal<Record<string, number>>({});
+  protected readonly filtroSituacao = new FormControl<FiltroDeSituacao>('vivos', {
+    nonNullable: true,
+  });
   protected readonly historico = signal<LinhaDe<'auditoria'>[]>([]);
 
   protected readonly paginas = computed(() =>
@@ -277,13 +363,20 @@ export class Cadastro {
   protected readonly editando = computed(
     () => this.alvo() !== null && this.janela() === 'formulario',
   );
-  protected readonly alvoAtivo = computed(() => this.alvo()?.['ativo'] === true);
+  protected readonly tituloDaAcao = computed(() => TITULO_DA_ACAO[this.acao()]);
+  protected readonly explicacaoDaAcao = computed(() => EXPLICACAO_DA_ACAO[this.acao()]);
 
   protected readonly podeIncluir = computed(() =>
     this.sessao.pode(this.cadastro().funcao, 'incluir'),
   );
   protected readonly podeAlterar = computed(() =>
     this.sessao.pode(this.cadastro().funcao, 'alterar'),
+  );
+  protected readonly podeExcluir = computed(() =>
+    this.sessao.pode(this.cadastro().funcao, 'excluir'),
+  );
+  protected readonly podeRestaurar = computed(() =>
+    this.sessao.pode('cadastros.restaurar_excluidos', 'alterar'),
   );
   protected readonly podeImprimir = computed(() =>
     this.sessao.pode(this.cadastro().funcao, 'imprimir'),
@@ -302,6 +395,10 @@ export class Cadastro {
       this.pagina.set(1);
       void this.carregar();
     });
+    this.filtroSituacao.valueChanges.pipe(takeUntilDestroyed()).subscribe(() => {
+      this.pagina.set(1);
+      void this.carregar();
+    });
     const desfazer = this.rascunho.registrar('cadastro-aberto', () => ({
       tabela: this.cadastro().tabela,
       janela: this.janela(),
@@ -313,6 +410,26 @@ export class Cadastro {
   protected texto(valor: unknown): string {
     if (valor === null || valor === undefined) return '—';
     return typeof valor === 'string' ? valor : JSON.stringify(valor);
+  }
+
+  protected situacaoDe(linha: Linha): string {
+    return typeof linha['situacao'] === 'string' ? linha['situacao'] : 'ativo';
+  }
+
+  protected rotuloDaSituacao(linha: Linha): string {
+    const s = this.situacaoDe(linha);
+    return s === 'ativo' ? 'Ativo' : s === 'inativo' ? 'Inativo' : 'Excluído';
+  }
+
+  /** Quantos lugares já usam este registro (vem do banco). Só informa; quem recusa a exclusão é o banco. */
+  protected jaUsado(linha: Linha): boolean {
+    return (this.usos()[String(linha['id'])] ?? 0) > 0;
+  }
+
+  protected textoDeUsos(linha: Linha): string | null {
+    const n = this.usos()[String(linha['id'])];
+    if (n === undefined) return null;
+    return n > 0 ? `em uso (${n})` : 'nunca usado';
   }
 
   protected resumo(linha: Linha | null): string {
@@ -354,13 +471,34 @@ export class Cadastro {
         pagina: this.pagina(),
         tamanho: TAMANHO_DA_PAGINA,
         ordenarPor: d.ordenarPor,
+        situacoes: SITUACOES_DO_FILTRO[this.filtroSituacao.value],
       });
       this.linhas.set(resultado.linhas);
       this.total.set(resultado.total);
+      await this.carregarUsos(resultado.linhas);
     } catch (e) {
       this.erro.set(mensagemDeErro(e));
     } finally {
       this.carregando.set(false);
+    }
+  }
+
+  private async carregarUsos(linhas: readonly Linha[]): Promise<void> {
+    const ids = linhas.map((l) => String(l['id']));
+    if (ids.length === 0) {
+      this.usos.set({});
+      return;
+    }
+    try {
+      const resposta = await this.banco.rpc('usos_cadastros', {
+        p_tabela: this.cadastro().tabela,
+        p_ids: ids,
+      });
+      const porId: Record<string, number> = {};
+      for (const r of resposta) if (r.registro_id !== null) porId[r.registro_id] = r.usos ?? 0;
+      this.usos.set(porId);
+    } catch {
+      this.usos.set({}); // só deixa de informar; o banco continua conferindo a exclusão
     }
   }
 
@@ -401,11 +539,13 @@ export class Cadastro {
       });
     }
     this.formulario = new FormRecord(controles);
+    this.motivo.reset('');
     this.abrir('formulario', linha);
   }
 
-  protected abrirMotivo(linha: Linha): void {
+  protected abrirMotivo(linha: Linha, acao: AcaoDeSituacao): void {
     this.motivo.reset('');
+    this.acao.set(acao);
     this.abrir('motivo', linha);
   }
 
@@ -423,16 +563,37 @@ export class Cadastro {
 
   protected async salvar(): Promise<void> {
     this.formulario.markAllAsTouched();
-    if (this.formulario.invalid || this.trabalhando()) return;
+    const atual = this.alvo();
+    if (atual) this.motivo.markAsTouched();
+    if (this.formulario.invalid || (atual && this.motivo.invalid) || this.trabalhando()) return;
     this.trabalhando.set(true);
     this.erroDaJanela.set(null);
     try {
       const valores = this.formulario.getRawValue();
-      const atual = this.alvo();
-      if (atual) await this.consulta.alterar(this.cadastro().tabela, String(atual['id']), valores);
-      else await this.consulta.incluir(this.cadastro().tabela, valores);
+      if (atual) {
+        // Só vai o que mudou. Campo opcional esvaziado vai como vazio (nulo). O motivo é conferido pelo banco.
+        const mudou: Record<string, string | null> = {};
+        for (const c of this.cadastro().campos) {
+          const antes = this.texto(atual[c.nome]).replace('—', '');
+          const depois = valores[c.nome] ?? '';
+          if (antes !== depois)
+            mudou[c.nome] = depois === '' && c.obrigatorio !== true ? null : depois;
+        }
+        if (Object.keys(mudou).length === 0) {
+          this.erroDaJanela.set('Nada mudou. Altere algum campo ou cancele.');
+          return;
+        }
+        await this.banco.rpc('alterar_cadastro', {
+          p_tabela: this.cadastro().tabela,
+          p_id: String(atual['id']),
+          p_valores: mudou,
+          p_motivo: this.motivo.value,
+        });
+      } else {
+        await this.consulta.incluir(this.cadastro().tabela, valores);
+      }
       this.fechar();
-      this.aviso.set('Registro salvo.');
+      this.aviso.set(atual ? 'Alteração salva e registrada no histórico.' : 'Registro salvo.');
       await this.carregar();
     } catch (e) {
       this.erroDaJanela.set(mensagemDeErro(e));
@@ -448,10 +609,10 @@ export class Cadastro {
     this.trabalhando.set(true);
     this.erroDaJanela.set(null);
     try {
-      await this.banco.rpc('mudar_situacao_cadastro', {
+      await this.banco.rpc('mudar_situacao', {
         p_tabela: this.cadastro().tabela,
         p_id: String(alvo['id']),
-        p_ativo: !this.alvoAtivo(),
+        p_situacao: SITUACAO_DA_ACAO[this.acao()],
         p_motivo: this.motivo.value,
       });
       this.fechar();

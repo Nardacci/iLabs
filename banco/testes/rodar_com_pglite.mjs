@@ -113,8 +113,8 @@ registrar('cadastros não têm exclusão física', !!t.erro);
 
 console.log('Trilha de auditoria');
 await como(A);
-t = await tenta(`update ilab.unidades_medida set nome = 'Quilograma (kg)' where sigla = 'kg'`);
-registrar('alteração de cadastro grava', !t.erro && t.r.affectedRows === 1, t.erro);
+t = await tenta(`select ilab.alterar_cadastro('unidades_medida', (select id from ilab.unidades_medida where sigla = 'kg'), '{"nome": "Quilograma (kg)"}'::jsonb, 'Padronização do nome da unidade')`);
+registrar('alteração de cadastro grava (agora pela função, com motivo)', !t.erro, t.erro);
 const aud = (await db.query(`select acao, antes->>'nome' antes, depois->>'nome' depois, usuario_id from ilab.auditoria where tabela='unidades_medida' and acao='A' order by id desc limit 1`)).rows[0];
 registrar('auditoria guarda valor anterior, novo e autor', !!aud && aud.antes === 'Quilograma' && aud.depois === 'Quilograma (kg)' && aud.usuario_id === A, JSON.stringify(aud));
 registrar('administrador A lê só a auditoria da própria empresa',
@@ -152,6 +152,10 @@ const m7 = await import('./testes_regras_no_banco.mjs');
 await m7.rodar({ db, registrar, como, tenta, dono, eA });
 const m8 = await import('./testes_proximo_passo_sem_empresa.mjs');
 await m8.rodar({ db, registrar, como, tenta, dono, eA });
+const m9 = await import('./testes_situacao_tres_valores.mjs');
+await m9.rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB });
+const m10 = await import('./testes_motivo_na_alteracao.mjs');
+await m10.rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB });
 
 console.log(`\n${ok} testes passaram, ${falhas} falharam.`);
 process.exit(falhas ? 1 : 0);

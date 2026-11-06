@@ -52,6 +52,7 @@ async function viaMigracoes() {
     create schema extensions;
     create function extensions.crypt(senha text, hash text) returns text language sql immutable as $$ select 'h:' || senha $$;
     create function auth.uid() returns uuid language sql stable as $$ select nullif(current_setting('request.jwt.claim.sub', true), '')::uuid $$;
+    create function auth.jwt() returns jsonb language sql stable as $$ select coalesce(nullif(current_setting('request.jwt.claims', true), ''), '{}')::jsonb $$;
     grant usage on schema auth to anon, authenticated;
   `);
   for (const f of readdirSync(pastaMigracoes).filter((x) => x.endsWith('.sql')).sort()) {

@@ -51,11 +51,12 @@ export type Database = {
           codigo: string
           nome: string
           tipo: string
-          ativo: boolean
           criado_em: string
           criado_por: string | null
           atualizado_em: string | null
           atualizado_por: string | null
+          situacao: string
+          ativo: boolean | null
         }
         Insert: {
           id?: string
@@ -63,11 +64,12 @@ export type Database = {
           codigo: string
           nome: string
           tipo: string
-          ativo?: boolean
           criado_em?: string
           criado_por?: string | null
           atualizado_em?: string | null
           atualizado_por?: string | null
+          situacao?: string
+          ativo?: boolean | null
         }
         Update: {
           id?: string
@@ -75,11 +77,12 @@ export type Database = {
           codigo?: string
           nome?: string
           tipo?: string
-          ativo?: boolean
           criado_em?: string
           criado_por?: string | null
           atualizado_em?: string | null
           atualizado_por?: string | null
+          situacao?: string
+          ativo?: boolean | null
         }
         Relationships: []
       }
@@ -322,11 +325,12 @@ export type Database = {
           almoxarifado_id: string
           codigo: string
           descricao: string | null
-          ativo: boolean
           criado_em: string
           criado_por: string | null
           atualizado_em: string | null
           atualizado_por: string | null
+          situacao: string
+          ativo: boolean | null
         }
         Insert: {
           id?: string
@@ -334,11 +338,12 @@ export type Database = {
           almoxarifado_id: string
           codigo: string
           descricao?: string | null
-          ativo?: boolean
           criado_em?: string
           criado_por?: string | null
           atualizado_em?: string | null
           atualizado_por?: string | null
+          situacao?: string
+          ativo?: boolean | null
         }
         Update: {
           id?: string
@@ -346,11 +351,12 @@ export type Database = {
           almoxarifado_id?: string
           codigo?: string
           descricao?: string | null
-          ativo?: boolean
           criado_em?: string
           criado_por?: string | null
           atualizado_em?: string | null
           atualizado_por?: string | null
+          situacao?: string
+          ativo?: boolean | null
         }
         Relationships: []
       }
@@ -386,11 +392,12 @@ export type Database = {
           controla_lote: boolean
           exige_analise: boolean
           prazo_reteste_dias: number | null
-          ativo: boolean
           criado_em: string
           criado_por: string | null
           atualizado_em: string | null
           atualizado_por: string | null
+          situacao: string
+          ativo: boolean | null
         }
         Insert: {
           id?: string
@@ -402,11 +409,12 @@ export type Database = {
           controla_lote?: boolean
           exige_analise?: boolean
           prazo_reteste_dias?: number | null
-          ativo?: boolean
           criado_em?: string
           criado_por?: string | null
           atualizado_em?: string | null
           atualizado_por?: string | null
+          situacao?: string
+          ativo?: boolean | null
         }
         Update: {
           id?: string
@@ -418,11 +426,12 @@ export type Database = {
           controla_lote?: boolean
           exige_analise?: boolean
           prazo_reteste_dias?: number | null
-          ativo?: boolean
           criado_em?: string
           criado_por?: string | null
           atualizado_em?: string | null
           atualizado_por?: string | null
+          situacao?: string
+          ativo?: boolean | null
         }
         Relationships: []
       }
@@ -527,11 +536,12 @@ export type Database = {
           razao_social: string
           nome_fantasia: string | null
           tipos: string[]
-          ativo: boolean
           criado_em: string
           criado_por: string | null
           atualizado_em: string | null
           atualizado_por: string | null
+          situacao: string
+          ativo: boolean | null
         }
         Insert: {
           id?: string
@@ -540,11 +550,12 @@ export type Database = {
           razao_social: string
           nome_fantasia?: string | null
           tipos?: string[]
-          ativo?: boolean
           criado_em?: string
           criado_por?: string | null
           atualizado_em?: string | null
           atualizado_por?: string | null
+          situacao?: string
+          ativo?: boolean | null
         }
         Update: {
           id?: string
@@ -553,11 +564,12 @@ export type Database = {
           razao_social?: string
           nome_fantasia?: string | null
           tipos?: string[]
-          ativo?: boolean
           criado_em?: string
           criado_por?: string | null
           atualizado_em?: string | null
           atualizado_por?: string | null
+          situacao?: string
+          ativo?: boolean | null
         }
         Relationships: []
       }
@@ -640,11 +652,12 @@ export type Database = {
           sigla: string
           nome: string
           grandeza: string
-          ativo: boolean
           criado_em: string
           criado_por: string | null
           atualizado_em: string | null
           atualizado_por: string | null
+          situacao: string
+          ativo: boolean | null
         }
         Insert: {
           id?: string
@@ -652,11 +665,12 @@ export type Database = {
           sigla: string
           nome: string
           grandeza: string
-          ativo?: boolean
           criado_em?: string
           criado_por?: string | null
           atualizado_em?: string | null
           atualizado_por?: string | null
+          situacao?: string
+          ativo?: boolean | null
         }
         Update: {
           id?: string
@@ -664,11 +678,12 @@ export type Database = {
           sigla?: string
           nome?: string
           grandeza?: string
-          ativo?: boolean
           criado_em?: string
           criado_por?: string | null
           atualizado_em?: string | null
           atualizado_por?: string | null
+          situacao?: string
+          ativo?: boolean | null
         }
         Relationships: []
       }
@@ -736,6 +751,7 @@ export type Database = {
     Views: { [_ in never]: never }
     Functions: {
       aceitar_convite: { Args: { p_token: string }; Returns: string }
+      alterar_cadastro: { Args: { p_tabela: string; p_id: string; p_valores: Json; p_motivo: string }; Returns: undefined }
       alterar_politica_seguranca: { Args: { p_alteracoes: Json; p_motivo: string }; Returns: undefined }
       assinar_registro: { Args: { p_tabela: string; p_registro_id: string; p_significado: string; p_motivo: string; p_senha: string }; Returns: { ok: boolean | null; assinatura_id: number | null; mensagem: string | null }[] }
       bloquear_por_tentativas: { Args: { p_email: string; p_ip?: string; p_navegador?: string }; Returns: boolean }
@@ -754,6 +770,7 @@ export type Database = {
       meu_estado: { Args: never; Returns: { usuario_id: string | null; empresa_id: string | null; nome: string | null; ativo: boolean | null; senha_a_trocar: boolean | null; bloqueado_ate: string | null; situacao_empresa: string | null; teste_ate: string | null; dias_restantes: number | null }[] }
       minha_sessao: { Args: never; Returns: { inatividade_minutos: number | null; aviso_segundos: number | null; renovar_segundos: number | null }[] }
       minhas_permissoes: { Args: never; Returns: { funcao_chave: string | null; consultar: boolean | null; incluir: boolean | null; alterar: boolean | null; excluir: boolean | null; imprimir: boolean | null; consultar_historico: boolean | null }[] }
+      mudar_situacao: { Args: { p_tabela: string; p_id: string; p_situacao: string; p_motivo: string }; Returns: undefined }
       mudar_situacao_cadastro: { Args: { p_tabela: string; p_id: string; p_ativo: boolean; p_motivo: string }; Returns: undefined }
       proximo_passo: { Args: never; Returns: { proximo: string | null; nome: string | null; situacao_empresa: string | null; dias_restantes: number | null }[] }
       reativar_usuario: { Args: { p_usuario_id: string; p_motivo: string }; Returns: undefined }
@@ -761,6 +778,8 @@ export type Database = {
       registrar_atividade: { Args: never; Returns: undefined }
       registrar_troca_de_senha: { Args: { p_usuario_id: string; p_ip?: string; p_navegador?: string }; Returns: undefined }
       trocar_perfil_usuario: { Args: { p_usuario_id: string; p_perfil_ids: string[]; p_motivo: string }; Returns: undefined }
+      usos_cadastro: { Args: { p_tabela: string; p_id: string }; Returns: number }
+      usos_cadastros: { Args: { p_tabela: string; p_ids: string[] }; Returns: { registro_id: string | null; usos: number | null }[] }
       vinculos_do_usuario: { Args: { p_usuario_id: string }; Returns: { perfil_id: string | null; nome: string | null; perfil_ativo: boolean | null }[] }
     }
     Enums: { [_ in never]: never }
