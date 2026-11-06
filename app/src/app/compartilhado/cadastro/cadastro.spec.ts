@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { estruturaOrganizacional } from '../../cadastros/estrutura-organizacional';
 import { profissionais } from '../../cadastros/profissionais';
 import { unidadesMedida } from '../../cadastros/unidades-medida';
 import { comBancoFalso, permissao, violacoesDeAcessibilidade } from '../../../testing/apoio';
@@ -386,5 +387,132 @@ describe('cadastro por metadados (profissionais, com listas vindas de outros cad
       cbo: null,
       grupo_id: null,
     });
+  });
+});
+
+describe('cadastro por metadados (estrutura organizacional, em árvore)', () => {
+  // fora de ordem de propósito: o filho vem antes do pai
+  const NIVEIS = [
+    {
+      id: 's1',
+      codigo: 'CQ',
+      nome: 'Controle da Qualidade',
+      tipo: 'setor',
+      pai_id: 'd1',
+      responsavel_id: null,
+      situacao: 'ativo',
+    },
+    {
+      id: 'pl',
+      codigo: 'PL1',
+      nome: 'Planta principal',
+      tipo: 'planta',
+      pai_id: null,
+      responsavel_id: null,
+      situacao: 'ativo',
+    },
+    {
+      id: 'd1',
+      codigo: 'DQ',
+      nome: 'Qualidade',
+      tipo: 'departamento',
+      pai_id: 'pr',
+      responsavel_id: null,
+      situacao: 'ativo',
+    },
+    {
+      id: 'pr',
+      codigo: 'PR1',
+      nome: 'Prédio de produção',
+      tipo: 'predio',
+      pai_id: 'pl',
+      responsavel_id: null,
+      situacao: 'ativo',
+    },
+  ];
+
+  function prepararArvore() {
+    const banco = comBancoFalso();
+    banco.respostas['usos_cadastros'] = [];
+    const consulta = {
+      listar: vi.fn((p: { tabela: string }) =>
+        Promise.resolve(
+          p.tabela === 'profissionais' ? { linhas: [], total: 0 } : { linhas: NIVEIS, total: 4 },
+        ),
+      ),
+      incluir: vi.fn(() => Promise.resolve()),
+      historico: vi.fn(() => Promise.resolve([])),
+    };
+    TestBed.overrideProvider(ConsultaService, { useValue: consulta });
+    (
+      TestBed.inject(SessaoService) as unknown as { _permissoes: { set: (p: unknown) => void } }
+    )._permissoes.set([
+      permissao('organizacao.estrutura', { incluir: true, alterar: true, excluir: true }),
+    ]);
+    return { consulta };
+  }
+
+  async function abrirArvore() {
+    const f = TestBed.createComponent(Cadastro);
+    f.componentRef.setInput('cadastro', estruturaOrganizacional);
+    f.detectChanges();
+    await f.whenStable();
+    await new Promise((r) => setTimeout(r, 0));
+    f.detectChanges();
+    return f;
+  }
+
+  it('mostra os níveis em ordem de árvore, cada um recuado sob o de cima, e carrega tudo de uma vez', async () => {
+    const { consulta } = prepararArvore();
+    const f = await abrirArvore();
+    const el = f.nativeElement as HTMLElement;
+    const primeiraColuna = [...el.querySelectorAll('tbody tr')].map((tr) => {
+      const td = tr.querySelector('td')!;
+      return { nome: td.textContent?.trim(), recuo: td.style.paddingLeft };
+    });
+    expect(primeiraColuna.map((c) => c.nome)).toEqual([
+      'Planta principal',
+      'Prédio de produção',
+      'Qualidade',
+      'Controle da Qualidade',
+    ]);
+    expect(primeiraColuna.map((c) => c.recuo)).toEqual(['8px', '26px', '44px', '62px']);
+    expect(consulta.listar).toHaveBeenCalledWith(
+      expect.objectContaining({ tabela: 'estrutura_organizacional', pagina: 1, tamanho: 500 }),
+    );
+    expect(el.querySelector('.paginacao')).toBeNull(); // árvore não tem páginas
+  });
+
+  it('mostra o tipo pelo nome (Prédio), não pelo valor gravado (predio)', async () => {
+    prepararArvore();
+    const f = await abrirArvore();
+    const texto = (f.nativeElement as HTMLElement).textContent ?? '';
+    expect(texto).toContain('Prédio');
+    expect(texto).toContain('Departamento');
+  });
+
+  it('ao editar um nível, ele mesmo não aparece na lista de "Está dentro de"', async () => {
+    prepararArvore();
+    const f = await abrirArvore();
+    const el = f.nativeElement as HTMLElement;
+    const linhaDoPredio = [...el.querySelectorAll('tbody tr')].find((tr) =>
+      tr.textContent?.includes('Prédio de produção'),
+    )!;
+    [...linhaDoPredio.querySelectorAll('button')]
+      .find((b) => b.textContent?.includes('Editar'))
+      ?.click();
+    f.detectChanges();
+    const selectDoPai = [...el.querySelectorAll<HTMLSelectElement>('form select')].find((s) =>
+      [...s.options].some((o) => o.textContent?.includes('Planta principal')),
+    )!;
+    const opcoes = [...selectDoPai.options].map((o) => o.textContent?.trim());
+    expect(opcoes).toContain('Planta principal');
+    expect(opcoes).not.toContain('Prédio de produção');
+  });
+
+  it('o botão diz "Novo nível" (gênero masculino)', async () => {
+    prepararArvore();
+    const f = await abrirArvore();
+    expect((f.nativeElement as HTMLElement).textContent).toContain('Novo nível');
   });
 });

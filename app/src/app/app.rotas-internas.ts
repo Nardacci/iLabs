@@ -1,6 +1,8 @@
 import type { Routes } from '@angular/router';
 import { guardaPermissao } from './compartilhado/guardas/guardas';
 import type { DadosDaRota } from './compartilhado/menu';
+import { centrosCusto } from './cadastros/centros-custo';
+import { estruturaOrganizacional } from './cadastros/estrutura-organizacional';
 import { funcoesProfissionais } from './cadastros/funcoes-profissionais';
 import { gruposUsuarios } from './cadastros/grupos-usuarios';
 import { profissionais } from './cadastros/profissionais';
@@ -68,6 +70,32 @@ export const rotasInternas: Routes = [
         menu: { grupo: 'Governança de Acesso' },
       }),
       cadastro: gruposUsuarios,
+    },
+    loadComponent: () => import('./compartilhado/cadastro/cadastro').then((m) => m.Cadastro),
+  },
+  {
+    path: 'estrutura-organizacional',
+    canActivate: [guardaPermissao],
+    data: {
+      ...dados({
+        titulo: 'Estrutura organizacional',
+        funcao: 'organizacao.estrutura',
+        menu: { grupo: 'Governança Organizacional' },
+      }),
+      cadastro: estruturaOrganizacional,
+    },
+    loadComponent: () => import('./compartilhado/cadastro/cadastro').then((m) => m.Cadastro),
+  },
+  {
+    path: 'centros-custo',
+    canActivate: [guardaPermissao],
+    data: {
+      ...dados({
+        titulo: 'Centros de custo',
+        funcao: 'organizacao.centros_custo',
+        menu: { grupo: 'Governança Organizacional' },
+      }),
+      cadastro: centrosCusto,
     },
     loadComponent: () => import('./compartilhado/cadastro/cadastro').then((m) => m.Cadastro),
   },

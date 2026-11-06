@@ -134,10 +134,12 @@ const TAMANHO_DA_PAGINA = 10;
             </tr>
           </thead>
           <tbody>
-            @for (linha of linhas(); track linha['id']) {
+            @for (linha of linhasVisiveis(); track linha['id']) {
               <tr>
-                @for (c of colunas(); track c.nome) {
-                  <td>{{ celula(linha, c) }}</td>
+                @for (c of colunas(); track c.nome; let i = $index) {
+                  <td [style.padding-left.px]="i === 0 ? recuo(linha) : null">
+                    {{ celula(linha, c) }}
+                  </td>
                 }
                 <td>
                   <span
@@ -207,29 +209,31 @@ const TAMANHO_DA_PAGINA = 10;
           </tbody>
         </table>
       </div>
-      <div class="paginacao">
-        <span aria-live="polite"
-          >{{ total() }} registro(s) · página {{ pagina() }} de {{ paginas() }}</span
-        >
-        <span class="nao-imprimir">
-          <button
-            type="button"
-            class="btn small"
-            [disabled]="pagina() <= 1"
-            (click)="irParaPagina(pagina() - 1)"
+      @if (!cadastro().arvore) {
+        <div class="paginacao">
+          <span aria-live="polite"
+            >{{ total() }} registro(s) · página {{ pagina() }} de {{ paginas() }}</span
           >
-            Anterior
-          </button>
-          <button
-            type="button"
-            class="btn small"
-            [disabled]="pagina() >= paginas()"
-            (click)="irParaPagina(pagina() + 1)"
-          >
-            Próxima
-          </button>
-        </span>
-      </div>
+          <span class="nao-imprimir">
+            <button
+              type="button"
+              class="btn small"
+              [disabled]="pagina() <= 1"
+              (click)="irParaPagina(pagina() - 1)"
+            >
+              Anterior
+            </button>
+            <button
+              type="button"
+              class="btn small"
+              [disabled]="pagina() >= paginas()"
+              (click)="irParaPagina(pagina() + 1)"
+            >
+              Próxima
+            </button>
+          </span>
+        </div>
+      }
     </section>
 
     @switch (janela()) {
@@ -349,6 +353,8 @@ export class Cadastro {
   protected readonly alvo = signal<Linha | null>(null);
   protected readonly acao = signal<AcaoDeSituacao>('inativar');
   protected readonly usos = signal<Record<string, number>>({});
+  /** Texto da busca como sinal (a árvore mostra recuada só quando não há busca). */
+  protected readonly termoBusca = signal('');
   /** Opções vindas de outros cadastros (todas as situações), por campo. Servem à lista (nomes) e ao formulário (só os ativos). */
   protected readonly opcoesDeReferencia = signal<
     Record<string, (OpcaoDeLista & { ativo: boolean })[]>
@@ -368,6 +374,36 @@ export class Cadastro {
     () => this.alvo() !== null && this.janela() === 'formulario',
   );
   protected readonly novo = computed(() => (this.cadastro().genero === 'm' ? 'Novo' : 'Nova'));
+  /** Árvore: os níveis em ordem (cada um logo depois do que está acima) e a profundidade de cada um. */
+  private readonly arvoreOrdenada = computed(() => {
+    const pai = this.cadastro().arvore?.pai;
+    const todas = this.linhas();
+    if (!pai || this.termoBusca().trim() !== '')
+      return { ordem: todas, fundo: new Map<string, number>() };
+    const filhos = new Map<string, Linha[]>();
+    const ids = new Set(todas.map((l) => String(l['id'])));
+    for (const l of todas) {
+      const p = l[pai];
+      const chave = typeof p === 'string' && ids.has(p) ? p : '';
+      filhos.set(chave, [...(filhos.get(chave) ?? []), l]);
+    }
+    const ordem: Linha[] = [];
+    const fundo = new Map<string, number>();
+    const descer = (chave: string, nivel: number): void => {
+      for (const l of filhos.get(chave) ?? []) {
+        const id = String(l['id']);
+        if (fundo.has(id)) continue; // por segurança contra repetição
+        fundo.set(id, nivel);
+        ordem.push(l);
+        descer(id, nivel + 1);
+      }
+    };
+    descer('', 0);
+    return { ordem, fundo };
+  });
+  protected readonly linhasVisiveis = computed(() =>
+    this.cadastro().arvore ? this.arvoreOrdenada().ordem : this.linhas(),
+  );
   protected readonly tituloDaAcao = computed(() => TITULO_DA_ACAO[this.acao()]);
   protected readonly explicacaoDaAcao = computed(() => EXPLICACAO_DA_ACAO[this.acao()]);
 
@@ -397,7 +433,8 @@ export class Cadastro {
       void this.carregarReferencias();
       void this.carregar();
     });
-    this.busca.valueChanges.pipe(debounceTime(300), takeUntilDestroyed()).subscribe(() => {
+    this.busca.valueChanges.pipe(debounceTime(300), takeUntilDestroyed()).subscribe((v) => {
+      this.termoBusca.set(v);
       this.pagina.set(1);
       void this.carregar();
     });
@@ -445,6 +482,7 @@ export class Cadastro {
     if (c.referencia) {
       return this.opcoesDeReferencia()[c.nome]?.find((o) => o.valor === valor)?.rotulo ?? '—';
     }
+    if (c.opcoes) return c.opcoes.find((o) => o.valor === valor)?.rotulo ?? this.texto(valor);
     if (c.formato === 'cpf' && typeof valor === 'string') {
       return valor.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
     }
@@ -455,9 +493,18 @@ export class Cadastro {
   protected opcoesDoCampo(c: CampoDeCadastro): readonly OpcaoDeLista[] {
     if (!c.referencia) return c.opcoes ?? [];
     const escolhido = this.alvo()?.[c.nome];
+    const id = this.alvo()?.['id'];
+    const proprio =
+      c.referencia.tabela === this.cadastro().tabela && typeof id === 'string' ? id : '';
     return (this.opcoesDeReferencia()[c.nome] ?? []).filter(
-      (o) => o.ativo || o.valor === escolhido,
+      (o) => (o.ativo || o.valor === escolhido) && o.valor !== proprio,
     );
+  }
+
+  /** Recuo da primeira coluna na árvore (18 px por nível); fora dela, sem recuo. */
+  protected recuo(linha: Linha): number | null {
+    if (!this.cadastro().arvore) return null;
+    return 8 + 18 * (this.arvoreOrdenada().fundo.get(String(linha['id'])) ?? 0);
   }
 
   protected resumo(linha: Linha | null): string {
@@ -496,8 +543,8 @@ export class Cadastro {
         tabela: d.tabela,
         colunasDeBusca: d.busca,
         busca: this.busca.value,
-        pagina: this.pagina(),
-        tamanho: TAMANHO_DA_PAGINA,
+        pagina: d.arvore ? 1 : this.pagina(),
+        tamanho: d.arvore ? 500 : TAMANHO_DA_PAGINA,
         ordenarPor: d.ordenarPor,
         situacoes: SITUACOES_DO_FILTRO[this.filtroSituacao.value],
       });
