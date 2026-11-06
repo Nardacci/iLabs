@@ -1,0 +1,8 @@
+# Configuração mínima das funções de borda (sem segredo nenhum).
+# A função "login" é chamada ANTES de a pessoa ter sessão, por isso não exige token do Supabase.
+# A "senha-alterada" exige a sessão da própria pessoa (ela mesma confere o token).
+[functions.login]
+verify_jwt = false
+
+[functions.senha-alterada]
+verify_jwt = false

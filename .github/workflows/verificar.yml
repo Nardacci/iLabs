@@ -1,0 +1,77 @@
+name: Verificar
+
+# Roda em TODO push e em todo pull request: ninguém precisa lembrar de rodar nada.
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  app:
+    name: Aplicação (tipos, formato, lint, testes, build, ponta a ponta)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - run: npm ci
+      - name: Tipos do banco em dia com as migrações
+        run: npm run tipos:conferir
+      - name: Formatação
+        run: npm run formatar:conferir
+      - name: Lint
+        run: npm run lint
+      - name: Checagem de tipos
+        run: npm run tipagem
+      - name: Testes unitários e de acessibilidade
+        run: npm run test
+      - name: Build de produção
+        run: npm run build
+      - name: Teste ponta a ponta (usa o Google Chrome do ambiente; nada é baixado)
+        run: npx playwright test
+      - name: Guardar relatório do ponta a ponta se falhar
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorio-ponta-a-ponta
+          path: |
+            app/test-results
+            app/playwright-report
+          retention-days: 7
+
+  funcoes:
+    name: Funções de servidor (Deno)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - run: deno check supabase/functions/login/index.ts supabase/functions/senha-alterada/index.ts
+      - run: deno lint supabase/functions
+      - run: deno fmt --check supabase/functions
+      - run: deno test supabase/functions
+
+  banco:
+    name: Banco (migrações e testes no PGlite)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: banco/testes
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: banco/testes/package-lock.json
+      - run: npm ci
+      - run: npm test
