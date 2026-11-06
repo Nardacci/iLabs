@@ -40,3 +40,4 @@ O detalhe das decisões do banco está em `../banco/README.md` e `../banco/model
 | 06/11/2026 | **Sistema preparado para mais de uma planta ou prédio** (níveis da árvore organizacional), mesmo sem a informação hoje | Fábrica pode crescer; evita refazer a estrutura |
 | 06/11/2026 | **Almoxarifado em tela única com abas**, cadastros separados no banco | Protótipo + Estoque do legado (7 cadastros) |
 | 06/11/2026 | **Linhas de produção ficam para a análise da Produção** | Não existe no Principal |
+| 06/11/2026 | **Só o cadastro de Ambiente**, com classificação; sem Áreas, Salas limpas e Ambientes controlados separados | No legado já é um cadastro (`TBL_AMBIENTE`); evita tabelas duplicadas |

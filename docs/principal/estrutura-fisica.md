@@ -42,5 +42,5 @@
 ## 4. Respostas do responsável (06/11/2026)
 1. **Plantas e Prédios:** o responsável não tem a informação, mas pode acontecer. **O sistema deve ser preparado** para mais de um prédio ou planta (níveis da árvore organizacional). Decidido.
 2. **Linhas de produção:** **deixar para a análise da Produção.** Decidido.
-3. **Ambiente único:** **ainda em aberto**; o responsável pediu uma explicação mais simples (ver a mensagem do chat).
+3. **Ambiente único:** **sim, só o cadastro de Ambiente**, com classificação (grau de limpeza, controlado ou não). Sem telas separadas para Áreas, Salas limpas e Ambientes controlados. Decidido.
 4. **Almoxarifado em tela única com abas:** **sim**, mantendo os cadastros separados no banco. Decidido.
