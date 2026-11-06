@@ -1,5 +1,7 @@
 (function () {
   var $ = window.proto.$, $$ = window.proto.$$;
+  /* Sem e-mail confirmado, volta ao cadastro (a confirmação vem antes do passo a passo). */
+  try { if (!sessionStorage.getItem("ilabs-proto-email-confirmado")) { window.location.replace("cadastro.html?confirme=1"); return; } } catch (e) {}
   var CHAVE = "ilabs-proto-empresa";
   var etapa = 1, TOTAL = 4;
   var DIAS_TESTE = 365; /* valor TEMPORÁRIO de desenvolvimento; o valor de lançamento está em docs/antes-de-lancar.md */

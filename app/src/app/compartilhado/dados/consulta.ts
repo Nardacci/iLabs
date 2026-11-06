@@ -1,0 +1,83 @@
+import { inject, Injectable } from '@angular/core';
+import { BancoService, ErroDoBanco, type LinhaDe, type NomeDaTabela } from './banco';
+
+export interface PedidoDeLista {
+  tabela: NomeDaTabela;
+  /** Colunas em que a busca procura (parte do texto, sem diferenciar maiúsculas). */
+  colunasDeBusca: readonly string[];
+  busca: string;
+  pagina: number;
+  tamanho: number;
+  ordenarPor: string;
+}
+
+export interface Pagina<L> {
+  linhas: L[];
+  total: number;
+}
+
+interface ErroDeTabela {
+  code?: string;
+  message: string;
+}
+
+/** Traduz os erros comuns do Postgres para uma frase simples. O banco continua sendo quem recusa. */
+function traduzir(erro: ErroDeTabela): ErroDoBanco {
+  if (erro.code === '23505') return new ErroDoBanco('Já existe um registro com este valor.');
+  if (erro.code === '42501' || /row-level security/i.test(erro.message)) {
+    return new ErroDoBanco('Você não tem permissão para esta ação.');
+  }
+  if (erro.code === '23514') return new ErroDoBanco('Algum valor não é aceito. Confira os campos.');
+  return new ErroDoBanco(erro.message);
+}
+
+/** Leitura e gravação de tabelas. As linhas visíveis e as gravações permitidas são decididas pelo banco (RLS por empresa e função). */
+@Injectable({ providedIn: 'root' })
+export class ConsultaService {
+  private readonly banco = inject(BancoService);
+
+  async listar<T extends NomeDaTabela>(
+    p: PedidoDeLista & { tabela: T },
+  ): Promise<Pagina<LinhaDe<T>>> {
+    const de = (p.pagina - 1) * p.tamanho;
+    let consulta = this.banco.cliente
+      .from(p.tabela)
+      .select('*', { count: 'exact' })
+      .order(p.ordenarPor)
+      .range(de, de + p.tamanho - 1);
+    const termo = p.busca.trim().replace(/[%,()*]/g, ' ');
+    if (termo && p.colunasDeBusca.length > 0) {
+      consulta = consulta.or(p.colunasDeBusca.map((c) => `${c}.ilike.%${termo}%`).join(','));
+    }
+    const { data, error, count } = await consulta;
+    if (error) throw traduzir(error);
+    return { linhas: data as unknown as LinhaDe<T>[], total: count ?? 0 };
+  }
+
+  async incluir(tabela: NomeDaTabela, valores: Record<string, unknown>): Promise<void> {
+    const { error } = await this.banco.cliente.from(tabela).insert(valores as never);
+    if (error) throw traduzir(error);
+  }
+
+  async alterar(tabela: NomeDaTabela, id: string, valores: Record<string, unknown>): Promise<void> {
+    const { error, count } = await this.banco.cliente
+      .from(tabela)
+      .update(valores as never, { count: 'exact' })
+      .eq('id' as never, id as never); // eslint-disable-line @typescript-eslint/no-unnecessary-type-assertion -- coluna genérica entre várias tabelas
+    if (error) throw traduzir(error);
+    if (count === 0) throw new ErroDoBanco('Você não tem permissão para alterar este registro.');
+  }
+
+  /** Histórico de um registro (trilha de auditoria, só leitura). */
+  async historico(tabela: string, registroId: string): Promise<LinhaDe<'auditoria'>[]> {
+    const { data, error } = await this.banco.cliente
+      .from('auditoria')
+      .select('*')
+      .eq('tabela', tabela)
+      .eq('registro_id', registroId)
+      .order('em', { ascending: false })
+      .limit(50);
+    if (error) throw traduzir(error);
+    return data;
+  }
+}
