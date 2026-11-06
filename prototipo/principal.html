@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Principal · iLabPharma Nova Versão</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="prototipo.css">
+<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="principal.css">
+</head>
+<body>
+<header class="seg-top">
+  <span class="marca">i<span>Lab</span>Pharma</span>
+  <nav class="nav-topo" aria-label="Protótipo">
+    <a class="theme-toggle btn-link" href="index.html">← Mapa do protótipo</a>
+    <button type="button" class="theme-toggle" data-theme-toggle>Tema</button>
+  </nav>
+</header>
+<div class="p-layout">
+  <div class="p-menu-wrap"><button type="button" class="btn p-menu-botao" id="menu-botao" aria-expanded="false" aria-controls="menu">Menu do Principal</button>
+  <nav class="p-menu" id="menu" aria-label="Menu do Principal"></nav></div>
+  <main id="conteudo" tabindex="-1"></main>
+</div>
+
+<div class="modal-fundo" id="m-form" hidden role="dialog" aria-modal="true" aria-labelledby="m-form-t">
+  <div class="modal larga">
+    <h2 id="m-form-t"></h2>
+    <p class="sub-modal" id="m-form-sub"></p>
+    <div id="m-form-msg" role="alert" aria-live="assertive"></div>
+    <form id="f-form" novalidate>
+      <div id="f-campos"></div>
+      <div class="field" id="f-motivo-bloco"><label for="f-motivo">Motivo da mudança (obrigatório)</label><textarea id="f-motivo" class="input" placeholder="Ex.: correção de cadastro após conferência"></textarea></div>
+      <div class="acoes"><button type="submit" class="btn primary">Salvar</button> <button type="button" class="btn" data-fechar="m-form">Cancelar</button></div>
+    </form>
+  </div>
+</div>
+<div class="modal-fundo" id="m-sit" hidden role="dialog" aria-modal="true" aria-labelledby="m-sit-t">
+  <div class="modal larga">
+    <h2 id="m-sit-t"></h2>
+    <p class="sub-modal" id="m-sit-sub"></p>
+    <div id="m-sit-msg" role="alert" aria-live="assertive"></div>
+    <form id="f-sit" novalidate>
+      <div class="field"><label for="s-motivo">Motivo (obrigatório)</label><textarea id="s-motivo" class="input"></textarea></div>
+      <div class="acoes"><button type="submit" class="btn primary">Confirmar</button> <button type="button" class="btn" data-fechar="m-sit">Cancelar</button></div>
+    </form>
+  </div>
+</div>
+<div class="modal-fundo" id="m-hist" hidden role="dialog" aria-modal="true" aria-labelledby="m-hist-t">
+  <div class="modal larga">
+    <h2 id="m-hist-t">Histórico</h2>
+    <div id="m-hist-corpo"></div>
+    <div class="acoes"><button type="button" class="btn" data-fechar="m-hist">Fechar</button></div>
+  </div>
+</div>
+<div id="aviso" class="toast" role="status" aria-live="polite" hidden></div>
+<script src="common.js"></script>
+<script src="principal-dados.js"></script>
+<script src="principal.js"></script>
+</body>
+</html>

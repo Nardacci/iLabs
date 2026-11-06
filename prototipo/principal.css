@@ -1,0 +1,32 @@
+/* iLabPharma, protótipo do Principal (Marco 1A) */
+.p-layout { display: grid; grid-template-columns: 270px minmax(0, 1fr); gap: 22px; max-width: 1280px; margin: 0 auto; padding: 18px 16px 60px; align-items: start; }
+@media (max-width: 880px) { .p-layout { grid-template-columns: minmax(0, 1fr); } }
+.p-menu { position: sticky; top: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px; }
+@media (max-width: 880px) { .p-menu { position: static; } }
+.p-menu h2 { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 14px 8px 4px; }
+.p-menu h2:first-of-type { margin-top: 4px; }
+.p-menu a { display: block; padding: 8px 10px; border-radius: 8px; color: var(--ink); text-decoration: none; font-weight: 600; font-size: 14px; }
+.p-menu a:hover { background: var(--accent-soft); }
+.p-menu a[aria-current="page"] { background: var(--accent-soft); color: var(--accent); box-shadow: inset 3px 0 0 var(--brand); }
+.p-menu a .ext { float: right; font-weight: 500; color: var(--muted); font-size: 12px; }
+.p-topo { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.p-topo .field { margin: 0; }
+.p-caixa { border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 12px 16px; margin: 0 0 16px; }
+.p-caixa h3 { margin: 0 0 6px; font-size: 14px; }
+.p-caixa ul { margin: 0; padding-left: 18px; font-size: 13.5px; color: var(--muted); }
+.p-caixa.regra { border-left: 4px solid var(--brand); }
+.p-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 14px; }
+.p-cards .card { padding: 14px 16px; }
+.p-cards h3 { margin: 0 0 6px; }
+.p-cards ul { margin: 6px 0 0; padding-left: 18px; font-size: 14px; }
+.p-cards a { color: var(--accent); font-weight: 600; }
+.p-recusa { margin: 0 0 12px; }
+.p-detalhe { margin-top: 22px; border-top: 2px solid var(--line); padding-top: 14px; }
+.tab-adm td.arv { white-space: nowrap; }
+.p-rodape-nota { color: var(--muted); font-size: 12.5px; margin-top: 24px; }
+.hist-item { border-bottom: 1px solid var(--line); padding: 8px 0; font-size: 13.5px; }
+.hist-item:last-child { border-bottom: 0; }
+.hist-item small { color: var(--muted); display: block; }
+
+.p-menu-botao { display: none; width: 100%; margin-bottom: 8px; }
+@media (max-width: 880px) { .p-menu-botao { display: block; } .p-menu-wrap:not(.aberto) .p-menu { display: none; } }
