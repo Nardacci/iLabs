@@ -10,6 +10,7 @@
 | 02/11/2026 | **Repositório independente `iLabs`** (privado) | Separar a construção do produto da análise do legado |
 | 02/11/2026 | **Autocadastro com passo a passo de 4 etapas**; o responsável cadastra os usuários; CNPJ conferido; **responsável técnico obrigatório** | Segue a jornada dos produtos KORbuild; a norma pede o responsável técnico (RDC 658, art. 29) |
 | 02/11/2026 | **Teste de 365 dias, temporário**, carência de 6 dias | Enquanto o produto é testado; o valor de lançamento volta a ser ajustado (`antes-de-lancar.md`) |
+| 09/11/2026 | **Repositório `iLabs` público** (antes privado, ver decisão de 02/11) | Decisão do responsável. Varredura prévia sem segredos no atual nem no histórico. Daqui em diante tudo o que entra no git é público. **Sem licença** (todos os direitos reservados); nome do repositório do legado retirado dos textos; site no GitHub Pages abre o protótipo (`index.html` da raiz) |
 
 | 05/11/2026 | **Login e segurança no banco:** permissão conferida no servidor em toda gravação, quem elabora não aprova o próprio registro, assinatura eletrônica com senha conferida de novo, convite com token só em resumo, registro de acessos sem senha, bloqueio por tentativas e prazo de teste como parâmetro do banco | Corrige os achados SEG-PRI do legado e os defeitos de permissão e de lista de perfis da versão nova testada (`seguranca-e-acesso.md`). Migração 3 escrita e testada, **ainda não aplicada** |
 

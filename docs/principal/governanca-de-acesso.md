@@ -25,14 +25,14 @@
 ### 2.1 Funções profissionais
 - **Protótipo:** código, data do cadastro, descrição, ativo. Lista com filtros, imprimir e paginação.
 - **Por que importa (inferência):** a função profissional é o que liga a pessoa ao que ela **pode decidir**. No legado, a Lote Padrão ficou sem aprovador porque nenhuma função profissional estava ligada à configuração 19 (DV-EST-076). Também alimenta qualificação e treinamento.
-- **Como funciona no legado (pergunta 5, conferido nos documentos do `LabMedsys_homol`):**
+- **Como funciona no legado (pergunta 5, conferido nos documentos do repositório privado do legado):**
   - Cada pessoa pode ter **ocupações (CBO)** e **funções profissionais**, uma delas marcada como **cargo principal** (RN-PRI-033; tabelas `SIS_OCUPACAO_USUARIO` e `SIS_ATIVIDADE_USUARIO`).
   - Na **Produção**, a função profissional decide **quem assina cada campo e cada subetapa** do registro do lote. Quem não tem a função recebe "NÃO TEM PERMISSÃO." (`Autenticacao.cs:14-44`; `SubEtapaProducao.cs:81`; casos CT-PRO-087 e CT-PRO-026). A autorização do CQ também registra a função exigida.
   - No **Estoque**, a aprovação do Lote Padrão depende de ligar uma função profissional à configuração 19 (e às 28 e 29). Sem isso ninguém aprova (DV-EST-076).
   - **Resumo:** o **Perfil** libera telas e ações; a **Função profissional** diz **quem tem competência para assinar** aquela etapa ou campo. São duas camadas, e a segunda não aparece nas telas de permissão.
   - **Lacuna no iLabs:** a migração 3 cobre o **significado** da assinatura (autor, revisor, aprovador...), mas **não** a exigência por **campo ou etapa**. Isso se desenha junto com Produção e CQ.
 - **Defeitos a não repetir:** DV-PRI-027 (histórico sem a justificativa), DV-PRI-028 (duas funções com a mesma descrição).
-- **Ajustes:** descrição única por empresa; só inativar (nunca excluir) com motivo; histórico completo; ligação explícita com os papéis da matriz (`transversal/09`, no `LabMedsys_homol`).
+- **Ajustes:** descrição única por empresa; só inativar (nunca excluir) com motivo; histórico completo; ligação explícita com os papéis da matriz (`transversal/09`, no repositório privado do legado).
 
 ### 2.2 Grupos de usuários
 - **Protótipo:** código, nome, ativo, data.

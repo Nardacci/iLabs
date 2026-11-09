@@ -1,7 +1,7 @@
 # iLabs: nova versão do iLabPharma
 
 ## Contexto
-- Repositório **independente** da nova versão (decisão do responsável, 02/11/2026). O legado e a sua análise ficam em `LabMedsys_homol` (privado); aqui não se copia código do legado.
+- Repositório **independente** da nova versão (decisão do responsável, 02/11/2026). O legado e a sua análise ficam em repositório privado do legado (privado, fora deste repositório); aqui não se copia código do legado.
 - Quem conduz é analista de negócio e de homologação, não desenvolvedor: português claro, sem jargão sem explicação.
 - Objetivo: um ERP SaaS (Supabase, PostgreSQL) que atenda à RDC 658/2022 e ao Guia 33/2020, corrigindo as falhas encontradas no legado.
 

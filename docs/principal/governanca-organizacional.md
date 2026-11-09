@@ -1,6 +1,6 @@
 # Principal: Governança Organizacional (inventário, classificação e veredito)
 
-**Rascunho para validação do responsável (06/11/2026).** Segundo grupo do "Principal". **O protótipo não tem nenhuma tela deste grupo**: só os 7 itens do menu (Empresas, Filiais, Estrutura organizacional, Departamentos, Setores, Centro de custos, Grupos de perfil). Por isso a análise parte do **legado** (documentos do `LabMedsys_homol`), dos defeitos já registrados e do que o iLabs tem hoje. **Nada aqui está decidido.** O que é inferência vem marcado.
+**Rascunho para validação do responsável (06/11/2026).** Segundo grupo do "Principal". **O protótipo não tem nenhuma tela deste grupo**: só os 7 itens do menu (Empresas, Filiais, Estrutura organizacional, Departamentos, Setores, Centro de custos, Grupos de perfil). Por isso a análise parte do **legado** (documentos do repositório privado do legado), dos defeitos já registrados e do que o iLabs tem hoje. **Nada aqui está decidido.** O que é inferência vem marcado.
 
 ## 1. Resumo
 | Item do menu do protótipo | Tela no protótipo | Legado (equivalente) | iLabs hoje | Veredito |
@@ -39,7 +39,7 @@
 ### 2.4 Grupos de perfil
 - O menu do protótipo mostra "Grupos de perfil" aqui e "Grupos de usuários" na Governança de Acesso.
 - No legado, o **Grupo Perfil** existe só na **Garantia da Qualidade** (níveis 1 a 3, com a falha de autopromoção SEG-GQ-10). Os **perfis** no iLabs já agrupam funções.
-- **Proposta:** **não criar** este item. Se a ideia é a hierarquia de níveis da GQ, ela vira **papéis da matriz** (`transversal/09`, no `LabMedsys_homol`), não um cadastro.
+- **Proposta:** **não criar** este item. Se a ideia é a hierarquia de níveis da GQ, ela vira **papéis da matriz** (`transversal/09`, no repositório privado do legado), não um cadastro.
 
 ## 3. Padrões de tela e o que isto pede do banco
 - Como o protótipo não tem telas, vale o **modelo de cadastro** já definido (lista com filtros, cadastro, histórico, motivo em toda mudança).

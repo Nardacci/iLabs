@@ -2,6 +2,16 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-09 · Claude · Repositório `iLabs` aberto ao público
+
+- **Decisão do responsável:** o repositório deixou de ser privado e passou a público (alterado por ele no GitHub; confirmado por consulta sem login, resposta 200).
+- **Varredura antes da abertura** (arquivos atuais e histórico de todos os ramos): nenhuma senha, chave, string de conexão, endereço ou código de projeto do Supabase; nenhum `.env`, dump ou `supabase/.temp` versionado em momento algum; só e-mails `@empresa.test` e um CNPJ de teste, fictícios.
+- **Pontos aceitos ao abrir:** a análise de negócio e as regras de segurança ficam legíveis a todos; não há arquivo `LICENSE` (sem licença, ninguém pode reutilizar o código legalmente); o nome do repositório privado do legado aparece em 12 lugares (só o nome).
+- **Licença: decidido sem licença** (todos os direitos reservados; qualquer um pode ler, ninguém pode reutilizar). **Nome do repositório do legado:** trocado por "repositório privado do legado" nos 10 arquivos que o citavam (0 menções restantes no atual; o histórico do git ainda guarda o nome antigo).
+- **Site no GitHub Pages** (`nardacci.github.io/iLabs/`, publicado da `main`, raiz): faltava `index.html` na raiz; criado um que leva ao mapa de telas do protótipo (`prototipo/index.html`, dados fictícios). Ativo depois que a `main` for enviada ao GitHub. Atenção: o Pages também serve os documentos do repositório pelo endereço do site.
+- **Regra daqui em diante:** tudo o que for versionado é público. Nunca registrar segredo, endereço de servidor, dado real de cliente ou conteúdo das fichas do legado.
+- **Retomar:** próximo passo do produto segue sendo "Dados da empresa" ou as lições LH em testes do banco (a definir).
+
 
 ## 2026-11-06 · Claude · Marco 1B, parte 3: casca nova no app Angular (ramo `claude/app-casca-nova`, sem PR)
 
@@ -140,5 +150,5 @@ Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê
 
 ## 2026-11-02 · Claude · Criação do repositório
 
-**Feito:** criado o repositório privado `iLabs` e copiados `prototipo/` (telas de entrada e inicial) e `banco/` (três migrações aplicadas em 03/11/2026 no Supabase, 32 testes, modelo de dados) do `LabMedsys_homol`. Conferido: nenhum segredo nos arquivos. Caminhos antigos ajustados nos textos; as migrações já aplicadas não foram editadas (o comentário da linha 5 da base ainda cita o caminho antigo).
-**Próximo:** deixar um ponteiro no `LabMedsys_homol`, decidir onde entra o `app/` (Angular) e desenhar a migração 2 (cadeia do lote).
+**Feito:** criado o repositório privado `iLabs` e copiados `prototipo/` (telas de entrada e inicial) e `banco/` (três migrações aplicadas em 03/11/2026 no Supabase, 32 testes, modelo de dados) do repositório privado do legado. Conferido: nenhum segredo nos arquivos. Caminhos antigos ajustados nos textos; as migrações já aplicadas não foram editadas (o comentário da linha 5 da base ainda cita o caminho antigo).
+**Próximo:** deixar um ponteiro no repositório privado do legado, decidir onde entra o `app/` (Angular) e desenhar a migração 2 (cadeia do lote).

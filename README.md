@@ -2,7 +2,7 @@
 
 Nova versão do **iLabPharma**: um ERP SaaS para fabricantes de medicamentos, feito para atender às Boas Práticas de Fabricação (RDC 658/2022 e Guia 33/2020 da ANVISA).
 
-É uma versão **nova**, e não uma migração do LabMedSys. A análise do sistema legado fica em outro repositório privado (`LabMedsys_homol`); aqui ficam só o produto novo e a sua documentação.
+É uma versão **nova**, e não uma migração do LabMedSys. A análise do sistema legado fica em outro repositório privado; aqui ficam só o produto novo e a sua documentação.
 
 ## O que há aqui
 
