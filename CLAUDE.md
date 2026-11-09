@@ -8,7 +8,7 @@
 ## Estrutura
 | Pasta | Conteúdo |
 |---|---|
-| `prototipo/` | Telas navegáveis com dados fictícios |
+| `app/` | Aplicação Angular (o protótipo foi encerrado em 09/11/2026; está no histórico, commit `a814205`) |
 | `banco/` | Migrações SQL, testes (PGlite) e modelo de dados do Supabase |
 | `docs/` | Decisões e ponteiros para os requisitos do legado |
 

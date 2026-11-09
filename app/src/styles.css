@@ -1,4 +1,4 @@
-/* iLabs: variáveis de design (claro e escuro) convertidas de prototipo/prototipo.css, mais as classes comuns das telas.
+/* iLabs: variáveis de design (claro e escuro) originadas do protótipo antigo (encerrado), mais as classes comuns das telas.
    O tema escuro vale pela preferência do sistema ou pelo atributo data-theme="dark" (botão "Tema" do layout). */
 :root {
   --bg: #f4f3f1;

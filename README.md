@@ -8,20 +8,12 @@ Nova versão do **iLabPharma**: um ERP SaaS para fabricantes de medicamentos, fe
 
 | Pasta | Conteúdo |
 |---|---|
-| `prototipo/` | Telas navegáveis (HTML, CSS, JS) com dados fictícios: entrada e página inicial. Abra `prototipo/index.html` no navegador. |
+| `app/` | A aplicação em Angular, ligada ao banco no Supabase. |
 | `banco/` | Banco no Supabase (PostgreSQL): migrações, testes e modelo de dados. |
+| `supabase/` | Funções de servidor (por exemplo, o login). |
 | `docs/` | Decisões da nova versão e o índice dos requisitos, que nascem dos achados do legado. |
 
-O front-end em Angular (`ilabpharma-novo`) ainda é um repositório separado; onde ele entra (`app/`) está em aberto.
-
-## Como ver o protótipo
-Dê dois cliques em `prototipo/index.html`. Ou, com o Python instalado:
-
-```
-cd prototipo
-python -m http.server 8000
-```
-e abra `http://localhost:8000/index.html`.
+O protótipo de telas foi encerrado em 09/11/2026 (o desenho agora vive na própria aplicação). Ele continua no histórico do git, no commit `a814205`.
 
 ## Segurança (regras do projeto)
 - **Nunca** colocar no git: senhas, chaves (`service_role` e outras), strings de conexão, endereços de servidor.

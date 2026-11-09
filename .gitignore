@@ -4,3 +4,8 @@ node_modules/
 *.log
 .DS_Store
 Thumbs.db
+
+# Resíduos locais que não vão para o git
+/iLabs/
+/package-lock.json
+supabase/.temp/

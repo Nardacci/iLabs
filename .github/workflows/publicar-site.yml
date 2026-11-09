@@ -1,0 +1,59 @@
+name: Publicar site
+
+# Publica a aplicação (Angular) no GitHub Pages: https://nardacci.github.io/iLabs/
+# A cada envio para a main. O endereço e a chave PÚBLICA do Supabase vêm dos "secrets" do
+# repositório (Settings > Secrets and variables > Actions); nada disso fica no git.
+#   ILABS_SUPABASE_URL             endereço do projeto Supabase
+#   ILABS_SUPABASE_CHAVE_PUBLICA   chave pública (anon/publishable). NUNCA a chave de serviço.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  construir:
+    name: Construir a aplicação
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - run: npm ci
+      - name: Gerar ambiente (valores vêm dos secrets)
+        env:
+          ILABS_SUPABASE_URL: ${{ secrets.ILABS_SUPABASE_URL }}
+          ILABS_SUPABASE_CHAVE_PUBLICA: ${{ secrets.ILABS_SUPABASE_CHAVE_PUBLICA }}
+        run: npm run ambiente
+      - name: Build de produção para o endereço /iLabs/
+        run: npx ng build --base-href /iLabs/
+      - name: Abrir direto em qualquer rota (o Pages usa 404.html como reserva)
+        run: cp dist/app/browser/index.html dist/app/browser/404.html
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: app/dist/app/browser
+
+  publicar:
+    name: Publicar no GitHub Pages
+    needs: construir
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.pages.outputs.page_url }}
+    steps:
+      - id: pages
+        uses: actions/deploy-pages@v4

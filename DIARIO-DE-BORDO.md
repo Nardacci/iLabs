@@ -2,6 +2,13 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-09 · Claude · Protótipo encerrado e pastas organizadas
+
+- **Decisão do responsável:** não haverá mais protótipo. A pasta `prototipo/` saiu da árvore (continua no histórico, commit `a814205`). Ajustados `README.md`, `CLAUDE.md`, `app/README.md` e um comentário de `app/src/styles.css`. Os arquivos `PROMPT-*.md` antigos ainda citam o protótipo; ficam como registro histórico.
+- **Site (GitHub Pages) = a aplicação real:** o `index.html` da raiz foi removido; o site agora é o app Angular (tela de entrada de verdade), publicado por `.github/workflows/publicar-site.yml` a cada envio para a `main`. Build testado localmente com base `/iLabs/` (ambiente vazio). Endereço e chave pública do Supabase vêm de secrets do GitHub, fora do git. **Pendente, do responsável:** trocar a fonte do Pages para "GitHub Actions", criar os 2 secrets e liberar a URL no Supabase (passo a passo em `docs/publicar-o-site.md`). Enquanto isso, o endereço mostra "ambiente não configurado" ou 404.
+- **Envio:** a `main` com a abertura do repositório foi enviada ao GitHub (`72b9cce..a814205`).
+- **Resíduos locais:** `.gitignore` passou a cobrir `/iLabs/` (clone aninhado, limpo e sem nada fora do GitHub), `/package-lock.json` (solto na raiz, sem `package.json`) e `supabase/.temp/` (traz o código do projeto Supabase). **A remoção física de `/iLabs/` e do `package-lock.json` foi barrada pelo sistema e fica com o responsável.**
+
 ## 2026-11-09 · Claude · Repositório `iLabs` aberto ao público
 
 - **Decisão do responsável:** o repositório deixou de ser privado e passou a público (alterado por ele no GitHub; confirmado por consulta sem login, resposta 200).

@@ -1,6 +1,6 @@
 # iLabs: a aplicação (Angular)
 
-Esta pasta é a **aplicação de verdade** (não é protótipo): telas em Angular ligadas ao banco no Supabase. As telas de referência de desenho continuam em `../prototipo/`.
+Esta pasta é a **aplicação de verdade** (não é protótipo): telas em Angular ligadas ao banco no Supabase. O protótipo antigo foi encerrado em 09/11/2026 e só existe no histórico do git (commit `a814205`).
 
 ## A ideia da obra em uma frase
 **O banco manda; a aplicação só pergunta e mostra.** Permissão, isolamento por empresa, trilha de auditoria, assinatura e "quem elaborou não aprova" já moram no banco. A aplicação chama as funções `ilab.*` e mostra o resultado. Nenhuma regra de negócio é repetida no front.
