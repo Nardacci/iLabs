@@ -2,7 +2,7 @@ name: Publicar site
 
 # Publica a aplicação (Angular) no GitHub Pages: https://nardacci.github.io/iLabs/
 # A cada envio para a main. O endereço e a chave PÚBLICA do Supabase vêm dos "secrets" do
-# repositório (Settings > Secrets and variables > Actions); nada disso fica no git.
+# repositório ou do ambiente "github-pages" (Settings > Secrets and variables > Actions); nada disso fica no git.
 #   ILABS_SUPABASE_URL             endereço do projeto Supabase
 #   ILABS_SUPABASE_CHAVE_PUBLICA   chave pública (anon/publishable). NUNCA a chave de serviço.
 on:
@@ -23,6 +23,8 @@ jobs:
   construir:
     name: Construir a aplicação
     runs-on: ubuntu-latest
+    # Os secrets ficam no ambiente "github-pages"; sem declarar o ambiente aqui, o build não os enxerga.
+    environment: github-pages
     defaults:
       run:
         working-directory: app
