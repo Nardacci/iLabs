@@ -101,17 +101,17 @@ type Fase = 'pedir' | 'enviado' | 'conferindo' | 'definir' | 'vencido';
               autocompletar="new-password"
               [controle]="formSenha.controls.senha"
             />
-            <ul class="policy" aria-label="Regras da senha">
-              @for (r of regras(); track r.texto) {
-                <li [class.ok]="r.cumprida">{{ r.texto }}</li>
-              }
-            </ul>
             <il-campo
               rotulo="Repita a nova senha"
               tipo="password"
               autocompletar="new-password"
               [controle]="formSenha.controls.confirmacao"
             />
+            <ul class="policy" aria-label="Regras da senha">
+              @for (r of regras(); track r.texto) {
+                <li [class.ok]="r.cumprida">{{ r.texto }}</li>
+              }
+            </ul>
             <button type="submit" class="btn-grad" [disabled]="trabalhando()">
               Salvar nova senha
             </button>

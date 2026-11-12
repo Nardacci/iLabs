@@ -49,17 +49,17 @@ interface Inscricao {
           autocompletar="new-password"
           [controle]="formSenha.controls.nova"
         />
-        <ul class="policy" aria-label="Regras da senha">
-          @for (r of regras(); track r.texto) {
-            <li [class.ok]="r.cumprida">{{ r.texto }}</li>
-          }
-        </ul>
         <il-campo
           rotulo="Repita a nova senha"
           tipo="password"
           autocompletar="new-password"
           [controle]="formSenha.controls.confirmacao"
         />
+        <ul class="policy" aria-label="Regras da senha">
+          @for (r of regras(); track r.texto) {
+            <li [class.ok]="r.cumprida">{{ r.texto }}</li>
+          }
+        </ul>
         <button type="submit" class="btn primary" [disabled]="trabalhando()">
           Salvar nova senha
         </button>

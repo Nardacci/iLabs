@@ -76,17 +76,17 @@ const TEXTO_DA_SITUACAO: Record<string, string> = {
                 autocompletar="new-password"
                 [controle]="form.controls.senha"
               />
-              <ul class="policy" aria-label="Regras da senha">
-                @for (r of regras(); track r.texto) {
-                  <li [class.ok]="r.cumprida">{{ r.texto }}</li>
-                }
-              </ul>
               <il-campo
                 rotulo="Repita a senha"
                 tipo="password"
                 autocompletar="new-password"
                 [controle]="form.controls.confirmacao"
               />
+              <ul class="policy" aria-label="Regras da senha">
+                @for (r of regras(); track r.texto) {
+                  <li [class.ok]="r.cumprida">{{ r.texto }}</li>
+                }
+              </ul>
               <label class="check">
                 <input type="checkbox" formControlName="aceite" />
                 <span>Li e aceito os termos de uso e a política de privacidade.</span>
