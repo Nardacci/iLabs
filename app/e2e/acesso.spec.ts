@@ -114,6 +114,23 @@ test.describe('Cadastro e demais telas públicas', () => {
     });
   }
 
+  test('esqueci a senha: mostra o e-mail, os passos e passa no axe (claro e escuro)', async ({
+    page,
+  }) => {
+    await simularSupabase(page);
+    await page.goto('/redefinir');
+    await page.getByLabel('E-mail').fill('ana@empresa.test');
+    await page.getByRole('button', { name: 'Enviar o link' }).click();
+    await expect(page.getByRole('heading', { name: 'Confira o seu e-mail' })).toBeVisible();
+    await expect(page.getByText('ana@empresa.test')).toBeVisible();
+    await expect(page.getByText('Criar nova senha')).toBeVisible();
+    await conferirAcessibilidade(page, 'esqueci a senha enviado (claro)');
+    await page.emulateMedia({ colorScheme: 'dark' });
+    await conferirAcessibilidade(page, 'esqueci a senha enviado (escuro)');
+    await page.getByRole('button', { name: 'Enviar de novo' }).click();
+    await expect(page.getByText('Pedido enviado de novo.')).toBeVisible();
+  });
+
   test('cadastro: a resposta é a mesma e o passo seguinte exige o link do e-mail', async ({
     page,
   }) => {

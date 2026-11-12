@@ -110,6 +110,7 @@ export async function simularSupabase(page: Page, roteiro: Roteiro = {}): Promis
         created_at: '2026-01-01T00:00:00Z',
       });
     }
+    if (url.pathname === '/auth/v1/recover') return json({});
     if (url.pathname === '/auth/v1/logout') return rota.fulfill({ status: 204, headers: CORS });
     if (url.pathname.startsWith('/rest/v1/') && roteiro.inatividade?.recusar) {
       registrar('recusada-por-inatividade', url.pathname);

@@ -2,6 +2,12 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-11 · Claude · Tela "esqueci a senha" repaginada
+
+- **Pedido do responsável:** a tela "Confira o seu e-mail" estava solta (cartão sem o painel de marca). **Feito:** nova casca compartilhada `compartilhado/ui/casca-acesso.ts` (painel de marca + cartão), usada por Entrar e por todas as fases de Redefinir (pedir, enviado, conferindo, definir, vencido), então as telas de acesso ficam iguais entre si.
+- **Fase "enviado":** selo de e-mail, o endereço digitado, 3 passos, dica de spam e validade, "Enviar de novo" e "Usar outro e-mail". A resposta continua a mesma exista ou não a conta (nada revela se o e-mail está cadastrado). "Link vencido" e "Criar nova senha" ganharam texto de apoio.
+- **Verificação:** testes do app 69 de 69, ponta a ponta 12 de 12 (1 novo, com axe claro e escuro), tipos, lint e formatação limpos; retrato conferido.
+
 ## 2026-11-11 · Claude · Link do e-mail de senha corrigido e novo modelo de e-mail
 
 - **Defeito achado pelo responsável:** o link do e-mail de redefinir senha abria `localhost:3000` (página com erro). **Causa:** o app montava o endereço de retorno com `location.origin`, sem a pasta `/iLabs/` do site no GitHub Pages; o Supabase não reconhecia o endereço e usava o *Site URL* padrão. **Correção:** função única `compartilhado/url-do-app.ts` (respeita a base do site), usada nos 4 pontos que geram links por e-mail (redefinir senha, cadastro, convite por e-mail e link de convite em Usuários). Testes do app 69 de 69, tipos e lint limpos.
