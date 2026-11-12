@@ -117,7 +117,9 @@ test.describe('Cadastro por metadados (unidades de medida)', () => {
       .toBeGreaterThan(1);
 
     // inativar: sem motivo o banco nem é chamado
-    await page.getByRole('button', { name: /Inativar Grama/ }).click();
+    await page.getByRole('button', { name: 'Ações de Grama' }).click();
+    await conferirAcessibilidade(page, 'cadastro unidades (menu de ações aberto)');
+    await page.getByRole('menuitem', { name: /Inativar/ }).click();
     await conferirAcessibilidade(page, 'cadastro unidades (janela do motivo)');
     await page.getByRole('button', { name: 'Confirmar' }).click();
     await expect(page.getByText('Preencha este campo.')).toBeVisible();
@@ -140,6 +142,27 @@ test.describe('Cadastro por metadados (unidades de medida)', () => {
     await expect(page.getByText('Preencha este campo.').first()).toBeVisible();
     await page.keyboard.press('Escape');
     await expect(page.getByRole('dialog')).toHaveCount(0);
+  });
+
+  test('o cadastro abre em página própria, com endereço, abas e axe; Voltar do navegador fecha', async ({
+    page,
+  }) => {
+    await preparar(page);
+    await page.goto('/cadastros/unidades-medida');
+    await expect(page.getByRole('cell', { name: 'Grama', exact: true })).toBeVisible();
+    await page.getByRole('button', { name: 'g', exact: true }).click(); // o primeiro campo da linha abre o cadastro
+    await expect(page).toHaveURL(/registro=u-1/);
+    await expect(page.getByRole('heading', { name: 'Editar unidade de medida' })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Histórico' })).toBeVisible();
+    await expect(page.getByRole('table')).toHaveCount(0);
+    await conferirAcessibilidade(page, 'cadastro unidades (página, claro)');
+    await page.emulateMedia({ colorScheme: 'dark' });
+    await conferirAcessibilidade(page, 'cadastro unidades (página, escuro)');
+    await page.getByRole('tab', { name: 'Histórico' }).click();
+    await expect(page).toHaveURL(/aba=historico/);
+    await page.goBack(); // a troca de aba não cria entrada nova: um Voltar fecha a página
+    await expect(page).not.toHaveURL(/registro=/);
+    await expect(page.getByRole('cell', { name: 'Grama', exact: true })).toBeVisible();
   });
 
   test('no celular a lista cabe na tela e o menu abre por botão', async ({ page }) => {

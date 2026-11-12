@@ -55,6 +55,32 @@ async function abrir() {
   return fixture;
 }
 
+/** Abre o menu "⋯" de uma linha da lista e devolve os itens (Editar, Inativar, Excluir, Histórico…). */
+function itensDoMenu(
+  f: { detectChanges(): void; nativeElement: unknown },
+  tr: Element | undefined,
+): HTMLButtonElement[] {
+  tr?.querySelector<HTMLButtonElement>('.btn-mais')?.click();
+  f.detectChanges();
+  return [
+    ...(f.nativeElement as HTMLElement).querySelectorAll<HTMLButtonElement>(
+      '.menu-acoes [role="menuitem"]',
+    ),
+  ];
+}
+
+function usarMenu(
+  f: { detectChanges(): void; nativeElement: unknown },
+  indiceDaLinha: number,
+  rotulo: string,
+): void {
+  const tr = (f.nativeElement as HTMLElement).querySelectorAll('tbody tr')[indiceDaLinha];
+  itensDoMenu(f, tr)
+    .find((b) => b.textContent?.trim().startsWith(rotulo))
+    ?.click();
+  f.detectChanges();
+}
+
 describe('cadastro por metadados (unidades de medida)', () => {
   it('desenha a lista a partir da descrição, com paginação', async () => {
     const { consulta } = preparar();
@@ -112,8 +138,7 @@ describe('cadastro por metadados (unidades de medida)', () => {
     const { banco } = preparar();
     const f = await abrir();
     const el = f.nativeElement as HTMLElement;
-    [...el.querySelectorAll('button')].find((b) => b.textContent?.includes('Inativar'))?.click();
-    f.detectChanges();
+    usarMenu(f, 0, 'Inativar');
     const confirmar = (): void =>
       [...el.querySelectorAll('button')]
         .find((b) => b.textContent?.trim() === 'Confirmar')
@@ -144,8 +169,7 @@ describe('cadastro por metadados (unidades de medida)', () => {
       [...el.querySelectorAll('button')]
         .find((b) => b.textContent?.trim().startsWith(rotulo))
         ?.click();
-    clicar('Editar');
-    f.detectChanges();
+    usarMenu(f, 0, 'Editar');
     expect(el.textContent).toContain('Motivo da alteração (obrigatório)');
 
     // sem mudar nada: não chama o banco
@@ -205,24 +229,21 @@ describe('cadastro por metadados (unidades de medida)', () => {
   it('Excluir fica desabilitado para o que já foi usado e habilitado para o que nunca foi usado', async () => {
     preparar();
     const f = await abrir();
-    const botoes = [...(f.nativeElement as HTMLElement).querySelectorAll('tbody tr')].map((tr) =>
-      [...tr.querySelectorAll('button')].find((b) => b.textContent?.includes('Excluir')),
+    // lê o estado na hora: o menu reaproveita os mesmos botões ao trocar de linha
+    const estados = [...(f.nativeElement as HTMLElement).querySelectorAll('tbody tr')].map(
+      (tr) => itensDoMenu(f, tr).find((b) => b.textContent?.includes('Excluir'))?.disabled,
     );
-    expect(botoes[0]?.disabled).toBe(true); // Grama: em uso
-    expect(botoes[1]?.disabled).toBe(true); // Litro: em uso
-    expect(botoes[2]?.disabled).toBe(false); // Mililitro: nunca usado
-    expect(botoes[3]).toBeUndefined(); // excluído não se exclui de novo
+    expect(estados[0]).toBe(true); // Grama: em uso
+    expect(estados[1]).toBe(true); // Litro: em uso
+    expect(estados[2]).toBe(false); // Mililitro: nunca usado
+    expect(estados[3]).toBeUndefined(); // excluído não se exclui de novo
   });
 
   it('excluir pede o motivo e chama a função com a situação "excluido"', async () => {
     const { banco } = preparar();
     const f = await abrir();
     const el = f.nativeElement as HTMLElement;
-    const linha = el.querySelectorAll('tbody tr')[2];
-    [...(linha?.querySelectorAll('button') ?? [])]
-      .find((b) => b.textContent?.includes('Excluir'))
-      ?.click();
-    f.detectChanges();
+    usarMenu(f, 2, 'Excluir');
     expect(el.textContent).toContain('Nada é apagado do banco');
     const area = el.querySelector<HTMLTextAreaElement>('textarea');
     area!.value = 'Cadastrada por engano, nunca usada';
@@ -241,11 +262,102 @@ describe('cadastro por metadados (unidades de medida)', () => {
   it('quem tem a função própria vê "Restaurar" nos excluídos; quem não tem, não vê', async () => {
     preparar();
     const com = await abrir();
-    expect((com.nativeElement as HTMLElement).textContent).toContain('Restaurar');
+    const linhaExcluida = (com.nativeElement as HTMLElement).querySelectorAll('tbody tr')[3];
+    expect(itensDoMenu(com, linhaExcluida).map((b) => b.textContent?.trim())).toContain(
+      'Restaurar Excluída',
+    );
     TestBed.resetTestingModule();
     preparar({}, false);
     const sem = await abrir();
+    const linhaSem = (sem.nativeElement as HTMLElement).querySelectorAll('tbody tr')[3];
+    expect(itensDoMenu(sem, linhaSem).map((b) => b.textContent?.trim())).toEqual([
+      'Histórico Excluída',
+    ]);
     expect((sem.nativeElement as HTMLElement).textContent).not.toContain('Restaurar');
+  });
+
+  it('clicar na linha abre o cadastro para alterar; o primeiro campo é um botão para quem usa o teclado', async () => {
+    preparar();
+    const f = await abrir();
+    const el = f.nativeElement as HTMLElement;
+    const primeira = el.querySelector('tbody tr')!;
+    expect(primeira.querySelector('.link-linha')?.textContent).toContain('g');
+    primeira.querySelectorAll('td')[1]?.click();
+    f.detectChanges();
+    expect(el.textContent).toContain('Motivo da alteração (obrigatório)');
+  });
+
+  it('o menu "⋯" abre com a seta, fecha com Esc e devolve o foco ao botão', async () => {
+    preparar();
+    const f = await abrir();
+    const el = f.nativeElement as HTMLElement;
+    const botao = el.querySelector<HTMLButtonElement>('.btn-mais')!;
+    botao.click();
+    f.detectChanges();
+    expect(botao.getAttribute('aria-expanded')).toBe('true');
+    const menu = el.querySelector<HTMLElement>('.menu-acoes')!;
+    menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    f.detectChanges();
+    expect(el.querySelector('.menu-acoes')).toBeNull();
+    expect(botao.getAttribute('aria-expanded')).toBe('false');
+  });
+
+  it('o cadastro abre em página inteira (a lista some), com migalhas, abas e rodapé; Cancelar volta à lista', async () => {
+    preparar();
+    const f = await abrir();
+    const el = f.nativeElement as HTMLElement;
+    usarMenu(f, 0, 'Editar');
+    expect(el.querySelector('table')).toBeNull();
+    expect(el.querySelector('.modal')).toBeNull();
+    expect(el.querySelector('nav.migalhas')?.textContent).toContain('Unidades de medida');
+    expect(el.querySelector('h1')?.textContent).toContain('Editar unidade de medida');
+    expect([...el.querySelectorAll('[role="tab"]')].map((t) => t.textContent?.trim())).toEqual([
+      'Dados',
+      'Histórico',
+    ]);
+    expect(el.querySelector('.grade-campos')).not.toBeNull();
+    const rodape = [...el.querySelectorAll('.rodape-acoes button')].map((b) =>
+      b.textContent?.trim(),
+    );
+    expect(rodape).toEqual(['Cancelar', 'Salvar']);
+    [...el.querySelectorAll('.rodape-acoes button')]
+      .find((b) => b.textContent?.trim() === 'Cancelar')
+      ?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    f.detectChanges();
+    expect(el.querySelector('table')).not.toBeNull();
+    expect(el.querySelector('nav.migalhas')).toBeNull();
+  });
+
+  it('"Histórico" do menu abre a página na aba Histórico e busca a trilha do registro', async () => {
+    const { banco } = preparar();
+    const consulta = TestBed.inject(ConsultaService) as unknown as {
+      historico: ReturnType<typeof vi.fn>;
+    };
+    consulta.historico = vi.fn().mockResolvedValue([]);
+    const f = await abrir();
+    const el = f.nativeElement as HTMLElement;
+    usarMenu(f, 0, 'Histórico');
+    await f.whenStable();
+    f.detectChanges();
+    expect(consulta.historico).toHaveBeenCalledWith('unidades_medida', '1');
+    expect(el.querySelector('[role="tab"][aria-selected="true"]')?.textContent).toContain(
+      'Histórico',
+    );
+    expect(el.textContent).toContain('Sem histórico para este registro.');
+    expect(banco).toBeDefined();
+  });
+
+  it('novo cadastro: página sem a aba Histórico e sem o campo de motivo', async () => {
+    preparar();
+    const f = await abrir();
+    const el = f.nativeElement as HTMLElement;
+    [...el.querySelectorAll('button')]
+      .find((b) => b.textContent?.includes('Nova unidade de medida'))
+      ?.click();
+    f.detectChanges();
+    expect(el.querySelector('h1')?.textContent).toContain('Nova unidade de medida');
+    expect(el.querySelectorAll('[role="tab"]').length).toBe(0);
+    expect(el.textContent).not.toContain('Motivo da alteração');
   });
 
   it('trocar o filtro de situação consulta de novo, só com as situações escolhidas', async () => {
@@ -498,7 +610,7 @@ describe('cadastro por metadados (estrutura organizacional, em árvore)', () => 
     const linhaDoPredio = [...el.querySelectorAll('tbody tr')].find((tr) =>
       tr.textContent?.includes('Prédio de produção'),
     )!;
-    [...linhaDoPredio.querySelectorAll('button')]
+    itensDoMenu(f, linhaDoPredio)
       .find((b) => b.textContent?.includes('Editar'))
       ?.click();
     f.detectChanges();

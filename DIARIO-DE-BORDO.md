@@ -2,6 +2,21 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-11 · Claude · Padronização dos cadastros, etapa 2: Cadastro A (página inteira)
+
+- **Decisão do responsável:** todos os cadastros, inclusive os curtos (Unidades de medida), usam página inteira; a janela fica só para confirmações (motivo de inativar, reativar, excluir e restaurar).
+- **Feito** (`compartilhado/cadastro/cadastro.ts`, vale para todos os cadastros dirigidos por metadados): novo e alterar abrem uma **página** no lugar da janela: migalhas (Lista › nome), título com a situação, abas **Dados** e **Histórico** (a de Histórico só em registro existente e para quem pode ver a trilha; o menu "Histórico" da lista abre direto nela), campos em duas colunas (texto longo em linha inteira), motivo da alteração na página, **rodapé fixo** com "Alterações não salvas", Cancelar e Salvar. Quem só consulta vê só o Histórico.
+- **Endereço próprio:** o cadastro aberto vira `?registro=<id>` (ou `?criar=1`, e `&aba=historico`), então **Voltar do navegador fecha a página** e o endereço pode ser aberto direto (o registro é buscado por `ConsultaService.obter`; o banco decide se a pessoa pode ver). Salvar e Cancelar voltam à lista.
+- **Testes:** app 77 de 77 (3 novos: página, aba Histórico e cadastro novo), ponta a ponta 23 de 23 (1 novo: endereço, abas, axe claro e escuro e botão Voltar), tipos, lint e formatação limpos; retrato conferido.
+- **Ainda não provado:** abrir o endereço de um registro direto (refresh) contra o banco real; a aba "Vínculos" do modelo não existe (nenhum cadastro tem vínculos hoje).
+
+## 2026-11-11 · Claude · Padronização dos cadastros, etapa 1: Pesquisa A
+
+- **Decisão do responsável** (entre 3 modelos de Pesquisa e 3 de Cadastro): **Pesquisa A** (tabela com linha clicável e menu "⋯") e **Cadastro A** (página inteira com abas Dados, Histórico e Vínculos e barra de ações no rodapé). Esta entrada cobre só a Pesquisa A; o **Cadastro A é a etapa 2**. **Em aberto:** cadastros muito curtos (como Unidades de medida) também ganham página inteira ou ficam em janela?
+- **Feito na lista** (`compartilhado/cadastro/cadastro.ts`, vale para todos os cadastros dirigidos por metadados): barra de busca compacta (campos mais baixos), **Buscar e Situação ocupam a largura e empurram Imprimir e Novo para a direita**, mais espaço entre a barra e a tabela e entre as linhas; **clicar na linha abre o cadastro** (quem pode alterar) ou o histórico (só consulta); o primeiro campo é um botão (acessível pelo teclado); as ações saem para o menu **⋯** (Editar, Inativar ou Reativar, Excluir, Restaurar, Histórico) com setas, Esc e foco devolvido ao botão.
+- **Testes:** app 74 de 74 (2 novos: clique na linha e teclado do menu), ponta a ponta 22 de 22 (axe também com o menu aberto), tipos, lint, formatação e build limpos.
+- **Detalhe técnico:** o clique na linha é tratado no componente (a linha da tabela não é um controle com foco, e a regra de acessibilidade do lint não aceita o clique no modelo).
+
 ## 2026-11-11 · Claude · Menu lateral reorganizado como no protótipo
 
 - **Pedido do responsável:** o menu do app tinha "Geral › Início" e "Cadastros", que o protótipo não tinha. **Feito** (`compartilhado/menu.ts`, uma só lista com a ordem e os ícones): Início vira link direto (sem submenu), seguido de Governança de Acesso, Governança Organizacional, Estrutura Física, Cadastros Corporativos, Cadastros Farmacêuticos, Tabelas Compartilhadas, Central de Notificações e Configuração da Plataforma.

@@ -1,15 +1,18 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   computed,
   DestroyRef,
   effect,
+  ElementRef,
   inject,
   input,
   signal,
+  untracked,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
 import {
   FormControl,
   FormGroup,
@@ -30,7 +33,8 @@ import type { CampoDeCadastro, DescricaoDeCadastro } from './descricao';
 import { type Diferenca, diferencas, ROTULO_DA_ACAO } from './historico';
 
 type Linha = Record<string, unknown>;
-type TipoDeJanela = 'nenhuma' | 'formulario' | 'motivo' | 'historico';
+type TipoDeJanela = 'nenhuma' | 'formulario' | 'motivo';
+type Aba = 'dados' | 'historico';
 type AcaoDeSituacao = 'inativar' | 'reativar' | 'excluir' | 'restaurar';
 type FiltroDeSituacao = 'vivos' | 'ativo' | 'inativo' | 'excluido' | 'todos';
 
@@ -72,206 +76,309 @@ const TAMANHO_DA_PAGINA = 10;
   selector: 'il-cadastro-por-metadados',
   imports: [ReactiveFormsModule, DatePipe, Campo, Janela],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '(click)': 'aoClicarNoComponente($event)',
+    '(document:click)': 'aoClicarFora($event)',
+    '(document:keydown.escape)': 'fecharMenu()',
+    '(window:resize)': 'fecharMenu()',
+  },
   template: `
-    <div class="barra nao-imprimir">
-      <h1>{{ cadastro().titulo }}</h1>
-    </div>
-    <section class="panel" [attr.aria-label]="'Lista de ' + cadastro().titulo.toLowerCase()">
-      <div class="barra">
-        <div class="field">
-          <label [for]="'busca-' + cadastro().tabela">Buscar</label>
-          <input
-            class="input"
-            [id]="'busca-' + cadastro().tabela"
-            type="search"
-            [formControl]="busca"
-            autocomplete="off"
-          />
-        </div>
-        <div class="field">
-          <label [for]="'situacao-' + cadastro().tabela">Situação</label>
-          <select
-            class="input"
-            [id]="'situacao-' + cadastro().tabela"
-            [formControl]="filtroSituacao"
-          >
-            <option value="vivos">Ativos e inativos</option>
-            <option value="ativo">Só ativos</option>
-            <option value="inativo">Só inativos</option>
-            <option value="excluido">Só excluídos</option>
-            <option value="todos">Todos</option>
-          </select>
-        </div>
-        <button type="button" class="btn" [class.sr]="!podeImprimir()" (click)="imprimir()">
-          Imprimir
-        </button>
-        @if (podeIncluir()) {
-          <button type="button" class="btn primary" (click)="abrirFormulario(null)">
-            {{ novo() }} {{ cadastro().singular }}
-          </button>
-        }
+    @if (!naPagina()) {
+      <div class="barra nao-imprimir">
+        <h1>{{ cadastro().titulo }}</h1>
       </div>
-      @if (erro(); as texto) {
-        <p class="msg bad" role="alert">{{ texto }}</p>
-      }
-      @if (aviso(); as texto) {
-        <p class="msg ok" role="status">{{ texto }}</p>
-      }
-      <div class="scroll-x">
-        <table>
-          <caption class="sr">
-            {{
-              cadastro().titulo
-            }}
-          </caption>
-          <thead>
-            <tr>
-              @for (c of colunas(); track c.nome) {
-                <th scope="col">{{ c.rotulo }}</th>
-              }
-              <th scope="col">Situação</th>
-              <th scope="col" class="nao-imprimir">Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (linha of linhasVisiveis(); track linha['id']) {
+      <section class="panel" [attr.aria-label]="'Lista de ' + cadastro().titulo.toLowerCase()">
+        <div class="barra barra-pesquisa">
+          <div class="field campo-busca">
+            <label [for]="'busca-' + cadastro().tabela">Buscar</label>
+            <input
+              class="input"
+              [id]="'busca-' + cadastro().tabela"
+              type="search"
+              [formControl]="busca"
+              autocomplete="off"
+            />
+          </div>
+          <div class="field campo-situacao">
+            <label [for]="'situacao-' + cadastro().tabela">Situação</label>
+            <select
+              class="input"
+              [id]="'situacao-' + cadastro().tabela"
+              [formControl]="filtroSituacao"
+            >
+              <option value="vivos">Ativos e inativos</option>
+              <option value="ativo">Só ativos</option>
+              <option value="inativo">Só inativos</option>
+              <option value="excluido">Só excluídos</option>
+              <option value="todos">Todos</option>
+            </select>
+          </div>
+          <button type="button" class="btn" [class.sr]="!podeImprimir()" (click)="imprimir()">
+            Imprimir
+          </button>
+          @if (podeIncluir()) {
+            <button type="button" class="btn primary" (click)="abrirFormulario(null)">
+              {{ novo() }} {{ cadastro().singular }}
+            </button>
+          }
+        </div>
+        @if (erro(); as texto) {
+          <p class="msg bad" role="alert">{{ texto }}</p>
+        }
+        @if (aviso(); as texto) {
+          <p class="msg ok" role="status">{{ texto }}</p>
+        }
+        <div class="scroll-x">
+          <table class="tabela-cadastro">
+            <caption class="sr">
+              {{
+                cadastro().titulo
+              }}
+            </caption>
+            <thead>
               <tr>
-                @for (c of colunas(); track c.nome; let i = $index) {
-                  <td [style.padding-left.px]="i === 0 ? recuo(linha) : null">
-                    {{ celula(linha, c) }}
-                  </td>
+                @for (c of colunas(); track c.nome) {
+                  <th scope="col">{{ c.rotulo }}</th>
                 }
-                <td>
-                  <span
-                    class="pill"
-                    [class.ok]="situacaoDe(linha) === 'ativo'"
-                    [class.warn]="situacaoDe(linha) === 'inativo'"
-                    [class.bad]="situacaoDe(linha) === 'excluido'"
-                  >
-                    {{ rotuloDaSituacao(linha) }}
-                  </span>
-                  @if (textoDeUsos(linha); as uso) {
-                    <small class="sub-linha">{{ uso }}</small>
+                <th scope="col">Situação</th>
+                <th scope="col" class="nao-imprimir">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (linha of linhasVisiveis(); track linha['id']) {
+                <tr [class.linha-clicavel]="acaoDaLinha(linha)" [attr.data-linha]="idDe(linha)">
+                  @for (c of colunas(); track c.nome; let i = $index) {
+                    <td [style.padding-left.px]="i === 0 ? recuo(linha) : null">
+                      @if (i === 0 && acaoDaLinha(linha); as qual) {
+                        <button
+                          type="button"
+                          class="link-linha"
+                          (click)="executarDaLinha(linha, qual)"
+                        >
+                          {{ celula(linha, c) }}
+                        </button>
+                      } @else {
+                        {{ celula(linha, c) }}
+                      }
+                    </td>
                   }
-                </td>
-                <td class="nao-imprimir">
-                  @if (podeAlterar() && situacaoDe(linha) !== 'excluido') {
-                    <button type="button" class="btn small" (click)="abrirFormulario(linha)">
-                      Editar<span class="sr"> {{ resumo(linha) }}</span>
-                    </button>
-                    <button
-                      type="button"
-                      class="btn small"
-                      (click)="
-                        abrirMotivo(linha, situacaoDe(linha) === 'ativo' ? 'inativar' : 'reativar')
-                      "
+                  <td>
+                    <span
+                      class="pill"
+                      [class.ok]="situacaoDe(linha) === 'ativo'"
+                      [class.warn]="situacaoDe(linha) === 'inativo'"
+                      [class.bad]="situacaoDe(linha) === 'excluido'"
                     >
-                      {{ situacaoDe(linha) === 'ativo' ? 'Inativar' : 'Reativar'
-                      }}<span class="sr"> {{ resumo(linha) }}</span>
-                    </button>
-                    @if (podeExcluir()) {
+                      {{ rotuloDaSituacao(linha) }}
+                    </span>
+                    @if (textoDeUsos(linha); as uso) {
+                      <small class="sub-linha">{{ uso }}</small>
+                    }
+                  </td>
+                  <td class="nao-imprimir col-acoes">
+                    @if (temAcoes(linha)) {
                       <button
                         type="button"
-                        class="btn small"
-                        [disabled]="jaUsado(linha)"
-                        [attr.title]="
-                          jaUsado(linha) ? 'Já foi usado: só pode ser inativado.' : null
-                        "
-                        (click)="abrirMotivo(linha, 'excluir')"
+                        class="btn small btn-mais"
+                        aria-haspopup="menu"
+                        [attr.aria-expanded]="menu()?.id === idDe(linha)"
+                        [attr.aria-label]="'Ações de ' + resumo(linha)"
+                        (click)="alternarMenu(linha, $event)"
                       >
-                        Excluir<span class="sr"> {{ resumo(linha) }}</span>
+                        <span aria-hidden="true">⋯</span>
                       </button>
                     }
-                  }
-                  @if (podeRestaurar() && situacaoDe(linha) === 'excluido') {
-                    <button
-                      type="button"
-                      class="btn small"
-                      (click)="abrirMotivo(linha, 'restaurar')"
-                    >
-                      Restaurar<span class="sr"> {{ resumo(linha) }}</span>
-                    </button>
-                  }
-                  @if (podeHistorico()) {
-                    <button type="button" class="btn small" (click)="abrirHistorico(linha)">
-                      Histórico<span class="sr"> {{ resumo(linha) }}</span>
-                    </button>
-                  }
-                </td>
-              </tr>
-            } @empty {
-              <tr>
-                <td [attr.colspan]="colunas().length + 2">
-                  {{ carregando() ? 'Carregando…' : 'Nenhum registro encontrado.' }}
-                </td>
-              </tr>
+                  </td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td [attr.colspan]="colunas().length + 2">
+                    {{ carregando() ? 'Carregando…' : 'Nenhum registro encontrado.' }}
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        @if (!cadastro().arvore) {
+          <div class="paginacao">
+            <span aria-live="polite"
+              >{{ total() }} registro(s) · página {{ pagina() }} de {{ paginas() }}</span
+            >
+            <span class="nao-imprimir">
+              <button
+                type="button"
+                class="btn small"
+                [disabled]="pagina() <= 1"
+                (click)="irParaPagina(pagina() - 1)"
+              >
+                Anterior
+              </button>
+              <button
+                type="button"
+                class="btn small"
+                [disabled]="pagina() >= paginas()"
+                (click)="irParaPagina(pagina() + 1)"
+              >
+                Próxima
+              </button>
+            </span>
+          </div>
+        }
+      </section>
+    }
+
+    @if (menu(); as aberto) {
+      @if (linhaDoMenu(); as linha) {
+        <div
+          class="menu-acoes nao-imprimir"
+          role="menu"
+          tabindex="-1"
+          [attr.aria-label]="'Ações de ' + resumo(linha)"
+          [style.top.px]="aberto.topo"
+          [style.right.px]="aberto.direita"
+          (keydown)="teclaNoMenu($event)"
+        >
+          @if (podeAlterar() && situacaoDe(linha) !== 'excluido') {
+            <button type="button" role="menuitem" (click)="doMenu('editar')">
+              Editar<span class="sr"> {{ resumo(linha) }}</span>
+            </button>
+            <button type="button" role="menuitem" (click)="doMenu('alternar')">
+              {{ situacaoDe(linha) === 'ativo' ? 'Inativar' : 'Reativar'
+              }}<span class="sr"> {{ resumo(linha) }}</span>
+            </button>
+            @if (podeExcluir()) {
+              <button
+                type="button"
+                role="menuitem"
+                [disabled]="jaUsado(linha)"
+                [attr.title]="jaUsado(linha) ? 'Já foi usado: só pode ser inativado.' : null"
+                (click)="doMenu('excluir')"
+              >
+                Excluir<span class="sr"> {{ resumo(linha) }}</span>
+              </button>
             }
-          </tbody>
-        </table>
-      </div>
-      @if (!cadastro().arvore) {
-        <div class="paginacao">
-          <span aria-live="polite"
-            >{{ total() }} registro(s) · página {{ pagina() }} de {{ paginas() }}</span
-          >
-          <span class="nao-imprimir">
-            <button
-              type="button"
-              class="btn small"
-              [disabled]="pagina() <= 1"
-              (click)="irParaPagina(pagina() - 1)"
-            >
-              Anterior
+          }
+          @if (podeRestaurar() && situacaoDe(linha) === 'excluido') {
+            <button type="button" role="menuitem" (click)="doMenu('restaurar')">
+              Restaurar<span class="sr"> {{ resumo(linha) }}</span>
             </button>
-            <button
-              type="button"
-              class="btn small"
-              [disabled]="pagina() >= paginas()"
-              (click)="irParaPagina(pagina() + 1)"
-            >
-              Próxima
+          }
+          @if (podeHistorico()) {
+            <button type="button" role="menuitem" (click)="doMenu('historico')">
+              Histórico<span class="sr"> {{ resumo(linha) }}</span>
             </button>
-          </span>
+          }
         </div>
       }
-    </section>
+    }
 
-    @switch (janela()) {
-      @case ('formulario') {
-        <il-janela
-          [titulo]="(editando() ? 'Editar ' : novo() + ' ') + cadastro().singular"
-          (fechar)="fechar()"
-        >
-          @if (erroDaJanela(); as texto) {
-            <p class="msg bad" role="alert">{{ texto }}</p>
+    @if (naPagina()) {
+      <nav class="migalhas nao-imprimir" aria-label="Você está em">
+        <a href="#" (click)="voltarParaLista($event)">{{ cadastro().titulo }}</a>
+        <span aria-hidden="true"> › </span>
+        <span aria-current="page">{{ nomeDaPagina() }}</span>
+      </nav>
+      <div class="barra pagina-cab">
+        <h1 id="titulo-pagina" tabindex="-1">{{ tituloDaPagina() }}</h1>
+        @if (alvo(); as registro) {
+          <span
+            class="pill"
+            [class.ok]="situacaoDe(registro) === 'ativo'"
+            [class.warn]="situacaoDe(registro) === 'inativo'"
+            [class.bad]="situacaoDe(registro) === 'excluido'"
+          >
+            {{ rotuloDaSituacao(registro) }}
+          </span>
+        }
+      </div>
+      @if (abasDaPagina().length > 1) {
+        <div class="abas-cadastro nao-imprimir" role="tablist" aria-label="Seções do cadastro">
+          @for (a of abasDaPagina(); track a.id) {
+            <button
+              type="button"
+              role="tab"
+              class="aba"
+              [class.ativa]="abaAtual() === a.id"
+              [id]="'aba-' + a.id"
+              [attr.aria-selected]="abaAtual() === a.id"
+              [attr.aria-controls]="'painel-cadastro'"
+              (click)="trocarAba(a.id)"
+            >
+              {{ a.rotulo }}
+            </button>
           }
-          <form [formGroup]="formulario" (ngSubmit)="salvar()" novalidate>
-            @for (c of cadastro().campos; track c.nome) {
-              <il-campo
-                [rotulo]="c.rotulo"
-                [tipo]="tipoDoCampo(c)"
-                [opcoes]="opcoesDoCampo(c)"
-                [dica]="c.dica"
-                [maximo]="c.max"
-                [obrigatorio]="c.obrigatorio === true"
-                [controle]="controle(c.nome)"
-              />
-            }
-            @if (editando()) {
-              <il-campo
-                rotulo="Motivo da alteração (obrigatório)"
-                tipo="textolongo"
-                dica="Pelo menos 5 caracteres. Fica registrado no histórico, com o antes e o depois."
-                [controle]="motivo"
-              />
-            }
-            <div class="acoes">
+        </div>
+      }
+      <section
+        class="panel"
+        id="painel-cadastro"
+        role="tabpanel"
+        [attr.aria-labelledby]="abasDaPagina().length > 1 ? 'aba-' + abaAtual() : null"
+        [attr.aria-label]="abasDaPagina().length > 1 ? null : tituloDaPagina()"
+      >
+        @if (erroDaJanela(); as texto) {
+          <p class="msg bad" role="alert">{{ texto }}</p>
+        }
+        @if (abaAtual() === 'dados') {
+          <form id="form-cadastro" [formGroup]="formulario" (ngSubmit)="salvar()" novalidate>
+            <div class="grade-campos">
+              @for (c of cadastro().campos; track c.nome) {
+                <il-campo
+                  [class.largo]="c.tipo === 'textolongo'"
+                  [rotulo]="c.rotulo"
+                  [tipo]="tipoDoCampo(c)"
+                  [opcoes]="opcoesDoCampo(c)"
+                  [dica]="c.dica"
+                  [maximo]="c.max"
+                  [obrigatorio]="c.obrigatorio === true"
+                  [controle]="controle(c.nome)"
+                />
+              }
+              @if (editando()) {
+                <il-campo
+                  class="largo"
+                  rotulo="Motivo da alteração (obrigatório)"
+                  tipo="textolongo"
+                  dica="Pelo menos 5 caracteres. Fica registrado no histórico, com o antes e o depois."
+                  [controle]="motivo"
+                />
+              }
+            </div>
+            <div class="rodape-acoes nao-imprimir">
+              <span class="rodape-aviso" aria-live="polite">
+                @if (formulario.dirty) {
+                  Alterações não salvas
+                }
+              </span>
+              <button type="button" class="btn" (click)="voltarParaLista()">Cancelar</button>
               <button type="submit" class="btn primary" [disabled]="trabalhando()">Salvar</button>
-              <button type="button" class="btn" (click)="fechar()">Cancelar</button>
             </div>
           </form>
-        </il-janela>
-      }
+        } @else {
+          @for (h of historico(); track h.id) {
+            <article class="panel" style="margin-bottom: 8px">
+              <strong>{{ rotuloDaAcao(h.acao) }}</strong> · {{ h.em | date: 'dd/MM/yyyy HH:mm' }}
+              @if (h.motivo) {
+                <p>Motivo: {{ h.motivo }}</p>
+              }
+              <ul>
+                @for (d of mudancas(h); track d.campo) {
+                  <li>{{ d.campo }}: {{ d.antes }} → {{ d.depois }}</li>
+                }
+              </ul>
+            </article>
+          } @empty {
+            <p>Sem histórico para este registro.</p>
+          }
+          <div class="rodape-acoes nao-imprimir">
+            <button type="button" class="btn" (click)="voltarParaLista()">Voltar</button>
+          </div>
+        }
+      </section>
+    }
+
+    @switch (janela()) {
       @case ('motivo') {
         <il-janela [titulo]="tituloDaAcao() + ': ' + resumo(alvo())" (fechar)="fechar()">
           <p>{{ explicacaoDaAcao() }}</p>
@@ -295,43 +402,26 @@ const TAMANHO_DA_PAGINA = 10;
           </form>
         </il-janela>
       }
-      @case ('historico') {
-        <il-janela [titulo]="'Histórico: ' + resumo(alvo())" (fechar)="fechar()">
-          @if (erroDaJanela(); as texto) {
-            <p class="msg bad" role="alert">{{ texto }}</p>
-          }
-          @for (h of historico(); track h.id) {
-            <article class="panel" style="margin-bottom: 8px">
-              <strong>{{ rotuloDaAcao(h.acao) }}</strong> · {{ h.em | date: 'dd/MM/yyyy HH:mm' }}
-              @if (h.motivo) {
-                <p>Motivo: {{ h.motivo }}</p>
-              }
-              <ul>
-                @for (d of mudancas(h); track d.campo) {
-                  <li>{{ d.campo }}: {{ d.antes }} → {{ d.depois }}</li>
-                }
-              </ul>
-            </article>
-          } @empty {
-            <p>Sem histórico para este registro.</p>
-          }
-          <div class="acoes">
-            <button type="button" class="btn" (click)="fechar()">Fechar</button>
-          </div>
-        </il-janela>
-      }
     }
   `,
 })
 export class Cadastro {
   /** Vem de `data.cadastro` da rota (withComponentInputBinding). */
   readonly cadastro = input.required<DescricaoDeCadastro>();
+  /** Do endereço (?registro=…&aba=historico ou ?criar=1): o cadastro aberto tem endereço próprio, e Voltar do navegador fecha. */
+  readonly registro = input<string>();
+  readonly criar = input<string>();
+  readonly aba = input<string>();
 
   private readonly consulta = inject(ConsultaService);
   private readonly banco = inject(BancoService);
   private readonly sessao = inject(SessaoService);
   private readonly rascunho = inject(RascunhoService);
   private readonly destruicao = inject(DestroyRef);
+  private readonly roteador = inject(Router);
+  private readonly historicoDoNavegador = inject(Location);
+  /** O cadastro foi aberto por um clique (entrada nova no histórico do navegador)? Então fechar volta uma entrada. */
+  private urlEmpurrada = false;
 
   protected readonly busca = new FormControl('', { nonNullable: true });
   protected readonly motivo = new FormControl('', {
@@ -363,6 +453,7 @@ export class Cadastro {
     nonNullable: true,
   });
   protected readonly historico = signal<LinhaDe<'auditoria'>[]>([]);
+  protected readonly abaAtual = signal<Aba>('dados');
 
   protected readonly paginas = computed(() =>
     Math.max(1, Math.ceil(this.total() / TAMANHO_DA_PAGINA)),
@@ -373,6 +464,26 @@ export class Cadastro {
   protected readonly editando = computed(
     () => this.alvo() !== null && this.janela() === 'formulario',
   );
+  /** O cadastro aberto (novo ou existente) ocupa a página inteira; a lista fica escondida. */
+  protected readonly naPagina = computed(() => this.janela() === 'formulario');
+  private readonly alvoEditavel = computed(() => {
+    const alvo = this.alvo();
+    return alvo ? this.podeAlterar() && this.situacaoDe(alvo) !== 'excluido' : this.podeIncluir();
+  });
+  protected readonly abasDaPagina = computed<{ id: Aba; rotulo: string }[]>(() => [
+    ...(this.alvoEditavel() ? [{ id: 'dados' as const, rotulo: 'Dados' }] : []),
+    ...(this.alvo() && this.podeHistorico()
+      ? [{ id: 'historico' as const, rotulo: 'Histórico' }]
+      : []),
+  ]);
+  protected readonly nomeDaPagina = computed(() => {
+    const alvo = this.alvo();
+    return alvo ? this.resumo(alvo) : `${this.novo()} ${this.cadastro().singular}`;
+  });
+  protected readonly tituloDaPagina = computed(() => {
+    if (!this.alvo()) return `${this.novo()} ${this.cadastro().singular}`;
+    return `${this.alvoEditavel() ? 'Editar' : 'Consultar'} ${this.cadastro().singular}`;
+  });
   protected readonly novo = computed(() => (this.cadastro().genero === 'm' ? 'Novo' : 'Nova'));
   /** Árvore: os níveis em ordem (cada um logo depois do que está acima) e a profundidade de cada um. */
   private readonly arvoreOrdenada = computed(() => {
@@ -441,6 +552,12 @@ export class Cadastro {
     this.filtroSituacao.valueChanges.pipe(takeUntilDestroyed()).subscribe(() => {
       this.pagina.set(1);
       void this.carregar();
+    });
+    effect(() => {
+      const registro = this.registro();
+      const criar = this.criar();
+      const aba = this.aba();
+      untracked(() => void this.sincronizarComEndereco(registro, criar, aba));
     });
     const desfazer = this.rascunho.registrar('cadastro-aberto', () => ({
       tabela: this.cadastro().tabela,
@@ -629,7 +746,11 @@ export class Cadastro {
     this.janela.set(janela);
   }
 
-  protected abrirFormulario(linha: Linha | null): void {
+  protected abrirFormulario(
+    linha: Linha | null,
+    aba: Aba = 'dados',
+    empurrarEndereco = true,
+  ): void {
     const controles: Record<string, FormControl<string>> = {};
     for (const c of this.cadastro().campos) {
       const validadores = [
@@ -645,7 +766,213 @@ export class Cadastro {
     }
     this.formulario = new FormRecord(controles);
     this.motivo.reset('');
+    this.historico.set([]);
     this.abrir('formulario', linha);
+    const disponiveis = this.abasDaPagina().map((a) => a.id);
+    const escolhida: Aba = disponiveis.includes(aba) ? aba : (disponiveis[0] ?? 'dados');
+    this.abaAtual.set(escolhida);
+    if (escolhida === 'historico' && linha) void this.carregarHistorico(linha);
+    if (empurrarEndereco) this.empurrarEndereco(linha, escolhida);
+    setTimeout(() => document.getElementById('titulo-pagina')?.focus());
+  }
+
+  protected trocarAba(aba: Aba): void {
+    this.abaAtual.set(aba);
+    const alvo = this.alvo();
+    if (aba === 'historico' && alvo) void this.carregarHistorico(alvo);
+    this.roteador
+      .navigate([], {
+        queryParams: { aba: aba === 'historico' ? 'historico' : null },
+        queryParamsHandling: 'merge',
+        replaceUrl: true,
+      })
+      .catch(() => false);
+  }
+
+  /** Dá ao cadastro aberto um endereço próprio (uma entrada no histórico do navegador). */
+  private empurrarEndereco(linha: Linha | null, aba: Aba): void {
+    this.urlEmpurrada = true;
+    this.roteador
+      .navigate([], {
+        queryParams: {
+          registro: linha ? this.idDe(linha) : null,
+          criar: linha ? null : '1',
+          aba: aba === 'historico' ? 'historico' : null,
+        },
+        queryParamsHandling: 'merge',
+      })
+      .catch(() => false);
+  }
+
+  /** Fecha a página do cadastro e volta à lista (também é o que Voltar do navegador faz, pelo endereço). */
+  protected voltarParaLista(evento?: Event): void {
+    evento?.preventDefault();
+    this.encerrarPagina();
+    if (this.urlEmpurrada) {
+      this.urlEmpurrada = false;
+      this.historicoDoNavegador.back();
+    } else {
+      this.roteador
+        .navigate([], {
+          queryParams: { registro: null, criar: null, aba: null },
+          queryParamsHandling: 'merge',
+          replaceUrl: true,
+        })
+        .catch(() => false);
+    }
+  }
+
+  private encerrarPagina(): void {
+    this.janela.set('nenhuma');
+    this.alvo.set(null);
+    this.erroDaJanela.set(null);
+  }
+
+  /** O endereço mudou (abrir direto, Voltar ou Avançar do navegador): a tela acompanha. */
+  private async sincronizarComEndereco(
+    registro: string | undefined,
+    criar: string | undefined,
+    aba: string | undefined,
+  ): Promise<void> {
+    if (registro) {
+      const atual = this.alvo();
+      if (this.naPagina() && atual && this.idDe(atual) === registro) return;
+      let linha = this.linhas().find((l) => this.idDe(l) === registro) ?? null;
+      if (!linha) {
+        try {
+          linha = await this.consulta.obter(this.cadastro().tabela, registro);
+        } catch (e) {
+          this.erro.set(mensagemDeErro(e));
+        }
+      }
+      if (!linha) {
+        this.erro.update((m) => m ?? 'Registro não encontrado.');
+        this.voltarParaLista();
+        return;
+      }
+      this.urlEmpurrada = false;
+      this.abrirFormulario(linha, aba === 'historico' ? 'historico' : 'dados', false);
+    } else if (criar) {
+      if (this.naPagina() && !this.alvo()) return;
+      if (!this.podeIncluir()) return;
+      this.urlEmpurrada = false;
+      this.abrirFormulario(null, 'dados', false);
+    } else if (this.naPagina()) {
+      this.encerrarPagina();
+      this.urlEmpurrada = false;
+    }
+  }
+
+  // ---- lista: linha clicável e menu de ações (⋯) ----
+  private readonly elemento = inject<ElementRef<HTMLElement>>(ElementRef);
+  /** Linha cujo menu de ações está aberto, com a posição na tela (o menu é fixo para não ser cortado pela rolagem). */
+  protected readonly menu = signal<{ id: string; topo: number; direita: number } | null>(null);
+  private botaoDoMenu: HTMLElement | null = null;
+
+  protected idDe(linha: Linha): string {
+    return String(linha['id']);
+  }
+
+  protected readonly linhaDoMenu = computed(() => {
+    const aberto = this.menu();
+    return aberto ? (this.linhasVisiveis().find((l) => this.idDe(l) === aberto.id) ?? null) : null;
+  });
+
+  /** O que um clique na linha faz: editar (quem pode alterar) ou ver o histórico (só consulta). */
+  protected acaoDaLinha(linha: Linha): 'editar' | 'historico' | null {
+    if (this.podeAlterar() && this.situacaoDe(linha) !== 'excluido') return 'editar';
+    return this.podeHistorico() ? 'historico' : null;
+  }
+
+  protected alternarSituacao(linha: Linha): void {
+    this.abrirMotivo(linha, this.situacaoDe(linha) === 'ativo' ? 'inativar' : 'reativar');
+  }
+
+  protected temAcoes(linha: Linha): boolean {
+    return (
+      this.acaoDaLinha(linha) !== null ||
+      (this.podeRestaurar() && this.situacaoDe(linha) === 'excluido')
+    );
+  }
+
+  protected executarDaLinha(linha: Linha, qual: 'editar' | 'historico'): void {
+    this.fecharMenu();
+    if (qual === 'editar') this.abrirFormulario(linha);
+    else this.abrirHistorico(linha);
+  }
+
+  /**
+   * Clique em qualquer ponto da linha (conveniência do mouse; o teclado usa o botão do primeiro campo).
+   * Tratado aqui, e não no modelo, porque a linha da tabela não é um controle com foco.
+   */
+  protected aoClicarNoComponente(evento: Event): void {
+    const alvo = evento.target as HTMLElement;
+    if (alvo.closest('button, a, input, select, label')) return;
+    const tr = alvo.closest<HTMLElement>('tr[data-linha]');
+    const linha = this.linhasVisiveis().find((l) => this.idDe(l) === tr?.dataset['linha']);
+    const qual = linha ? this.acaoDaLinha(linha) : null;
+    if (linha && qual) this.executarDaLinha(linha, qual);
+  }
+
+  protected alternarMenu(linha: Linha, evento: Event): void {
+    evento.stopPropagation();
+    const id = this.idDe(linha);
+    if (this.menu()?.id === id) {
+      this.fecharMenu();
+      return;
+    }
+    const botao = evento.currentTarget as HTMLElement;
+    const caixa = botao.getBoundingClientRect();
+    this.botaoDoMenu = botao;
+    this.menu.set({
+      id,
+      topo: Math.round(caixa.bottom + 4),
+      direita: Math.max(8, Math.round(window.innerWidth - caixa.right)),
+    });
+    setTimeout(() => this.itensDoMenu()[0]?.focus());
+  }
+
+  protected fecharMenu(devolverFoco = false): void {
+    if (!this.menu()) return;
+    this.menu.set(null);
+    if (devolverFoco) this.botaoDoMenu?.focus();
+    this.botaoDoMenu = null;
+  }
+
+  protected aoClicarFora(evento: Event): void {
+    const alvo = evento.target as HTMLElement;
+    if (!alvo.closest('.menu-acoes, .btn-mais')) this.fecharMenu();
+  }
+
+  /** Executa a ação escolhida no menu da linha e fecha o menu. */
+  protected doMenu(qual: 'editar' | 'alternar' | 'excluir' | 'restaurar' | 'historico'): void {
+    const linha = this.linhaDoMenu();
+    this.fecharMenu();
+    if (!linha) return;
+    if (qual === 'editar') this.abrirFormulario(linha);
+    else if (qual === 'alternar') this.alternarSituacao(linha);
+    else if (qual === 'excluir') this.abrirMotivo(linha, 'excluir');
+    else if (qual === 'restaurar') this.abrirMotivo(linha, 'restaurar');
+    else this.abrirHistorico(linha);
+  }
+
+  private itensDoMenu(): HTMLButtonElement[] {
+    return [
+      ...this.elemento.nativeElement.querySelectorAll<HTMLButtonElement>(
+        '.menu-acoes [role="menuitem"]:not([disabled])',
+      ),
+    ];
+  }
+
+  protected teclaNoMenu(evento: KeyboardEvent): void {
+    const itens = this.itensDoMenu();
+    const atual = itens.indexOf(document.activeElement as HTMLButtonElement);
+    if (evento.key === 'ArrowDown') itens[(atual + 1) % itens.length]?.focus();
+    else if (evento.key === 'ArrowUp') itens[(atual - 1 + itens.length) % itens.length]?.focus();
+    else if (evento.key === 'Escape') this.fecharMenu(true);
+    else if (evento.key === 'Tab') this.fecharMenu();
+    else return;
+    if (evento.key !== 'Tab') evento.preventDefault();
   }
 
   protected abrirMotivo(linha: Linha, acao: AcaoDeSituacao): void {
@@ -654,9 +981,12 @@ export class Cadastro {
     this.abrir('motivo', linha);
   }
 
-  protected async abrirHistorico(linha: Linha): Promise<void> {
+  protected abrirHistorico(linha: Linha): void {
+    this.abrirFormulario(linha, 'historico');
+  }
+
+  private async carregarHistorico(linha: Linha): Promise<void> {
     this.historico.set([]);
-    this.abrir('historico', linha);
     try {
       this.historico.set(
         await this.consulta.historico(this.cadastro().tabela, String(linha['id'])),
@@ -702,7 +1032,7 @@ export class Cadastro {
         }
         await this.consulta.incluir(this.cadastro().tabela, novos);
       }
-      this.fechar();
+      this.voltarParaLista();
       this.aviso.set(atual ? 'Alteração salva e registrada no histórico.' : 'Registro salvo.');
       await this.carregar();
     } catch (e) {

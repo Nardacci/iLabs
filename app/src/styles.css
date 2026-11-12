@@ -1207,3 +1207,163 @@ td {
 .app.recolhido .nav-breve {
   display: none;
 }
+
+/* Cadastro, tela de pesquisa: barra compacta, linha clicável e menu de ações (⋯) */
+.barra-pesquisa {
+  gap: 14px;
+  margin-bottom: 22px;
+}
+.barra-pesquisa .field {
+  gap: 4px;
+}
+.barra-pesquisa .campo-busca {
+  flex: 2 1 260px;
+}
+.barra-pesquisa .campo-situacao {
+  flex: 1 1 200px;
+}
+.barra-pesquisa .input {
+  padding: 8px 12px;
+  border-radius: 10px;
+  min-height: 38px;
+}
+.barra-pesquisa .btn {
+  flex: none;
+  min-height: 38px;
+  padding-block: 0;
+}
+.tabela-cadastro td {
+  padding: 12px 10px;
+  vertical-align: middle;
+}
+.tabela-cadastro th {
+  padding: 8px 10px;
+}
+.linha-clicavel {
+  cursor: pointer;
+}
+.linha-clicavel:hover td {
+  background: var(--fill-ghost-hover, rgba(0, 0, 0, 0.04));
+}
+.link-linha {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 3px;
+}
+.link-linha:hover,
+.link-linha:focus-visible {
+  text-decoration-color: currentcolor;
+}
+.col-acoes {
+  width: 56px;
+  text-align: right;
+  white-space: nowrap;
+}
+.btn-mais {
+  font-size: 18px;
+  line-height: 1;
+  padding: 4px 10px;
+}
+.menu-acoes {
+  position: fixed;
+  z-index: 40;
+  min-width: 180px;
+  display: grid;
+  padding: 6px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+}
+.menu-acoes button {
+  border: 0;
+  background: none;
+  text-align: left;
+  font: 600 14px var(--font-body);
+  color: inherit;
+  padding: 9px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.menu-acoes button:hover:not([disabled]),
+.menu-acoes button:focus-visible {
+  background: var(--fill-ghost-hover, rgba(0, 0, 0, 0.06));
+}
+.menu-acoes button[disabled] {
+  cursor: not-allowed;
+  color: var(--muted);
+}
+
+/* Cadastro, página inteira: migalhas, abas, grade de campos e rodapé de ações */
+.migalhas {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0 0 6px;
+}
+.migalhas a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.pagina-cab {
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.abas-cadastro {
+  display: flex;
+  gap: 22px;
+  border-bottom: 1px solid var(--line);
+  margin: 0 0 16px;
+}
+.aba {
+  border: 0;
+  background: none;
+  padding: 10px 2px;
+  font: 600 14px var(--font-body);
+  color: var(--muted);
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+}
+.aba.ativa {
+  color: inherit;
+  border-bottom-color: var(--brand);
+}
+.grade-campos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px 22px;
+}
+.grade-campos .largo {
+  grid-column: 1 / -1;
+}
+@media (max-width: 760px) {
+  .grade-campos {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.rodape-acoes {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 18px -18px -18px;
+  padding: 14px 18px;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  border-radius: 0 0 12px 12px;
+}
+.rodape-aviso {
+  flex: 1;
+  font-size: 13px;
+  color: var(--muted);
+}

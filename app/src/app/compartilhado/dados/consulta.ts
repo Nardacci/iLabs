@@ -64,6 +64,17 @@ export class ConsultaService {
     if (error) throw traduzir(error);
   }
 
+  /** Um registro pelo id (quem abre o endereço de um cadastro direto, sem passar pela lista). O banco decide se pode ver. */
+  async obter<T extends NomeDaTabela>(tabela: T, id: string): Promise<LinhaDe<T> | null> {
+    const { data, error } = await this.banco.cliente
+      .from(tabela)
+      .select('*')
+      .eq('id' as never, id as never)
+      .maybeSingle();
+    if (error) throw traduzir(error);
+    return data as unknown as LinhaDe<T> | null;
+  }
+
   /** Histórico de um registro (trilha de auditoria, só leitura). */
   async historico(tabela: string, registroId: string): Promise<LinhaDe<'auditoria'>[]> {
     const { data, error } = await this.banco.cliente
