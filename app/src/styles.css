@@ -499,6 +499,7 @@ h3 {
   display: grid;
   gap: 2px;
   align-content: start;
+  grid-template-columns: minmax(0, 1fr);
 }
 .nav-grupo-btn,
 .nav a {
@@ -1178,4 +1179,31 @@ td {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+}
+
+/* Menu lateral: Início (link direto) e grupos previstos ("em breve") */
+.nav-direto.ativo {
+  color: var(--panel-ink);
+  background: rgba(255, 128, 21, 0.18);
+  box-shadow: inset 3px 0 0 var(--brand);
+}
+.nav-direto.ativo il-icone {
+  color: var(--brand);
+}
+.nav-grupo-btn.nav-embreve {
+  cursor: default;
+  opacity: 0.6;
+}
+.nav-grupo-btn.nav-embreve:hover {
+  background: none;
+}
+.nav-breve {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--panel-muted);
+}
+.app.recolhido .nav-breve {
+  display: none;
 }

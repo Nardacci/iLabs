@@ -2,7 +2,7 @@
 //
 //   npm run nova-tela lotes                         tela comum  (src/app/lotes/)
 //   npm run nova-tela lotes -- --titulo="Lotes" --funcao=producao.lotes --grupo=Produção
-//   npm run nova-tela materiais -- --cadastro=materiais --funcao=cadastros.materiais --grupo=Cadastros
+//   npm run nova-tela materiais -- --cadastro=materiais --funcao=cadastros.materiais --grupo="Tabelas Compartilhadas"
 //        cria SÓ a descrição curta do cadastro (src/app/cadastros/materiais.ts) e a rota: a tela inteira
 //        (lista, busca, paginação, formulário, justificativa, histórico, impressão) vem do componente por metadados.
 //

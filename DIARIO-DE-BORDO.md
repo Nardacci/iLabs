@@ -2,11 +2,20 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-11 · Claude · Menu lateral reorganizado como no protótipo
+
+- **Pedido do responsável:** o menu do app tinha "Geral › Início" e "Cadastros", que o protótipo não tinha. **Feito** (`compartilhado/menu.ts`, uma só lista com a ordem e os ícones): Início vira link direto (sem submenu), seguido de Governança de Acesso, Governança Organizacional, Estrutura Física, Cadastros Corporativos, Cadastros Farmacêuticos, Tabelas Compartilhadas, Central de Notificações e Configuração da Plataforma.
+- **Decisões do responsável:** grupos sem tela ainda aparecem apagados com "em breve" (não abrem); só ficam de fora do menu os grupos que têm tela mas que a pessoa não pode abrir. **Decisão minha, a confirmar:** "Unidades de medida" foi para "Tabelas Compartilhadas" (cadastro base compartilhado); "Minha segurança" saiu do menu lateral (continua no menu da pessoa e na pesquisa Ctrl + K); os nomes ficaram por extenso (o protótipo abreviava "Gov. Organizacional" e "Config. da Plataforma").
+- **Detalhes:** ícone novo de comprimido; a coluna do menu não cresce mais com o conteúdo (a etiqueta passava da borda); `npm run nova-tela` agora sugere o grupo "Tabelas Compartilhadas".
+- **Verificação:** testes do app 72 de 72 (3 novos do menu), ponta a ponta 22 de 22 com acessibilidade, tipos, lint, formatação e build limpos; retrato conferido.
+
 ## 2026-11-11 · Claude · Tela "esqueci a senha" repaginada
 
 - **Pedido do responsável:** a tela "Confira o seu e-mail" estava solta (cartão sem o painel de marca). **Feito:** nova casca compartilhada `compartilhado/ui/casca-acesso.ts` (painel de marca + cartão), usada por Entrar e por todas as fases de Redefinir (pedir, enviado, conferindo, definir, vencido), então as telas de acesso ficam iguais entre si.
 - **Fase "enviado":** selo de e-mail, o endereço digitado, 3 passos, dica de spam e validade, "Enviar de novo" e "Usar outro e-mail". A resposta continua a mesma exista ou não a conta (nada revela se o e-mail está cadastrado). "Link vencido" e "Criar nova senha" ganharam texto de apoio.
 - **Verificação:** testes do app 69 de 69, ponta a ponta 12 de 12 (1 novo, com axe claro e escuro), tipos, lint e formatação limpos; retrato conferido.
+- **Ajuste pedido pelo responsável:** as regras da senha agora ficam **abaixo do campo de confirmação** (e não entre os dois campos) em Redefinir, Convite e Minha segurança; o Cadastro não tem confirmação e não mudou. Testes do app 69 de 69 e ponta a ponta 22 de 22.
+- **Provado pelo responsável no site publicado:** o e-mail de redefinição (modelo novo) e a página de nova senha funcionaram.
 
 ## 2026-11-11 · Claude · Link do e-mail de senha corrigido e novo modelo de e-mail
 

@@ -43,37 +43,61 @@ type Popover = 'sino' | 'avatar' | null;
       <aside class="side" id="menu-lateral">
         <il-logo class="side-logo" [largura]="130" />
         <nav class="nav" aria-label="Menu principal">
-          @for (g of menu(); track g.grupo) {
-            <div
-              class="nav-grupo"
-              [class.aberto]="aberto(g.grupo)"
-              [class.atual]="g.grupo === grupoAtivo()"
-            >
-              <button
-                type="button"
-                class="nav-grupo-btn"
-                [attr.aria-expanded]="aberto(g.grupo)"
-                [attr.aria-controls]="'grupo-' + $index"
+          @for (g of menuLateral(); track g.grupo) {
+            @if (g.direto && g.itens[0]; as unico) {
+              <a
+                class="nav-grupo-btn nav-direto"
+                [routerLink]="unico.rota"
+                routerLinkActive="ativo"
+                ariaCurrentWhenActive="page"
                 [attr.title]="recolhido() ? g.grupo : null"
-                (click)="alternarGrupo(g.grupo)"
+                (click)="menuAberto.set(false)"
               >
                 <il-icone [nome]="g.icone" />
                 <span class="nav-rot">{{ g.grupo }}</span>
-                <il-icone class="nav-seta" nome="seta" />
+              </a>
+            } @else if (g.emBreve) {
+              <button
+                type="button"
+                class="nav-grupo-btn nav-embreve"
+                disabled
+                [attr.title]="g.grupo + ' (em breve)'"
+              >
+                <il-icone [nome]="g.icone" />
+                <span class="nav-rot">{{ g.grupo }}<small class="nav-breve">em breve</small></span>
               </button>
-              <div class="nav-sub" [id]="'grupo-' + $index">
-                @for (item of g.itens; track item.rota) {
-                  <a
-                    [routerLink]="item.rota"
-                    routerLinkActive="ativo"
-                    ariaCurrentWhenActive="page"
-                    (click)="menuAberto.set(false)"
-                  >
-                    {{ item.rotulo }}
-                  </a>
-                }
+            } @else {
+              <div
+                class="nav-grupo"
+                [class.aberto]="aberto(g.grupo)"
+                [class.atual]="g.grupo === grupoAtivo()"
+              >
+                <button
+                  type="button"
+                  class="nav-grupo-btn"
+                  [attr.aria-expanded]="aberto(g.grupo)"
+                  [attr.aria-controls]="'grupo-' + $index"
+                  [attr.title]="recolhido() ? g.grupo : null"
+                  (click)="alternarGrupo(g.grupo)"
+                >
+                  <il-icone [nome]="g.icone" />
+                  <span class="nav-rot">{{ g.grupo }}</span>
+                  <il-icone class="nav-seta" nome="seta" />
+                </button>
+                <div class="nav-sub" [id]="'grupo-' + $index">
+                  @for (item of g.itens; track item.rota) {
+                    <a
+                      [routerLink]="item.rota"
+                      routerLinkActive="ativo"
+                      ariaCurrentWhenActive="page"
+                      (click)="menuAberto.set(false)"
+                    >
+                      {{ item.rotulo }}
+                    </a>
+                  }
+                </div>
               </div>
-            </div>
+            }
           }
         </nav>
         <div class="side-rodape">
@@ -218,6 +242,8 @@ export class Layout implements OnInit, OnDestroy {
     return s % 60 === 0 ? `${s / 60} ${s === 60 ? 'minuto' : 'minutos'}` : `${s} segundos`;
   });
   protected readonly menu = computed(() => menuDasRotas(rotasInternas, (f) => this.sessao.pode(f)));
+  /** O que aparece na barra lateral (a segurança da conta abre pelo menu da pessoa, mas entra na pesquisa). */
+  protected readonly menuLateral = computed(() => this.menu().filter((g) => g.lateral !== false));
   protected readonly itensDeBusca = computed<ItemDeBusca[]>(() =>
     this.menu().flatMap((g) =>
       g.itens.map((i) => ({ rotulo: i.rotulo, grupo: g.grupo, rota: i.rota })),

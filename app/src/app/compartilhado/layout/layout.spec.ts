@@ -59,7 +59,7 @@ describe('casca da área logada', () => {
     expect(app.classList.contains('recolhido')).toBe(true);
     expect(localStorage.getItem('ilabs:menu-recolhido')).toBe('1');
     // clicar no ícone de um grupo com o menu recolhido abre o menu
-    el(f).querySelector<HTMLButtonElement>('.nav-grupo-btn')!.click();
+    el(f).querySelector<HTMLButtonElement>('button.nav-grupo-btn:not(.nav-embreve)')!.click();
     f.detectChanges();
     expect(app.classList.contains('recolhido')).toBe(false);
   });

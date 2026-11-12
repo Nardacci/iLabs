@@ -18,7 +18,7 @@ const dados = (d: DadosDaRota): DadosDaRota => d;
 export const rotasInternas: Routes = [
   {
     path: 'inicio',
-    data: dados({ titulo: 'Início', menu: { grupo: 'Geral' } }),
+    data: dados({ titulo: 'Início', menu: { grupo: 'Início' } }),
     loadComponent: () => import('./inicio/inicio').then((m) => m.Inicio),
   },
   {
@@ -28,7 +28,7 @@ export const rotasInternas: Routes = [
       ...dados({
         titulo: 'Unidades de medida',
         funcao: 'cadastros.unidades_medida',
-        menu: { grupo: 'Cadastros' },
+        menu: { grupo: 'Tabelas Compartilhadas' },
       }),
       cadastro: unidadesMedida,
     },
