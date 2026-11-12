@@ -103,7 +103,7 @@ export const rotasInternas: Routes = [
     path: 'usuarios',
     canActivate: [guardaPermissao],
     data: dados({
-      titulo: 'Usuários',
+      titulo: 'Contas de usuário',
       funcao: 'acesso.usuarios',
       menu: { grupo: 'Governança de Acesso' },
     }),

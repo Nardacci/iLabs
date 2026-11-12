@@ -122,8 +122,8 @@ interface Rascunho {
             tem o perfil Administrador.
           </p>
           <p>
-            Próximos passos: convide a equipe em <strong>Usuários</strong> e configure as duas
-            etapas em <strong>Minha segurança</strong>.
+            Próximos passos: cadastre a equipe em <strong>Contas de usuário</strong> e configure as
+            duas etapas em <strong>Minha segurança</strong>.
           </p>
           <button type="button" class="btn primary" (click)="entrarNoSistema()">
             Entrar no sistema

@@ -45,7 +45,7 @@ describe('casca da área logada', () => {
     const links = [...el(f).querySelectorAll('nav[aria-label="Menu principal"] a')].map((a) =>
       a.textContent?.trim(),
     );
-    expect(links).toContain('Usuários');
+    expect(links).toContain('Contas de usuário');
     expect(links).not.toContain('Perfis e permissões');
   });
 
@@ -75,12 +75,12 @@ describe('casca da área logada', () => {
     const dialogo = el(f).querySelector('[role="dialog"][aria-label="Pesquisar telas"]');
     expect(dialogo).not.toBeNull();
     const campo = el(f).querySelector<HTMLInputElement>('input[role="combobox"]')!;
-    campo.value = 'usuarios'; // sem acento também acha
+    campo.value = 'contas de usuario'; // sem acento também acha
     campo.dispatchEvent(new Event('input'));
     f.detectChanges();
     const opcoes = [...el(f).querySelectorAll('[role="option"]')].map((o) => o.textContent);
     expect(opcoes).toHaveLength(1);
-    expect(opcoes[0]).toContain('Usuários');
+    expect(opcoes[0]).toContain('Contas de usuário');
     campo.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
     f.detectChanges();
     expect(navegar).toHaveBeenCalledWith('/usuarios');

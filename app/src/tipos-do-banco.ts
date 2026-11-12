@@ -248,6 +248,10 @@ export type Database = {
           cancelado_em: string | null
           convidado_por: string | null
           criado_em: string
+          profissional_id: string | null
+          perfis_ids: string[]
+          valida_de: string | null
+          valida_ate: string | null
         }
         Insert: {
           id?: string
@@ -262,6 +266,10 @@ export type Database = {
           cancelado_em?: string | null
           convidado_por?: string | null
           criado_em?: string
+          profissional_id?: string | null
+          perfis_ids?: string[]
+          valida_de?: string | null
+          valida_ate?: string | null
         }
         Update: {
           id?: string
@@ -276,6 +284,10 @@ export type Database = {
           cancelado_em?: string | null
           convidado_por?: string | null
           criado_em?: string
+          profissional_id?: string | null
+          perfis_ids?: string[]
+          valida_de?: string | null
+          valida_ate?: string | null
         }
         Relationships: []
       }
@@ -938,6 +950,8 @@ export type Database = {
           senha_a_trocar: boolean
           senha_alterada_em: string | null
           bloqueado_ate: string | null
+          valida_de: string | null
+          valida_ate: string | null
         }
         Insert: {
           id: string
@@ -952,6 +966,8 @@ export type Database = {
           senha_a_trocar?: boolean
           senha_alterada_em?: string | null
           bloqueado_ate?: string | null
+          valida_de?: string | null
+          valida_ate?: string | null
         }
         Update: {
           id?: string
@@ -966,6 +982,8 @@ export type Database = {
           senha_a_trocar?: boolean
           senha_alterada_em?: string | null
           bloqueado_ate?: string | null
+          valida_de?: string | null
+          valida_ate?: string | null
         }
         Relationships: []
       }
@@ -974,11 +992,14 @@ export type Database = {
     Functions: {
       aceitar_convite: { Args: { p_token: string }; Returns: string }
       alterar_cadastro: { Args: { p_tabela: string; p_id: string; p_valores: Json; p_motivo: string }; Returns: undefined }
+      alterar_conta_usuario: { Args: { p_usuario_id: string; p_perfil_ids: string[]; p_valida_de: string; p_valida_ate: string; p_motivo: string }; Returns: undefined }
       alterar_politica_seguranca: { Args: { p_alteracoes: Json; p_motivo: string }; Returns: undefined }
+      alterar_validade_conta: { Args: { p_usuario_id: string; p_valida_de: string; p_valida_ate: string; p_motivo: string }; Returns: undefined }
       assinar_registro: { Args: { p_tabela: string; p_registro_id: string; p_significado: string; p_motivo: string; p_senha: string }; Returns: { ok: boolean | null; assinatura_id: number | null; mensagem: string | null }[] }
       bloquear_por_tentativas: { Args: { p_email: string; p_ip?: string; p_navegador?: string }; Returns: boolean }
       cancelar_convite: { Args: { p_convite_id: string; p_motivo: string }; Returns: undefined }
       consultar_convite: { Args: { p_token: string }; Returns: { situacao: string | null; empresa_nome: string | null }[] }
+      criar_conta_usuario: { Args: { p_profissional_id: string; p_email: string; p_perfil_ids: string[]; p_valida_de?: string; p_valida_ate?: string }; Returns: { convite_id: string | null; token: string | null; expira_em: string | null }[] }
       criar_convite: { Args: { p_email: string; p_nome: string; p_perfil_id: string }; Returns: { convite_id: string | null; token: string | null; expira_em: string | null }[] }
       criar_minha_empresa: { Args: { p_responsavel_cargo: string; p_responsavel_telefone: string; p_razao_social: string; p_nome_fantasia: string; p_cnpj: string; p_telefone: string; p_email_contato: string; p_cep: string; p_logradouro: string; p_numero: string; p_complemento: string; p_cidade: string; p_uf: string; p_afe: string; p_responsavel_tecnico_nome: string; p_responsavel_tecnico_crf: string }; Returns: string }
       definir_permissao_perfil: { Args: { p_perfil_id: string; p_funcao: string; p_consultar: boolean; p_incluir: boolean; p_alterar: boolean; p_excluir: boolean; p_imprimir: boolean; p_historico: boolean; p_motivo: string }; Returns: undefined }
@@ -986,7 +1007,9 @@ export type Database = {
       desbloquear_usuario: { Args: { p_usuario_id: string; p_motivo: string }; Returns: undefined }
       exigir_troca_de_senha: { Args: { p_usuario_id: string; p_motivo: string }; Returns: undefined }
       inativar_usuario: { Args: { p_usuario_id: string; p_motivo: string }; Returns: undefined }
+      listar_contas_usuario: { Args: never; Returns: { tipo: string | null; id: string | null; nome: string | null; email: string | null; profissional_id: string | null; cpf: string | null; ativo: boolean | null; situacao: string | null; senha_a_trocar: boolean | null; bloqueado: boolean | null; valida_de: string | null; valida_ate: string | null; na_validade: boolean | null; convite_expira_em: string | null; perfis: Json | null }[] }
       listar_perfis: { Args: { p_incluir_inativos?: boolean }; Returns: { id: string | null; nome: string | null; descricao: string | null; ativo: boolean | null; qtd_usuarios: number | null; qtd_funcoes: number | null }[] }
+      listar_profissionais_sem_conta: { Args: never; Returns: { id: string | null; codigo: string | null; nome: string | null; cpf: string | null }[] }
       listar_usuarios: { Args: never; Returns: { id: string | null; nome: string | null; email: string | null; ativo: boolean | null; senha_a_trocar: boolean | null; bloqueado: boolean | null; perfis: Json | null }[] }
       marcar_aviso_lido: { Args: { p_aviso_id: string }; Returns: undefined }
       meu_estado: { Args: never; Returns: { usuario_id: string | null; empresa_id: string | null; nome: string | null; ativo: boolean | null; senha_a_trocar: boolean | null; bloqueado_ate: string | null; situacao_empresa: string | null; teste_ate: string | null; dias_restantes: number | null }[] }

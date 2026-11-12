@@ -70,7 +70,7 @@ test.describe('Entrar', () => {
       rpc: {
         meu_estado: ESTADO_NORMAL,
         minhas_permissoes: [PERMISSOES_DO_ADMIN[0]], // só Usuários
-        listar_usuarios: [],
+        listar_contas_usuario: [],
         listar_perfis: [],
       },
     });
@@ -82,7 +82,7 @@ test.describe('Entrar', () => {
     await expect(page.getByRole('heading', { name: 'Olá, Ana Souza' })).toBeVisible();
     const menu = page.getByRole('navigation', { name: 'Menu principal' });
     await menu.getByRole('button', { name: 'Acesso' }).click(); // os grupos abrem e fecham
-    await expect(menu.getByRole('link', { name: 'Usuários' })).toBeVisible();
+    await expect(menu.getByRole('link', { name: 'Contas de usuário' })).toBeVisible();
     await expect(menu.getByRole('link', { name: 'Perfis e permissões' })).toHaveCount(0);
     await conferirAcessibilidade(page, 'início');
 

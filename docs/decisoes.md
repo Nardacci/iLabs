@@ -46,3 +46,6 @@ O detalhe das decisões do banco está em `../banco/README.md` e `../banco/model
 | 06/11/2026 | **Tipos de fornecimento** = materiais e serviços aprovados por fornecedor, dentro da qualificação | Qualificação por material (arts. 179 a 182) |
 | 06/11/2026 | **Contas bancárias, financeiras, contábeis e gerenciais num só cadastro com tipo** | DV-PRI-047/048; faixa da taxa com a Contabilidade |
 | 06/11/2026 | **Marco 1A aprovado**; na home os cartões mostram os outros módulos, nunca o módulo atual | Protótipo `prototipo/principal.html`; casca no layout do protótipo do responsável, nas cores do iLabPharma |
+| 11/11/2026 | **Padrão dos cadastros: Pesquisa A e Cadastro A, em todos os cadastros** (inclusive os curtos) | Pesquisa: tabela com linha clicável e menu "⋯". Cadastro: página inteira com abas Dados e Histórico, rodapé fixo e endereço próprio (Voltar do navegador fecha). A janela fica só para confirmações com motivo |
+| 11/11/2026 | **Conta de usuário nasce de um Profissional** (sem a palavra "convite" na tela); a validade da conta (de, até) é conferida pelo banco | O administrador nunca vê nem define a senha: ao cadastrar, nasce um link de uso único para a própria pessoa criar a senha (o convite continua por baixo). Fora da validade, a pessoa não entra e a API recusa tudo. Migração 13, **aplicada em 11/11/2026** |
+

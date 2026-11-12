@@ -35,24 +35,57 @@ const PERFIS = [
     qtd_funcoes: 1,
   },
 ];
-const USUARIOS = [
+const CONTAS = [
   {
+    tipo: 'conta',
     id: 'u1',
     nome: 'Ana Souza',
     email: 'ana@empresa.test',
+    profissional_id: 'pr-0',
+    cpf: '11144477735',
     ativo: true,
+    situacao: 'ativa',
     senha_a_trocar: false,
     bloqueado: false,
+    valida_de: null,
+    valida_ate: null,
+    na_validade: true,
+    convite_expira_em: null,
     perfis: [{ id: 'p-1', nome: 'Administrador', ativo: true }],
   },
   {
+    tipo: 'conta',
     id: 'u2',
     nome: 'Beto Lima',
     email: 'beto@empresa.test',
+    profissional_id: 'pr-2',
+    cpf: '39053344705',
     ativo: true,
+    situacao: 'bloqueada',
     senha_a_trocar: false,
     bloqueado: true,
+    valida_de: '2026-01-01',
+    valida_ate: '2026-12-31',
+    na_validade: true,
+    convite_expira_em: null,
     perfis: [{ id: 'p-2', nome: 'Consulta', ativo: false }],
+  },
+  {
+    tipo: 'convite',
+    id: 'c1',
+    nome: 'Carla Dias',
+    email: 'carla@empresa.test',
+    profissional_id: 'pr-3',
+    cpf: '16899535009',
+    ativo: true,
+    situacao: 'aguardando_primeiro_acesso',
+    senha_a_trocar: false,
+    bloqueado: false,
+    valida_de: null,
+    valida_ate: null,
+    na_validade: true,
+    convite_expira_em: '2026-11-14T00:00:00Z',
+    perfis: [{ id: 'p-1', nome: 'Administrador', ativo: true }],
   },
 ];
 
@@ -68,7 +101,7 @@ async function preparar(
       meu_estado: ESTADO_NORMAL,
       minhas_permissoes: PERMISSOES_DO_ADMIN,
       listar_perfis: PERFIS,
-      listar_usuarios: USUARIOS,
+      listar_contas_usuario: CONTAS,
       usos_cadastros: USOS,
       vinculos_do_usuario: [{ perfil_id: 'p-2', nome: 'Consulta', perfil_ativo: false }],
       ...(extra.rpc ?? {}),
@@ -175,57 +208,119 @@ test.describe('Cadastro por metadados (unidades de medida)', () => {
     ).toBe(true);
     await page.getByRole('button', { name: 'Abrir ou recolher o menu' }).click();
     await page.getByRole('button', { name: 'Acesso' }).click();
-    await expect(page.getByRole('link', { name: 'Usuários' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Contas de usuário' })).toBeVisible();
     await conferirAcessibilidade(page, 'cadastro unidades (celular, menu aberto)');
   });
 });
 
 test.describe('Telas de acesso logadas', () => {
-  test('Usuários: lista com vínculo de perfil inativo visível, convite e axe', async ({ page }) => {
+  test('Contas de usuário: lista, cadastro a partir do profissional, link único e axe', async ({
+    page,
+  }) => {
     const chamadas = await preparar(page, {
       rpc: {
-        criar_convite: [
-          { convite_id: 'c1', token: 'TOKEN-DE-TESTE', expira_em: '2026-11-07T00:00:00Z' },
+        listar_profissionais_sem_conta: [
+          { id: 'pr-9', codigo: 'P009', nome: 'Dora Alves', cpf: '52998224725' },
+        ],
+        criar_conta_usuario: [
+          { convite_id: 'c9', token: 'TOKEN-DE-TESTE', expira_em: '2026-11-14T00:00:00Z' },
         ],
       },
     });
     await page.goto('/usuarios');
+    await expect(page.getByRole('heading', { name: 'Contas de usuário' })).toBeVisible();
     await expect(page.getByRole('cell', { name: 'Beto Lima', exact: true })).toBeVisible();
     await expect(page.getByText('Consulta (inativo)')).toBeVisible(); // vínculo gravado aparece mesmo com perfil inativo
-    await expect(page.getByText('Bloqueado')).toBeVisible();
-    await conferirAcessibilidade(page, 'usuários');
+    await expect(page.getByRole('cell', { name: 'Bloqueada' })).toBeVisible();
+    await expect(page.getByRole('cell', { name: 'Aguardando primeiro acesso' })).toBeVisible();
+    await expect(page.getByRole('cell', { name: 'de 01/01/2026 até 31/12/2026' })).toBeVisible();
+    await expect(page.getByRole('cell', { name: '390.533.447-05' })).toBeVisible();
+    await conferirAcessibilidade(page, 'contas de usuário');
 
-    await page.getByRole('button', { name: 'Convidar usuário' }).click();
-    await page.getByLabel('Nome').fill('Nova Pessoa');
-    await page.getByLabel('E-mail').fill('nova@empresa.test');
-    await page.getByLabel('Perfil inicial').selectOption('p-1');
-    await conferirAcessibilidade(page, 'usuários (convite)');
-    await page.getByRole('button', { name: 'Confirmar' }).click();
+    await page.getByRole('button', { name: 'Nova conta de usuário' }).click();
+    await expect(page).toHaveURL(/criar=1/);
+    await expect(page.getByRole('heading', { name: 'Nova conta de usuário' })).toBeVisible();
+    await page.getByLabel('Profissional').selectOption('pr-9');
+    await page.getByLabel('Login (e-mail)').fill('dora@empresa.test');
+    await page.getByLabel('Administrador').check();
+    await page.getByLabel('Conta válida até').fill('2026-12-31');
+    await conferirAcessibilidade(page, 'contas de usuário (nova conta)');
+    await page.getByRole('button', { name: 'Cadastrar conta' }).click();
     await expect(page.getByText(/#token=TOKEN-DE-TESTE/)).toBeVisible();
-    expect(chamadas?.find((c) => c.alvo === 'rpc:criar_convite')?.corpo).toEqual({
-      p_email: 'nova@empresa.test',
-      p_nome: 'Nova Pessoa',
-      p_perfil_id: 'p-1',
+    expect(chamadas?.find((c) => c.alvo === 'rpc:criar_conta_usuario')?.corpo).toEqual({
+      p_profissional_id: 'pr-9',
+      p_email: 'dora@empresa.test',
+      p_perfil_ids: ['p-1'],
+      p_valida_ate: '2026-12-31',
     });
   });
 
-  test('Usuários: mudar perfis exige motivo e mostra o vínculo gravado', async ({ page }) => {
+  test('Contas de usuário: sem profissional, e-mail ou perfil a conta não é cadastrada', async ({
+    page,
+  }) => {
+    const chamadas = await preparar(page, { rpc: { listar_profissionais_sem_conta: [] } });
+    await page.goto('/usuarios');
+    await page.getByRole('button', { name: 'Nova conta de usuário' }).click();
+    await page.getByRole('button', { name: 'Cadastrar conta' }).click();
+    await expect(page.getByText('Preencha este campo.').first()).toBeVisible();
+    expect(chamadas?.some((c) => c.alvo === 'rpc:criar_conta_usuario')).toBe(false);
+  });
+
+  test('Contas de usuário: alterar perfis e validade abre página própria e exige motivo', async ({
+    page,
+  }) => {
     const chamadas = await preparar(page);
     await page.goto('/usuarios');
-    await page.getByRole('button', { name: /Perfis de Beto Lima/ }).click();
-    await expect(page.getByLabel('Consulta (inativo)')).toBeChecked();
-    await page.getByRole('button', { name: 'Confirmar' }).click();
+    await page.getByRole('button', { name: 'Beto Lima', exact: true }).click();
+    await expect(page).toHaveURL(/registro=u2/);
+    await expect(page.getByRole('heading', { name: 'Editar conta de usuário' })).toBeVisible();
+    await expect(page.getByLabel('Consulta (inativo)')).toBeChecked(); // o vínculo gravado aparece mesmo inativo
+    await conferirAcessibilidade(page, 'contas de usuário (editar)');
+    await page.getByRole('button', { name: 'Salvar' }).click();
     await expect(page.getByText('Preencha este campo.')).toBeVisible();
     await page.getByLabel('Administrador').check();
+    await page.getByLabel('Conta válida até').fill('2027-01-31');
     await page.getByLabel(/Motivo/).fill('Passa a administrar também');
-    await page.getByRole('button', { name: 'Confirmar' }).click();
+    await page.getByRole('button', { name: 'Salvar' }).click();
     await expect
-      .poll(() => chamadas?.find((c) => c.alvo === 'rpc:trocar_perfil_usuario')?.corpo)
+      .poll(() => chamadas?.find((c) => c.alvo === 'rpc:alterar_conta_usuario')?.corpo)
       .toEqual({
         p_usuario_id: 'u2',
         p_perfil_ids: ['p-2', 'p-1'],
+        p_valida_de: '2026-01-01',
+        p_valida_ate: '2027-01-31',
         p_motivo: 'Passa a administrar também',
       });
+  });
+
+  test('Contas de usuário: ações no menu, histórico em aba e Voltar do navegador', async ({
+    page,
+  }) => {
+    const chamadas = await preparar(page);
+    await page.goto('/usuarios');
+    await page.getByRole('button', { name: 'Ações de Ana Souza' }).click();
+    await expect(page.getByRole('menuitem', { name: 'Exigir nova senha' })).toBeVisible();
+    await conferirAcessibilidade(page, 'contas de usuário (menu de ações)');
+    await page.getByRole('menuitem', { name: 'Inativar' }).click();
+    await page.getByRole('button', { name: 'Confirmar' }).click();
+    await expect(page.getByText('Preencha este campo.')).toBeVisible();
+    await page.getByLabel(/Motivo/).fill('Saiu da empresa');
+    await page.getByRole('button', { name: 'Confirmar' }).click();
+    await expect
+      .poll(() => chamadas?.find((c) => c.alvo === 'rpc:inativar_usuario')?.corpo)
+      .toEqual({ p_usuario_id: 'u1', p_motivo: 'Saiu da empresa' });
+
+    await page.getByRole('button', { name: 'Ações de Beto Lima' }).click();
+    await page.getByRole('menuitem', { name: 'Histórico' }).click();
+    await expect(page).toHaveURL(/aba=historico/);
+    await expect(page.getByText('Sem histórico para esta conta.')).toBeVisible();
+    await page.goBack();
+    await expect(page).not.toHaveURL(/registro=/);
+    await expect(page.getByRole('cell', { name: 'Beto Lima', exact: true })).toBeVisible();
+
+    await page.getByRole('button', { name: 'Ações de Carla Dias' }).click();
+    await expect(page.getByRole('menuitem', { name: 'Gerar novo link' })).toBeVisible();
+    await expect(page.getByRole('menuitem', { name: 'Cancelar pedido' })).toBeVisible();
   });
 
   test('Perfis: lista sem limite e matriz de permissões', async ({ page }) => {
@@ -282,7 +377,7 @@ test.describe('Inatividade: quem decide é o servidor', () => {
     await page.goto('/perfis');
     await expect(page.getByRole('heading', { name: 'Perfis e permissões' })).toBeVisible();
     inatividade.recusar = true; // o relógio do servidor passou do limite
-    await page.getByRole('link', { name: 'Usuários' }).click();
+    await page.getByRole('link', { name: 'Contas de usuário' }).click();
     await expect(page).toHaveURL(/\/entrar\?motivo=inatividade/);
     await expect(page.getByText(MENSAGEM)).toBeVisible();
     expect(await page.evaluate(() => localStorage.getItem('sb-127-auth-token'))).toBeNull();
