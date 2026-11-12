@@ -5,6 +5,7 @@ import { BancoService } from '../../compartilhado/dados/banco';
 import { regrasDaSenha, validadorDeSenha } from '../../compartilhado/senha';
 import { Campo } from '../../compartilhado/ui/campo';
 import { Logo } from '../../compartilhado/ui/logo';
+import { urlDoApp } from '../../compartilhado/url-do-app';
 
 /**
  * "Deseja se cadastrar?": cria a conta no Supabase Auth. O passo seguinte (/empresa) só abre depois que a pessoa
@@ -100,7 +101,7 @@ export class Cadastro {
     const { error } = await this.banco.auth.signUp({
       email,
       password: senha,
-      options: { emailRedirectTo: `${location.origin}/empresa`, data: { nome } },
+      options: { emailRedirectTo: urlDoApp('/empresa'), data: { nome } },
     });
     this.trabalhando.set(false);
     // Mesma resposta para e-mail novo e já cadastrado. Só erros que não revelam a conta (rede, senha recusada) aparecem.

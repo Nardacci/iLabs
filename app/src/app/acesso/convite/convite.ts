@@ -8,6 +8,7 @@ import { regrasDaSenha, senhasIguais, validadorDeSenha } from '../../compartilha
 import { SessaoService } from '../../compartilhado/sessao/sessao.service';
 import { Campo } from '../../compartilhado/ui/campo';
 import { Logo } from '../../compartilhado/ui/logo';
+import { urlDoApp } from '../../compartilhado/url-do-app';
 
 const CHAVE_DO_CONVITE = 'ilabs:convite';
 
@@ -178,7 +179,7 @@ export class Convite implements OnInit {
     const { error } = await this.banco.auth.signUp({
       email,
       password: senha,
-      options: { emailRedirectTo: `${location.origin}/convite` },
+      options: { emailRedirectTo: urlDoApp('/convite') },
     });
     this.trabalhando.set(false);
     if (

@@ -12,6 +12,7 @@ import { mensagemDeErro } from '../compartilhado/dados/mensagem';
 import { SessaoService } from '../compartilhado/sessao/sessao.service';
 import { Campo } from '../compartilhado/ui/campo';
 import { Janela } from '../compartilhado/ui/janela';
+import { urlDoApp } from '../compartilhado/url-do-app';
 
 type Usuario = RetornoDe<'listar_usuarios'>[number];
 type Perfil = RetornoDe<'listar_perfis'>[number];
@@ -352,7 +353,7 @@ export class Usuarios implements OnInit {
             p_perfil_id: perfil,
           });
           const token = r[0]?.token;
-          if (token) this.linkDoConvite.set(`${location.origin}/convite#token=${token}`);
+          if (token) this.linkDoConvite.set(urlDoApp(`/convite#token=${token}`));
           await this.carregar();
           return;
         }

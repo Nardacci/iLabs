@@ -6,6 +6,7 @@ import { FuncoesDeBorda } from '../../compartilhado/dados/funcoes-de-borda';
 import { regrasDaSenha, senhasIguais, validadorDeSenha } from '../../compartilhado/senha';
 import { Campo } from '../../compartilhado/ui/campo';
 import { Logo } from '../../compartilhado/ui/logo';
+import { urlDoApp } from '../../compartilhado/url-do-app';
 
 type Fase = 'pedir' | 'enviado' | 'conferindo' | 'definir' | 'vencido';
 
@@ -137,7 +138,7 @@ export class Redefinir {
     if (this.formPedido.invalid || this.trabalhando()) return;
     this.trabalhando.set(true);
     await this.banco.auth.resetPasswordForEmail(this.formPedido.controls.email.value, {
-      redirectTo: `${location.origin}/redefinir`,
+      redirectTo: urlDoApp('/redefinir'),
     });
     this.trabalhando.set(false);
     this.fase.set('enviado'); // sempre a mesma resposta, haja ou não conta

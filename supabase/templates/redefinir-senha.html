@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pt-BR">
+<body style="margin:0;padding:0;background:#f3f2ef;font-family:Arial,Helvetica,sans-serif;color:#1f1f1f;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f3f2ef;padding:32px 12px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;background:#ffffff;border-radius:12px;overflow:hidden;">
+          <tr>
+            <td style="background:#232323;padding:22px 32px;font-size:26px;font-weight:800;letter-spacing:-1px;">
+              <span style="color:#ff8015;">iLab</span><span style="color:#f2f4f8;">Pharma</span>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:32px;">
+              <h1 style="margin:0 0 16px;font-size:22px;line-height:1.3;">Redefinir a sua senha</h1>
+              <p style="margin:0 0 12px;font-size:16px;line-height:1.5;">Olá,</p>
+              <p style="margin:0 0 24px;font-size:16px;line-height:1.5;">
+                Recebemos um pedido para criar uma nova senha para a conta
+                <strong>{{ .Email }}</strong>. Para continuar, clique no botão abaixo.
+              </p>
+              <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 24px;">
+                <tr>
+                  <td style="background:#c45200;border-radius:8px;">
+                    <a href="{{ .ConfirmationURL }}" style="display:inline-block;padding:14px 28px;font-size:16px;font-weight:bold;color:#ffffff;text-decoration:none;">Criar nova senha</a>
+                  </td>
+                </tr>
+              </table>
+              <p style="margin:0 0 8px;font-size:14px;line-height:1.5;color:#444;">
+                O link vale por tempo limitado e só pode ser usado uma vez. Ao salvar a nova senha,
+                você será desconectado de todos os aparelhos e deverá entrar de novo.
+              </p>
+              <p style="margin:0 0 24px;font-size:14px;line-height:1.5;color:#444;">
+                A nova senha deve ter pelo menos 12 caracteres. Nós nunca pedimos a sua senha atual por e-mail.
+              </p>
+              <hr style="border:none;border-top:1px solid #e3e1dc;margin:0 0 20px;">
+              <p style="margin:0 0 8px;font-size:13px;line-height:1.5;color:#666;">
+                <strong>Não pediu para trocar a senha?</strong> Ignore este e-mail: a sua senha continua a mesma.
+                Se isso se repetir, avise o responsável pelo sistema na sua empresa.
+              </p>
+              <p style="margin:0;font-size:13px;line-height:1.5;color:#666;">
+                O botão não abre? Copie e cole este endereço no navegador:<br>
+                <span style="word-break:break-all;color:#c45200;">{{ .ConfirmationURL }}</span>
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="background:#faf9f7;padding:16px 32px;font-size:12px;color:#777;">
+              iLabPharma · Gestão da qualidade em farmácia de manipulação. Mensagem automática, não responda.
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
