@@ -2,7 +2,7 @@
 
 **Origem:** `01-profissional.md` e `paginas/01-profissional/` do repositório do legado (documentação de 24/10/2026) e as capturas da tela entregues pelo responsável em 13/11/2026. **Regra deste documento:** mantemos as **regras de negócio** do legado; o **layout** do legado não é requisito. Toda falha do legado vira requisito corrigido, citando o achado.
 
-Situação: **especificação, nada construído ainda.** Migração prevista: `15`. Nada é aplicado no Supabase sem a autorização do responsável e sem passar nos testes de `banco/testes/`.
+Situação (13/11/2026): **etapas 1 a 3 construídas e testadas; migrações 15 e 16 NÃO aplicadas no Supabase** (dependem da autorização do responsável). Banco: `banco/migracoes/20261115090000_profissional_completo.sql` e `20261115100000_dados_de_apoio_profissional.sql`, testes 635 de 635. App: formulário próprio em `app/src/app/cadastros/profissional/`, testes 95 de 95 e ponta a ponta 26 de 26. **Etapa 4 (impressão, exportação e CPF mascarado na lista) ainda não feita.** Nada é aplicado no Supabase sem a autorização do responsável.
 
 ## 1. O que é
 O cadastro das **pessoas** que executam e assinam. Separado da Conta de usuário (a conta é opcional e se liga ao profissional). Os outros módulos usam o cadastro para saber quem é a pessoa, em que setor e grupo está e **que funções exerce** (quem pode assinar o quê).
@@ -30,7 +30,7 @@ Dois telefones (DDI, DDD, número), dois celulares (DDI, DDD, número e operador
 **Correção:** o DDI não é preenchido sozinho com 55 e gravado como se o usuário o tivesse mexido (DV-PRI-004). Sem número, DDI e DDD ficam vazios.
 
 ### 2.4 Endereço
-CEP (busca preenche logradouro, UF, município e bairro), logradouro, número (`S/N` se não houver), complemento, país, UF, município, bairro. **Fora do Brasil**: código postal e cidade no lugar de CEP, UF, município e bairro. **Correção:** sem padrão fixo "Brasil, RJ, Rio de Janeiro" (era de um cliente). Limite do complemento igual no campo e no banco (legado: campo 255, coluna 60).
+CEP (busca preenche logradouro, UF, município e bairro), logradouro, número (`S/N` se não houver), complemento, país, UF, município (lista oficial do IBGE), **bairro digitado** (maiúsculas; não existe base de bairros acessível e exigir um bairro de lista vazia travaria todos os cadastros). **Fora do Brasil**: código postal e cidade no lugar de CEP, UF, município e bairro. **Correção:** sem padrão fixo "Brasil, RJ, Rio de Janeiro" (era de um cliente). Limite do complemento igual no campo e no banco (legado: campo 255, coluna 60).
 
 ### 2.5 Trabalho
 Setor (já existe), cargo (texto, até 100), matrícula (letras e números, até 12, sem espaços, maiúsculas), especialização (até 100), grupo (já existe). **Grupo obrigatório só quando a empresa usa o Estoque** (RN-PRI-ADM01-011): a conferência mora no banco; depende de o banco saber se o módulo Estoque está ativo (ver pendências).
@@ -44,10 +44,11 @@ Setor (já existe), cargo (texto, até 100), matrícula (letras e números, até
 Ativo ou inativo (inativação exige justificativa), excluído lógico (nunca físico). Alterar exige justificativa/motivo. **Correção (DV-PRI-049):** o inativo pode ser reativado e, se preciso, excluído, sem travar a tela inteira.
 
 ## 3. Dados de apoio (novas tabelas compartilhadas)
-País, UF, município, bairro, logradouro (CEP), órgão emissor (e da classe), operadora de telefonia, ocupação (CBO).
+País, UF, município, logradouro (CEP), órgão emissor (e da classe), operadora de telefonia, ocupação (CBO).
 - Tabelas **globais** (iguais para todas as empresas), só leitura para o app; a manutenção é carga controlada.
 - **CBO:** 2.538 ocupações no legado (`dml.sql`). **Órgãos emissores:** 33. **Operadoras:** TIM, CLARO, VIVO, OI, NEXTEL, OUTRAS. **Países:** lista do legado.
-- **CEP, UF, município, bairro e logradouro: no legado só há 1 UF, 1 município, 1 bairro e 1 logradouro (amostra do RJ).** Decisão do responsável: usar base própria no banco, como no legado. **Falta decidir de onde vem a carga completa** (pendência 1).
+- **UF (27) e municípios (5.571, com o código do IBGE): carregados** a partir da lista oficial do IBGE (edição 2026), obtida pelo pacote público `@br-geo-kit/ibge` 1.0.0, porque o legado só trazia o Rio de Janeiro.
+- **Logradouro por CEP: no legado só há 1 logradouro (amostra do RJ).** Decisão do responsável: base própria no banco, como no legado. **Falta a carga completa** (pendência 1); sem ela a busca por CEP diz "não encontrado" e o endereço é digitado.
 
 ## 4. Regras que moram no banco (nunca só na tela)
 Obrigatórios; limites de tamanho; datas (nascimento, emissão); CPF (dígitos, único); e-mail; órgão da classe obrigatório com identidade profissional; operadora só com DDD e número; endereço do Brasil exige CEP, UF, município e bairro, e do exterior exige código postal e cidade; ocupações e funções sem repetição; grupo obrigatório quando o Estoque está ativo; inativação e exclusão com justificativa; ninguém exclui o próprio cadastro; conta ligada impede a exclusão do profissional (DV-PRI-006); **toda gravação confere permissão** (DV-PRI-025, DV-PRI-023); auditoria por gatilho, **campo a campo, com valor antigo e novo corretos** (DV-PRI-004), **incluindo grupo** (RN-PRI-ADM01-017) e **a exclusão** (DV-PRI-014).
@@ -64,7 +65,7 @@ Cadastro A (página inteira, rodapé fixo com Cancelar e Salvar) com seções na
 Cada etapa termina com testes, entrada no `DIARIO-DE-BORDO.md` e, só com autorização, aplicação no Supabase.
 
 ## 7. Pendências para o responsável
-1. **Base de CEP completa:** de onde vem a carga? O legado só traz uma amostra do RJ. Opções: arquivo público de CEPs que o responsável fornecer, ou começar só com UF e município (IBGE) e digitar logradouro e bairro até haver a base.
+1. **Base de CEP (logradouros):** de onde vem a carga? Municípios e UF já estão completos (IBGE); faltam os logradouros por CEP (e, se quiserem, uma lista de bairros). Hoje a busca por CEP só acha a amostra do RJ.
 2. **Estoque ativo:** como o banco sabe que a empresa usa o Estoque (hoje não há esse parâmetro)? Proposta: parâmetro da empresa.
 3. **CPF de excluído:** pode ser reaproveitado (legado permitia) ou continua único para sempre (proposta)?
 4. **Lista de sexo e órgão da classe:** confirmar as opções (legado: lista fixa e a mesma tabela de órgãos).

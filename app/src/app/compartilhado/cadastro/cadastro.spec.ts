@@ -1,12 +1,57 @@
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { estruturaOrganizacional } from '../../cadastros/estrutura-organizacional';
-import { profissionais } from '../../cadastros/profissionais';
+import { definirCadastro } from './descricao';
 import { unidadesMedida } from '../../cadastros/unidades-medida';
 import { comBancoFalso, permissao, violacoesDeAcessibilidade } from '../../../testing/apoio';
 import { ConsultaService } from '../dados/consulta';
 import { SessaoService } from '../sessao/sessao.service';
 import { Cadastro } from './cadastro';
+
+/**
+ * Descrição de teste no estilo dos cadastros genéricos com listas vindas de outros cadastros (o Profissional real
+ * agora tem formulário próprio: ver `formulario-profissional.spec.ts`). Mantém provado o motor genérico: listas de
+ * referência, "só ativos mais o gravado" e o aviso de "entrar de novo".
+ */
+const profissionais = definirCadastro({
+  tabela: 'profissionais',
+  titulo: 'Profissionais',
+  singular: 'profissional',
+  genero: 'm',
+  funcao: 'acesso.profissionais',
+  identificador: 'nome',
+  busca: ['codigo', 'nome', 'cpf'],
+  ordenarPor: 'nome',
+  campos: [
+    { nome: 'codigo', rotulo: 'Código', obrigatorio: true, max: 20 },
+    { nome: 'nome', rotulo: 'Nome completo', obrigatorio: true, max: 120 },
+    { nome: 'cpf', rotulo: 'CPF', obrigatorio: true, formato: 'cpf' },
+    {
+      nome: 'funcao_profissional_id',
+      rotulo: 'Função profissional (cargo principal)',
+      tipo: 'lista',
+      obrigatorio: true,
+      referencia: { tabela: 'funcoes_profissionais', rotulo: 'descricao' },
+    },
+    { nome: 'cbo', rotulo: 'Ocupação (CBO)', max: 7, naLista: false },
+    {
+      nome: 'setor_id',
+      rotulo: 'Setor',
+      tipo: 'lista',
+      referencia: {
+        tabela: 'estrutura_organizacional',
+        rotulo: 'nome',
+        onde: { coluna: 'tipo', valor: 'setor' },
+      },
+    },
+    {
+      nome: 'grupo_id',
+      rotulo: 'Grupo de usuários',
+      tipo: 'lista',
+      referencia: { tabela: 'grupos_usuarios', rotulo: 'nome' },
+    },
+  ],
+});
 
 const LINHAS = [
   { id: '1', sigla: 'g', nome: 'Grama', grandeza: 'massa', situacao: 'ativo' },

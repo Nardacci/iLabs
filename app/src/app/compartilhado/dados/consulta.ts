@@ -75,6 +75,47 @@ export class ConsultaService {
     return data as unknown as LinhaDe<T> | null;
   }
 
+  /**
+   * Linhas de uma tabela de apoio ou de vínculo, para listas de escolha e telas de consulta. As linhas visíveis são
+   * decididas pelo banco (RLS); aqui só se pede, com filtros de igualdade, ordem e limite.
+   */
+  async linhas(
+    tabela: NomeDaTabela,
+    colunas: string,
+    opcoes: {
+      onde?: Record<string, string | number | boolean>;
+      ordenarPor?: string;
+      limite?: number;
+    } = {},
+  ): Promise<Record<string, unknown>[]> {
+    let consulta = this.banco.cliente.from(tabela).select(colunas);
+    for (const [coluna, valor] of Object.entries(opcoes.onde ?? {})) {
+      consulta = consulta.eq(coluna as never, valor);
+    }
+    if (opcoes.ordenarPor) consulta = consulta.order(opcoes.ordenarPor);
+    const { data, error } = await consulta.limit(opcoes.limite ?? 1000);
+    if (error) throw traduzir(error);
+    return data as unknown as Record<string, unknown>[];
+  }
+
+  /** Procura ocupações (CBO) por parte do código ou da descrição. A base do CBO está em maiúsculas e sem acento. */
+  async buscarOcupacoes(termo: string): Promise<{ codigo: string; descricao: string }[]> {
+    const limpo = termo
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[%,()*]/g, ' ')
+      .trim();
+    if (limpo.length < 2) return [];
+    const { data, error } = await this.banco.cliente
+      .from('ocupacoes')
+      .select('codigo, descricao')
+      .or(`descricao.ilike.%${limpo}%,codigo.ilike.%${limpo.replace('-', '')}%`)
+      .order('descricao')
+      .limit(30);
+    if (error) throw traduzir(error);
+    return data;
+  }
+
   /** Histórico de um registro (trilha de auditoria, só leitura). */
   async historico(tabela: string, registroId: string): Promise<LinhaDe<'auditoria'>[]> {
     const { data, error } = await this.banco.cliente

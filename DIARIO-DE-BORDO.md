@@ -2,6 +2,17 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-13 · Claude · Profissional completo: banco (migrações 15 e 16), dados de apoio e tela nova (NÃO aplicado no Supabase)
+
+- **Pedido do responsável:** construir as etapas 1 a 3 do `docs/principal/profissional.md` (banco, dados de apoio, tela), com as regras do legado e layout novo.
+- **Banco (migração 15, `20261115090000_profissional_completo.sql`):** dados pessoais (nascimento, sexo, mãe, pai, naturalidade), documentos (identidade, órgão emissor, emissão, identidade profissional com órgão da classe), 2 telefones e 2 celulares com operadora, e-mail, endereço (Brasil com CEP, UF, município e bairro; exterior com código postal e cidade), cargo, matrícula e especialização. **Todas as regras no banco** (obrigatórios numa só mensagem, datas, e-mail, telefone sem DDD, operadora sem número, município da UF, grupo obrigatório se a empresa usa o Estoque via `empresas.usa_estoque`). Normalização (maiúsculas, sem espaços repetidos); sem número, DDI e DDD ficam vazios (DV-PRI-004). **Ocupações e funções são vínculos** com quem pôs e quando, retirar inativa com motivo e nunca apaga (corrige RN-PRI-ADM01-013); `ilab.salvar_profissional` grava tudo numa transação, com permissão e motivo; `ilab.buscar_cep`; vínculos próprios não contam como "uso" na exclusão.
+- **Dados (migração 16):** UF (27) e **5.571 municípios do IBGE** (pacote público `@br-geo-kit/ibge`, edição 2026), CBO (2.538), órgãos (33), operadoras (6), países (2), 1 logradouro de amostra. Migra o CBO e a função já gravados para os vínculos.
+- **Desvio da especificação:** o **bairro é texto digitado** (não existe base de bairros acessível). Registrado em `docs/decisoes.md`.
+- **App:** formulário próprio (`app/src/app/cadastros/profissional/formulario-profissional.ts`) em seis seções com índice (Identificação, Documentos, Contatos, Endereço, Trabalho, Ocupações e funções), busca de CEP, listas de ocupações e funções com cargo principal e botão Retirar, motivo na alteração, aviso de "entrar de novo". O motor de cadastros ganhou o gancho `formularioProprio`. Conferido a olho em computador e celular.
+- **Testes:** banco **635 de 635** (85 novos; os 548 antigos foram ajustados só para o nome em maiúsculas e para os campos novos obrigatórios), app **95 de 95**, ponta a ponta **26 de 26** (axe incluído), tipos, lint e formatação limpos.
+- **Não feito:** etapa 4 (impressão e exportação com filtro e permissão; CPF mascarado na lista); carga completa de logradouros por CEP; tela para ligar `usa_estoque`; a aba Histórico ainda mostra nomes técnicos das colunas.
+- **Pendências do responsável:** autorizar a aplicação das migrações 15 e 16 no Supabase (antes, conferir os profissionais já gravados: ficam incompletos até alguém completar); origem dos logradouros por CEP; CPF de excluído; listas de sexo e órgão da classe; mãe obrigatória (hoje sim, como no legado).
+
 ## 2026-11-13 · Claude · Profissional: comparação com o legado e especificação do cadastro completo (só documentação)
 
 - **Pedido do responsável:** comparar a tela Profissional do legado com a nossa e montar o sistema **com as regras de negócio do legado, pautado nas normas da Anvisa, sem copiar o layout do legado**.

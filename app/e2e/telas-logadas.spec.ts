@@ -214,11 +214,12 @@ test.describe('Cadastro por metadados (unidades de medida)', () => {
 });
 
 test.describe('Telas de acesso logadas', () => {
-  test('Profissionais: mudar setor ou grupo avisa que é preciso entrar de novo (agora ou depois)', async ({
+  test('Profissionais: cadastro completo em seções; mudar o setor avisa que é preciso entrar de novo', async ({
     page,
   }) => {
     const chamadas = await preparar(page, {
       rpc: {
+        salvar_profissional: 'pr-1',
         efeito_da_ultima_alteracao: [
           { exige_novo_login: true, proprio: true, nome: 'Carla Teste', campos: ['setor_id'] },
         ],
@@ -229,12 +230,23 @@ test.describe('Telas de acesso logadas', () => {
             {
               id: 'pr-1',
               codigo: 'P1',
-              nome: 'Carla Teste',
+              nome: 'CARLA TESTE',
               cpf: '52998224725',
+              data_nascimento: '1990-01-15',
+              sexo: 'feminino',
+              mae: 'MARIA TESTE',
+              naturalidade_uf: 'RJ',
+              naturalidade_municipio_id: 3304557,
+              pais_id: 1,
+              cep: '22631003',
+              logradouro: 'AVENIDA DAS AMÉRICAS',
+              endereco_numero: '3301',
+              uf: 'RJ',
+              municipio_id: 3304557,
+              bairro: 'BARRA DA TIJUCA',
               funcao_profissional_id: 'f-1',
               setor_id: null,
               grupo_id: null,
-              cbo: null,
               situacao: 'ativo',
             },
           ],
@@ -244,10 +256,22 @@ test.describe('Telas de acesso logadas', () => {
           linhas: [{ id: 'f-1', descricao: 'Responsável técnico', situacao: 'ativo' }],
           total: 1,
         },
+        profissional_funcoes: {
+          linhas: [
+            {
+              funcao_profissional_id: 'f-1',
+              principal: true,
+              criado_em: '2026-11-01T10:00:00Z',
+            },
+          ],
+        },
         grupos_usuarios: {
           linhas: [{ id: 'g-1', nome: 'Operadores', situacao: 'ativo' }],
           total: 1,
         },
+        ufs: { linhas: [{ sigla: 'RJ', nome: 'Rio de Janeiro' }] },
+        municipios: { linhas: [{ id: 3304557, nome: 'Rio de Janeiro', uf: 'RJ' }] },
+        paises: { linhas: [{ id: 1, nome: 'BRASIL' }] },
         estrutura_organizacional: {
           linhas: [
             { id: 's-1', nome: 'Controle de Qualidade', tipo: 'setor', situacao: 'ativo' },
@@ -260,26 +284,53 @@ test.describe('Telas de acesso logadas', () => {
     await page.goto('/profissionais');
     await page.getByRole('button', { name: 'P1', exact: true }).click(); // o primeiro campo da linha (o código) abre o cadastro
     await expect(page.getByRole('heading', { name: 'Editar profissional' })).toBeVisible();
+    for (const secao of [
+      'Identificação',
+      'Documentos',
+      'Contatos',
+      'Endereço',
+      'Trabalho',
+      'Ocupações e funções',
+    ]) {
+      await expect(page.getByRole('heading', { name: secao, level: 2 })).toBeVisible();
+    }
+    await expect(page.getByLabel('Nome completo')).toHaveValue('CARLA TESTE');
+    await expect(page.getByLabel('CPF')).toHaveValue('529.982.247-25');
+    await conferirAcessibilidade(page, 'profissional (cadastro completo)');
     const setores = await page
       .getByLabel('Setor', { exact: true })
       .locator('option')
       .allTextContents();
     expect(setores).toContain('Controle de Qualidade');
-    expect(setores).not.toContain('Planta principal'); // só níveis do tipo setor
+    // o servidor de teste não filtra: confere que o pedido ao banco pediu só os níveis do tipo setor
+    expect(
+      chamadas?.some(
+        (c) =>
+          c.alvo === 'tabela:estrutura_organizacional' && String(c.corpo).includes('tipo=eq.setor'),
+      ),
+    ).toBe(true);
     await page.getByLabel('Setor', { exact: true }).selectOption('s-1');
     await page.getByLabel(/Motivo/).fill('Passa para o controle de qualidade');
     await page.getByRole('button', { name: 'Salvar' }).click();
     await expect(page.getByRole('heading', { name: 'É preciso entrar de novo' })).toBeVisible();
     await conferirAcessibilidade(page, 'aviso de novo login');
-    expect(chamadas?.find((c) => c.alvo === 'rpc:alterar_cadastro')?.corpo).toEqual({
-      p_tabela: 'profissionais',
+    const corpo = chamadas?.find((c) => c.alvo === 'rpc:salvar_profissional')?.corpo as {
+      p_id: string;
+      p_motivo: string;
+      p_principal: string;
+      p_funcoes: string[];
+      p_dados: Record<string, unknown>;
+    };
+    expect(corpo).toMatchObject({
       p_id: 'pr-1',
-      p_valores: { setor_id: 's-1' },
       p_motivo: 'Passa para o controle de qualidade',
+      p_principal: 'f-1',
+      p_funcoes: ['f-1'],
     });
+    expect(corpo.p_dados).toMatchObject({ setor_id: 's-1', cpf: '52998224725', pais_id: 1 });
     await page.getByRole('button', { name: 'Depois' }).click();
     await expect(page.getByRole('heading', { name: 'É preciso entrar de novo' })).toHaveCount(0);
-    await expect(page.getByRole('cell', { name: 'Carla Teste', exact: true })).toBeVisible();
+    await expect(page.getByRole('cell', { name: 'CARLA TESTE', exact: true })).toBeVisible();
   });
 
   test('Contas de usuário: lista, cadastro a partir do profissional, link único e axe', async ({

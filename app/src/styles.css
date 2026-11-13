@@ -1368,6 +1368,147 @@ td {
   color: var(--muted);
 }
 
+/* Profissional: cadastro completo em seções, com índice, listas de ocupações e funções */
+.form-profissional .indice-secoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+  margin: 0 0 14px;
+}
+.link-secao {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: inherit;
+  border-radius: 999px;
+  padding: 4px 12px;
+  font: 600 13px var(--font-body);
+  cursor: pointer;
+}
+.link-secao:hover {
+  border-color: var(--brand);
+}
+.secao {
+  padding: 4px 0 14px;
+  margin: 0 0 14px;
+  border-bottom: 1px solid var(--line);
+  scroll-margin-top: 12px;
+}
+.secao:last-of-type {
+  border-bottom: 0;
+}
+.secao h2 {
+  font-size: 16px;
+  margin: 0 0 10px;
+}
+.secao h3 {
+  font-size: 14px;
+  margin: 0 0 8px;
+}
+.grade-campos.cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.grade-campos .span-2 {
+  grid-column: span 2;
+}
+@media (max-width: 760px) {
+  .grade-campos.cols-3,
+  .grade-campos.cols-2 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .grade-campos .span-2 {
+    grid-column: 1 / -1;
+  }
+}
+.telefone {
+  border: 0;
+  padding: 0;
+  margin: 0 0 6px;
+}
+.telefone legend {
+  font-weight: 600;
+  font-size: 13px;
+  padding: 0;
+  margin: 0 0 2px;
+}
+.grade-telefone {
+  display: grid;
+  grid-template-columns: 5.5rem 5.5rem minmax(0, 1fr);
+  gap: 0 10px;
+}
+.grade-telefone.com-operadora {
+  grid-template-columns: 5.5rem 5.5rem minmax(0, 1fr) minmax(0, 1fr);
+}
+@media (max-width: 760px) {
+  .grade-telefone.com-operadora {
+    grid-template-columns: 5.5rem 5.5rem minmax(0, 1fr);
+  }
+  .grade-telefone.com-operadora > :nth-child(4) {
+    grid-column: 1 / -1;
+  }
+}
+.campo-com-acao {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+.campo-com-acao il-campo {
+  flex: 1;
+}
+.campo-com-acao .btn {
+  margin-bottom: 2px;
+}
+.dica-cep {
+  align-self: end;
+  margin: 0 0 8px;
+}
+.duas-listas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 24px;
+}
+@media (max-width: 1240px) {
+  .duas-listas {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.lista-vinculo {
+  min-width: 0;
+}
+.lista-vinculo .scroll-x {
+  margin-top: 10px;
+}
+.linha-adicionar {
+  display: flex;
+  gap: 8px;
+}
+.linha-adicionar .input {
+  flex: 1;
+}
+.resultados {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  max-height: 220px;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.resultados li {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--line);
+  font-size: 13.5px;
+}
+.resultados li:last-child {
+  border-bottom: 0;
+}
+.resultados .cod {
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
 /* Contas de usuário: perfis em etiquetas e resumo da conta */
 .perfil-chip {
   display: inline-block;

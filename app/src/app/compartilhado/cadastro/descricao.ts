@@ -1,3 +1,4 @@
+import type { Type } from '@angular/core';
 import type { NomeDaTabela } from '../dados/banco';
 import type { OpcaoDeLista } from '../ui/campo';
 
@@ -29,6 +30,18 @@ export interface CampoDeCadastro {
 }
 
 /**
+ * Entradas que o cadastro entrega ao formulário próprio (quando o cadastro é grande demais para o formulário
+ * genérico). O formulário só coleta e apresenta; salvar e conferir é do banco.
+ */
+export interface EntradasDoFormularioProprio {
+  /** A linha em edição (nula na inclusão). */
+  registro: Record<string, unknown> | null;
+  /** Chamado depois que o banco gravou. */
+  aoSalvar: (resultado: { id: string; alteracao: boolean }) => void;
+  aoCancelar: () => void;
+}
+
+/**
  * A descrição curta de um cadastro. Dela saem: lista com busca e paginação, formulário com validação,
  * justificativa nas ações críticas (inativar e reativar), histórico da auditoria e impressão.
  */
@@ -52,6 +65,12 @@ export interface DescricaoDeCadastro {
    * de uma vez (sem páginas); com busca, mostra só os que combinam, sem recuo.
    */
   arvore?: { pai: string };
+  /**
+   * Cadastro com muitos campos: um componente próprio no lugar do formulário genérico da aba Dados (migalhas, abas,
+   * histórico, situação e o aviso de "entrar de novo" continuam sendo do cadastro genérico). Recebe
+   * `EntradasDoFormularioProprio` como entradas.
+   */
+  formularioProprio?: () => Promise<Type<unknown>>;
 }
 
 /** Só confere o formato da descrição em tempo de compilação. */

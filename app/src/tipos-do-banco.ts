@@ -316,6 +316,7 @@ export type Database = {
           responsavel_tecnico_crf: string | null
           responsavel_cargo: string | null
           responsavel_telefone: string | null
+          usa_estoque: boolean
         }
         Insert: {
           id?: string
@@ -341,6 +342,7 @@ export type Database = {
           responsavel_tecnico_crf?: string | null
           responsavel_cargo?: string | null
           responsavel_telefone?: string | null
+          usa_estoque?: boolean
         }
         Update: {
           id?: string
@@ -366,6 +368,7 @@ export type Database = {
           responsavel_tecnico_crf?: string | null
           responsavel_cargo?: string | null
           responsavel_telefone?: string | null
+          usa_estoque?: boolean
         }
         Relationships: []
       }
@@ -561,6 +564,38 @@ export type Database = {
         }
         Relationships: []
       }
+      logradouros: {
+        Row: {
+          id: number
+          cep: string
+          tipo: string | null
+          nome: string
+          complemento: string | null
+          uf: string
+          municipio_id: number
+          bairro: string | null
+        }
+        Insert: {
+          cep: string
+          tipo?: string | null
+          nome: string
+          complemento?: string | null
+          uf: string
+          municipio_id: number
+          bairro?: string | null
+        }
+        Update: {
+          id?: number
+          cep?: string
+          tipo?: string | null
+          nome?: string
+          complemento?: string | null
+          uf?: string
+          municipio_id?: number
+          bairro?: string | null
+        }
+        Relationships: []
+      }
       materiais: {
         Row: {
           id: string
@@ -612,6 +647,90 @@ export type Database = {
           atualizado_por?: string | null
           situacao?: string
           ativo?: boolean | null
+        }
+        Relationships: []
+      }
+      municipios: {
+        Row: {
+          id: number
+          uf: string
+          nome: string
+        }
+        Insert: {
+          id: number
+          uf: string
+          nome: string
+        }
+        Update: {
+          id?: number
+          uf?: string
+          nome?: string
+        }
+        Relationships: []
+      }
+      ocupacoes: {
+        Row: {
+          codigo: string
+          descricao: string
+        }
+        Insert: {
+          codigo: string
+          descricao: string
+        }
+        Update: {
+          codigo?: string
+          descricao?: string
+        }
+        Relationships: []
+      }
+      operadoras_telefonia: {
+        Row: {
+          id: number
+          nome: string
+          tipo: string
+        }
+        Insert: {
+          id: number
+          nome: string
+          tipo: string
+        }
+        Update: {
+          id?: number
+          nome?: string
+          tipo?: string
+        }
+        Relationships: []
+      }
+      orgaos_emissores: {
+        Row: {
+          id: number
+          sigla: string
+          nome: string
+        }
+        Insert: {
+          id: number
+          sigla: string
+          nome: string
+        }
+        Update: {
+          id?: number
+          sigla?: string
+          nome?: string
+        }
+        Relationships: []
+      }
+      paises: {
+        Row: {
+          id: number
+          nome: string
+        }
+        Insert: {
+          id: number
+          nome: string
+        }
+        Update: {
+          id?: number
+          nome?: string
         }
         Relationships: []
       }
@@ -816,6 +935,45 @@ export type Database = {
           atualizado_em: string | null
           atualizado_por: string | null
           setor_id: string | null
+          data_nascimento: string | null
+          sexo: string | null
+          mae: string | null
+          pai: string | null
+          naturalidade_uf: string | null
+          naturalidade_municipio_id: number | null
+          identidade: string | null
+          orgao_emissor_id: number | null
+          data_emissao: string | null
+          identidade_profissional: string | null
+          orgao_classe_id: number | null
+          tel1_ddi: string | null
+          tel1_ddd: string | null
+          tel1_numero: string | null
+          tel2_ddi: string | null
+          tel2_ddd: string | null
+          tel2_numero: string | null
+          cel1_ddi: string | null
+          cel1_ddd: string | null
+          cel1_numero: string | null
+          cel1_operadora_id: number | null
+          cel2_ddi: string | null
+          cel2_ddd: string | null
+          cel2_numero: string | null
+          cel2_operadora_id: number | null
+          email: string | null
+          pais_id: number | null
+          cep: string | null
+          logradouro: string | null
+          endereco_numero: string | null
+          complemento: string | null
+          uf: string | null
+          municipio_id: number | null
+          bairro: string | null
+          codigo_postal: string | null
+          cidade: string | null
+          cargo: string | null
+          matricula: string | null
+          especializacao: string | null
         }
         Insert: {
           id?: string
@@ -834,6 +992,45 @@ export type Database = {
           atualizado_em?: string | null
           atualizado_por?: string | null
           setor_id?: string | null
+          data_nascimento?: string | null
+          sexo?: string | null
+          mae?: string | null
+          pai?: string | null
+          naturalidade_uf?: string | null
+          naturalidade_municipio_id?: number | null
+          identidade?: string | null
+          orgao_emissor_id?: number | null
+          data_emissao?: string | null
+          identidade_profissional?: string | null
+          orgao_classe_id?: number | null
+          tel1_ddi?: string | null
+          tel1_ddd?: string | null
+          tel1_numero?: string | null
+          tel2_ddi?: string | null
+          tel2_ddd?: string | null
+          tel2_numero?: string | null
+          cel1_ddi?: string | null
+          cel1_ddd?: string | null
+          cel1_numero?: string | null
+          cel1_operadora_id?: number | null
+          cel2_ddi?: string | null
+          cel2_ddd?: string | null
+          cel2_numero?: string | null
+          cel2_operadora_id?: number | null
+          email?: string | null
+          pais_id?: number | null
+          cep?: string | null
+          logradouro?: string | null
+          endereco_numero?: string | null
+          complemento?: string | null
+          uf?: string | null
+          municipio_id?: number | null
+          bairro?: string | null
+          codigo_postal?: string | null
+          cidade?: string | null
+          cargo?: string | null
+          matricula?: string | null
+          especializacao?: string | null
         }
         Update: {
           id?: string
@@ -852,6 +1049,126 @@ export type Database = {
           atualizado_em?: string | null
           atualizado_por?: string | null
           setor_id?: string | null
+          data_nascimento?: string | null
+          sexo?: string | null
+          mae?: string | null
+          pai?: string | null
+          naturalidade_uf?: string | null
+          naturalidade_municipio_id?: number | null
+          identidade?: string | null
+          orgao_emissor_id?: number | null
+          data_emissao?: string | null
+          identidade_profissional?: string | null
+          orgao_classe_id?: number | null
+          tel1_ddi?: string | null
+          tel1_ddd?: string | null
+          tel1_numero?: string | null
+          tel2_ddi?: string | null
+          tel2_ddd?: string | null
+          tel2_numero?: string | null
+          cel1_ddi?: string | null
+          cel1_ddd?: string | null
+          cel1_numero?: string | null
+          cel1_operadora_id?: number | null
+          cel2_ddi?: string | null
+          cel2_ddd?: string | null
+          cel2_numero?: string | null
+          cel2_operadora_id?: number | null
+          email?: string | null
+          pais_id?: number | null
+          cep?: string | null
+          logradouro?: string | null
+          endereco_numero?: string | null
+          complemento?: string | null
+          uf?: string | null
+          municipio_id?: number | null
+          bairro?: string | null
+          codigo_postal?: string | null
+          cidade?: string | null
+          cargo?: string | null
+          matricula?: string | null
+          especializacao?: string | null
+        }
+        Relationships: []
+      }
+      profissional_funcoes: {
+        Row: {
+          id: string
+          empresa_id: string
+          profissional_id: string
+          funcao_profissional_id: string
+          principal: boolean
+          ativo: boolean
+          criado_em: string
+          criado_por: string | null
+          retirado_em: string | null
+          retirado_por: string | null
+          motivo_retirada: string | null
+        }
+        Insert: {
+          id?: string
+          empresa_id: string
+          profissional_id: string
+          funcao_profissional_id: string
+          principal?: boolean
+          ativo?: boolean
+          criado_em?: string
+          criado_por?: string | null
+          retirado_em?: string | null
+          retirado_por?: string | null
+          motivo_retirada?: string | null
+        }
+        Update: {
+          id?: string
+          empresa_id?: string
+          profissional_id?: string
+          funcao_profissional_id?: string
+          principal?: boolean
+          ativo?: boolean
+          criado_em?: string
+          criado_por?: string | null
+          retirado_em?: string | null
+          retirado_por?: string | null
+          motivo_retirada?: string | null
+        }
+        Relationships: []
+      }
+      profissional_ocupacoes: {
+        Row: {
+          id: string
+          empresa_id: string
+          profissional_id: string
+          ocupacao_codigo: string
+          ativo: boolean
+          criado_em: string
+          criado_por: string | null
+          retirado_em: string | null
+          retirado_por: string | null
+          motivo_retirada: string | null
+        }
+        Insert: {
+          id?: string
+          empresa_id: string
+          profissional_id: string
+          ocupacao_codigo: string
+          ativo?: boolean
+          criado_em?: string
+          criado_por?: string | null
+          retirado_em?: string | null
+          retirado_por?: string | null
+          motivo_retirada?: string | null
+        }
+        Update: {
+          id?: string
+          empresa_id?: string
+          profissional_id?: string
+          ocupacao_codigo?: string
+          ativo?: boolean
+          criado_em?: string
+          criado_por?: string | null
+          retirado_em?: string | null
+          retirado_por?: string | null
+          motivo_retirada?: string | null
         }
         Relationships: []
       }
@@ -879,6 +1196,21 @@ export type Database = {
           iniciada_em?: string
           ultima_atividade?: string
           encerrada_em?: string | null
+        }
+        Relationships: []
+      }
+      ufs: {
+        Row: {
+          sigla: string
+          nome: string
+        }
+        Insert: {
+          sigla: string
+          nome: string
+        }
+        Update: {
+          sigla?: string
+          nome?: string
         }
         Relationships: []
       }
@@ -1000,6 +1332,7 @@ export type Database = {
       alterar_validade_conta: { Args: { p_usuario_id: string; p_valida_de: string; p_valida_ate: string; p_motivo: string }; Returns: undefined }
       assinar_registro: { Args: { p_tabela: string; p_registro_id: string; p_significado: string; p_motivo: string; p_senha: string }; Returns: { ok: boolean | null; assinatura_id: number | null; mensagem: string | null }[] }
       bloquear_por_tentativas: { Args: { p_email: string; p_ip?: string; p_navegador?: string }; Returns: boolean }
+      buscar_cep: { Args: { p_cep: string }; Returns: { logradouro: string | null; complemento: string | null; uf: string | null; municipio_id: number | null; municipio: string | null; bairro: string | null }[] }
       cancelar_convite: { Args: { p_convite_id: string; p_motivo: string }; Returns: undefined }
       consultar_convite: { Args: { p_token: string }; Returns: { situacao: string | null; empresa_nome: string | null }[] }
       criar_conta_usuario: { Args: { p_profissional_id: string; p_email: string; p_perfil_ids: string[]; p_valida_de?: string; p_valida_ate?: string }; Returns: { convite_id: string | null; token: string | null; expira_em: string | null }[] }
@@ -1026,6 +1359,7 @@ export type Database = {
       registrar_acesso: { Args: { p_email: string; p_evento: string; p_resultado: string; p_ip?: string; p_navegador?: string; p_detalhe?: string }; Returns: number }
       registrar_atividade: { Args: never; Returns: undefined }
       registrar_troca_de_senha: { Args: { p_usuario_id: string; p_ip?: string; p_navegador?: string }; Returns: undefined }
+      salvar_profissional: { Args: { p_id: string; p_dados: Json; p_ocupacoes: string[]; p_funcoes: string[]; p_principal: string; p_motivo: string }; Returns: string }
       trocar_perfil_usuario: { Args: { p_usuario_id: string; p_perfil_ids: string[]; p_motivo: string }; Returns: undefined }
       usos_cadastro: { Args: { p_tabela: string; p_id: string }; Returns: number }
       usos_cadastros: { Args: { p_tabela: string; p_ids: string[] }; Returns: { registro_id: string | null; usos: number | null }[] }
