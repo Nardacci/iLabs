@@ -378,6 +378,35 @@ const TAMANHO_DA_PAGINA = 10;
       </section>
     }
 
+    @if (avisoNovoLogin(); as novoLogin) {
+      <il-janela titulo="É preciso entrar de novo" (fechar)="dispensarAvisoNovoLogin()">
+        @if (novoLogin.proprio) {
+          <p>
+            Você mudou <strong>{{ novoLogin.campos }}</strong> do seu próprio cadastro. Essas
+            informações são carregadas quando você entra no sistema; por isso a mudança só passa a
+            valer depois que você sair e entrar de novo.
+          </p>
+          <p>Você pode fazer isso agora ou deixar para depois.</p>
+          <div class="acoes">
+            <button type="button" class="btn primary" (click)="entrarDeNovoAgora()">
+              Entrar de novo agora
+            </button>
+            <button type="button" class="btn" (click)="dispensarAvisoNovoLogin()">Depois</button>
+          </div>
+        } @else {
+          <p>
+            <strong>{{ novoLogin.nome }}</strong> precisa sair e entrar de novo no sistema para que
+            a mudança de <strong>{{ novoLogin.campos }}</strong> passe a valer. Avise a pessoa.
+          </p>
+          <div class="acoes">
+            <button type="button" class="btn primary" (click)="dispensarAvisoNovoLogin()">
+              Entendi
+            </button>
+          </div>
+        }
+      </il-janela>
+    }
+
     @switch (janela()) {
       @case ('motivo') {
         <il-janela [titulo]="tituloDaAcao() + ': ' + resumo(alvo())" (fechar)="fechar()">
@@ -454,6 +483,12 @@ export class Cadastro {
   });
   protected readonly historico = signal<LinhaDe<'auditoria'>[]>([]);
   protected readonly abaAtual = signal<Aba>('dados');
+  /** Depois de salvar: mudou algo que só vale no próximo login? (quem decide é o banco) */
+  protected readonly avisoNovoLogin = signal<{
+    proprio: boolean;
+    nome: string;
+    campos: string;
+  } | null>(null);
 
   protected readonly paginas = computed(() =>
     Math.max(1, Math.ceil(this.total() / TAMANHO_DA_PAGINA)),
@@ -693,11 +728,14 @@ export class Cadastro {
           tamanho: 500,
           ordenarPor: c.referencia.rotulo,
         });
-        novas[c.nome] = (r.linhas as unknown as Linha[]).map((l) => ({
-          valor: String(l['id']),
-          rotulo: this.texto(l[c.referencia?.rotulo ?? 'id']),
-          ativo: l['situacao'] === 'ativo',
-        }));
+        const onde = c.referencia.onde;
+        novas[c.nome] = (r.linhas as unknown as Linha[])
+          .filter((l) => !onde || l[onde.coluna] === onde.valor)
+          .map((l) => ({
+            valor: String(l['id']),
+            rotulo: this.texto(l[c.referencia?.rotulo ?? 'id']),
+            ativo: l['situacao'] === 'ativo',
+          }));
       } catch {
         novas[c.nome] = []; // sem as opções a lista mostra "—"; o banco continua conferindo cada gravação
       }
@@ -1034,12 +1072,45 @@ export class Cadastro {
       }
       this.voltarParaLista();
       this.aviso.set(atual ? 'Alteração salva e registrada no histórico.' : 'Registro salvo.');
+      if (atual) await this.verificarNovoLogin(String(atual['id']));
       await this.carregar();
     } catch (e) {
       this.erroDaJanela.set(mensagemDeErro(e));
     } finally {
       this.trabalhando.set(false);
     }
+  }
+
+  /** Pergunta ao banco se a alteração que acabou de ser salva exige que alguém entre de novo no sistema. */
+  private async verificarNovoLogin(id: string): Promise<void> {
+    try {
+      const r = await this.banco.rpc('efeito_da_ultima_alteracao', {
+        p_tabela: this.cadastro().tabela,
+        p_id: id,
+      });
+      const efeito = r[0];
+      if (!efeito?.exige_novo_login) return;
+      const rotulos = (efeito.campos ?? []).map(
+        (nome) => this.cadastro().campos.find((c) => c.nome === nome)?.rotulo ?? nome,
+      );
+      this.avisoNovoLogin.set({
+        proprio: efeito.proprio === true,
+        nome: efeito.nome ?? '',
+        campos: rotulos.join(' e '),
+      });
+    } catch {
+      // sem o aviso a gravação continua valendo; só deixa de lembrar de entrar de novo
+    }
+  }
+
+  protected dispensarAvisoNovoLogin(): void {
+    this.avisoNovoLogin.set(null);
+  }
+
+  protected async entrarDeNovoAgora(): Promise<void> {
+    this.avisoNovoLogin.set(null);
+    await this.sessao.sair();
+    await this.roteador.navigate(['/entrar']);
   }
 
   protected async confirmarMotivo(): Promise<void> {

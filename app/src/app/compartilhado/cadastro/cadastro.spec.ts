@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { estruturaOrganizacional } from '../../cadastros/estrutura-organizacional';
 import { profissionais } from '../../cadastros/profissionais';
 import { unidadesMedida } from '../../cadastros/unidades-medida';
@@ -397,6 +398,10 @@ describe('cadastro por metadados (profissionais, com listas vindas de outros cad
     { id: 'f2', descricao: 'Função antiga', situacao: 'inativo' },
   ];
   const GRUPOS = [{ id: 'g1', nome: 'Operadores', situacao: 'ativo' }];
+  const ESTRUTURA = [
+    { id: 'pl1', nome: 'Planta principal', tipo: 'planta', situacao: 'ativo' },
+    { id: 's1', nome: 'Controle de Qualidade', tipo: 'setor', situacao: 'ativo' },
+  ];
   const PROFISSIONAIS = [
     {
       id: 'p1',
@@ -420,7 +425,9 @@ describe('cadastro por metadados (profissionais, com listas vindas de outros cad
             ? { linhas: FUNCOES, total: 2 }
             : p.tabela === 'grupos_usuarios'
               ? { linhas: GRUPOS, total: 1 }
-              : { linhas: PROFISSIONAIS, total: 1 },
+              : p.tabela === 'estrutura_organizacional'
+                ? { linhas: ESTRUTURA, total: 2 }
+                : { linhas: PROFISSIONAIS, total: 1 },
         ),
       ),
       incluir: vi.fn(() => Promise.resolve()),
@@ -467,6 +474,107 @@ describe('cadastro por metadados (profissionais, com listas vindas de outros cad
     expect(opcoes).not.toContain('Função antiga');
   });
 
+  it('o campo Setor oferece só níveis do tipo setor da estrutura organizacional', async () => {
+    prepararProfissionais();
+    const f = await abrirProfissionais();
+    const el = f.nativeElement as HTMLElement;
+    [...el.querySelectorAll('button')]
+      .find((b) => b.textContent?.includes('Novo profissional'))
+      ?.click();
+    f.detectChanges();
+    const opcoes = [...el.querySelectorAll('form select option')].map((o) => o.textContent?.trim());
+    expect(opcoes).toContain('Controle de Qualidade');
+    expect(opcoes).not.toContain('Planta principal');
+  });
+
+  /** Altera o nome do primeiro profissional (com motivo) e salva; o banco "responde" o efeito indicado. */
+  async function salvarMudanca(efeito: unknown[]) {
+    const { banco } = prepararProfissionais();
+    banco.respostas['efeito_da_ultima_alteracao'] = efeito;
+    const f = await abrirProfissionais();
+    const el = f.nativeElement as HTMLElement;
+    usarMenu(f, 0, 'Editar');
+    const digitar = (rotulo: RegExp, valor: string): void => {
+      const campo = [
+        ...el.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('form input, form textarea'),
+      ].find((i) => rotulo.test(el.querySelector(`label[for="${i.id}"]`)?.textContent ?? ''));
+      campo!.value = valor;
+      campo!.dispatchEvent(new Event('input'));
+    };
+    digitar(/Nome completo/, 'Carla Nova');
+    digitar(/Motivo/, 'Teste da regra de novo login');
+    f.detectChanges();
+    [...el.querySelectorAll('button')].find((b) => b.textContent?.trim() === 'Salvar')?.click();
+    await f.whenStable();
+    await new Promise((r) => setTimeout(r, 0));
+    f.detectChanges();
+    return { f, el, banco };
+  }
+
+  it('depois de salvar uma mudança que exige novo login, avisa quem salvou (outra pessoa: "Entendi")', async () => {
+    const { el, banco } = await salvarMudanca([
+      { exige_novo_login: true, proprio: false, nome: 'Carla Teste', campos: ['grupo_id'] },
+    ]);
+    expect(banco.chamadas.find((c) => c.nome === 'efeito_da_ultima_alteracao')?.args).toEqual({
+      p_tabela: 'profissionais',
+      p_id: 'p1',
+    });
+    const modal = el.querySelector('.modal')?.textContent ?? '';
+    expect(modal).toContain('É preciso entrar de novo');
+    expect(modal).toContain('Carla Teste');
+    expect(modal).toContain('Grupo de usuários');
+    expect(modal).toContain('precisa sair e entrar de novo');
+    expect(
+      [...el.querySelectorAll<HTMLButtonElement>('.modal button')].map((b) =>
+        b.textContent?.trim(),
+      ),
+    ).toEqual(['Entendi']);
+  });
+
+  it('se a mudança é no próprio cadastro, oferece entrar de novo agora ou depois', async () => {
+    const { f, el } = await salvarMudanca([
+      {
+        exige_novo_login: true,
+        proprio: true,
+        nome: 'Carla Teste',
+        campos: ['setor_id', 'grupo_id'],
+      },
+    ]);
+    expect(el.querySelector('.modal')?.textContent).toContain('Você mudou');
+    expect(
+      [...el.querySelectorAll<HTMLButtonElement>('.modal button')].map((b) =>
+        b.textContent?.trim(),
+      ),
+    ).toEqual(['Entrar de novo agora', 'Depois']);
+    [...el.querySelectorAll<HTMLButtonElement>('.modal button')]
+      .find((b) => b.textContent?.trim() === 'Depois')
+      ?.click();
+    f.detectChanges();
+    expect(el.querySelector('.modal')).toBeNull();
+  });
+
+  it('"Entrar de novo agora" encerra a sessão e leva à tela de entrada', async () => {
+    const { f, el } = await salvarMudanca([
+      { exige_novo_login: true, proprio: true, nome: 'Carla Teste', campos: ['setor_id'] },
+    ]);
+    const sessao = TestBed.inject(SessaoService);
+    const sair = vi.spyOn(sessao, 'sair').mockResolvedValue();
+    const navegar = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+    [...el.querySelectorAll<HTMLButtonElement>('.modal button')]
+      .find((b) => b.textContent?.trim() === 'Entrar de novo agora')
+      ?.click();
+    await f.whenStable();
+    expect(sair).toHaveBeenCalled();
+    expect(navegar).toHaveBeenCalledWith(['/entrar']);
+  });
+
+  it('sem necessidade de novo login (o banco diz que não), nenhum aviso aparece', async () => {
+    const { el } = await salvarMudanca([
+      { exige_novo_login: false, proprio: false, nome: 'Carla Teste', campos: [] },
+    ]);
+    expect(el.querySelector('.modal')).toBeNull();
+  });
+
   it('ao incluir, o CPF vai só com dígitos e o campo opcional vazio vai como nulo', async () => {
     const { consulta } = prepararProfissionais();
     const f = await abrirProfissionais();
@@ -497,6 +605,7 @@ describe('cadastro por metadados (profissionais, com listas vindas de outros cad
       cpf: '23456789092',
       funcao_profissional_id: 'f1',
       cbo: null,
+      setor_id: null,
       grupo_id: null,
     });
   });

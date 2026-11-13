@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-13 · Claude · Regra do "entrar de novo" (setor e grupo do profissional) e campo Setor (migração 14 aplicada no Supabase)
+
+- **Regra do responsável:** setor e grupo são carregados ao entrar; se mudarem no cadastro do profissional, depois de salvar o usuário é informado de que precisa entrar de novo. **Decisões dele:** criar o campo **Setor** no Profissional agora; o aviso oferece **fazer agora ou depois**.
+- **Conferido no legado** (`C:\p\LabMedsys_homol`, `homologacao/1.principal/menu-administracao/telas/01-profissional.md` e `06-grupo-de-usuarios.md`): o Estoque lê o grupo do usuário **a cada login** e filtra almoxarifados e solicitações (RN-PRI-ADM06-002); o Setor do profissional é opcional e vem da Estrutura funcional; a mudança de Grupo **não era registrada** no histórico (RN-PRI-ADM01-017, defeito a não repetir); o legado não avisava ninguém (lacuna que a regra corrige). No iLabs a mudança de setor e de grupo fica na auditoria.
+- **Banco (migração 14, `20261114090000_setor_e_novo_login.sql`):** `profissionais.setor_id` (só nível do tipo setor, ativo, da mesma empresa; setor em uso não se exclui); `ilab_interno.campos_que_exigem_novo_login` (**a lista dos campos mora no banco**: hoje `setor_id` e `grupo_id`); `ilab.efeito_da_ultima_alteracao(tabela, id)` lê a **auditoria** (o que foi gravado de verdade, nos últimos 5 minutos, por quem chamou) e devolve se exige novo login, se é a própria pessoa, o nome e os campos. **Só há aviso se o profissional tem conta** (sem conta nada é carregado no login). Testes do banco 548 de 548 (20 novos).
+- **App:** campo **Setor** no Profissional (só níveis do tipo setor), dicas nos campos Setor e Grupo, e o aviso depois de salvar: na própria conta, "Entrar de novo agora" ou "Depois"; na de outra pessoa, "Fulano precisa sair e entrar de novo… Avise a pessoa" e "Entendi". Testes do app 82 de 82, navegador 26 de 26 (axe), tipos, lint e formatação limpos.
+- **Aplicada:** a migração 14 foi aplicada no Supabase em 13/11/2026 com autorização do responsável e conferida no banco real (`banco/execucao/2026-11-13-migracao-14/resultado.md`). O app já pode ser publicado.
+- **Ainda não feito:** o login do app ainda não carrega setor nem grupo (nenhuma tela usa isso hoje); a regra fica pronta para o Estoque. Encerrar a sessão do profissional à força não foi pedido.
+
 ## 2026-11-11 · Claude · Contas de usuário (sem convite) com validade de, até (migração 13 APLICADA)
 
 - **Pedido do responsável:** a tela de Usuários vira o cadastro de **Conta de usuário**, sem "convite", como no legado. **Decisões dele:** a conta vem de um **Profissional** já cadastrado; a **validade (de, até)** entra já nesta etapa.

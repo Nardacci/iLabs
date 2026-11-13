@@ -214,6 +214,74 @@ test.describe('Cadastro por metadados (unidades de medida)', () => {
 });
 
 test.describe('Telas de acesso logadas', () => {
+  test('Profissionais: mudar setor ou grupo avisa que é preciso entrar de novo (agora ou depois)', async ({
+    page,
+  }) => {
+    const chamadas = await preparar(page, {
+      rpc: {
+        efeito_da_ultima_alteracao: [
+          { exige_novo_login: true, proprio: true, nome: 'Carla Teste', campos: ['setor_id'] },
+        ],
+      },
+      tabelas: {
+        profissionais: {
+          linhas: [
+            {
+              id: 'pr-1',
+              codigo: 'P1',
+              nome: 'Carla Teste',
+              cpf: '52998224725',
+              funcao_profissional_id: 'f-1',
+              setor_id: null,
+              grupo_id: null,
+              cbo: null,
+              situacao: 'ativo',
+            },
+          ],
+          total: 1,
+        },
+        funcoes_profissionais: {
+          linhas: [{ id: 'f-1', descricao: 'Responsável técnico', situacao: 'ativo' }],
+          total: 1,
+        },
+        grupos_usuarios: {
+          linhas: [{ id: 'g-1', nome: 'Operadores', situacao: 'ativo' }],
+          total: 1,
+        },
+        estrutura_organizacional: {
+          linhas: [
+            { id: 's-1', nome: 'Controle de Qualidade', tipo: 'setor', situacao: 'ativo' },
+            { id: 'pl-1', nome: 'Planta principal', tipo: 'planta', situacao: 'ativo' },
+          ],
+          total: 2,
+        },
+      },
+    });
+    await page.goto('/profissionais');
+    await page.getByRole('button', { name: 'P1', exact: true }).click(); // o primeiro campo da linha (o código) abre o cadastro
+    await expect(page.getByRole('heading', { name: 'Editar profissional' })).toBeVisible();
+    const setores = await page
+      .getByLabel('Setor', { exact: true })
+      .locator('option')
+      .allTextContents();
+    expect(setores).toContain('Controle de Qualidade');
+    expect(setores).not.toContain('Planta principal'); // só níveis do tipo setor
+    await page.getByLabel('Setor', { exact: true }).selectOption('s-1');
+    await page.getByLabel(/Motivo/).fill('Passa para o controle de qualidade');
+    await page.getByRole('button', { name: 'Salvar' }).click();
+    await expect(page.getByRole('heading', { name: 'É preciso entrar de novo' })).toBeVisible();
+    await conferirAcessibilidade(page, 'aviso de novo login');
+    expect(chamadas?.find((c) => c.alvo === 'rpc:alterar_cadastro')?.corpo).toEqual({
+      p_tabela: 'profissionais',
+      p_id: 'pr-1',
+      p_valores: { setor_id: 's-1' },
+      p_motivo: 'Passa para o controle de qualidade',
+    });
+    await page.getByRole('button', { name: 'Depois' }).click();
+    await expect(page.getByRole('heading', { name: 'É preciso entrar de novo' })).toHaveCount(0);
+    await expect(page.getByRole('cell', { name: 'Carla Teste', exact: true })).toBeVisible();
+  });
+
   test('Contas de usuário: lista, cadastro a partir do profissional, link único e axe', async ({
     page,
   }) => {

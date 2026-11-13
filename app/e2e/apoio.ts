@@ -49,6 +49,7 @@ export const PERMISSOES_DO_ADMIN = [
   'assinatura.consulta',
   'cadastros.unidades_medida',
   'auditoria.registros',
+  'acesso.profissionais',
 ].map((funcao_chave) => ({
   funcao_chave,
   consultar: true,

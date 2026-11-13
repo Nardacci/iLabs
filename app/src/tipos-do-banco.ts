@@ -815,6 +815,7 @@ export type Database = {
           criado_por: string | null
           atualizado_em: string | null
           atualizado_por: string | null
+          setor_id: string | null
         }
         Insert: {
           id?: string
@@ -832,6 +833,7 @@ export type Database = {
           criado_por?: string | null
           atualizado_em?: string | null
           atualizado_por?: string | null
+          setor_id?: string | null
         }
         Update: {
           id?: string
@@ -849,6 +851,7 @@ export type Database = {
           criado_por?: string | null
           atualizado_em?: string | null
           atualizado_por?: string | null
+          setor_id?: string | null
         }
         Relationships: []
       }
@@ -1005,6 +1008,7 @@ export type Database = {
       definir_permissao_perfil: { Args: { p_perfil_id: string; p_funcao: string; p_consultar: boolean; p_incluir: boolean; p_alterar: boolean; p_excluir: boolean; p_imprimir: boolean; p_historico: boolean; p_motivo: string }; Returns: undefined }
       definir_situacao_perfil: { Args: { p_perfil_id: string; p_ativo: boolean; p_motivo: string }; Returns: undefined }
       desbloquear_usuario: { Args: { p_usuario_id: string; p_motivo: string }; Returns: undefined }
+      efeito_da_ultima_alteracao: { Args: { p_tabela: string; p_id: string }; Returns: { exige_novo_login: boolean | null; proprio: boolean | null; nome: string | null; campos: string[] | null }[] }
       exigir_troca_de_senha: { Args: { p_usuario_id: string; p_motivo: string }; Returns: undefined }
       inativar_usuario: { Args: { p_usuario_id: string; p_motivo: string }; Returns: undefined }
       listar_contas_usuario: { Args: never; Returns: { tipo: string | null; id: string | null; nome: string | null; email: string | null; profissional_id: string | null; cpf: string | null; ativo: boolean | null; situacao: string | null; senha_a_trocar: boolean | null; bloqueado: boolean | null; valida_de: string | null; valida_ate: string | null; na_validade: boolean | null; convite_expira_em: string | null; perfis: Json | null }[] }

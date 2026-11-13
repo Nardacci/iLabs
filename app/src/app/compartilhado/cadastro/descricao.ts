@@ -18,7 +18,12 @@ export interface CampoDeCadastro {
    * Para `tipo: 'lista'` com opções de OUTRO cadastro (a coluna guarda o id): de onde vêm e qual coluna dá o nome.
    * Para escolher só aparecem os ativos (mais o que já estava gravado); a lista mostra o nome, não o id.
    */
-  referencia?: { tabela: NomeDaTabela; rotulo: string };
+  referencia?: {
+    tabela: NomeDaTabela;
+    rotulo: string;
+    /** Só oferece os registros em que a coluna tem este valor (conveniência da tela: o banco confere a gravação). */
+    onde?: { coluna: string; valor: string };
+  };
   /** Como mostrar o valor na lista (o banco guarda só os dígitos). */
   formato?: 'cpf';
 }

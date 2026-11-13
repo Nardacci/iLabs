@@ -39,8 +39,16 @@ describe('contrato com o banco', () => {
       const tabela =
         new RegExp(`create table ilab\\.${d.tabela} \\(([\\s\\S]*?)\\n\\);`).exec(sql)?.[1] ?? '';
       expect(tabela, `tabela ${d.tabela}`).not.toBe('');
+      // colunas acrescentadas depois por migrações ("alter table ... add column")
+      const acrescentadas = [
+        ...sql.matchAll(new RegExp(`alter table ilab\\.${d.tabela}\\b([\\s\\S]*?);`, 'g')),
+      ]
+        .map((m) => m[1])
+        .join('\n');
       for (const c of d.campos)
-        expect(tabela, `${d.tabela}.${c.nome}`).toMatch(new RegExp(`\\b${c.nome}\\b`));
+        expect(tabela + acrescentadas, `${d.tabela}.${c.nome}`).toMatch(
+          new RegExp(`\\b${c.nome}\\b`),
+        );
       for (const c of d.campos)
         if (c.referencia) {
           const ref =

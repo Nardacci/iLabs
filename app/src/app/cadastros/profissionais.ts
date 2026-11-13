@@ -38,10 +38,22 @@ export const profissionais = definirCadastro({
       naLista: false,
     },
     {
+      nome: 'setor_id',
+      rotulo: 'Setor',
+      tipo: 'lista',
+      referencia: {
+        tabela: 'estrutura_organizacional',
+        rotulo: 'nome',
+        onde: { coluna: 'tipo', valor: 'setor' },
+      },
+      dica: 'Opcional. É carregado quando a pessoa entra no sistema: se mudar, ela precisa entrar de novo.',
+    },
+    {
       nome: 'grupo_id',
       rotulo: 'Grupo de usuários',
       tipo: 'lista',
       referencia: { tabela: 'grupos_usuarios', rotulo: 'nome' },
+      dica: 'É carregado quando a pessoa entra no sistema: se mudar, ela precisa entrar de novo.',
     },
   ],
 });
