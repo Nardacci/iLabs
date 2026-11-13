@@ -14,11 +14,11 @@ export async function rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB 
   const salvar = (id, dados, oc, fn, principal, motivo = null) =>
     tenta(`select ilab.salvar_profissional(${id ? `'${id}'` : 'null'}, '${json(dados)}'::jsonb, ${arr(oc)}, ${uarr(fn)}, ${principal ? `'${principal}'` : 'null'}, ${motivo ? `'${motivo}'` : 'null'}) id`);
   const idDe = (r) => r.r?.rows[0]?.id;
-  const BARRA = (await q(`select id from ilab.bairros where nome = 'BARRA DA TIJUCA'`))[0].id;
+  const BARRA = 'barra da tijuca';
   const base = (extra = {}) => ({
     codigo: 'T15', nome: 'Ana  Maria   Souza', cpf: cpf(370111000), data_nascimento: '1990-01-15', sexo: 'feminino',
     mae: 'maria souza', pai: 'josé souza', naturalidade_uf: 'RJ', naturalidade_municipio_id: 3304557,
-    pais_id: 1, cep: '22.631-003', logradouro: 'avenida das américas', endereco_numero: '3301', uf: 'RJ', municipio_id: 3304557, bairro_id: BARRA,
+    pais_id: 1, cep: '22.631-003', logradouro: 'avenida das américas', endereco_numero: '3301', uf: 'RJ', municipio_id: 3304557, bairro: BARRA,
     ...extra,
   });
   // CPFs válidos gerados pelo teste (nove dígitos de base + dois verificadores), para não repetir os dos outros testes
@@ -30,9 +30,9 @@ export async function rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB 
   console.log('  dados de apoio (migração 16)');
   await como(A);
   const cont = async (tab) => (await q(`select count(*)::int n from ilab.${tab}`))[0].n;
-  registrar('as 27 UF, o CBO (2.538), os órgãos (33) e as operadoras (6) estão carregados e legíveis por quem está logado',
-    (await cont('ufs')) === 27 && (await cont('ocupacoes')) === 2538 && (await cont('orgaos_emissores')) === 33 && (await cont('operadoras_telefonia')) === 6);
-  registrar('o Brasil (id 1) e a amostra do Rio de Janeiro estão na base', (await q(`select 1 from ilab.paises where id = 1 and nome = 'BRASIL'`)).length === 1 && BARRA > 0);
+  registrar('as 27 UF, os 5.571 municípios do IBGE, o CBO (2.538), os órgãos (33) e as operadoras (6) estão carregados e legíveis por quem está logado',
+    (await cont('ufs')) === 27 && (await cont('municipios')) === 5571 && (await cont('ocupacoes')) === 2538 && (await cont('orgaos_emissores')) === 33 && (await cont('operadoras_telefonia')) === 6);
+  registrar('o Brasil (id 1) e a amostra do Rio de Janeiro estão na base', (await q(`select 1 from ilab.paises where id = 1 and nome = 'BRASIL'`)).length === 1 && (await q(`select 1 from ilab.municipios where id = 3304557 and nome = 'Rio de Janeiro' and uf = 'RJ'`)).length === 1);
   let t = await tenta(`insert into ilab.ufs (sigla, nome) values ('XX', 'Teste')`);
   registrar('quem está logado não grava nas tabelas de apoio', !!t.erro, t.erro);
   t = await tenta(`delete from ilab.ocupacoes where codigo = '223405'`);
@@ -114,18 +114,19 @@ export async function rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB 
   registrar('endereço do Brasil sem CEP é recusado', !!t.erro && /CEP/.test(t.erro), t.erro);
   t = await tenta15({ uf: 'SP' });
   registrar('município fora da UF do endereço é recusado', !!t.erro && /UF do endereço/.test(t.erro), t.erro);
-  await dono();
-  const outroMun = (await q(`insert into ilab.municipios (id, uf, nome) values (3550308, 'SP', 'SAO PAULO') on conflict do nothing returning id`));
-  await como(A);
   t = await tenta15({ uf: 'SP', municipio_id: 3550308 });
-  registrar('bairro de outro município é recusado', !!t.erro && /bairro/i.test(t.erro), t.erro);
+  registrar('município de outra UF com a UF certa grava (São Paulo, SP)', !t.erro, t.erro);
+  t = await tenta15({ bairro: null });
+  registrar('endereço do Brasil sem bairro é recusado', !!t.erro && /Bairro/.test(t.erro), t.erro);
+  t = await tenta15({ bairro: '  vila   são josé ' });
+  registrar('o bairro é gravado em maiúsculas e sem espaços repetidos', !t.erro && (await q(`select bairro from ilab.profissionais where id = '${idDe(t)}'`))[0].bairro === 'VILA SÃO JOSÉ', t.erro);
   t = await tenta15({ naturalidade_uf: 'SP' });
   registrar('naturalidade fora da UF da naturalidade é recusada', !!t.erro && /naturalidade/.test(t.erro), t.erro);
-  t = await tenta15({ pais_id: 3, cep: null, uf: null, municipio_id: null, bairro_id: null });
+  t = await tenta15({ pais_id: 3, cep: null, uf: null, municipio_id: null, bairro: null });
   registrar('endereço no exterior sem código postal e cidade é recusado', !!t.erro && /Código postal/.test(t.erro), t.erro);
-  t = await tenta15({ pais_id: 3, cep: '22631003', uf: 'RJ', municipio_id: 3304557, bairro_id: BARRA, codigo_postal: 'C1425', cidade: 'Buenos Aires' });
-  const ext = (await q(`select cep, uf, municipio_id, bairro_id, codigo_postal, cidade from ilab.profissionais where id = '${idDe(t)}'`))[0] ?? {};
-  registrar('endereço no exterior grava e limpa CEP, UF, município e bairro', !t.erro && ext.cep === null && ext.uf === null && ext.bairro_id === null && ext.cidade === 'Buenos Aires', t.erro);
+  t = await tenta15({ pais_id: 3, cep: '22631003', uf: 'RJ', municipio_id: 3304557, bairro: 'CENTRO', codigo_postal: 'C1425', cidade: 'Buenos Aires' });
+  const ext = (await q(`select cep, uf, municipio_id, bairro, codigo_postal, cidade from ilab.profissionais where id = '${idDe(t)}'`))[0] ?? {};
+  registrar('endereço no exterior grava e limpa CEP, UF, município e bairro', !t.erro && ext.cep === null && ext.uf === null && ext.bairro === null && ext.cidade === 'Buenos Aires', t.erro);
   t = await tenta15({ complemento: 'x'.repeat(101) });
   registrar('complemento acima do limite do banco (100) é recusado, não cortado', !!t.erro, t.erro);
   t = await tenta15({ cargo: 'x'.repeat(101) });
@@ -250,7 +251,7 @@ export async function rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB 
   // ---- busca por CEP
   console.log('  busca por CEP (base própria)');
   const cep = await q(`select * from ilab.buscar_cep('22.631-003')`);
-  registrar('o CEP da base devolve logradouro, UF, município e bairro', cep.length === 1 && /Avenida das Américas/.test(cep[0].logradouro) && cep[0].uf === 'RJ' && cep[0].municipio === 'RIO DE JANEIRO' && cep[0].bairro === 'BARRA DA TIJUCA', JSON.stringify(cep));
+  registrar('o CEP da base devolve logradouro, UF, município e bairro', cep.length === 1 && /Avenida das Américas/.test(cep[0].logradouro) && cep[0].uf === 'RJ' && cep[0].municipio === 'Rio de Janeiro' && cep[0].bairro === 'BARRA DA TIJUCA', JSON.stringify(cep));
   registrar('CEP que não está na base não devolve nada (a pessoa digita o endereço)', (await q(`select * from ilab.buscar_cep('99999999')`)).length === 0);
   await como('anon');
   t = await tenta(`select * from ilab.buscar_cep('22631003')`);

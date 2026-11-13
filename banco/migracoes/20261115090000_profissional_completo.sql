@@ -1,5 +1,5 @@
 -- iLabs, nova versão. Migração 15: PROFISSIONAL COMPLETO (dados pessoais, documentos, contatos, endereço, trabalho,
--- várias ocupações e várias funções) e as tabelas de apoio (país, UF, município, bairro, logradouro por CEP, órgão
+-- várias ocupações e várias funções) e as tabelas de apoio (país, UF, município, logradouro por CEP, órgão
 -- emissor, operadora, ocupação CBO).
 -- NÃO APLICADA: depende da autorização do responsável (CLAUDE.md). Testes: banco/testes/testes_profissional_completo.mjs.
 -- Especificação: docs/principal/profissional.md. Os dados de apoio entram na migração 16.
@@ -16,6 +16,8 @@
 --
 -- Decisões do responsável (13/11/2026): mãe e pai VOLTAM ao cadastro (reverte a de 06/11); entram todos os blocos; o CEP é
 -- uma base própria dentro do banco, como no legado (sem serviço externo).
+-- O BAIRRO é texto digitado (maiúsculas), e não escolha numa lista: não existe base de bairros acessível e exigir um bairro de uma
+-- lista vazia travaria todos os cadastros (ver docs/principal/profissional.md, pendência da base de CEP).
 -- Mantido como no legado: o CPF é único entre os NÃO excluídos (a decisão de reaproveitar o CPF de excluído segue pendente).
 
 -- 1. A empresa usa o Estoque? (o grupo do profissional só é obrigatório com o Estoque: RN-PRI-ADM01-011)
@@ -37,12 +39,6 @@ create table ilab.municipios (
   unique (uf, nome),
   unique (id, uf)
 );
-create table ilab.bairros (
-  id           integer generated always as identity primary key,
-  municipio_id integer not null references ilab.municipios (id),
-  nome         text not null,
-  unique (municipio_id, nome)
-);
 create table ilab.logradouros (
   id           integer generated always as identity primary key,
   cep          text not null check (cep ~ '^[0-9]{8}$'),
@@ -51,7 +47,7 @@ create table ilab.logradouros (
   complemento  text,
   uf           text not null,
   municipio_id integer not null,
-  bairro_id    integer references ilab.bairros (id),
+  bairro       text,
   foreign key (municipio_id, uf) references ilab.municipios (id, uf)
 );
 create index logradouros_cep_idx on ilab.logradouros (cep);
@@ -73,7 +69,7 @@ create table ilab.ocupacoes (                       -- CBO
 do $$
 declare t text;
 begin
-  foreach t in array array['paises', 'ufs', 'municipios', 'bairros', 'logradouros', 'orgaos_emissores', 'operadoras_telefonia', 'ocupacoes'] loop
+  foreach t in array array['paises', 'ufs', 'municipios', 'logradouros', 'orgaos_emissores', 'operadoras_telefonia', 'ocupacoes'] loop
     execute format('alter table ilab.%I enable row level security', t);
     execute format('create policy %I on ilab.%I for select to authenticated using (true)', t || '_sel', t);
     execute format('revoke all on ilab.%I from public, anon, authenticated', t);
@@ -111,7 +107,7 @@ alter table ilab.profissionais
   add column complemento             text,
   add column uf                      text references ilab.ufs (sigla),
   add column municipio_id            integer references ilab.municipios (id),
-  add column bairro_id               integer references ilab.bairros (id),
+  add column bairro                  text,
   add column codigo_postal           text,
   add column cidade                  text,
   add column cargo                   text,
@@ -132,6 +128,7 @@ alter table ilab.profissionais
   add constraint profissionais_endnum_ck      check (endereco_numero is null or char_length(endereco_numero) between 1 and 10),
   add constraint profissionais_complemento_ck check (complemento is null or char_length(complemento) between 1 and 100),
   add constraint profissionais_codpostal_ck   check (codigo_postal is null or char_length(codigo_postal) between 1 and 20),
+  add constraint profissionais_bairro_ck      check (bairro is null or char_length(bairro) between 1 and 100),
   add constraint profissionais_cidade_ck      check (cidade is null or char_length(cidade) between 1 and 100),
   add constraint profissionais_cargo_ck       check (cargo is null or char_length(cargo) between 1 and 100),
   add constraint profissionais_matricula_ck   check (matricula is null or matricula ~ '^[A-Z0-9]{1,12}$'),
@@ -154,6 +151,7 @@ begin
   new.identidade   := nullif(upper(regexp_replace(new.identidade, '\s', '', 'g')), '');
   new.email        := nullif(lower(btrim(new.email)), '');
   new.endereco_numero := nullif(upper(btrim(new.endereco_numero)), '');
+  new.bairro       := nullif(upper(regexp_replace(btrim(new.bairro), '\s+', ' ', 'g')), '');
   new.complemento  := nullif(btrim(new.complemento), '');
   new.cargo        := nullif(btrim(new.cargo), '');
   new.especializacao := nullif(btrim(new.especializacao), '');
@@ -195,7 +193,7 @@ begin
     if new.cep is null then v_falta := array_append(v_falta, 'CEP'); end if;
     if new.uf is null then v_falta := array_append(v_falta, 'UF'); end if;
     if new.municipio_id is null then v_falta := array_append(v_falta, 'Município'); end if;
-    if new.bairro_id is null then v_falta := array_append(v_falta, 'Bairro'); end if;
+    if new.bairro is null then v_falta := array_append(v_falta, 'Bairro'); end if;
   elsif new.pais_id is not null then
     if new.codigo_postal is null then v_falta := array_append(v_falta, 'Código postal'); end if;
     if new.cidade is null then v_falta := array_append(v_falta, 'Cidade'); end if;
@@ -235,12 +233,9 @@ begin
     if not exists (select 1 from ilab.municipios m where m.id = new.municipio_id and m.uf = new.uf) then
       raise exception 'O município precisa ser da UF do endereço.';
     end if;
-    if not exists (select 1 from ilab.bairros b where b.id = new.bairro_id and b.municipio_id = new.municipio_id) then
-      raise exception 'O bairro precisa ser do município do endereço.';
-    end if;
     new.codigo_postal := null; new.cidade := null;
   else
-    new.cep := null; new.uf := null; new.municipio_id := null; new.bairro_id := null;
+    new.cep := null; new.uf := null; new.municipio_id := null; new.bairro := null;
   end if;
   return new;
 end $$;
@@ -250,7 +245,7 @@ revoke execute on function ilab_interno.validar_profissional() from public, anon
 -- (usuario_id), do setor ou da situação não dispara a validação dos dados do cadastro.
 create trigger profissionais_00_normalizar
   before insert or update of nome, mae, pai, logradouro, matricula, identidade, email, endereco_numero, complemento, cargo,
-    especializacao, codigo_postal, cidade, cep, tel1_ddi, tel1_ddd, tel1_numero, tel2_ddi, tel2_ddd, tel2_numero,
+    especializacao, bairro, codigo_postal, cidade, cep, tel1_ddi, tel1_ddd, tel1_numero, tel2_ddi, tel2_ddd, tel2_numero,
     cel1_ddi, cel1_ddd, cel1_numero, cel2_ddi, cel2_ddd, cel2_numero
   on ilab.profissionais for each row execute function ilab_interno.normalizar_profissional();
 create trigger profissionais_01_validar
@@ -258,7 +253,7 @@ create trigger profissionais_01_validar
     identidade, orgao_emissor_id, data_emissao, identidade_profissional, orgao_classe_id,
     tel1_ddi, tel1_ddd, tel1_numero, tel2_ddi, tel2_ddd, tel2_numero,
     cel1_ddi, cel1_ddd, cel1_numero, cel1_operadora_id, cel2_ddi, cel2_ddd, cel2_numero, cel2_operadora_id,
-    email, pais_id, cep, logradouro, endereco_numero, complemento, uf, municipio_id, bairro_id, codigo_postal, cidade,
+    email, pais_id, cep, logradouro, endereco_numero, complemento, uf, municipio_id, bairro, codigo_postal, cidade,
     grupo_id
   on ilab.profissionais for each row execute function ilab_interno.validar_profissional();
 
@@ -340,7 +335,7 @@ language sql immutable set search_path = '' as $$
       'identidade', 'orgao_emissor_id', 'data_emissao', 'identidade_profissional', 'orgao_classe_id',
       'tel1_ddi', 'tel1_ddd', 'tel1_numero', 'tel2_ddi', 'tel2_ddd', 'tel2_numero',
       'cel1_ddi', 'cel1_ddd', 'cel1_numero', 'cel1_operadora_id', 'cel2_ddi', 'cel2_ddd', 'cel2_numero', 'cel2_operadora_id',
-      'email', 'pais_id', 'cep', 'logradouro', 'endereco_numero', 'complemento', 'uf', 'municipio_id', 'bairro_id',
+      'email', 'pais_id', 'cep', 'logradouro', 'endereco_numero', 'complemento', 'uf', 'municipio_id', 'bairro',
       'codigo_postal', 'cidade', 'cargo', 'matricula', 'especializacao']
     when 'estrutura_organizacional' then array['codigo', 'nome', 'tipo', 'pai_id', 'responsavel_id']
     when 'centros_custo'          then array['codigo', 'descricao']
@@ -507,12 +502,11 @@ grant execute on function ilab.salvar_profissional(uuid, jsonb, text[], uuid[], 
 
 -- 9. Busca por CEP na base de apoio (como no legado: sem serviço externo). Sem resposta, a pessoa digita o endereço.
 create function ilab.buscar_cep(p_cep text)
-returns table (logradouro text, complemento text, uf text, municipio_id integer, municipio text, bairro_id integer, bairro text)
+returns table (logradouro text, complemento text, uf text, municipio_id integer, municipio text, bairro text)
 language sql stable security definer set search_path = '' as $$
-  select btrim(concat_ws(' ', l.tipo, l.nome)), l.complemento, l.uf, l.municipio_id, m.nome, l.bairro_id, b.nome
+  select btrim(concat_ws(' ', l.tipo, l.nome)), l.complemento, l.uf, l.municipio_id, m.nome, upper(l.bairro)
     from ilab.logradouros l
     join ilab.municipios m on m.id = l.municipio_id
-    left join ilab.bairros b on b.id = l.bairro_id
    where ilab_interno.empresa_atual() is not null
      and l.cep = regexp_replace(coalesce(p_cep, ''), '\D', '', 'g')
    order by l.id
