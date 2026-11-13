@@ -2,6 +2,17 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-13 · Claude · Profissional: comparação com o legado e especificação do cadastro completo (só documentação)
+
+- **Pedido do responsável:** comparar a tela Profissional do legado com a nossa e montar o sistema **com as regras de negócio do legado, pautado nas normas da Anvisa, sem copiar o layout do legado**.
+- **Comparação:** o legado tem cadastro completo; o nosso tinha 7 campos. Faltavam nascimento, sexo, naturalidade, documentos, identidade profissional e órgão da classe, contatos, endereço, cargo, matrícula, especialização e **várias** ocupações e funções (o nosso só tinha uma de cada).
+- **Decisões do responsável:** (1) nome da mãe e do pai **voltam** (reverte a de 06/11; leitura do "Sim" dele, a confirmar); (2) entram **todos** os blocos; (3) CEP **como no legado**, base própria no banco.
+- **Achado:** a base de CEP do legado entregue é só uma amostra (RJ, 1 município, 1 bairro, 1 logradouro). CBO (2.538), órgãos emissores (33) e operadoras estão completos no `dml.sql` do legado.
+- **Feito:** `docs/principal/profissional.md` (campos, regras no banco, correções de falhas do legado, layout novo, etapas, pendências) e duas linhas em `docs/decisoes.md`. **Nenhuma migração e nenhuma tela foram escritas ainda.**
+- **Pendências do responsável (em `profissional.md`, seção 7):** origem da base de CEP completa; como o banco sabe que o Estoque está ativo; CPF de excluído; listas de sexo e órgão da classe; mãe obrigatória ou não.
+- **Próximo passo:** migração 15 (tabelas de apoio, colunas, ocupações e funções com vínculo auditável) com testes; depois carga de dados, tela e relatório.
+- **Commit WIP da área de trabalho:** desfeito (`reset --mixed`); a linha `"analytics": false` de `app/angular.json` continua como alteração não commitada, aguardando a decisão do responsável.
+
 ## 2026-11-13 · Claude · Regra do "entrar de novo" (setor e grupo do profissional) e campo Setor (migração 14 aplicada no Supabase)
 
 - **Regra do responsável:** setor e grupo são carregados ao entrar; se mudarem no cadastro do profissional, depois de salvar o usuário é informado de que precisa entrar de novo. **Decisões dele:** criar o campo **Setor** no Profissional agora; o aviso oferece **fazer agora ou depois**.
