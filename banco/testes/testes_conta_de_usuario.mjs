@@ -1,3 +1,4 @@
+import { OBR_COLS, OBR_VALS } from './_profissional_obrigatorio.mjs';
 // Testes da migração 13: Conta de usuário (ligada ao Profissional, com validade de, até).
 export async function rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB }) {
   const q = async (sql, params) => (await db.query(sql, params)).rows;
@@ -20,14 +21,14 @@ export async function rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB 
   await como(A);
   const novo = async (sql) => { const r = await tenta(sql + ' returning id'); return { ...r, id: r.r?.rows[0]?.id }; };
   const fa = await novo(`insert into ilab.funcoes_profissionais (codigo, descricao) values ('T13F', 'Função da conta')`);
-  const p1 = await novo(`insert into ilab.profissionais (codigo, nome, cpf, funcao_profissional_id) values ('T13-1', 'Joana Prado', '${CPF1}', '${fa.id}')`);
-  const p2 = await novo(`insert into ilab.profissionais (codigo, nome, cpf, funcao_profissional_id) values ('T13-2', 'Marcos Lima', '${CPF2}', '${fa.id}')`);
-  const p3 = await novo(`insert into ilab.profissionais (codigo, nome, cpf, funcao_profissional_id) values ('T13-3', 'Inativo Souza', '${CPF3}', '${fa.id}')`);
+  const p1 = await novo(`insert into ilab.profissionais (${OBR_COLS}, codigo, nome, cpf, funcao_profissional_id) values (${OBR_VALS}, 'T13-1', 'Joana Prado', '${CPF1}', '${fa.id}')`);
+  const p2 = await novo(`insert into ilab.profissionais (${OBR_COLS}, codigo, nome, cpf, funcao_profissional_id) values (${OBR_VALS}, 'T13-2', 'Marcos Lima', '${CPF2}', '${fa.id}')`);
+  const p3 = await novo(`insert into ilab.profissionais (${OBR_COLS}, codigo, nome, cpf, funcao_profissional_id) values (${OBR_VALS}, 'T13-3', 'Inativo Souza', '${CPF3}', '${fa.id}')`);
   const inativou = await tenta(`select ilab.mudar_situacao('profissionais', '${p3.id}', 'inativo', 'Profissional desligado no teste')`);
   registrar('preparo: administrador cria os profissionais do teste (um deles inativo)', !p1.erro && !p2.erro && !p3.erro && !inativou.erro, p1.erro ?? p2.erro ?? p3.erro ?? inativou.erro);
   await como(B);
   const fb = await novo(`insert into ilab.funcoes_profissionais (codigo, descricao) values ('T13FB', 'Função da conta (empresa B)')`);
-  const pB = await novo(`insert into ilab.profissionais (codigo, nome, cpf, funcao_profissional_id) values ('T13-B', 'Pessoa da B', '${CPFB}', '${fb.id}')`);
+  const pB = await novo(`insert into ilab.profissionais (${OBR_COLS}, codigo, nome, cpf, funcao_profissional_id) values (${OBR_VALS}, 'T13-B', 'Pessoa da B', '${CPFB}', '${fb.id}')`);
   registrar('preparo: empresa B tem um profissional', !fb.erro && !pB.erro, fb.erro ?? pB.erro);
 
   // ---- criar a conta
@@ -38,7 +39,7 @@ export async function rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB 
   await dono();
   const cv = (await q(`select * from ilab.convites where id = '${c1.r?.rows[0]?.convite_id}'`))[0];
   registrar('o e-mail é gravado limpo, o nome vem do profissional e os dois perfis ficam no pedido',
-    cv?.email === 'joana@a.com' && cv.nome === 'Joana Prado' && cv.profissional_id === p1.id && cv.perfis_ids.length === 2);
+    cv?.email === 'joana@a.com' && cv.nome === 'JOANA PRADO' && cv.profissional_id === p1.id && cv.perfis_ids.length === 2);
   registrar('só o hash do token é gravado', cv.token_hash.length === 64 && cv.token_hash !== c1.r.rows[0].token);
   await como(X);
   let t = await criar(p2.id, 'x1@a.com', [pa]);
@@ -80,7 +81,7 @@ export async function rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB 
   registrar('a pessoa aceita o link e a conta é criada', !t.erro, t.erro);
   await dono();
   const conta = (await q(`select * from ilab.usuarios where id = '${J}'`))[0];
-  registrar('a conta nasce com o nome do profissional e a validade informada', conta?.nome === 'Joana Prado' && conta.valida_ate !== null && conta.valida_de === null);
+  registrar('a conta nasce com o nome do profissional e a validade informada', conta?.nome === 'JOANA PRADO' && conta.valida_ate !== null && conta.valida_de === null);
   registrar('a conta nasce com os dois perfis', (await q(`select count(*)::int n from ilab.usuario_perfis where usuario_id = '${J}'`))[0].n === 2);
   registrar('o profissional fica ligado à conta', (await q(`select usuario_id from ilab.profissionais where id = '${p1.id}'`))[0].usuario_id === J);
   await como(A);

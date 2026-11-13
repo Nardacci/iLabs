@@ -1,3 +1,4 @@
+import { OBR_COLS, OBR_VALS } from './_profissional_obrigatorio.mjs';
 // Testes da migração 14: Setor do profissional e a regra do "entrar de novo".
 export async function rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB }) {
   const q = async (sql, params) => (await db.query(sql, params)).rows;
@@ -18,9 +19,9 @@ export async function rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB 
   const setor2 = await novo(`insert into ilab.estrutura_organizacional (codigo, nome, tipo, pai_id) values ('T14S2', 'Setor 14 dois', 'setor', '${planta.id}')`);
   const setorFim = await novo(`insert into ilab.estrutura_organizacional (codigo, nome, tipo, pai_id) values ('T14S3', 'Setor 14 inativo', 'setor', '${planta.id}')`);
   const inat = await tenta(`select ilab.mudar_situacao('estrutura_organizacional', '${setorFim.id}', 'inativo', 'Setor desativado no teste')`);
-  const pComConta = await novo(`insert into ilab.profissionais (codigo, nome, cpf, funcao_profissional_id) values ('T14-1', 'Pessoa com conta', '${CPF[0]}', '${fa.id}')`);
-  const pSemConta = await novo(`insert into ilab.profissionais (codigo, nome, cpf, funcao_profissional_id) values ('T14-2', 'Pessoa sem conta', '${CPF[1]}', '${fa.id}')`);
-  const pAdmin = await novo(`insert into ilab.profissionais (codigo, nome, cpf, funcao_profissional_id) values ('T14-3', 'Administrador profissional', '${CPF[2]}', '${fa.id}')`);
+  const pComConta = await novo(`insert into ilab.profissionais (${OBR_COLS}, codigo, nome, cpf, funcao_profissional_id) values (${OBR_VALS}, 'T14-1', 'Pessoa com conta', '${CPF[0]}', '${fa.id}')`);
+  const pSemConta = await novo(`insert into ilab.profissionais (${OBR_COLS}, codigo, nome, cpf, funcao_profissional_id) values (${OBR_VALS}, 'T14-2', 'Pessoa sem conta', '${CPF[1]}', '${fa.id}')`);
+  const pAdmin = await novo(`insert into ilab.profissionais (${OBR_COLS}, codigo, nome, cpf, funcao_profissional_id) values (${OBR_VALS}, 'T14-3', 'Administrador profissional', '${CPF[2]}', '${fa.id}')`);
   registrar('preparo: função, grupos, setores e profissionais criados', ![fa, ga, gb, planta, setor1, setor2, setorFim, pComConta, pSemConta, pAdmin].some((x) => x.erro) && !inat.erro,
     [fa, ga, gb, planta, setor1, setor2, setorFim, pComConta, pSemConta, pAdmin].find((x) => x.erro)?.erro ?? inat.erro);
   await dono();
@@ -56,7 +57,7 @@ export async function rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB 
   await como(A);
   t = await alterar(pComConta.id, { setor_id: setor1.id }, 'Muda o setor da pessoa com conta');
   let e = await efeito('profissionais', pComConta.id);
-  registrar('mudar o setor de quem tem conta exige novo login (e não é a própria pessoa)', !t.erro && e.exige_novo_login === true && e.proprio === false && e.nome === 'Pessoa com conta' && e.campos.join() === 'setor_id', JSON.stringify(e));
+  registrar('mudar o setor de quem tem conta exige novo login (e não é a própria pessoa)', !t.erro && e.exige_novo_login === true && e.proprio === false && e.nome === 'PESSOA COM CONTA' && e.campos.join() === 'setor_id', JSON.stringify(e));
   t = await alterar(pComConta.id, { grupo_id: ga.id }, 'Muda o grupo da pessoa com conta');
   e = await efeito('profissionais', pComConta.id);
   registrar('mudar o grupo de quem tem conta exige novo login', !t.erro && e.exige_novo_login === true && e.campos.join() === 'grupo_id', JSON.stringify(e));
