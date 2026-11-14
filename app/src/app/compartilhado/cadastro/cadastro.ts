@@ -121,6 +121,24 @@ const TAMANHO_DA_PAGINA = 10;
               <option value="todos">Todos</option>
             </select>
           </div>
+          @for (nome of cadastro().filtros ?? []; track nome) {
+            @if (campoDoFiltro(nome); as filtro) {
+              <div class="field campo-situacao">
+                <label [for]="'filtro-' + nome">{{ filtro.rotulo }}</label>
+                <select
+                  class="input"
+                  [id]="'filtro-' + nome"
+                  [value]="valoresDosFiltros()[nome] ?? ''"
+                  (change)="mudarFiltro(nome, $event)"
+                >
+                  <option value="">Todos</option>
+                  @for (o of opcoesDeReferencia()[nome] ?? []; track o.valor) {
+                    <option [value]="o.valor">{{ o.rotulo }}</option>
+                  }
+                </select>
+              </div>
+            }
+          }
           <button type="button" class="btn" [class.sr]="!podeImprimir()" (click)="imprimir()">
             Imprimir
           </button>
@@ -371,7 +389,7 @@ const TAMANHO_DA_PAGINA = 10;
                   }
                 </div>
               }
-              @for (c of cadastro().campos; track c.nome) {
+              @for (c of camposDoFormulario(); track c.nome) {
                 <il-campo
                   [class.largo]="c.tipo === 'textolongo'"
                   [rotulo]="c.rotulo"
@@ -480,6 +498,9 @@ const TAMANHO_DA_PAGINA = 10;
               </p>
               <p class="sub" [title]="v.checksum">
                 Impressão digital (SHA-256): {{ v.checksum.slice(0, 16) }}…
+                @if (v.fonte_ref) {
+                  · referência na fonte: {{ v.fonte_ref }}
+                }
               </p>
               <button type="button" class="btn nao-imprimir" (click)="baixar(v)">
                 Baixar versão {{ v.numero }}
@@ -656,6 +677,12 @@ export class Cadastro {
   protected readonly colunas = computed(() =>
     this.cadastro().campos.filter((c) => c.naLista !== false),
   );
+  /** Os campos que entram no formulário (os "só na lista", como a fonte do documento, ficam de fora). */
+  protected readonly camposDoFormulario = computed(() =>
+    this.cadastro().campos.filter((c) => c.somenteLista !== true),
+  );
+  /** Valores escolhidos nos filtros extras da barra (coluna -> id; vazio = todos). */
+  protected readonly valoresDosFiltros = signal<Record<string, string>>({});
   protected readonly editando = computed(
     () => this.alvo() !== null && this.janela() === 'formulario',
   );
@@ -738,9 +765,14 @@ export class Cadastro {
   constructor() {
     effect(() => {
       this.cadastro();
-      this.pagina.set(1);
-      void this.carregarReferencias();
-      void this.carregar();
+      // Só a troca de cadastro reinicia a tela. O que carregar() lê (página, filtros) não pode virar dependência
+      // deste efeito: senão mudar um filtro reiniciaria a própria tela.
+      untracked(() => {
+        this.pagina.set(1);
+        this.valoresDosFiltros.set({});
+        void this.carregarReferencias();
+        void this.carregar();
+      });
     });
     this.busca.valueChanges.pipe(debounceTime(300), takeUntilDestroyed()).subscribe((v) => {
       this.termoBusca.set(v);
@@ -883,6 +915,7 @@ export class Cadastro {
         tamanho: d.arvore ? 500 : TAMANHO_DA_PAGINA,
         ordenarPor: d.ordenarPor,
         situacoes: SITUACOES_DO_FILTRO[this.filtroSituacao.value],
+        filtros: this.valoresDosFiltros(),
       });
       this.linhas.set(resultado.linhas);
       this.total.set(resultado.total);
@@ -897,6 +930,17 @@ export class Cadastro {
   /** O banco guarda o CPF só com dígitos; a pessoa pode digitar com pontos e traço. */
   private normalizar(c: CampoDeCadastro, valor: string): string {
     return c.formato === 'cpf' ? valor.replace(/\D/g, '') : valor.trim();
+  }
+
+  protected campoDoFiltro(nome: string): CampoDeCadastro | undefined {
+    return this.cadastro().campos.find((c) => c.nome === nome && c.referencia);
+  }
+
+  protected mudarFiltro(nome: string, evento: Event): void {
+    const valor = (evento.target as HTMLSelectElement).value;
+    this.valoresDosFiltros.update((v) => ({ ...v, [nome]: valor }));
+    this.pagina.set(1);
+    void this.carregar();
   }
 
   private async carregarReferencias(): Promise<void> {
@@ -974,7 +1018,7 @@ export class Cadastro {
     empurrarEndereco = true,
   ): void {
     const controles: Record<string, FormControl<string>> = {};
-    for (const c of this.cadastro().campos) {
+    for (const c of this.camposDoFormulario()) {
       const validadores = [
         ...(c.obrigatorio ? [Validators.required] : []),
         ...(c.min ? [Validators.minLength(c.min)] : []),
@@ -1319,7 +1363,7 @@ export class Cadastro {
       if (atual) {
         // Só vai o que mudou. Campo opcional esvaziado vai como vazio (nulo). O motivo é conferido pelo banco.
         const mudou: Record<string, string | null> = {};
-        for (const c of this.cadastro().campos) {
+        for (const c of this.camposDoFormulario()) {
           const antes = this.texto(atual[c.nome]).replace('—', '');
           const depois = this.normalizar(c, valores[c.nome] ?? '');
           if (antes !== depois)
@@ -1337,7 +1381,7 @@ export class Cadastro {
         });
       } else {
         const novos: Record<string, string | null> = {};
-        for (const c of this.cadastro().campos) {
+        for (const c of this.camposDoFormulario()) {
           const v = this.normalizar(c, valores[c.nome] ?? '');
           novos[c.nome] = v === '' && c.obrigatorio !== true ? null : v;
         }
