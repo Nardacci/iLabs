@@ -124,7 +124,7 @@ export function escreverRelatorio(relatorio, pastaDeSaida) {
   const semAbsoluto = relatorio.itens.map(({ caminho, ext, tamanho, checksum, tipo, titulo, confidencialidade, achados, acao, documentoId, repeteDe }) => ({
     caminho, ext, tamanho, checksum, tipo, titulo, confidencialidade, achados, acao, documentoId, repeteDe,
   }));
-  writeFileSync(arquivos.json, JSON.stringify({ geradoEm: relatorio.geradoEm, resumo: relatorio.resumo, itens: semAbsoluto }, null, 2));
+  writeFileSync(arquivos.json, JSON.stringify({ geradoEm: relatorio.geradoEm, resumo: relatorio.resumo, itens: semAbsoluto, catalogo: relatorio.catalogo }, null, 2));
 
   const linhas = ['caminho;tipo;tamanho_bytes;checksum_inicio;acao;alertas'];
   for (const i of semAbsoluto) {
@@ -144,6 +144,15 @@ export function escreverRelatorio(relatorio, pastaDeSaida) {
   for (const [tipo, n] of Object.entries(r.porTipo).sort()) md.push(`- ${tipo}: ${n}`);
   md.push('', '## Ficaram de fora', '');
   for (const [motivo, n] of Object.entries(r.ignoradosPorMotivo).sort((a, b) => b[1] - a[1])) md.push(`- ${n}: ${motivo}`);
+  if (relatorio.catalogo) {
+    md.push('', '## Catálogo de regras', '');
+    if (relatorio.catalogo.length === 0) md.push('- nenhum arquivo de regras (`regras-*.jsonl`) encontrado');
+    for (const a of relatorio.catalogo) {
+      const conf = Object.entries(a.porConfidencialidade).map(([c, n]) => `${n} ${c}`).join(', ');
+      const alertas = [...new Set(a.achados.map((x) => `${x.tipo} (linha ${x.linha})`))].slice(0, 4).join('; ');
+      md.push(`- \`${a.caminho}\`: ${a.total} regras (${conf || 'nenhuma'}), situação: ${a.acao}${a.checksum ? ` (checksum ${a.checksum.slice(0, 16)})` : ''}${alertas ? `, achados: ${alertas}` : ''}${a.erros.length ? `, erros: ${a.erros.join('; ')}` : ''}`);
+    }
+  }
   md.push('', '## Achados da varredura de segredos (arquivos por tipo)', '');
   const tiposDeAchado = Object.entries(r.achadosPorTipo);
   if (tiposDeAchado.length === 0) md.push('- nenhum');
