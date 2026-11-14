@@ -19,17 +19,19 @@ const cartoes = (f: ReturnType<typeof abrir>): HTMLElement[] => [
 ];
 
 describe('tela principal (Início)', () => {
-  it('mostra o cartão Base de conhecimento, ligado a Documentos, para quem pode consultar documentos', () => {
+  it('não tem cartão Base de conhecimento, nem para quem pode consultar documentos (ela abre por botões flutuantes)', () => {
     const f = abrir([permissao('kb.documentos')]);
-    const cartao = cartoes(f).find((c) => c.textContent?.includes('Base de conhecimento'));
-    expect(cartao?.tagName).toBe('A');
-    expect(cartao?.getAttribute('href')).toBe('/base-conhecimento/documentos');
-    expect(cartao?.textContent).toContain('Entrar no módulo');
+    expect(cartoes(f).some((c) => c.textContent?.includes('Base de conhecimento'))).toBe(false);
+    expect(cartoes(f).some((c) => c.getAttribute('href') === '/base-conhecimento/documentos')).toBe(
+      false,
+    );
   });
 
-  it('esconde o cartão de quem não tem permissão (como o menu)', () => {
-    const f = abrir([permissao('cadastros.unidades_medida')]);
-    expect(cartoes(f).some((c) => c.textContent?.includes('Base de conhecimento'))).toBe(false);
+  it('sem o cartão da Base de conhecimento, todos os cartões que sobram são "em breve" (o Principal é o módulo atual e não tem cartão)', () => {
+    const f = abrir([permissao('kb.documentos')]);
+    expect(cartoes(f).length).toBeGreaterThan(0);
+    expect(cartoes(f).every((c) => c.textContent?.includes('Em breve'))).toBe(true);
+    expect(cartoes(f).some((c) => c.textContent?.includes('Principal'))).toBe(false);
   });
 
   it('os cartões que ainda não têm tela continuam aparecendo como "em breve" para todos', () => {
