@@ -26,6 +26,8 @@ export interface CampoDeCadastro {
   };
   /** Como mostrar o valor na lista (o banco guarda só os dígitos). */
   formato?: 'cpf';
+  /** Aparece só na lista (e como filtro): não entra no formulário nem na alteração. */
+  somenteLista?: boolean;
 }
 
 /**
@@ -57,6 +59,11 @@ export interface DescricaoDeCadastro {
    * documento pela função `kb_criar_documento`. Alterar os dados continua pela alteração genérica, com motivo.
    */
   envioDeArquivo?: boolean;
+  /**
+   * Filtros extras na barra da lista: nomes de campos do tipo lista com `referencia` (por exemplo, a fonte do documento).
+   * Cada um vira uma escolha "Todos" ou um dos registros do outro cadastro.
+   */
+  filtros?: readonly string[];
 }
 
 /** Só confere o formato da descrição em tempo de compilação. */

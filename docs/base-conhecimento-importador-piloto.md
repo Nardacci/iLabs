@@ -1,6 +1,6 @@
 # Base de conhecimento: desenho do importador do piloto
 
-Status: **proposta, com parte das decisões já tomadas** (13 e 14/11/2026; ver seção 13). Nada deste desenho foi construído nem aplicado.
+Status: **construído em modo ensaio** (14/11/2026): o programa está em `banco/importador/` (guia de uso no `README.md` de lá). O ensaio já rodou de verdade, só lendo as pastas; **nenhuma importação real foi feita**. A migração 16 está aplicada no Supabase.
 
 ## 1. Para que serve
 Hoje cada documento entra pela tela, um por um. O repositório do legado tem milhares de arquivos de documentação. O **importador** coloca esses arquivos na base de forma automática, sem ninguém subir um por um, e deixa tudo registrado (origem, versão, quem importou e quando).
@@ -105,15 +105,22 @@ Extração de texto, trechos, vetores e busca; código-fonte do legado; importa�
 6. **Tipo novo "Defeito"** para os arquivos de defeitos de cada módulo (14/11/2026). "Plano de testes" **não** foi criado: esses arquivos entram como "Regra de negócio" ou "Outro" até o responsável pedir.
 7. **Do conteúdo da `Documentação`, entra o que a seção 4 permite:** a pasta `Anvisa`, o Guia 33 e os fluxos ficam de fora (14/11/2026, "isso mesmo").
 
+**Regras que o importador aplicou por conta própria (podem ser mudadas em `src/config.mjs`):**
+- Arquivo cujo **nome** diz "confidencial" entra como **Confidencial**, e não como Interno (24 arquivos no ensaio): escolha pelo lado da cautela.
+- A varredura de endereço de servidor **não** conta números de versão (quatro números pequenos, como 1.2.3.4) como endereço; conta rede privada, números altos ou linha que fale de servidor, host, IP ou endereço. Sem isso, 823 arquivos eram bloqueados à toa; com isso, 382.
+
+**Resultado do ensaio real** (14/11/2026, só leitura, nada enviado): 3.442 arquivos analisados (252 MB), dos quais **3.018 novos**, **13 repetidos** e **411 bloqueados** (382 por endereço de servidor, 38 por algo parecido com senha; alguns têm os dois). Ficaram de fora 8.485 arquivos (imagens, scripts, fluxos, ANVISA, pastas restritas). Dos 38 arquivos com "senha": 61 ocorrências são texto sobre senha ou marcador no lugar do valor (xxx, ***); 5 ocorrências em 5 arquivos (acesso ao sistema e troca de senha) têm outro formato e precisam do seu olhar. Nenhum DOCX ou PDF ficou sem texto legível.
+
 **Ainda em aberto:**
+- **Arquivos soltos no topo de `homologacao/`:** `PROMPT-INICIO-TESTES.md`, `PROMPT-NOVO-PROJETO.md`, `DIARIO-DE-BORDO.md`, `COMO-EXECUTAR-TESTES.md`, `COMO-LER-OS-ERROS-DO-SERVIDOR.md`, `REGRA-PERFIL-DE-TESTE.md` e `README.md` parecem instruções para agentes e diário de trabalho, e não documentação do produto. Proposta: ficam **de fora** (instrução entra na base como se fosse conhecimento).
 - **Pastas que parecem de uso restrito:** `cliente-ivb`, `apresentacao`, `automacao` e `portal`. Elas ficam dentro de **`homologacao/`**, e não dentro de `Documentação/` (por isso não aparecem na tela da pasta Documentação). Proposta: fora do piloto até o responsável dizer o que são.
 - **O que fazer com o restante da pasta `Documentação/`:** `Assuntos regulatórios` (pasta e documento), `Safari.pdf`, `Safari-1.pdf` e "processo de transmissão do IUM" (imagem e texto). Proposta: importar os DOCX, PDF e TXT que forem documentação do produto; a imagem JPG fica de fora. Falta o responsável dizer **que tipo dar a cada um** (Norma, Regra de negócio, Especificação, Guia, Defeito ou Outro) e o que são os arquivos "Safari" e "IUM". Até lá, entram como "Outro".
 - **Os 27 arquivos com algo parecido com "senha":** serão listados (só caminho e número da linha) para decidir; a regra de nunca mostrar o valor já vale.
 
 ## 14. Ordem de construção
-1. Migração 16 (Markdown, fontes, tipo Defeito, função de importação) com testes no PGlite. **Feito** (arquivo `banco/migracoes/20261116090000_base_conhecimento_fontes_e_importacao.sql`; 54 testes novos); falta a autorização para aplicar no Supabase.
-2. Importador no modo ensaio, com a varredura e os testes.
+1. Migração 16 (Markdown, fontes, tipo Defeito, função de importação) com testes no PGlite. **Feito e aplicada** (14/11/2026).
+2. Importador no modo ensaio, com a varredura e os testes. **Feito** (`banco/importador/`, 20 testes; o modo importar também está pronto, com a mesma lógica, e foi testado só com banco de mentira).
 3. Revisão do relatório com você.
 4. Importação real pequena, conferida.
 5. Importação do piloto inteiro.
-6. Tela: filtro e coluna Fonte.
+6. Tela: filtro e coluna Fonte. **Feito** (coluna e filtro Fonte, busca pelo caminho na fonte e a referência de cada versão na aba Versões).

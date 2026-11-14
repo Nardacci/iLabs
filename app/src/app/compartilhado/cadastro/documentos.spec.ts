@@ -109,7 +109,9 @@ describe('cadastro de documentos (base de conhecimento)', () => {
       expect.objectContaining({ tabela: 'kb_documentos', ordenarPor: 'titulo' }),
     );
     expect(consulta.listar).toHaveBeenCalledWith(
-      expect.objectContaining({ colunasDeBusca: ['titulo', 'legenda', 'identificacao_oficial'] }),
+      expect.objectContaining({
+        colunasDeBusca: ['titulo', 'legenda', 'identificacao_oficial', 'fonte_caminho'],
+      }),
     );
     const cabecalho = [...raiz(f).querySelectorAll('th')].map((t) => t.textContent?.trim());
     expect(cabecalho).toContain('Título');

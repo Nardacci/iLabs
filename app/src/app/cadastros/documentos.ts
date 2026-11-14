@@ -12,7 +12,8 @@ export const documentos = definirCadastro({
   genero: 'm',
   funcao: 'kb.documentos',
   identificador: 'titulo',
-  busca: ['titulo', 'legenda', 'identificacao_oficial'],
+  busca: ['titulo', 'legenda', 'identificacao_oficial', 'fonte_caminho'],
+  filtros: ['fonte_id'],
   ordenarPor: 'titulo',
   envioDeArquivo: true,
   campos: [
@@ -51,6 +52,13 @@ export const documentos = definirCadastro({
         { valor: 'upload_proprio', rotulo: 'Documento próprio' },
         { valor: 'outro', rotulo: 'Outra' },
       ],
+    },
+    {
+      nome: 'fonte_id',
+      rotulo: 'Fonte',
+      tipo: 'lista',
+      somenteLista: true,
+      referencia: { tabela: 'kb_fontes', rotulo: 'nome' },
     },
     {
       nome: 'confidencialidade',

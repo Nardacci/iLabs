@@ -1,0 +1,16 @@
+{
+  "name": "ilabs-importador-kb",
+  "private": true,
+  "type": "module",
+  "description": "Importador da base de conhecimento: lê uma pasta do computador e envia os documentos ao Supabase (ensaio primeiro).",
+  "scripts": {
+    "ensaio": "node src/cli.mjs ensaio",
+    "importar": "node src/cli.mjs importar",
+    "test": "node --test testes/"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.119.0",
+    "fflate": "^0.8.2",
+    "unpdf": "^1.4.0"
+  }
+}
