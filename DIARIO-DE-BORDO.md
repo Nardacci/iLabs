@@ -2,11 +2,19 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-14 · Claude · Botão flutuante de ações rápidas (cadastrar ou buscar)
+
+- **Pedido do responsável:** botão/ícone flutuante que, ao clicar, abre as opções de cadastrar ou buscar. Respostas: aparece em **todas as telas**; por enquanto **duas opções**: Documentos (cadastrar) e Base de conhecimento (buscar).
+- **Feito:** componente `il-acoes-rapidas` (`compartilhado/ui/acoes-rapidas.ts`) dentro da moldura da área logada (`layout.ts`), no canto inferior direito, escondido na impressão. Abre **Cadastrar documento** (`/base-conhecimento/documentos?criar=1`, que já abre o formulário novo) e **Buscar na base de conhecimento** (`/base-conhecimento/buscar`). Fecha com Esc, clique fora, nova clique no botão ou ao escolher uma opção. Acessível (nome do botão, `aria-expanded`, foco visível pelo estilo global). Ícones novos `mais` e `fechar`.
+- **Permissões (as mesmas do menu; a decisão final continua do banco):** "Cadastrar documento" só aparece para quem pode **incluir** documentos; "Buscar" para quem pode consultar; quem não pode nenhuma das duas não vê o botão.
+- **Testes:** app 217 (10 novos: aberto e fechado, as duas opções e seus endereços, Esc, clique fora, permissões, acessibilidade, presença na moldura); `npm run verificar` completo OK (e2e com acessibilidade e contraste).
+- **Não feito:** as opções são só as duas combinadas; outras ações (por exemplo, buscar telas ou regras) ficam para quando o responsável pedir. Não houve mudança no banco.
+
 ## 2026-11-14 · Claude · Início: sem cartão da Base de conhecimento
 
 - **Pedido do responsável:** remover o cartão **Base de conhecimento** da página inicial; ela será aberta por **botões flutuantes** (cadastrar ou buscar), e não por um cartão de módulo. **Feito:** o cartão saiu de `modulos.ts` (a página inicial fica só com os cartões "em breve"), com o teste atualizado; o menu lateral e as rotas não mudaram. `npm run verificar` completo OK (app 207 testes).
 - **Confirmado pelo responsável (14/11/2026):** a pesquisa com imagem (por título e legenda, migração 19) **funcionou** na tela publicada.
-- **Falta:** os botões flutuantes (cadastrar e buscar) ainda **não existem**: hoje a entrada é só pelo menu lateral; o campo Módulo para documentos enviados à mão e o `urldesenv` nos demais Markdown seguem em aberto.
+- **Falta:** os botões flutuantes (cadastrar e buscar) ainda **não existiam** (o botão foi feito depois: entrada acima); a entrada era só pelo menu lateral; o campo Módulo para documentos enviados à mão e o `urldesenv` nos demais Markdown seguem em aberto.
 
 ## 2026-11-14 · Claude · Base de conhecimento: busca única (sem tela Regras), imagens por título e legenda, filtro por módulo (migração 19 APLICADA)
 

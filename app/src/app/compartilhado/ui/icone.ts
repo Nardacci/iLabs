@@ -54,6 +54,8 @@ export const ICONES = {
   ],
   sino: [c('M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 21h4')],
   seta: [c('M6 9l6 6 6-6')],
+  mais: [c('M12 5v14M5 12h14')],
+  fechar: [c('M6 6l12 12M18 6L6 18')],
 } satisfies Record<string, Forma[]>;
 
 export type NomeDeIcone = keyof typeof ICONES;

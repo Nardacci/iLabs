@@ -15,6 +15,7 @@ import { rotasInternas } from '../../app.rotas-internas';
 import { menuDasRotas } from '../menu';
 import { InatividadeService } from '../sessao/inatividade.service';
 import { SessaoService } from '../sessao/sessao.service';
+import { AcoesRapidas } from '../ui/acoes-rapidas';
 import { Busca, type ItemDeBusca } from '../ui/busca';
 import { Icone } from '../ui/icone';
 import { Logo } from '../ui/logo';
@@ -31,7 +32,7 @@ type Popover = 'sino' | 'avatar' | null;
  */
 @Component({
   selector: 'il-layout',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, Logo, Icone, Busca],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, Logo, Icone, Busca, AcoesRapidas],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '(document:keydown)': 'teclado($event)',
@@ -189,6 +190,7 @@ type Popover = 'sino' | 'avatar' | null;
         </main>
       </div>
     </div>
+    <il-acoes-rapidas />
     @if (buscando()) {
       <il-busca
         [itens]="itensDeBusca()"
