@@ -2,8 +2,9 @@
 // Importador da base de conhecimento. Dois comandos:
 //   ensaio    lê as pastas e escreve o relatório; NÃO grava nada em lugar nenhum.
 //   importar  envia ao Supabase o que o ensaio classificou como novo ou versão nova (exige --confirmo).
-// Os dois comandos cobrem os documentos e o catálogo de regras (arquivos regras-*.jsonl). Opções: --sem-regras (só
-// documentos) e --so-regras (só o catálogo).
+// Por padrão os dois comandos cobrem SÓ os documentos. O catálogo de regras (arquivos regras-*.jsonl) está em pausa
+// (decisão do responsável, 14/11/2026: a busca única é a dos Documentos) e só entra com --regras (documentos e
+// catálogo) ou --so-regras (só o catálogo).
 //
 // Credenciais (só variáveis de ambiente, nunca em arquivo, no git ou na tela):
 //   ILABS_SUPABASE_URL, ILABS_SUPABASE_CHAVE_SERVICO, ILABS_EMPRESA_ID
@@ -90,6 +91,7 @@ async function main() {
   const pastas = o.pastas && o.pastas !== true ? String(o.pastas).split(',').map((s) => s.trim()) : PASTAS_DO_PILOTO;
   const saida = resolve(String(o.saida && o.saida !== true ? o.saida : join(import.meta.dirname, '..', 'saida')));
   const liberados = lerLiberados(o.liberados && o.liberados !== true ? String(o.liberados) : null, o['liberar-tipos']);
+  const comRegras = Boolean(o.regras || o['so-regras']);
   const servico = clienteDeServico();
   const progresso = (feitos, total) => process.stdout.write(`\r  ${feitos}/${total}`);
 
@@ -106,7 +108,7 @@ async function main() {
     const relatorio = o['so-regras']
       ? { geradoEm: new Date().toISOString(), raiz, pastas, itens: [], ignorados: new Map(), resumo: { arquivos: 0, megabytes: 0, porAcao: {}, porPasta: {}, porTipo: {}, achadosPorTipo: {}, ignoradosPorMotivo: {} } }
       : await montarRelatorio({ raiz, pastas, estado, liberados, aoProgresso: progresso });
-    if (!o['sem-regras']) relatorio.catalogo = resumoDoCatalogo(ensaiarRegras({ raiz, pastas, liberados }));
+    if (comRegras) relatorio.catalogo = resumoDoCatalogo(ensaiarRegras({ raiz, pastas, liberados }));
     const arquivos = escreverRelatorio(relatorio, saida);
     if (!o['so-regras']) mostrarResumo(relatorio.resumo);
     if (relatorio.catalogo) mostrarCatalogo(relatorio.catalogo);
@@ -125,7 +127,7 @@ async function main() {
     console.log(`Importando${limite ? ` (no máximo ${limite} arquivos)` : ''}, referência ${referencia}…`);
     const r = await importar({ cliente: servico.cliente, empresaId: servico.empresaId, fonteNome: NOME_DA_FONTE, referencia, raiz, pastas, liberados, limite, aoProgresso: progresso });
     fonteId = r.fonteId;
-    if (!o['sem-regras']) r.relatorio.catalogo = resumoDoCatalogo(ensaiarRegras({ raiz, pastas, liberados }));
+    if (comRegras) r.relatorio.catalogo = resumoDoCatalogo(ensaiarRegras({ raiz, pastas, liberados }));
     escreverRelatorio(r.relatorio, saida);
     mostrarResumo(r.relatorio.resumo);
     console.log(`\nResultado: ${r.resumo.novo} novos, ${r.resumo.versao_nova} versões novas, ${r.resumo.igual} já estavam iguais.`);
@@ -138,7 +140,7 @@ async function main() {
       for (const f of r.falhas.slice(0, 20)) console.log(`  ${f.caminho}: ${f.erro}`);
     }
   }
-  if (!o['sem-regras']) {
+  if (comRegras) {
     if (!fonteId) {
       const { data, error } = await servico.cliente.rpc('kb_criar_fonte', { p_empresa_id: servico.empresaId, p_nome: NOME_DA_FONTE, p_origem: ORIGEM_DA_FONTE });
       if (error) falhar(`kb_criar_fonte: ${error.message}`);

@@ -13,8 +13,17 @@ const TIPOS_ACEITOS = {
   md: 'text/markdown',
   pdf: 'application/pdf',
   docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  png: 'image/png',
+  jpg: 'image/jpeg',
+  jpeg: 'image/jpeg',
+  webp: 'image/webp',
 } as const;
 type ExtensaoAceita = keyof typeof TIPOS_ACEITOS;
+
+/** Imagem não tem texto para ler: é achada pelo título e pela legenda do documento. */
+const EXTENSOES_DE_IMAGEM: readonly string[] = ['png', 'jpg', 'jpeg', 'webp'];
+export const ehImagem = (tipoDoArquivo: string): boolean =>
+  EXTENSOES_DE_IMAGEM.includes(tipoDoArquivo.toLowerCase());
 
 /** Extensão aceita (txt, docx ou pdf) ou nulo. */
 export function extensaoDe(nome: string): ExtensaoAceita | null {
@@ -24,7 +33,8 @@ export function extensaoDe(nome: string): ExtensaoAceita | null {
 
 /** Aviso rápido sobre o arquivo escolhido (o banco e o Storage conferem de novo). Nulo = tudo certo. */
 export function conferirArquivo(arquivo: { name: string; size: number }): string | null {
-  if (!extensaoDe(arquivo.name)) return 'Use um arquivo TXT, MD, DOCX ou PDF.';
+  if (!extensaoDe(arquivo.name))
+    return 'Use um arquivo TXT, MD, DOCX, PDF ou imagem (PNG, JPG ou WEBP).';
   if (arquivo.size <= 0) return 'O arquivo está vazio.';
   if (arquivo.size > LIMITE_DO_ARQUIVO) return 'O arquivo passa de 50 MB.';
   return null;
@@ -101,7 +111,10 @@ export class EnvioDeDocumentoService {
   ): Promise<{ versaoId: string; caminho: string; ext: ExtensaoAceita; checksum: string }> {
     const ext = extensaoDe(arquivo.name);
     const aviso = conferirArquivo(arquivo);
-    if (aviso || !ext) throw new ErroDoBanco(aviso ?? 'Use um arquivo TXT, MD, DOCX ou PDF.');
+    if (aviso || !ext)
+      throw new ErroDoBanco(
+        aviso ?? 'Use um arquivo TXT, MD, DOCX, PDF ou imagem (PNG, JPG ou WEBP).',
+      );
     const empresa = this.sessao.estado()?.empresa_id;
     if (!empresa)
       throw new ErroDoBanco('Não foi possível identificar a sua empresa. Entre de novo.');
@@ -145,12 +158,13 @@ export class EnvioDeDocumentoService {
       p_tamanho: arquivo.size,
       p_checksum: envio.checksum,
     });
-    this.pedirLeitura(envio.versaoId);
+    this.pedirLeitura(envio.versaoId, envio.ext);
     return criado;
   }
 
   /** Pede ao servidor a leitura do texto, sem esperar: se falhar, a versão fica pendente e dá para repetir na aba Versões. */
-  private pedirLeitura(versaoId: string): void {
+  private pedirLeitura(versaoId: string, tipoDoArquivo: string): void {
+    if (ehImagem(tipoDoArquivo)) return; // imagem não tem texto: o banco já a marca como pronta
     void this.funcoes.processarVersao(versaoId);
   }
 
@@ -196,8 +210,17 @@ export class EnvioDeDocumentoService {
       p_checksum: envio.checksum,
       p_motivo: motivo,
     });
-    this.pedirLeitura(envio.versaoId);
+    this.pedirLeitura(envio.versaoId, envio.ext);
     return numero;
+  }
+
+  /** Endereço temporário (1 minuto) para MOSTRAR uma imagem na tela (sem forçar o download). */
+  async enderecoParaVer(versao: Pick<VersaoDeDocumento, 'arquivo_caminho'>): Promise<string> {
+    const { data, error } = await this.banco.cliente.storage
+      .from(BUCKET_DOS_DOCUMENTOS)
+      .createSignedUrl(versao.arquivo_caminho, 60);
+    if (error) throw new ErroDoBanco('Não foi possível mostrar a imagem. Tente de novo.');
+    return data.signedUrl;
   }
 
   /** Endereço temporário (1 minuto) para baixar uma versão; só quem enxerga a versão consegue gerá-lo. */

@@ -11,9 +11,11 @@ Lê uma pasta do seu computador (hoje, o repositório do legado) e envia os docu
 - **Varredura de segredos** em todo arquivo (senha, chave, string de conexão, token e endereço de servidor). Arquivo com achado, ou DOCX/PDF sem texto legível, **não é enviado**: vai para "revisar". **O valor nunca aparece** (nem no relatório, nem na tela, nem em arquivo): só o caminho, o tipo de achado e o número da linha.
 - Mesmo conteúdo de outro arquivo: não é enviado de novo. Arquivo que mudou vira **versão nova** do mesmo documento. O que sumiu da fonte é só **marcado**, nunca apagado nem inativado.
 
-## Catálogo de regras (além dos documentos)
-Os arquivos `regras-geral.jsonl` (Interno) e `regras-seguranca-e-acesso.jsonl` (Confidencial), em `entregaveis/fonte/` de cada módulo, trazem **uma regra por linha, com campos separados**. O importador os envia à função `kb_importar_regras` (catálogo `kb_regras`, consultado pela tela **Regras**). O `regras.jsonl` completo (as duas confidencialidades juntas) **não entra**.
-- **Ensaio e importação cobrem os dois:** documentos e catálogo. `--sem-regras` faz só os documentos; `--so-regras`, só o catálogo.
+## Catálogo de regras (EM PAUSA: só com `--regras` ou `--so-regras`)
+Por decisão do responsável (14/11/2026), a busca é uma só, a dos **Documentos**: as regras já entram como Markdown e são achadas pelo Buscar. O catálogo (tabela `kb_regras`, vazia) fica parado; por isso o importador **não o importa**, a menos que você peça.
+
+Os arquivos `regras-geral.jsonl` (Interno) e `regras-seguranca-e-acesso.jsonl` (Confidencial), em `entregaveis/fonte/` de cada módulo, trazem **uma regra por linha, com campos separados**. O importador os envia à função `kb_importar_regras` (catálogo `kb_regras`). O `regras.jsonl` completo (as duas confidencialidades juntas) **não entra**.
+- **Por padrão, só os documentos.** `--regras` inclui o catálogo; `--so-regras` faz só o catálogo.
 - Cada linha precisa ter `id`, `menu`, `tela`, `tipo`, `regra` e `confidencialidade` (Interno ou Confidencial); caso contrário o arquivo é recusado, com o número da linha (nunca o texto). No arquivo de segurança e acesso nenhuma regra entra como Interno, e a importação **nunca rebaixa** a confidencialidade de uma regra que já está na base.
 - **Varredura de segredos campo a campo** (uma regra é uma linha, e quase toda linha diz "servidor"; por linha, a numeração de uma norma como 7.1.2.3 seria tomada por endereço). Achado bloqueia o arquivo inteiro; liberar funciona como nos documentos.
 - Repetível: regra igual não muda nada; regra alterada na fonte é atualizada e fica na auditoria; as que sumiram da fonte só são **marcadas** (e só numa importação completa, sem bloqueio e sem falha).

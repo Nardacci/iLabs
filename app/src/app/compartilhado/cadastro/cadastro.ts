@@ -27,6 +27,7 @@ import { ConsultaService } from '../dados/consulta';
 import {
   type ArquivoJaEnviado,
   conferirArquivo,
+  ehImagem,
   type DadosDoDocumento,
   EnvioDeDocumentoService,
   tamanhoLegivel,
@@ -352,7 +353,9 @@ const TAMANHO_DA_PAGINA = 10;
               @if (cadastro().envioDeArquivo && !editando()) {
                 <div class="field largo">
                   <label for="arquivo-do-documento"
-                    >Arquivo (TXT, MD, DOCX ou PDF, até 50 MB)<span aria-hidden="true">
+                    >Arquivo (TXT, MD, DOCX, PDF ou imagem (PNG, JPG ou WEBP), até 50 MB)<span
+                      aria-hidden="true"
+                    >
                       *</span
                     ></label
                   >
@@ -360,7 +363,7 @@ const TAMANHO_DA_PAGINA = 10;
                     class="input"
                     id="arquivo-do-documento"
                     type="file"
-                    accept=".txt,.md,.docx,.pdf"
+                    accept=".txt,.md,.docx,.pdf,.png,.jpg,.jpeg,.webp"
                     (change)="escolherArquivo($event)"
                     [attr.aria-invalid]="erroDoArquivo() ? 'true' : null"
                     aria-describedby="arquivo-dica"
@@ -446,15 +449,14 @@ const TAMANHO_DA_PAGINA = 10;
             >
               <div class="field">
                 <label for="arquivo-da-versao"
-                  >Arquivo da nova versão (TXT, MD, DOCX ou PDF, até 50 MB)<span aria-hidden="true">
-                    *</span
-                  ></label
+                  >Arquivo da nova versão (TXT, MD, DOCX, PDF ou imagem (PNG, JPG ou WEBP), até 50
+                  MB)<span aria-hidden="true"> *</span></label
                 >
                 <input
                   class="input"
                   id="arquivo-da-versao"
                   type="file"
-                  accept=".txt,.md,.docx,.pdf"
+                  accept=".txt,.md,.docx,.pdf,.png,.jpg,.jpeg,.webp"
                   (change)="escolherArquivoDaVersao($event)"
                   [attr.aria-invalid]="erroDoArquivoDaVersao() ? 'true' : null"
                 />
@@ -502,13 +504,29 @@ const TAMANHO_DA_PAGINA = 10;
                   · referência na fonte: {{ v.fonte_ref }}
                 }
               </p>
-              <p class="sub" data-testid="leitura-do-texto">
-                Leitura do texto para a busca: {{ situacaoDoTexto(v.id) }}
-              </p>
+              @if (imagemDaVersao(v)) {
+                @if (imagens()[v.id]; as url) {
+                  <!-- endereço temporário assinado do Storage: não passa pelo otimizador de imagens -->
+                  <!-- eslint-disable @angular-eslint/template/prefer-ngsrc -->
+                  <img
+                    [src]="url"
+                    [alt]="descricaoDaImagem()"
+                    style="display: block; max-width: 100%; max-height: 360px; margin: 6px 0"
+                  />
+                  <!-- eslint-enable @angular-eslint/template/prefer-ngsrc -->
+                }
+                <p class="sub" data-testid="leitura-do-texto">
+                  Imagem: é achada pelo título e pela legenda do documento (não há texto para ler).
+                </p>
+              } @else {
+                <p class="sub" data-testid="leitura-do-texto">
+                  Leitura do texto para a busca: {{ situacaoDoTexto(v.id) }}
+                </p>
+              }
               <button type="button" class="btn nao-imprimir" (click)="baixar(v)">
                 Baixar versão {{ v.numero }}
               </button>
-              @if (podeProcessarDeNovo(v.id)) {
+              @if (!imagemDaVersao(v) && podeProcessarDeNovo(v.id)) {
                 <button
                   type="button"
                   class="btn nao-imprimir"
@@ -666,6 +684,8 @@ export class Cadastro {
   /** Aba Versões (cadastro com envio de arquivo): as versões, o envio de uma nova e o download. */
   protected readonly versoes = signal<VersaoDeDocumento[]>([]);
   protected readonly estadosDoTexto = signal<Map<string, LinhaDe<'kb_processamento'>>>(new Map());
+  /** Endereço temporário para mostrar cada versão que é imagem, por id da versão. */
+  protected readonly imagens = signal<Record<string, string>>({});
   protected readonly carregandoVersoes = signal(false);
   protected readonly novaVersaoAberta = signal(false);
   protected readonly avisoDaVersao = signal<string | null>(null);
@@ -1281,6 +1301,7 @@ export class Cadastro {
 
   private async carregarVersoes(linha: Linha): Promise<void> {
     this.versoes.set([]);
+    this.imagens.set({});
     this.estadosDoTexto.set(new Map());
     this.carregandoVersoes.set(true);
     try {
@@ -1291,6 +1312,34 @@ export class Cadastro {
       this.carregandoVersoes.set(false);
     }
     await this.carregarEstadosDoTexto();
+    await this.carregarImagens();
+  }
+
+  protected imagemDaVersao(v: VersaoDeDocumento): boolean {
+    return ehImagem(v.tipo_arquivo);
+  }
+
+  /** Texto alternativo da imagem: o título e a legenda do documento aberto. */
+  protected descricaoDaImagem(): string {
+    const doc = this.alvo();
+    const t = doc?.['titulo'];
+    const l = doc?.['legenda'];
+    const titulo = typeof t === 'string' ? t : '';
+    const legenda = typeof l === 'string' ? l : '';
+    return legenda ? `${titulo}: ${legenda}` : titulo;
+  }
+
+  /** Mostrar a imagem é conveniência: se o endereço não sair, o resto da aba continua valendo. */
+  private async carregarImagens(): Promise<void> {
+    const mostradas: Record<string, string> = {};
+    for (const v of this.versoes().filter((x) => ehImagem(x.tipo_arquivo))) {
+      try {
+        mostradas[v.id] = await this.envio.enderecoParaVer(v);
+      } catch {
+        // sem a prévia, ainda dá para baixar a versão
+      }
+    }
+    this.imagens.set(mostradas);
   }
 
   /** A situação da leitura do texto é informação extra: se não carregar, as versões continuam aparecendo. */

@@ -122,15 +122,17 @@ describe('cadastro de documentos (base de conhecimento)', () => {
     expect(raiz(f).textContent).toContain('ANVISA');
   });
 
-  it('o documento novo pede o arquivo (TXT, MD, DOCX ou PDF) no formulário', async () => {
+  it('o documento novo pede o arquivo (TXT, MD, DOCX, PDF ou imagem (PNG, JPG ou WEBP)) no formulário', async () => {
     preparar();
     const f = await abrir();
     botao(f, 'Novo documento')?.click();
     f.detectChanges();
     const entrada = raiz(f).querySelector<HTMLInputElement>('#arquivo-do-documento');
     expect(entrada?.type).toBe('file');
-    expect(entrada?.accept).toBe('.txt,.md,.docx,.pdf');
-    expect(raiz(f).textContent).toContain('Arquivo (TXT, MD, DOCX ou PDF, até 50 MB)');
+    expect(entrada?.accept).toBe('.txt,.md,.docx,.pdf,.png,.jpg,.jpeg,.webp');
+    expect(raiz(f).textContent).toContain(
+      'Arquivo (TXT, MD, DOCX, PDF ou imagem (PNG, JPG ou WEBP), até 50 MB)',
+    );
   });
 
   it('sem escolher o arquivo não grava, mesmo com o resto preenchido', async () => {
@@ -187,7 +189,9 @@ describe('cadastro de documentos (base de conhecimento)', () => {
     botao(f, 'Novo documento')?.click();
     f.detectChanges();
     await escolherArquivo(f, new File(['x'], 'programa.exe'));
-    expect(raiz(f).textContent).toContain('Use um arquivo TXT, MD, DOCX ou PDF.');
+    expect(raiz(f).textContent).toContain(
+      'Use um arquivo TXT, MD, DOCX, PDF ou imagem (PNG, JPG ou WEBP).',
+    );
     expect(envio.jaEnviado).not.toHaveBeenCalled();
     preencher(f, 'Título', 'Programa');
     preencherObrigatorios(f);

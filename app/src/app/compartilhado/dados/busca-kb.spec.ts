@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { BancoService } from './banco';
-import { BuscaKbService } from './busca-kb';
+import { BuscaKbService, rotuloDoModulo } from './busca-kb';
 import { FuncoesDeBorda } from './funcoes-de-borda';
 
 describe('BuscaKbService', () => {
@@ -28,6 +28,23 @@ describe('BuscaKbService', () => {
       p_fonte_id: 'f1',
       p_limite: 30,
     });
+  });
+
+  it('manda o módulo escolhido e só ele (módulo vazio não vira filtro)', async () => {
+    const { servico, rpc } = preparar();
+    await servico.buscar('lote', { modulo: '3.estoque' });
+    expect(rpc).toHaveBeenLastCalledWith('kb_buscar', {
+      p_consulta: 'lote',
+      p_modulo: '3.estoque',
+    });
+    await servico.buscar('lote', { modulo: '' });
+    expect(rpc).toHaveBeenLastCalledWith('kb_buscar', { p_consulta: 'lote' });
+  });
+
+  it('os módulos com documentos vêm de kb_modulos', async () => {
+    const { servico, rpc } = preparar();
+    expect(await servico.modulos()).toEqual([{ titulo: 'Doc' }]);
+    expect(rpc).toHaveBeenCalledWith('kb_modulos');
   });
 
   it('lista de tipos vazia não vira filtro', async () => {
@@ -139,5 +156,15 @@ describe('FuncoesDeBorda.processarVersao', () => {
   it('queda de rede devolve falso, sem lançar (a versão fica pendente)', async () => {
     const { servico } = preparar({ resposta: new Error('rede') });
     expect(await servico.processarVersao('v1')).toBe(false);
+  });
+});
+
+describe('rotuloDoModulo', () => {
+  it('tira o número da pasta, troca _ por espaço e põe a primeira letra em maiúscula', () => {
+    expect(rotuloDoModulo('1.principal')).toBe('Principal');
+    expect(rotuloDoModulo('4.controle_qualidade')).toBe('Controle qualidade');
+    expect(rotuloDoModulo('9.ope')).toBe('Ope');
+    expect(rotuloDoModulo('Documentação')).toBe('Documentação');
+    expect(rotuloDoModulo('12.')).toBe('12.');
   });
 });

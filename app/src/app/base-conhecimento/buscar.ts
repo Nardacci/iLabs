@@ -10,18 +10,28 @@ import {
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { documentos } from '../cadastros/documentos';
-import { BuscaKbService, type ResultadoDeBusca } from '../compartilhado/dados/busca-kb';
+import {
+  BuscaKbService,
+  type ResultadoDeBusca,
+  rotuloDoModulo,
+} from '../compartilhado/dados/busca-kb';
+import { ehImagem } from '../compartilhado/dados/envio-de-documento';
 import { ConsultaService } from '../compartilhado/dados/consulta';
 import { linhasDestacadas, type Parte, partesDestacadas } from '../compartilhado/dados/destaque';
 import { mensagemDeErro } from '../compartilhado/dados/mensagem';
 
 interface ResultadoNaTela extends ResultadoDeBusca {
-  /** Os ids do trecho e da versão, já conferidos (a busca sempre os devolve). */
-  trechoId: string;
+  /** Identifica o resultado na lista (o trecho achado ou, se a busca achou só pelo título, o documento). */
+  chave: string;
+  /** O trecho achado; nulo quando o documento foi achado só pelo título, pela legenda ou pela identificação. */
+  trechoId: string | null;
   versaoId: string;
+  /** O que se mostra: o trecho achado ou, sem trecho, a legenda do documento. */
   partes: Parte[];
   rotuloDoTipo: string;
   rotuloDaOrigem: string;
+  rotuloDoModulo: string | null;
+  imagem: boolean;
 }
 
 interface BlocoLido {
@@ -111,6 +121,15 @@ const rotuloDe = (nome: string, valor: string | null): string =>
             </select>
           </div>
           <div class="field campo-situacao">
+            <label for="filtro-modulo-kb">Módulo</label>
+            <select class="input" id="filtro-modulo-kb" formControlName="modulo">
+              <option value="">Todos</option>
+              @for (m of modulos(); track m.valor) {
+                <option [value]="m.valor">{{ m.rotulo }}</option>
+              }
+            </select>
+          </div>
+          <div class="field campo-situacao">
             <label for="filtro-fonte-kb">Fonte</label>
             <select class="input" id="filtro-fonte-kb" formControlName="fonte">
               <option value="">Todas</option>
@@ -122,7 +141,8 @@ const rotuloDe = (nome: string, valor: string | null): string =>
           <button type="submit" class="btn primary" [disabled]="buscando()">Buscar</button>
         </div>
         <span class="hint" id="dica-busca-kb"
-          >Digite palavras ou uma frase entre aspas. Acentos e maiúsculas não importam.</span
+          >Digite palavras ou uma frase entre aspas. Acentos e maiúsculas não importam. Acha pelo
+          texto, pelo título e pela legenda (imagens são achadas pelo título e pela legenda).</span
         >
       </form>
 
@@ -142,11 +162,19 @@ const rotuloDe = (nome: string, valor: string | null): string =>
             {{ resultados().length }}
             {{ resultados().length === 1 ? 'documento encontrado' : 'documentos encontrados' }}.
           </p>
-          @for (r of resultados(); track r.trechoId) {
+          @for (r of resultados(); track r.chave) {
             <article class="panel resultado">
-              <h2>{{ r.titulo }}</h2>
+              <h2>
+                {{ r.titulo }}
+                @if (r.imagem) {
+                  <span class="pill">Imagem</span>
+                }
+              </h2>
               <p class="sub">
                 {{ r.rotuloDoTipo }} · {{ r.rotuloDaOrigem }}
+                @if (r.rotuloDoModulo) {
+                  · {{ r.rotuloDoModulo }}
+                }
                 @if (r.fonte_nome) {
                   · {{ r.fonte_nome }}
                 }
@@ -159,7 +187,7 @@ const rotuloDe = (nome: string, valor: string | null): string =>
                 }
               </p>
               @if (aberto(r); as e) {
-                <div class="texto-aberto" [id]="'texto-' + r.trechoId">
+                <div class="texto-aberto" [id]="'texto-' + r.chave">
                   @if (e.temAnterior) {
                     <button
                       type="button"
@@ -205,7 +233,7 @@ const rotuloDe = (nome: string, valor: string | null): string =>
                     <p class="msg bad" role="alert">{{ e.erro }}</p>
                   }
                 </div>
-              } @else {
+              } @else if (r.partes.length > 0) {
                 <p class="trecho">
                   @for (p of r.partes; track $index) {
                     @if (p.marca) {
@@ -215,6 +243,8 @@ const rotuloDe = (nome: string, valor: string | null): string =>
                     }
                   }
                 </p>
+              } @else {
+                <p class="trecho sub">Achado pelo título do documento.</p>
               }
               @if (r.caminho) {
                 <p class="sub">Arquivo: {{ r.caminho }}</p>
@@ -225,16 +255,18 @@ const rotuloDe = (nome: string, valor: string | null): string =>
                   {{ r.repetido_em === 1 ? 'arquivo' : 'arquivos' }} (aparece só este).
                 </p>
               }
-              <button
-                type="button"
-                class="btn"
-                [attr.aria-expanded]="aberto(r) ? 'true' : 'false'"
-                [attr.aria-controls]="'texto-' + r.trechoId"
-                [attr.aria-label]="(aberto(r) ? 'Ver menos de ' : 'Ver mais de ') + r.titulo"
-                (click)="alternar(r)"
-              >
-                {{ aberto(r) ? 'Ver menos' : 'Ver mais' }}
-              </button>
+              @if (r.trechoId) {
+                <button
+                  type="button"
+                  class="btn"
+                  [attr.aria-expanded]="aberto(r) ? 'true' : 'false'"
+                  [attr.aria-controls]="'texto-' + r.chave"
+                  [attr.aria-label]="(aberto(r) ? 'Ver menos de ' : 'Ver mais de ') + r.titulo"
+                  (click)="alternar(r)"
+                >
+                  {{ aberto(r) ? 'Ver menos' : 'Ver mais' }}
+                </button>
+              }
               <a
                 class="btn"
                 [routerLink]="['/base-conhecimento/documentos']"
@@ -259,6 +291,7 @@ export class BuscarKb {
 
   protected readonly tipos = opcoesDe('tipo');
   protected readonly fontes = signal<{ valor: string; rotulo: string }[]>([]);
+  protected readonly modulos = signal<{ valor: string; rotulo: string }[]>([]);
   protected readonly resultados = signal<ResultadoNaTela[]>([]);
   protected readonly buscando = signal(false);
   protected readonly erro = signal<string | null>(null);
@@ -270,11 +303,13 @@ export class BuscarKb {
   protected readonly formulario = new FormGroup({
     consulta: new FormControl('', { nonNullable: true }),
     tipo: new FormControl('', { nonNullable: true }),
+    modulo: new FormControl('', { nonNullable: true }),
     fonte: new FormControl('', { nonNullable: true }),
   });
 
   constructor() {
     void this.carregarFontes();
+    void this.carregarModulos();
     effect(() => {
       const q = this.q();
       untracked(() => {
@@ -284,6 +319,21 @@ export class BuscarKb {
         }
       });
     });
+  }
+
+  private async carregarModulos(): Promise<void> {
+    try {
+      const lista = await this.busca.modulos();
+      this.modulos.set(
+        lista.flatMap((m) =>
+          m.modulo
+            ? [{ valor: m.modulo, rotulo: `${rotuloDoModulo(m.modulo)} (${m.total ?? 0})` }]
+            : [],
+        ),
+      );
+    } catch {
+      this.modulos.set([]); // sem os módulos o filtro fica só com "Todos"; a busca continua valendo
+    }
   }
 
   private async carregarFontes(): Promise<void> {
@@ -304,7 +354,7 @@ export class BuscarKb {
   }
 
   protected aberto(r: ResultadoNaTela): Expandido | undefined {
-    return this.expandidos()[r.trechoId];
+    return r.trechoId ? this.expandidos()[r.trechoId] : undefined;
   }
 
   private atualizar(id: string, mudar: (e: Expandido) => Expandido): void {
@@ -316,22 +366,24 @@ export class BuscarKb {
 
   /** "Ver mais" / "Ver menos": mostra o trecho inteiro, com as palavras marcadas, e deixa pedir os vizinhos. */
   protected async alternar(r: ResultadoNaTela): Promise<void> {
+    const id = r.trechoId;
+    if (!id) return;
     if (this.aberto(r)) {
       this.expandidos.update((todos) =>
-        Object.fromEntries(Object.entries(todos).filter(([id]) => id !== r.trechoId)),
+        Object.fromEntries(Object.entries(todos).filter(([id]) => id !== id)),
       );
       return;
     }
     const consulta = this.ultima() ?? '';
     const bloco: BlocoLido = {
-      id: r.trechoId,
+      id: id,
       ordem: null,
       linhas: linhasDestacadas(r.trecho ?? '', consulta),
       atual: true,
     };
     this.expandidos.update((todos) => ({
       ...todos,
-      [r.trechoId]: {
+      [id]: {
         blocos: [bloco],
         carregando: true,
         erro: null,
@@ -340,8 +392,8 @@ export class BuscarKb {
       },
     }));
     try {
-      const lido = await this.busca.trecho(r.trechoId);
-      this.atualizar(r.trechoId, (e) => ({
+      const lido = await this.busca.trecho(id);
+      this.atualizar(id, (e) => ({
         ...e,
         carregando: false,
         blocos: lido
@@ -355,21 +407,23 @@ export class BuscarKb {
         temSeguinte: !!lido,
       }));
     } catch (erro) {
-      this.atualizar(r.trechoId, (e) => ({ ...e, carregando: false, erro: mensagemDeErro(erro) }));
+      this.atualizar(id, (e) => ({ ...e, carregando: false, erro: mensagemDeErro(erro) }));
     }
   }
 
   /** Mostra o trecho de antes ou de depois do que já está na tela. */
   protected async vizinho(r: ResultadoNaTela, sentido: 'anterior' | 'seguinte'): Promise<void> {
+    const id = r.trechoId;
+    if (!id) return;
     const atual = this.aberto(r);
     if (!atual || atual.carregando) return;
     const ponta = sentido === 'anterior' ? atual.blocos[0] : atual.blocos[atual.blocos.length - 1];
     if (ponta?.ordem == null) return;
-    this.atualizar(r.trechoId, (e) => ({ ...e, carregando: true, erro: null }));
+    this.atualizar(id, (e) => ({ ...e, carregando: true, erro: null }));
     try {
       const lido = await this.busca.vizinho(r.versaoId, ponta.ordem, sentido);
       const consulta = this.ultima() ?? '';
-      this.atualizar(r.trechoId, (e) => {
+      this.atualizar(id, (e) => {
         if (!lido) {
           return sentido === 'anterior'
             ? { ...e, carregando: false, temAnterior: false }
@@ -386,12 +440,12 @@ export class BuscarKb {
           : { ...e, carregando: false, blocos: [...e.blocos, novo] };
       });
     } catch (erro) {
-      this.atualizar(r.trechoId, (e) => ({ ...e, carregando: false, erro: mensagemDeErro(erro) }));
+      this.atualizar(id, (e) => ({ ...e, carregando: false, erro: mensagemDeErro(erro) }));
     }
   }
 
   protected async buscar(atualizarEndereco = true): Promise<void> {
-    const { consulta, tipo, fonte } = this.formulario.getRawValue();
+    const { consulta, tipo, modulo, fonte } = this.formulario.getRawValue();
     const texto = consulta.trim();
     if (!texto || this.buscando()) return;
     this.buscando.set(true);
@@ -406,20 +460,25 @@ export class BuscarKb {
       const achados = await this.busca.buscar(texto, {
         tipos: tipo ? [tipo] : [],
         fonteId: fonte || undefined,
+        modulo: modulo || undefined,
         limite: 30,
       });
       this.expandidos.set({});
       this.resultados.set(
         achados.flatMap((r) =>
-          r.trecho_id && r.versao_id
+          r.versao_id && r.documento_id
             ? [
                 {
                   ...r,
+                  chave: r.trecho_id ?? r.documento_id,
                   trechoId: r.trecho_id,
                   versaoId: r.versao_id,
-                  partes: partesDestacadas(r.trecho ?? '', texto),
+                  // sem trecho (achado pelo título ou pela legenda), mostra a legenda do documento
+                  partes: partesDestacadas(r.trecho ?? r.legenda ?? '', texto),
                   rotuloDoTipo: rotuloDe('tipo', r.tipo),
                   rotuloDaOrigem: rotuloDe('origem', r.origem),
+                  rotuloDoModulo: r.modulo ? rotuloDoModulo(r.modulo) : null,
+                  imagem: ehImagem(r.tipo_arquivo ?? ''),
                 },
               ]
             : [],

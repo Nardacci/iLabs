@@ -109,7 +109,7 @@ describe('EnvioDeDocumentoService: versões, nova versão e download', () => {
   it('nova versão com arquivo de tipo não aceito não toca no Storage nem no banco', async () => {
     const { servico, upload, rpc } = preparar();
     await expect(servico.novaVersao('doc-1', pdf('programa.exe'), 'Motivo válido')).rejects.toThrow(
-      /TXT, MD, DOCX ou PDF/,
+      /TXT, MD, DOCX, PDF ou imagem \(PNG, JPG ou WEBP\)/,
     );
     expect(upload).not.toHaveBeenCalled();
     expect(rpc).not.toHaveBeenCalled();
