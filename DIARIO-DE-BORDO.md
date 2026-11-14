@@ -2,6 +2,16 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-13 · Claude · Base de conhecimento: aba Versões (listar, baixar e enviar nova versão)
+
+- **Prova real da migração 15:** o responsável cadastrou dois documentos pela tela; conferido no banco real: os 2 documentos com versão 1, os arquivos no bucket `kb-documentos` com o mesmo tamanho e o mesmo SHA-256 dos arquivos locais, e 1 evento de auditoria em cada. **Para ajustar pelo responsável (Editar, com motivo):** o segundo documento tem título e identificação oficial com "2020" (a RDC 658 é de 2022) e parece ser a mesma norma do primeiro; o certo é virar versão do primeiro.
+- **App:** o cadastro de documentos ganhou a aba **Versões** (entre Dados e Histórico, só em documento existente): lista a mais nova primeiro, com a atual marcada, nome do arquivo, tipo, tamanho, data e os 16 primeiros caracteres do SHA-256; botão **Baixar versão N** (endereço assinado de 1 minuto, gerado só para quem enxerga a versão); **Enviar nova versão** (arquivo e motivo obrigatórios, só para quem pode alterar e com o documento ativo; documento inativo mostra o aviso para reativar). Quem só consulta vê e baixa, mas não envia. O endereço aceita `?aba=versoes`.
+- **Serviço** (`EnvioDeDocumentoService`): `versoes`, `novaVersao` (mesmo envio ao Storage do documento novo, depois `kb_nova_versao`) e `enderecoDeDownload`; o envio ao Storage foi reaproveitado entre documento novo e nova versão.
+- **Defeito pego pelos testes:** o formulário de nova versão não estava ligado ao Angular (sem `formGroup`) e, num navegador de verdade, enviaria a página em vez de chamar o envio. Corrigido (`grupoVersao`).
+- **Testes:** 21 novos no app (aba Versões e serviço); app **124 de 124**; `npm run verificar` completo OK.
+- **Não provado:** o download e a nova versão no Supabase real (os testes usam banco de mentira); a regra de leitura do Storage (`createSignedUrl`) só se prova no primeiro clique em Baixar.
+- **Ainda não feito:** limpeza de arquivos enviados cujo registro falhou; extração de texto, trechos, vetores e IA; registro da decisão do schema em `docs/decisoes.md`.
+
 ## 2026-11-13 · Claude · Base de conhecimento: tela "Documentos" (envio do arquivo, dados, inativar e histórico)
 
 - **Pedido do responsável:** começar a tela de documentos da base de conhecimento (migração 15, ainda não aplicada). A tela é o **cadastro por metadados** do iLabs, com o que faltava para documentos: **campo de arquivo** (só no cadastro novo) e **campo de data**.
