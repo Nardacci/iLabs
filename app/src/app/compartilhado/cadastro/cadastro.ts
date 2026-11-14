@@ -24,6 +24,13 @@ import { debounceTime } from 'rxjs';
 import type { LinhaDe } from '../dados/banco';
 import { BancoService } from '../dados/banco';
 import { ConsultaService } from '../dados/consulta';
+import {
+  type ArquivoJaEnviado,
+  conferirArquivo,
+  type DadosDoDocumento,
+  EnvioDeDocumentoService,
+  tamanhoLegivel,
+} from '../dados/envio-de-documento';
 import { mensagemDeErro } from '../dados/mensagem';
 import { RascunhoService } from '../sessao/rascunho.service';
 import { SessaoService } from '../sessao/sessao.service';
@@ -323,6 +330,44 @@ const TAMANHO_DA_PAGINA = 10;
         @if (abaAtual() === 'dados') {
           <form id="form-cadastro" [formGroup]="formulario" (ngSubmit)="salvar()" novalidate>
             <div class="grade-campos">
+              @if (cadastro().envioDeArquivo && !editando()) {
+                <div class="field largo">
+                  <label for="arquivo-do-documento"
+                    >Arquivo (TXT, DOCX ou PDF, até 50 MB)<span aria-hidden="true"> *</span></label
+                  >
+                  <input
+                    class="input"
+                    id="arquivo-do-documento"
+                    type="file"
+                    accept=".txt,.docx,.pdf"
+                    (change)="escolherArquivo($event)"
+                    [attr.aria-invalid]="erroDoArquivo() ? 'true' : null"
+                    aria-describedby="arquivo-dica"
+                  />
+                  <span class="hint" id="arquivo-dica">
+                    @if (arquivo(); as a) {
+                      {{ a.name }} · {{ tamanhoLegivel(a.size) }}
+                    } @else {
+                      O arquivo fica guardado com segurança. Cada novo envio vira uma versão; nada é
+                      apagado.
+                    }
+                  </span>
+                  @if (erroDoArquivo(); as texto) {
+                    <span class="err" role="alert">{{ texto }}</span>
+                  }
+                  @if (repetidos().length > 0) {
+                    <p class="msg warn" role="status">
+                      Este mesmo arquivo já foi enviado em:
+                      @for (r of repetidos(); track r.documento_id + '-' + r.numero) {
+                        <strong>{{ r.titulo }}</strong> (versão {{ r.numero }}){{
+                          $last ? '.' : ', '
+                        }}
+                      }
+                      Você pode continuar, se for outro documento.
+                    </p>
+                  }
+                </div>
+              }
               @for (c of cadastro().campos; track c.nome) {
                 <il-campo
                   [class.largo]="c.tipo === 'textolongo'"
@@ -443,6 +488,7 @@ export class Cadastro {
   readonly aba = input<string>();
 
   private readonly consulta = inject(ConsultaService);
+  private readonly envio = inject(EnvioDeDocumentoService);
   private readonly banco = inject(BancoService);
   private readonly sessao = inject(SessaoService);
   private readonly rascunho = inject(RascunhoService);
@@ -466,6 +512,11 @@ export class Cadastro {
   protected readonly carregando = signal(false);
   protected readonly erro = signal<string | null>(null);
   protected readonly aviso = signal<string | null>(null);
+  /** Cadastro com envio de arquivo (documentos): o arquivo escolhido, o aviso sobre ele e os envios iguais já feitos. */
+  protected readonly arquivo = signal<File | null>(null);
+  protected readonly erroDoArquivo = signal<string | null>(null);
+  protected readonly repetidos = signal<ArquivoJaEnviado[]>([]);
+  protected readonly tamanhoLegivel = tamanhoLegivel;
   protected readonly janela = signal<TipoDeJanela>('nenhuma');
   protected readonly erroDaJanela = signal<string | null>(null);
   protected readonly trabalhando = signal(false);
@@ -664,14 +715,35 @@ export class Cadastro {
     return nome && linha ? this.texto(linha[nome]) : '';
   }
 
-  protected tipoDoCampo(c: CampoDeCadastro): 'text' | 'email' | 'lista' | 'textolongo' {
+  protected tipoDoCampo(c: CampoDeCadastro): 'text' | 'email' | 'lista' | 'textolongo' | 'date' {
     return c.tipo === 'lista'
       ? 'lista'
       : c.tipo === 'textolongo'
         ? 'textolongo'
         : c.tipo === 'email'
           ? 'email'
-          : 'text';
+          : c.tipo === 'data'
+            ? 'date'
+            : 'text';
+  }
+
+  /** Arquivo escolhido no cadastro com envio: confere o básico, sugere o título e avisa de arquivo repetido. */
+  protected async escolherArquivo(evento: Event): Promise<void> {
+    const escolhido = (evento.target as HTMLInputElement).files?.[0] ?? null;
+    this.repetidos.set([]);
+    this.arquivo.set(escolhido);
+    this.erroDoArquivo.set(escolhido ? conferirArquivo(escolhido) : null);
+    if (!escolhido || this.erroDoArquivo()) return;
+    const primeiro = this.cadastro().campos[0]?.nome;
+    const titulo = primeiro ? this.formulario.controls[primeiro] : undefined;
+    if (titulo && !titulo.value.trim()) {
+      titulo.setValue(escolhido.name.replace(/\.[^.]+$/, '').slice(0, 200));
+    }
+    try {
+      this.repetidos.set(await this.envio.jaEnviado(escolhido));
+    } catch {
+      /* o aviso de arquivo repetido é só conveniência; o envio segue */
+    }
   }
 
   protected controle(nome: string): FormControl<string> {
@@ -804,6 +876,9 @@ export class Cadastro {
     }
     this.formulario = new FormRecord(controles);
     this.motivo.reset('');
+    this.arquivo.set(null);
+    this.erroDoArquivo.set(null);
+    this.repetidos.set([]);
     this.historico.set([]);
     this.abrir('formulario', linha);
     const disponiveis = this.abasDaPagina().map((a) => a.id);
@@ -1068,7 +1143,17 @@ export class Cadastro {
           const v = this.normalizar(c, valores[c.nome] ?? '');
           novos[c.nome] = v === '' && c.obrigatorio !== true ? null : v;
         }
-        await this.consulta.incluir(this.cadastro().tabela, novos);
+        if (this.cadastro().envioDeArquivo) {
+          const escolhido = this.arquivo();
+          const aviso = escolhido ? conferirArquivo(escolhido) : 'Escolha o arquivo do documento.';
+          if (!escolhido || aviso) {
+            this.erroDoArquivo.set(aviso);
+            return;
+          }
+          await this.envio.criar(novos as unknown as DadosDoDocumento, escolhido);
+        } else {
+          await this.consulta.incluir(this.cadastro().tabela, novos);
+        }
       }
       this.voltarParaLista();
       this.aviso.set(atual ? 'Alteração salva e registrada no histórico.' : 'Registro salvo.');

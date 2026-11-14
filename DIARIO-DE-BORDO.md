@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-13 · Claude · Base de conhecimento: tela "Documentos" (envio do arquivo, dados, inativar e histórico)
+
+- **Pedido do responsável:** começar a tela de documentos da base de conhecimento (migração 15, ainda não aplicada). A tela é o **cadastro por metadados** do iLabs, com o que faltava para documentos: **campo de arquivo** (só no cadastro novo) e **campo de data**.
+- **App:** `cadastros/documentos.ts` (título, legenda opcional, tipo, origem, confidencialidade, identificação oficial, data da fonte, data da consulta e situação lida) e rota `/base-conhecimento/documentos`, no grupo novo de menu **Base de conhecimento** (depois de Tabelas Compartilhadas), visível para quem tem a função `kb.documentos`. `descricao.ts` ganhou o tipo de campo `data` e a marca `envioDeArquivo`. O cadastro comum sugere o título pelo nome do arquivo, avisa de **arquivo repetido** (checksum, só aviso) e, ao salvar, envia pelo novo `EnvioDeDocumentoService` (`compartilhado/dados/envio-de-documento.ts`): calcula o SHA-256, envia o arquivo ao bucket privado `kb-documentos`, na pasta da empresa, e só então chama `kb_criar_documento`. A tela não decide nada: permissão, caminho, data da consulta da ANVISA e confidencialidade são do banco.
+- **Tipos do banco** regenerados (`npm run tipos`) com as tabelas `kb_*` e as funções novas.
+- **Testes:** 21 novos no app (serviço de envio e tela de documentos, com acessibilidade); app **103 de 103**; `npm run verificar` completo **OK** (tipos, formatação, lint, tsc, testes, build, ponta a ponta com axe, Deno e banco 615 de 615).
+- **Não provado:** o envio de verdade ao Storage e ao banco do Supabase (a migração 15 não está aplicada; os testes do app usam banco de mentira). Antes de usar, aplicar a migração com autorização e conferir as regras do Storage.
+- **Ainda não feito:** aba **Versões** (lista de versões, baixar o arquivo e enviar nova versão pela função `kb_nova_versao`); limpeza de arquivos enviados cujo registro falhou; extração de texto, trechos, vetores e IA; registro da decisão do schema em `docs/decisoes.md`.
+
 ## 2026-11-13 · Claude · Base de conhecimento, etapa 1: cadastro de documentos e versões (migração 15, NÃO aplicada)
 
 - **Pedido do responsável:** começar a base de conhecimento (busca e respostas sobre normas, regras e documentos do sistema) pelo cadastro: enviar o arquivo, descrever, consultar, alterar e inativar. **Decisões dele:** mesmo projeto Supabase e **mesmo schema `ilab`** (tabelas com o prefixo `kb_`), e **upload próprio** (arquivo num bucket privado do Storage). Os documentos de referência são o legado e a ANVISA, em documentação e em código; o código do legado é do responsável.

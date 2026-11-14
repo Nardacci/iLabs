@@ -24,6 +24,7 @@ describe('menu por permissão e guarda de rota (mesmo resultado)', () => {
       'Cadastros Corporativos',
       'Cadastros Farmacêuticos',
       'Tabelas Compartilhadas',
+      'Base de conhecimento',
       'Central de Notificações',
       'Configuração da Plataforma',
     ]);

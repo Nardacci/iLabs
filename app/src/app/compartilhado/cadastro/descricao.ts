@@ -5,7 +5,7 @@ export interface CampoDeCadastro {
   /** Nome da coluna no banco. */
   nome: string;
   rotulo: string;
-  tipo?: 'texto' | 'textolongo' | 'email' | 'lista';
+  tipo?: 'texto' | 'textolongo' | 'email' | 'lista' | 'data';
   obrigatorio?: boolean;
   min?: number;
   max?: number;
@@ -52,6 +52,11 @@ export interface DescricaoDeCadastro {
    * de uma vez (sem páginas); com busca, mostra só os que combinam, sem recuo.
    */
   arvore?: { pai: string };
+  /**
+   * O cadastro NOVO exige um arquivo (TXT, DOCX ou PDF): o navegador envia ao bucket privado e o banco registra o
+   * documento pela função `kb_criar_documento`. Alterar os dados continua pela alteração genérica, com motivo.
+   */
+  envioDeArquivo?: boolean;
 }
 
 /** Só confere o formato da descrição em tempo de compilação. */

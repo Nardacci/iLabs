@@ -561,6 +561,108 @@ export type Database = {
         }
         Relationships: []
       }
+      kb_documento_versoes: {
+        Row: {
+          id: string
+          empresa_id: string
+          documento_id: string
+          numero: number
+          arquivo_caminho: string
+          nome_original: string
+          tipo_arquivo: string
+          tamanho_bytes: number
+          checksum: string
+          criado_em: string
+          criado_por: string | null
+        }
+        Insert: {
+          id: string
+          empresa_id: string
+          documento_id: string
+          numero: number
+          arquivo_caminho: string
+          nome_original: string
+          tipo_arquivo: string
+          tamanho_bytes: number
+          checksum: string
+          criado_em?: string
+          criado_por?: string | null
+        }
+        Update: {
+          id?: string
+          empresa_id?: string
+          documento_id?: string
+          numero?: number
+          arquivo_caminho?: string
+          nome_original?: string
+          tipo_arquivo?: string
+          tamanho_bytes?: number
+          checksum?: string
+          criado_em?: string
+          criado_por?: string | null
+        }
+        Relationships: []
+      }
+      kb_documentos: {
+        Row: {
+          id: string
+          empresa_id: string
+          titulo: string
+          legenda: string | null
+          tipo: string
+          origem: string
+          confidencialidade: string
+          data_fonte: string | null
+          identificacao_oficial: string | null
+          consultado_em: string | null
+          situacao_lida: string | null
+          situacao: string
+          ativo: boolean | null
+          criado_em: string
+          criado_por: string | null
+          atualizado_em: string | null
+          atualizado_por: string | null
+        }
+        Insert: {
+          id: string
+          empresa_id: string
+          titulo: string
+          legenda?: string | null
+          tipo: string
+          origem: string
+          confidencialidade: string
+          data_fonte?: string | null
+          identificacao_oficial?: string | null
+          consultado_em?: string | null
+          situacao_lida?: string | null
+          situacao?: string
+          ativo?: boolean | null
+          criado_em?: string
+          criado_por?: string | null
+          atualizado_em?: string | null
+          atualizado_por?: string | null
+        }
+        Update: {
+          id?: string
+          empresa_id?: string
+          titulo?: string
+          legenda?: string | null
+          tipo?: string
+          origem?: string
+          confidencialidade?: string
+          data_fonte?: string | null
+          identificacao_oficial?: string | null
+          consultado_em?: string | null
+          situacao_lida?: string | null
+          situacao?: string
+          ativo?: boolean | null
+          criado_em?: string
+          criado_por?: string | null
+          atualizado_em?: string | null
+          atualizado_por?: string | null
+        }
+        Relationships: []
+      }
       materiais: {
         Row: {
           id: string
@@ -1011,6 +1113,9 @@ export type Database = {
       efeito_da_ultima_alteracao: { Args: { p_tabela: string; p_id: string }; Returns: { exige_novo_login: boolean | null; proprio: boolean | null; nome: string | null; campos: string[] | null }[] }
       exigir_troca_de_senha: { Args: { p_usuario_id: string; p_motivo: string }; Returns: undefined }
       inativar_usuario: { Args: { p_usuario_id: string; p_motivo: string }; Returns: undefined }
+      kb_arquivo_ja_existe: { Args: { p_checksum: string }; Returns: { documento_id: string | null; titulo: string | null; numero: number | null }[] }
+      kb_criar_documento: { Args: { p_documento_id: string; p_versao_id: string; p_titulo: string; p_legenda: string; p_tipo: string; p_origem: string; p_confidencialidade: string; p_data_fonte: string; p_identificacao: string; p_consultado_em: string; p_situacao_lida: string; p_caminho: string; p_nome_original: string; p_tipo_arquivo: string; p_tamanho: number; p_checksum: string }; Returns: string }
+      kb_nova_versao: { Args: { p_documento_id: string; p_versao_id: string; p_caminho: string; p_nome_original: string; p_tipo_arquivo: string; p_tamanho: number; p_checksum: string; p_motivo: string }; Returns: number }
       listar_contas_usuario: { Args: never; Returns: { tipo: string | null; id: string | null; nome: string | null; email: string | null; profissional_id: string | null; cpf: string | null; ativo: boolean | null; situacao: string | null; senha_a_trocar: boolean | null; bloqueado: boolean | null; valida_de: string | null; valida_ate: string | null; na_validade: boolean | null; convite_expira_em: string | null; perfis: Json | null }[] }
       listar_perfis: { Args: { p_incluir_inativos?: boolean }; Returns: { id: string | null; nome: string | null; descricao: string | null; ativo: boolean | null; qtd_usuarios: number | null; qtd_funcoes: number | null }[] }
       listar_profissionais_sem_conta: { Args: never; Returns: { id: string | null; codigo: string | null; nome: string | null; cpf: string | null }[] }
