@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { SessaoService } from '../sessao/sessao.service';
-import { BancoService, ErroDoBanco } from './banco';
+import { BancoService, ErroDoBanco, type LinhaDe } from './banco';
 
 /** Bucket privado da base de conhecimento (criado pela migração 15). */
 export const BUCKET_DOS_DOCUMENTOS = 'kb-documentos';
@@ -54,6 +54,9 @@ export interface DadosDoDocumento {
   situacao_lida: string | null;
 }
 
+/** Uma versão de um documento, como o banco guarda. */
+export type VersaoDeDocumento = LinhaDe<'kb_documento_versoes'>;
+
 export interface ArquivoJaEnviado {
   documento_id: string;
   titulo: string;
@@ -85,8 +88,14 @@ export class EnvioDeDocumentoService {
     );
   }
 
-  /** Envia o arquivo e registra o documento com a versão 1. Devolve o id do documento. */
-  async criar(dados: DadosDoDocumento, arquivo: File): Promise<string> {
+  /**
+   * Confere o arquivo, calcula o checksum e o envia ao bucket privado, na pasta da empresa, no caminho
+   * `empresa/documento/versão.extensão`. Devolve o que o banco precisa para registrar o envio.
+   */
+  private async enviarArquivo(
+    documentoId: string,
+    arquivo: File,
+  ): Promise<{ versaoId: string; caminho: string; ext: ExtensaoAceita; checksum: string }> {
     const ext = extensaoDe(arquivo.name);
     const aviso = conferirArquivo(arquivo);
     if (aviso || !ext) throw new ErroDoBanco(aviso ?? 'Use um arquivo TXT, DOCX ou PDF.');
@@ -95,7 +104,6 @@ export class EnvioDeDocumentoService {
       throw new ErroDoBanco('Não foi possível identificar a sua empresa. Entre de novo.');
 
     const checksum = await checksumDe(arquivo);
-    const documentoId = crypto.randomUUID();
     const versaoId = crypto.randomUUID();
     const caminho = `${empresa}/${documentoId}/${versaoId}.${ext}`;
 
@@ -109,10 +117,16 @@ export class EnvioDeDocumentoService {
           : 'Não foi possível enviar o arquivo. Tente de novo.',
       );
     }
+    return { versaoId, caminho, ext, checksum };
+  }
 
+  /** Envia o arquivo e registra o documento com a versão 1. Devolve o id do documento. */
+  async criar(dados: DadosDoDocumento, arquivo: File): Promise<string> {
+    const documentoId = crypto.randomUUID();
+    const envio = await this.enviarArquivo(documentoId, arquivo);
     return this.banco.rpc('kb_criar_documento', {
       p_documento_id: documentoId,
-      p_versao_id: versaoId,
+      p_versao_id: envio.versaoId,
       p_titulo: dados.titulo,
       p_legenda: dados.legenda ?? SEM_VALOR,
       p_tipo: dados.tipo,
@@ -122,11 +136,48 @@ export class EnvioDeDocumentoService {
       p_identificacao: dados.identificacao_oficial ?? SEM_VALOR,
       p_consultado_em: dados.consultado_em ?? SEM_VALOR,
       p_situacao_lida: dados.situacao_lida ?? SEM_VALOR,
-      p_caminho: caminho,
+      p_caminho: envio.caminho,
       p_nome_original: arquivo.name,
-      p_tipo_arquivo: ext,
+      p_tipo_arquivo: envio.ext,
       p_tamanho: arquivo.size,
-      p_checksum: checksum,
+      p_checksum: envio.checksum,
     });
+  }
+
+  /** As versões do documento (a mais nova primeiro). O banco decide o que a pessoa pode ver. */
+  async versoes(documentoId: string): Promise<VersaoDeDocumento[]> {
+    const { data, error } = await this.banco.cliente
+      .from('kb_documento_versoes')
+      .select('*')
+      .eq('documento_id', documentoId)
+      .order('numero', { ascending: false });
+    if (error) throw new ErroDoBanco(error.message);
+    return data;
+  }
+
+  /** Envia um arquivo como nova versão (a anterior continua guardada). Devolve o número da versão. */
+  async novaVersao(documentoId: string, arquivo: File, motivo: string): Promise<number> {
+    const envio = await this.enviarArquivo(documentoId, arquivo);
+    return this.banco.rpc('kb_nova_versao', {
+      p_documento_id: documentoId,
+      p_versao_id: envio.versaoId,
+      p_caminho: envio.caminho,
+      p_nome_original: arquivo.name,
+      p_tipo_arquivo: envio.ext,
+      p_tamanho: arquivo.size,
+      p_checksum: envio.checksum,
+      p_motivo: motivo,
+    });
+  }
+
+  /** Endereço temporário (1 minuto) para baixar uma versão; só quem enxerga a versão consegue gerá-lo. */
+  async enderecoDeDownload(
+    versao: Pick<VersaoDeDocumento, 'arquivo_caminho' | 'nome_original'>,
+  ): Promise<string> {
+    const { data, error } = await this.banco.cliente.storage
+      .from(BUCKET_DOS_DOCUMENTOS)
+      .createSignedUrl(versao.arquivo_caminho, 60, { download: versao.nome_original });
+    if (error) throw new ErroDoBanco('Não foi possível preparar o download. Tente de novo.');
+    return data.signedUrl;
   }
 }
