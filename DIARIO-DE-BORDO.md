@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-13 · Claude · Base de conhecimento: desenho do importador do piloto (só proposta)
+
+- **Pergunta do responsável:** vai ter que subir um por um os arquivos do repositório do legado, ou dá para automatizar? **Resposta:** dá para automatizar; o conector já estava previsto (RF-021), mas não existe. Hoje a tela só aceita TXT, DOCX e PDF (não Markdown nem código).
+- **Escrito:** `docs/base-conhecimento-importador-piloto.md`, com o desenho em três passos (ensaio sem gravar nada, revisão, importação que pode ser repetida sem duplicar), regras de seleção, classificação por pasta, varredura de segredos, credencial só em variável de ambiente, versões por commit e as mudanças de banco e tela (migração 16, a escrever).
+- **Ensaio de leitura (nada foi enviado):** as pastas do piloto têm **3.460** arquivos aceitos (cerca de 2.200 Markdown, 1.150 DOCX, 30 PDF, 15 TXT; 262 MB; o maior tem 6,8 MB), 11 grupos de arquivos repetidos, 27 arquivos com algo parecido com "senha" e 564 com números parecidos com endereço de servidor; nenhum com string de conexão, chave privada ou token. A estimativa anterior (cerca de 1.600) estava errada.
+- **Decisão do responsável (13/11/2026):** os **fluxos ficam de fora** do piloto (pasta `Documentação/Fluxos` e os documentos "Fluxo …").
+- **Perguntas ainda abertas** (seção 13 do desenho): Markdown primeiro ou DOCX e PDF juntos; pastas internas (`cliente-ivb`, `apresentacao`, `automacao`, `portal`); tipo novo "Defeito"; confidencialidade padrão; os 27 arquivos com "senha"; rodar o importador no computador do responsável com a chave de serviço em variável de ambiente.
+- **Não feito:** nenhuma migração, nenhum código do importador, nenhuma importação.
+
 ## 2026-11-13 · Claude · Base de conhecimento: aba Versões (listar, baixar e enviar nova versão)
 
 - **Prova real da migração 15:** o responsável cadastrou dois documentos pela tela; conferido no banco real: os 2 documentos com versão 1, os arquivos no bucket `kb-documentos` com o mesmo tamanho e o mesmo SHA-256 dos arquivos locais, e 1 evento de auditoria em cada. **Para ajustar pelo responsável (Editar, com motivo):** o segundo documento tem título e identificação oficial com "2020" (a RDC 658 é de 2022) e parece ser a mesma norma do primeiro; o certo é virar versão do primeiro.
