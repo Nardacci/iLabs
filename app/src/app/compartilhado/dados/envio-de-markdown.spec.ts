@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { SessaoService } from '../sessao/sessao.service';
 import { BancoService } from './banco';
 import { conferirArquivo, EnvioDeDocumentoService, extensaoDe } from './envio-de-documento';
+import { FuncoesDeBorda } from './funcoes-de-borda';
 
 describe('Markdown no envio de documentos', () => {
   it('Markdown (.md) é um tipo aceito, em qualquer caixa', () => {
@@ -30,6 +31,7 @@ describe('Markdown no envio de documentos', () => {
           useValue: { cliente: { storage: { from: () => ({ upload }) } }, rpc },
         },
         { provide: SessaoService, useValue: { estado: () => ({ empresa_id: 'emp-1' }) } },
+        { provide: FuncoesDeBorda, useValue: { processarVersao: () => Promise.resolve(true) } },
       ],
     });
     const servico = TestBed.inject(EnvioDeDocumentoService);

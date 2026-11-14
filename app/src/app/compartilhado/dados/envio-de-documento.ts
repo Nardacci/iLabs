@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { SessaoService } from '../sessao/sessao.service';
 import { BancoService, ErroDoBanco, type LinhaDe } from './banco';
+import { FuncoesDeBorda } from './funcoes-de-borda';
 
 /** Bucket privado da base de conhecimento (criado pela migração 15). */
 export const BUCKET_DOS_DOCUMENTOS = 'kb-documentos';
@@ -76,6 +77,7 @@ const SEM_VALOR = null as unknown as string;
 export class EnvioDeDocumentoService {
   private readonly banco = inject(BancoService);
   private readonly sessao = inject(SessaoService);
+  private readonly funcoes = inject(FuncoesDeBorda);
 
   /** Documentos (que a pessoa pode ver) que já têm este mesmo arquivo. Só aviso: não impede o envio. */
   async jaEnviado(arquivo: Blob): Promise<ArquivoJaEnviado[]> {
@@ -125,7 +127,7 @@ export class EnvioDeDocumentoService {
   async criar(dados: DadosDoDocumento, arquivo: File): Promise<string> {
     const documentoId = crypto.randomUUID();
     const envio = await this.enviarArquivo(documentoId, arquivo);
-    return this.banco.rpc('kb_criar_documento', {
+    const criado = await this.banco.rpc('kb_criar_documento', {
       p_documento_id: documentoId,
       p_versao_id: envio.versaoId,
       p_titulo: dados.titulo,
@@ -143,6 +145,31 @@ export class EnvioDeDocumentoService {
       p_tamanho: arquivo.size,
       p_checksum: envio.checksum,
     });
+    this.pedirLeitura(envio.versaoId);
+    return criado;
+  }
+
+  /** Pede ao servidor a leitura do texto, sem esperar: se falhar, a versão fica pendente e dá para repetir na aba Versões. */
+  private pedirLeitura(versaoId: string): void {
+    void this.funcoes.processarVersao(versaoId);
+  }
+
+  /** Pede de novo a leitura do texto de uma versão (aba Versões). Devolve se o pedido foi aceito. */
+  processarDeNovo(versaoId: string): Promise<boolean> {
+    return this.funcoes.processarVersao(versaoId);
+  }
+
+  /** Situação da leitura do texto de cada versão (para a aba Versões), por id da versão. */
+  async estadosDeProcessamento(
+    versaoIds: string[],
+  ): Promise<Map<string, LinhaDe<'kb_processamento'>>> {
+    if (versaoIds.length === 0) return new Map();
+    const { data, error } = await this.banco.cliente
+      .from('kb_processamento')
+      .select('*')
+      .in('versao_id', versaoIds);
+    if (error) throw new ErroDoBanco(error.message);
+    return new Map(data.map((l) => [l.versao_id, l]));
   }
 
   /** As versões do documento (a mais nova primeiro). O banco decide o que a pessoa pode ver. */
@@ -159,7 +186,7 @@ export class EnvioDeDocumentoService {
   /** Envia um arquivo como nova versão (a anterior continua guardada). Devolve o número da versão. */
   async novaVersao(documentoId: string, arquivo: File, motivo: string): Promise<number> {
     const envio = await this.enviarArquivo(documentoId, arquivo);
-    return this.banco.rpc('kb_nova_versao', {
+    const numero = await this.banco.rpc('kb_nova_versao', {
       p_documento_id: documentoId,
       p_versao_id: envio.versaoId,
       p_caminho: envio.caminho,
@@ -169,6 +196,8 @@ export class EnvioDeDocumentoService {
       p_checksum: envio.checksum,
       p_motivo: motivo,
     });
+    this.pedirLeitura(envio.versaoId);
+    return numero;
   }
 
   /** Endereço temporário (1 minuto) para baixar uma versão; só quem enxerga a versão consegue gerá-lo. */

@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { SessaoService } from '../sessao/sessao.service';
 import { BancoService, ErroDoBanco } from './banco';
 import { EnvioDeDocumentoService } from './envio-de-documento';
+import { FuncoesDeBorda } from './funcoes-de-borda';
 
 const EXPR_ID = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
 type Chamada = (...args: unknown[]) => Promise<unknown>;
@@ -50,6 +51,7 @@ function preparar(
     providers: [
       { provide: BancoService, useValue: { cliente: { from: de, storage: { from: de } }, rpc } },
       { provide: SessaoService, useValue: { estado: () => ({ empresa_id: 'emp-1' }) } },
+      { provide: FuncoesDeBorda, useValue: { processarVersao: () => Promise.resolve(true) } },
     ],
   });
   return {
