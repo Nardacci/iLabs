@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { modulosParaOsCartoes } from '../compartilhado/modulos';
 import { SessaoService } from '../compartilhado/sessao/sessao.service';
@@ -33,7 +33,7 @@ import { Icone } from '../compartilhado/ui/icone';
     <section aria-labelledby="modulos-t">
       <h2 id="modulos-t">Módulos</h2>
       <div class="modulos">
-        @for (m of modulos; track m.chave) {
+        @for (m of modulos(); track m.chave) {
           @if (m.pronto && m.rota) {
             <a class="modulo" [routerLink]="m.rota">
               <span class="modulo-topo">
@@ -66,7 +66,11 @@ import { Icone } from '../compartilhado/ui/icone';
 export class Inicio {
   protected readonly sessao = inject(SessaoService);
   /** Os outros módulos: o módulo em que a pessoa está não aparece. */
-  protected readonly modulos = modulosParaOsCartoes();
+  private readonly todosOsModulos = modulosParaOsCartoes();
+  /** Cartão com função só aparece para quem o banco deixa (a decisão final continua sendo do banco). */
+  protected readonly modulos = computed(() =>
+    this.todosOsModulos.filter((m) => this.sessao.pode(m.funcao)),
+  );
   protected situacao(): string {
     return this.sessao.estado()?.situacao_empresa ?? '';
   }
