@@ -6,7 +6,7 @@
   "scripts": {
     "ensaio": "node src/cli.mjs ensaio",
     "importar": "node src/cli.mjs importar",
-    "test": "node --test testes/"
+    "test": "node --test \"testes/**/*.test.mjs\""
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.119.0",

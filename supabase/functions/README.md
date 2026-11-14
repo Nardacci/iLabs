@@ -1,9 +1,10 @@
 # Funções de servidor (Edge Functions)
 
-| Função           | Para que serve                                                                                                                                                                                                   |
-| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `login`          | Recebe e-mail e senha, tenta entrar no Supabase Auth, registra a tentativa, bloqueia depois de 5 falhas em 15 minutos e diz ao app o que fazer. **Qualquer erro devolve a mesma mensagem** (corrige SEG-PRI-07). |
-| `senha-alterada` | Avisa o banco que a pessoa trocou ou redefiniu a senha (tira o "senha a trocar" e grava o acesso).                                                                                                               |
+| Função             | Para que serve                                                                                                                                                                                                                                                                        |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `login`            | Recebe e-mail e senha, tenta entrar no Supabase Auth, registra a tentativa, bloqueia depois de 5 falhas em 15 minutos e diz ao app o que fazer. **Qualquer erro devolve a mesma mensagem** (corrige SEG-PRI-07).                                                                      |
+| `senha-alterada`   | Avisa o banco que a pessoa trocou ou redefiniu a senha (tira o "senha a trocar" e grava o acesso).                                                                                                                                                                                    |
+| `processar-versao` | Lê o texto de uma versão de documento (Markdown, TXT, DOCX ou PDF com texto), divide em trechos e grava para a busca da base de conhecimento. Exige a sessão de quem pode incluir ou alterar documentos; só processa o que a pessoa consegue ver; nunca devolve nem registra o texto. |
 
 A regra de segurança mora no banco (`ilab.registrar_acesso`, `ilab.bloquear_por_tentativas`, `ilab.meu_estado`,
 `ilab.registrar_troca_de_senha`). Estas funções só chamam e repassam.

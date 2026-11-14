@@ -57,7 +57,7 @@ jobs:
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
-      - run: deno check supabase/functions/login/index.ts supabase/functions/senha-alterada/index.ts
+      - run: deno check supabase/functions/login/index.ts supabase/functions/senha-alterada/index.ts supabase/functions/processar-versao/index.ts
       - run: deno lint supabase/functions
       - run: deno fmt --check supabase/functions
       - run: deno test supabase/functions

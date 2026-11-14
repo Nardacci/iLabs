@@ -502,9 +502,22 @@ const TAMANHO_DA_PAGINA = 10;
                   · referência na fonte: {{ v.fonte_ref }}
                 }
               </p>
+              <p class="sub" data-testid="leitura-do-texto">
+                Leitura do texto para a busca: {{ situacaoDoTexto(v.id) }}
+              </p>
               <button type="button" class="btn nao-imprimir" (click)="baixar(v)">
                 Baixar versão {{ v.numero }}
               </button>
+              @if (podeProcessarDeNovo(v.id)) {
+                <button
+                  type="button"
+                  class="btn nao-imprimir"
+                  (click)="processarDeNovo(v)"
+                  [attr.aria-label]="'Ler o texto da versão ' + v.numero + ' de novo'"
+                >
+                  Ler o texto de novo
+                </button>
+              }
             </article>
           } @empty {
             @if (!carregandoVersoes()) {
@@ -512,6 +525,9 @@ const TAMANHO_DA_PAGINA = 10;
             }
           }
           <div class="rodape-acoes nao-imprimir">
+            <button type="button" class="btn" (click)="atualizarVersoes()">
+              Atualizar situação
+            </button>
             <button type="button" class="btn" (click)="voltarParaLista()">Voltar</button>
           </div>
         } @else {
@@ -649,6 +665,7 @@ export class Cadastro {
   protected readonly historico = signal<LinhaDe<'auditoria'>[]>([]);
   /** Aba Versões (cadastro com envio de arquivo): as versões, o envio de uma nova e o download. */
   protected readonly versoes = signal<VersaoDeDocumento[]>([]);
+  protected readonly estadosDoTexto = signal<Map<string, LinhaDe<'kb_processamento'>>>(new Map());
   protected readonly carregandoVersoes = signal(false);
   protected readonly novaVersaoAberta = signal(false);
   protected readonly avisoDaVersao = signal<string | null>(null);
@@ -1264,6 +1281,7 @@ export class Cadastro {
 
   private async carregarVersoes(linha: Linha): Promise<void> {
     this.versoes.set([]);
+    this.estadosDoTexto.set(new Map());
     this.carregandoVersoes.set(true);
     try {
       this.versoes.set(await this.envio.versoes(String(linha['id'])));
@@ -1272,6 +1290,54 @@ export class Cadastro {
     } finally {
       this.carregandoVersoes.set(false);
     }
+    await this.carregarEstadosDoTexto();
+  }
+
+  /** A situação da leitura do texto é informação extra: se não carregar, as versões continuam aparecendo. */
+  private async carregarEstadosDoTexto(): Promise<void> {
+    try {
+      this.estadosDoTexto.set(
+        await this.envio.estadosDeProcessamento(this.versoes().map((v) => v.id)),
+      );
+    } catch {
+      this.estadosDoTexto.set(new Map());
+    }
+  }
+
+  protected async atualizarVersoes(): Promise<void> {
+    await this.carregarEstadosDoTexto();
+  }
+
+  protected situacaoDoTexto(versaoId: string): string {
+    const e = this.estadosDoTexto().get(versaoId);
+    switch (e?.estado) {
+      case 'pronto':
+        return `pronta (${e.trechos} ${e.trechos === 1 ? 'trecho' : 'trechos'})`;
+      case 'processando':
+        return 'lendo agora';
+      case 'sem_texto':
+        return 'sem texto legível (arquivo escaneado ou vazio)';
+      case 'falhou':
+        return `falhou${e.erro ? `: ${e.erro}` : ''}`;
+      default:
+        return 'aguardando leitura';
+    }
+  }
+
+  protected podeProcessarDeNovo(versaoId: string): boolean {
+    const estado = this.estadosDoTexto().get(versaoId)?.estado;
+    return this.podeAlterar() && estado !== 'pronto' && estado !== 'processando';
+  }
+
+  protected async processarDeNovo(versao: VersaoDeDocumento): Promise<void> {
+    this.erroDaJanela.set(null);
+    const aceito = await this.envio.processarDeNovo(versao.id);
+    if (!aceito) {
+      this.erroDaJanela.set(
+        'Não foi possível pedir a leitura do texto agora. Tente de novo em instantes.',
+      );
+    }
+    await this.carregarEstadosDoTexto();
   }
 
   protected abrirNovaVersao(): void {

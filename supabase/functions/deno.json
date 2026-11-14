@@ -1,7 +1,7 @@
 {
   "tasks": {
     "testar": "deno test --no-check=false supabase/functions",
-    "verificar": "deno check supabase/functions/login/index.ts supabase/functions/senha-alterada/index.ts && deno lint supabase/functions && deno test supabase/functions"
+    "verificar": "deno check supabase/functions/login/index.ts supabase/functions/senha-alterada/index.ts supabase/functions/processar-versao/index.ts && deno lint supabase/functions && deno test supabase/functions"
   },
   "lint": { "rules": { "tags": ["recommended"] } },
   "fmt": { "singleQuote": true, "lineWidth": 120 }

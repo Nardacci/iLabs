@@ -43,7 +43,9 @@ const VERSOES = [
   },
 ];
 
-function preparar(opcoes: { situacao?: string; alterar?: boolean } = {}) {
+function preparar(
+  opcoes: { situacao?: string; alterar?: boolean; estados?: [string, unknown][] } = {},
+) {
   const banco = comBancoFalso();
   banco.respostas['usos_cadastros'] = [{ registro_id: 'd1', usos: 2 }];
   const consulta = {
@@ -61,6 +63,20 @@ function preparar(opcoes: { situacao?: string; alterar?: boolean } = {}) {
     jaEnviado: vi.fn(() => Promise.resolve([])),
     versoes: vi.fn(() => Promise.resolve(VERSOES)),
     novaVersao: vi.fn<(...args: unknown[]) => Promise<number>>(() => Promise.resolve(3)),
+    estadosDeProcessamento: vi.fn<(...args: unknown[]) => Promise<Map<string, unknown>>>(() =>
+      Promise.resolve(
+        new Map<string, unknown>(
+          opcoes.estados ?? [
+            ['v2', { versao_id: 'v2', estado: 'pronto', trechos: 12, erro: null }],
+            [
+              'v1',
+              { versao_id: 'v1', estado: 'falhou', trechos: 0, erro: 'Não foi possível ler.' },
+            ],
+          ],
+        ),
+      ),
+    ),
+    processarDeNovo: vi.fn<(...args: unknown[]) => Promise<boolean>>(() => Promise.resolve(true)),
     enderecoDeDownload: vi.fn<(...args: unknown[]) => Promise<string>>(() =>
       Promise.resolve('https://exemplo.invalid/baixar?x=1'),
     ),
@@ -245,6 +261,84 @@ describe('aba Versões do cadastro de documentos', () => {
     await espera(f);
     expect(raiz(f).textContent).toContain('Este arquivo já é uma versão deste documento.');
     expect(raiz(f).textContent).not.toContain('enviada e registrada');
+  });
+
+  it('mostra a situação da leitura do texto de cada versão', async () => {
+    const { envio } = preparar();
+    const f = await abrir();
+    await abrirDocumento(f, 'Editar');
+    await abrirAbaVersoes(f);
+    expect(envio.estadosDeProcessamento).toHaveBeenCalledWith(['v2', 'v1']);
+    const situacoes = [...raiz(f).querySelectorAll('[data-testid="leitura-do-texto"]')].map((p) =>
+      p.textContent?.replace(/\s+/g, ' ').trim(),
+    );
+    expect(situacoes).toEqual([
+      'Leitura do texto para a busca: pronta (12 trechos)',
+      'Leitura do texto para a busca: falhou: Não foi possível ler.',
+    ]);
+  });
+
+  it('versão sem registro de leitura aparece como aguardando', async () => {
+    preparar({ estados: [] });
+    const f = await abrir();
+    await abrirDocumento(f, 'Editar');
+    await abrirAbaVersoes(f);
+    expect(raiz(f).textContent).toContain('aguardando leitura');
+  });
+
+  it('"Ler o texto de novo" só aparece onde faz sentido e pede o processamento da versão certa', async () => {
+    const { envio } = preparar();
+    const f = await abrir();
+    await abrirDocumento(f, 'Editar');
+    await abrirAbaVersoes(f);
+    expect(botao(f, 'Ler o texto de novo')).toBeDefined();
+    expect(
+      [...raiz(f).querySelectorAll('button')].filter((b) => b.textContent?.includes('de novo')),
+    ).toHaveLength(1);
+    botao(f, 'Ler o texto de novo')?.click();
+    await espera(f);
+    expect(envio.processarDeNovo).toHaveBeenCalledWith('v1');
+    expect(envio.estadosDeProcessamento).toHaveBeenCalledTimes(2);
+  });
+
+  it('quem só consulta não vê "Ler o texto de novo"', async () => {
+    preparar({ alterar: false });
+    const f = await abrir();
+    await abrirDocumento(f, 'Histórico');
+    await abrirAbaVersoes(f);
+    expect(botao(f, 'Ler o texto de novo')).toBeUndefined();
+  });
+
+  it('falha ao pedir a leitura avisa a pessoa', async () => {
+    const { envio } = preparar();
+    envio.processarDeNovo.mockResolvedValueOnce(false);
+    const f = await abrir();
+    await abrirDocumento(f, 'Editar');
+    await abrirAbaVersoes(f);
+    botao(f, 'Ler o texto de novo')?.click();
+    await espera(f);
+    expect(raiz(f).textContent).toContain('Não foi possível pedir a leitura do texto agora');
+  });
+
+  it('se a situação da leitura não carregar, as versões continuam aparecendo', async () => {
+    const { envio } = preparar();
+    envio.estadosDeProcessamento.mockRejectedValueOnce(new Error('falha'));
+    const f = await abrir();
+    await abrirDocumento(f, 'Editar');
+    await abrirAbaVersoes(f);
+    expect(raiz(f).textContent).toContain('Versão 2');
+    expect(raiz(f).textContent).toContain('aguardando leitura');
+  });
+
+  it('"Atualizar situação" recarrega só a situação da leitura', async () => {
+    const { envio } = preparar();
+    const f = await abrir();
+    await abrirDocumento(f, 'Editar');
+    await abrirAbaVersoes(f);
+    botao(f, 'Atualizar situação')?.click();
+    await espera(f);
+    expect(envio.estadosDeProcessamento).toHaveBeenCalledTimes(2);
+    expect(envio.versoes).toHaveBeenCalledTimes(1);
   });
 
   it('documento inativo não recebe versão nova: o botão some e a tela explica', async () => {

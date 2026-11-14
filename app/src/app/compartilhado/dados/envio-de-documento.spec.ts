@@ -8,6 +8,7 @@ import {
   extensaoDe,
   tamanhoLegivel,
 } from './envio-de-documento';
+import { FuncoesDeBorda } from './funcoes-de-borda';
 
 const EXPR_ID = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
 
@@ -29,6 +30,7 @@ function preparar(
   TestBed.configureTestingModule({
     providers: [
       { provide: BancoService, useValue: { cliente: { storage: { from: de } }, rpc } },
+      { provide: FuncoesDeBorda, useValue: { processarVersao: () => Promise.resolve(true) } },
       {
         provide: SessaoService,
         useValue: {
