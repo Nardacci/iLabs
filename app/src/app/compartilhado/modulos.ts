@@ -16,6 +16,8 @@ export interface ModuloDoSistema {
 /**
  * Os módulos do iLabPharma, na ordem em que aparecem nos cartões da página inicial.
  * O módulo em que a pessoa está NÃO aparece nos cartões; os outros, sim (decisão do responsável, 06/11/2026).
+ * A Base de conhecimento NÃO tem cartão (decisão do responsável, 14/11/2026): ela será aberta por botões flutuantes
+ * (cadastrar ou buscar), e não por um cartão de módulo.
  */
 export const MODULOS: readonly ModuloDoSistema[] = [
   {
@@ -25,15 +27,6 @@ export const MODULOS: readonly ModuloDoSistema[] = [
     icone: 'acesso',
     pronto: true,
     rota: '/usuarios',
-  },
-  {
-    chave: 'base-conhecimento',
-    nome: 'Base de conhecimento',
-    resumo: 'Documentos, normas e regras do sistema, com versões e origem de cada um.',
-    icone: 'busca',
-    pronto: true,
-    rota: '/base-conhecimento/documentos',
-    funcao: 'kb.documentos',
   },
   {
     chave: 'producao',
