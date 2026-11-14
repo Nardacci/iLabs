@@ -1,4 +1,4 @@
-import { partesDestacadas, termosDaBusca } from './destaque';
+import { linhasDestacadas, partesDestacadas, termosDaBusca } from './destaque';
 
 const marcadas = (partes: { texto: string; marca: boolean }[]): string[] =>
   partes.filter((p) => p.marca).map((p) => p.texto);
@@ -20,6 +20,21 @@ describe('termosDaBusca', () => {
   it('busca vazia ou só de sinais não tem termos', () => {
     expect(termosDaBusca('   ')).toEqual([]);
     expect(termosDaBusca('"" - ?')).toEqual([]);
+  });
+});
+
+describe('linhasDestacadas', () => {
+  it('devolve o texto inteiro, uma lista de partes por linha, sem reticências, com as palavras marcadas', () => {
+    const texto = `${'palavra '.repeat(200)}\n\n- item com lote\n| a | b |`;
+    const linhas = linhasDestacadas(texto, 'lote');
+    expect(linhas).toHaveLength(3);
+    expect(linhas[0]?.map((p) => p.texto).join('')).toBe('palavra '.repeat(200).trim());
+    expect(linhas[1]?.filter((p) => p.marca).map((p) => p.texto)).toEqual(['lote']);
+    expect(linhas.flat().some((p) => p.texto.includes('…'))).toBe(false);
+  });
+
+  it('texto vazio não tem linhas', () => {
+    expect(linhasDestacadas('  \n\n ', 'lote')).toEqual([]);
   });
 });
 

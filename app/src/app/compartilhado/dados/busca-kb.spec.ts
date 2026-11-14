@@ -37,6 +37,53 @@ describe('BuscaKbService', () => {
   });
 });
 
+describe('BuscaKbService: ler trechos', () => {
+  function preparar(resposta: { data: unknown; error: { message: string } | null }) {
+    const talvezUm = vi.fn<(...args: unknown[]) => Promise<unknown>>(() =>
+      Promise.resolve(resposta),
+    );
+    const igualOrdem = vi.fn<(...args: unknown[]) => unknown>(() => ({ maybeSingle: talvezUm }));
+    const igual = vi.fn<(...args: unknown[]) => unknown>(() => ({
+      maybeSingle: talvezUm,
+      eq: igualOrdem,
+    }));
+    const selecionar = vi.fn<(...args: unknown[]) => unknown>(() => ({ eq: igual }));
+    const de = vi.fn<(...args: unknown[]) => unknown>(() => ({ select: selecionar }));
+    TestBed.configureTestingModule({
+      providers: [{ provide: BancoService, useValue: { cliente: { from: de } } }],
+    });
+    return { servico: TestBed.inject(BuscaKbService), de, igual, igualOrdem };
+  }
+  const TRECHO = { id: 't1', versao_id: 'v1', ordem: 2, secao: null, pagina: 3, texto: 'Texto.' };
+
+  it('trecho(): lê um trecho inteiro pelo id', async () => {
+    const { servico, de, igual } = preparar({ data: TRECHO, error: null });
+    expect(await servico.trecho('t1')).toEqual(TRECHO);
+    expect(de).toHaveBeenCalledWith('kb_trechos');
+    expect(igual).toHaveBeenCalledWith('id', 't1');
+  });
+
+  it('vizinho(): pede o trecho de antes ou de depois na mesma versão', async () => {
+    const { servico, igual, igualOrdem } = preparar({ data: TRECHO, error: null });
+    await servico.vizinho('v1', 5, 'anterior');
+    expect(igual).toHaveBeenLastCalledWith('versao_id', 'v1');
+    expect(igualOrdem).toHaveBeenLastCalledWith('ordem', 4);
+    await servico.vizinho('v1', 5, 'seguinte');
+    expect(igualOrdem).toHaveBeenLastCalledWith('ordem', 6);
+  });
+
+  it('vizinho(): antes do primeiro trecho não consulta o banco', async () => {
+    const { servico, de } = preparar({ data: TRECHO, error: null });
+    expect(await servico.vizinho('v1', 1, 'anterior')).toBeNull();
+    expect(de).not.toHaveBeenCalled();
+  });
+
+  it('erro do banco vira mensagem; trecho que a pessoa não pode ver vem como nulo', async () => {
+    const com = preparar({ data: null, error: { message: 'falhou' } });
+    await expect(com.servico.trecho('t1')).rejects.toThrow('falhou');
+  });
+});
+
 describe('FuncoesDeBorda.processarVersao', () => {
   function preparar(opcoes: { token?: string | null; resposta?: { ok: boolean } | Error } = {}) {
     const fetchFalso = vi.fn<(...args: unknown[]) => Promise<unknown>>(() =>
