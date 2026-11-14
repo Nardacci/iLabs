@@ -1,6 +1,6 @@
 # Base de conhecimento: desenho do importador do piloto
 
-Status: **proposta para aprovação** (13/11/2026). Nada deste desenho foi construído nem aplicado.
+Status: **proposta, com parte das decisões já tomadas** (13 e 14/11/2026; ver seção 13). Nada deste desenho foi construído nem aplicado.
 
 ## 1. Para que serve
 Hoje cada documento entra pela tela, um por um. O repositório do legado tem milhares de arquivos de documentação. O **importador** coloca esses arquivos na base de forma automática, sem ninguém subir um por um, e deixa tudo registrado (origem, versão, quem importou e quando).
@@ -36,7 +36,7 @@ Os números acima ainda **incluem** os cerca de 6 arquivos de fluxo; o ensaio do
 
 ## 4. Quais arquivos entram
 - **Entram:** `.md`, `.docx`, `.pdf` e `.txt` das pastas do piloto.
-- **Ficam de fora:** imagens, JSON, scripts, código, binários, o que passa de 50 MB, as pastas de normas da ANVISA (já cadastradas pela tela) e **os fluxos** (decisão do responsável em 13/11/2026: a pasta `Documentação/Fluxos` e os documentos "Fluxo …" da `Documentação`, cerca de 6 arquivos).
+- **Ficam de fora:** imagens, JSON, scripts, código, binários, o que passa de 50 MB, as normas da ANVISA (a pasta `Anvisa` e o Guia 33, que exigem a data da consulta e são cadastrados pela tela) e **os fluxos** (decisão do responsável em 13/11/2026: a pasta `Documentação/Fluxos` e os documentos "Fluxo …" da `Documentação`, cerca de 6 arquivos).
 - **Repetidos:** arquivo com o mesmo conteúdo (checksum SHA-256) de outro já na base não é enviado de novo; o relatório lista os caminhos repetidos.
 
 ## 5. Como cada arquivo é classificado
@@ -54,9 +54,9 @@ Título: o próprio do documento (primeira linha do Markdown ou nome do arquivo)
 
 ## 6. Segredos e dados sensíveis (RN-011)
 - A varredura procura senha, chave, string de conexão, token, chave privada e endereço de servidor, **em todo arquivo antes de enviar**.
-- Arquivo com achado vai para uma lista **"revisar"** e **não é enviado** até você aprovar. O relatório mostra só o caminho, o tipo de achado e a linha, **mascarada**: o valor nunca aparece no relatório nem no git.
+- Arquivo com achado vai para uma lista **"revisar"** e **não é enviado** até você aprovar. O relatório mostra só o caminho, o tipo de achado e o **número da linha**. **O valor nunca aparece** (nem mascarado) no relatório, no terminal nem no git (decisão do responsável).
 - DOCX e PDF: o texto também é conferido; se não for possível ler o texto, o arquivo vai para "revisar".
-- Por prudência, o piloto começa **só com Markdown**, que é onde a varredura é mais confiável, e o DOCX e o PDF entram numa segunda rodada (ver pergunta 1).
+- **DOCX e PDF entram junto com o Markdown** (decisão do responsável). O DOCX é lido abrindo o próprio arquivo (é um pacote de XML). O PDF exige uma biblioteca de leitura de texto, a escolher na construção; PDF escaneado (só imagem) não tem texto para conferir e vai para "revisar".
 
 ## 7. Como roda e com que credencial
 - É um **programa que roda no seu computador**, lendo a pasta do repositório que já está nele. Nada é copiado para o iLabs, que é público.
@@ -70,10 +70,10 @@ Título: o próprio do documento (primeira linha do Markdown ou nome do arquivo)
 - Arquivo que mudou: vira **nova versão** do mesmo documento, com o commit registrado. Versão antiga nunca é apagada.
 - Arquivo que sumiu do repositório: o documento é **marcado para revisão**, e não é apagado nem inativado sozinho.
 
-## 9. O que muda no banco e na tela (migração 16, a escrever depois da aprovação)
+## 9. O que muda no banco e na tela (migração 16: escrita e testada no banco de teste, NÃO aplicada)
 - Aceitar **Markdown** (`.md`) além de TXT, DOCX e PDF, no banco e no bucket.
 - Nova tabela de **fontes** (por exemplo, "Repositório do legado") e, em cada documento, a fonte, o caminho e o commit. Hoje a identificação oficial é limitada a 100 caracteres e é única por empresa; caminhos longos não cabem nela.
-- Tipo novo **Defeito**, se você aprovar (pergunta 3).
+- Tipo novo **Defeito** (aprovado em 14/11/2026).
 - Função de importação, restrita à credencial de serviço.
 - Na tela Documentos: filtro e coluna **Fonte**, para os 3.460 documentos não afogarem os cadastrados à mão.
 
@@ -94,16 +94,24 @@ Depois, uma importação real **pequena** (uma pasta curta) conferida no banco e
 ## 12. Fora desta etapa
 Extração de texto, trechos, vetores e busca; código-fonte do legado; importação contínua (a cada commit); normas da ANVISA; envio a provedor de IA (a decisão continua pendente).
 
-## 13. Perguntas para aprovar
-1. **DOCX e PDF no piloto ou só Markdown?** Os DOCX "Documento Completo" parecem repetir o conteúdo dos Markdown. Proposta: **só Markdown agora**; DOCX e PDF numa segunda rodada, depois de conferir se repetem.
-2. **Pastas internas:** `cliente-ivb`, `apresentacao`, `automacao` e `portal` parecem de uso restrito. Proposta: **fora do piloto** até você dizer o que são.
-3. **Tipos novos:** aceita criar o tipo **Defeito** (e, se quiser, **Plano de testes**)?
-4. **Confidencialidade padrão Interna** está certa, ou prefere Confidencial até a Qualidade revisar?
-5. **Os 27 arquivos com "senha"** serão listados para você decidir um a um. Prefere que o importador já aprove sozinho os que só falam de regra de senha?
-6. **Credencial:** aceita rodar o importador no seu computador com a chave de serviço do Supabase em variável de ambiente (nunca no git)?
+## 13. Decisões do responsável e o que falta decidir
+
+**Decididas:**
+1. **DOCX e PDF entram junto com o Markdown** no piloto (14/11/2026). O piloto tem cerca de 3.454 arquivos (3.460 menos os fluxos). Os DOCX "Documento Completo" podem repetir o conteúdo dos Markdown; isso fica visível no ensaio, e o responsável decide se mantém.
+2. **Confidencialidade padrão: Interna.**
+3. **Senha nunca é mostrada**, em lugar nenhum (seção 6).
+4. **Credencial:** o importador roda no computador do responsável, com a chave de serviço do Supabase em variável de ambiente, nunca no git.
+5. **Os fluxos ficam de fora** (13/11/2026).
+6. **Tipo novo "Defeito"** para os arquivos de defeitos de cada módulo (14/11/2026). "Plano de testes" **não** foi criado: esses arquivos entram como "Regra de negócio" ou "Outro" até o responsável pedir.
+7. **Do conteúdo da `Documentação`, entra o que a seção 4 permite:** a pasta `Anvisa`, o Guia 33 e os fluxos ficam de fora (14/11/2026, "isso mesmo").
+
+**Ainda em aberto:**
+- **Pastas que parecem de uso restrito:** `cliente-ivb`, `apresentacao`, `automacao` e `portal`. Elas ficam dentro de **`homologacao/`**, e não dentro de `Documentação/` (por isso não aparecem na tela da pasta Documentação). Proposta: fora do piloto até o responsável dizer o que são.
+- **O que fazer com o restante da pasta `Documentação/`:** `Assuntos regulatórios` (pasta e documento), `Safari.pdf`, `Safari-1.pdf` e "processo de transmissão do IUM" (imagem e texto). Proposta: importar os DOCX, PDF e TXT que forem documentação do produto; a imagem JPG fica de fora. Falta o responsável dizer **que tipo dar a cada um** (Norma, Regra de negócio, Especificação, Guia, Defeito ou Outro) e o que são os arquivos "Safari" e "IUM". Até lá, entram como "Outro".
+- **Os 27 arquivos com algo parecido com "senha":** serão listados (só caminho e número da linha) para decidir; a regra de nunca mostrar o valor já vale.
 
 ## 14. Ordem de construção
-1. Migração 16 (Markdown, fontes, tipo Defeito, função de importação) com testes no PGlite.
+1. Migração 16 (Markdown, fontes, tipo Defeito, função de importação) com testes no PGlite. **Feito** (arquivo `banco/migracoes/20261116090000_base_conhecimento_fontes_e_importacao.sql`; 54 testes novos); falta a autorização para aplicar no Supabase.
 2. Importador no modo ensaio, com a varredura e os testes.
 3. Revisão do relatório com você.
 4. Importação real pequena, conferida.

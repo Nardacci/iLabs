@@ -9,6 +9,7 @@ export const LIMITE_DO_ARQUIVO = 52_428_800;
 
 const TIPOS_ACEITOS = {
   txt: 'text/plain',
+  md: 'text/markdown',
   pdf: 'application/pdf',
   docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 } as const;
@@ -22,7 +23,7 @@ export function extensaoDe(nome: string): ExtensaoAceita | null {
 
 /** Aviso rápido sobre o arquivo escolhido (o banco e o Storage conferem de novo). Nulo = tudo certo. */
 export function conferirArquivo(arquivo: { name: string; size: number }): string | null {
-  if (!extensaoDe(arquivo.name)) return 'Use um arquivo TXT, DOCX ou PDF.';
+  if (!extensaoDe(arquivo.name)) return 'Use um arquivo TXT, MD, DOCX ou PDF.';
   if (arquivo.size <= 0) return 'O arquivo está vazio.';
   if (arquivo.size > LIMITE_DO_ARQUIVO) return 'O arquivo passa de 50 MB.';
   return null;
@@ -98,7 +99,7 @@ export class EnvioDeDocumentoService {
   ): Promise<{ versaoId: string; caminho: string; ext: ExtensaoAceita; checksum: string }> {
     const ext = extensaoDe(arquivo.name);
     const aviso = conferirArquivo(arquivo);
-    if (aviso || !ext) throw new ErroDoBanco(aviso ?? 'Use um arquivo TXT, DOCX ou PDF.');
+    if (aviso || !ext) throw new ErroDoBanco(aviso ?? 'Use um arquivo TXT, MD, DOCX ou PDF.');
     const empresa = this.sessao.estado()?.empresa_id;
     if (!empresa)
       throw new ErroDoBanco('Não foi possível identificar a sua empresa. Entre de novo.');

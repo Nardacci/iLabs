@@ -36,6 +36,7 @@ export const documentos = definirCadastro({
         { valor: 'especificacao', rotulo: 'Especificação' },
         { valor: 'fluxo', rotulo: 'Fluxo' },
         { valor: 'guia', rotulo: 'Guia' },
+        { valor: 'defeito', rotulo: 'Defeito' },
         { valor: 'outro', rotulo: 'Outro' },
       ],
     },

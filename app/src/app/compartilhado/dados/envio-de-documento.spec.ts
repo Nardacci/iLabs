@@ -65,7 +65,7 @@ describe('apoio ao envio de arquivo', () => {
 
   it('avisa de arquivo vazio, grande demais ou de tipo não aceito', () => {
     expect(conferirArquivo({ name: 'a.pdf', size: 10 })).toBeNull();
-    expect(conferirArquivo({ name: 'a.exe', size: 10 })).toMatch(/TXT, DOCX ou PDF/);
+    expect(conferirArquivo({ name: 'a.exe', size: 10 })).toMatch(/TXT, MD, DOCX ou PDF/);
     expect(conferirArquivo({ name: 'a.pdf', size: 0 })).toMatch(/vazio/);
     expect(conferirArquivo({ name: 'a.pdf', size: 52_428_801 })).toMatch(/50 MB/);
   });
@@ -122,7 +122,7 @@ describe('EnvioDeDocumentoService', () => {
 
   it('recusa arquivo de tipo não aceito antes de tocar no Storage ou no banco', async () => {
     const { servico, upload, rpc } = preparar();
-    await expect(servico.criar(DADOS, pdf('programa.exe'))).rejects.toThrow(/TXT, DOCX ou PDF/);
+    await expect(servico.criar(DADOS, pdf('programa.exe'))).rejects.toThrow(/TXT, MD, DOCX ou PDF/);
     expect(upload).not.toHaveBeenCalled();
     expect(rpc).not.toHaveBeenCalled();
   });
