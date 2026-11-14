@@ -22,6 +22,15 @@ export function termosDaBusca(consulta: string): string[] {
  */
 const raiz = (termo: string): string => (termo.length > 5 ? termo.slice(0, -2) : termo);
 
+/** O texto inteiro de um trecho, uma lista de partes por linha (mantém títulos, itens e linhas de tabela separados). */
+export function linhasDestacadas(texto: string, consulta: string): Parte[][] {
+  return texto
+    .split(/\n+/)
+    .map((l) => l.trim())
+    .filter(Boolean)
+    .map((l) => partesDestacadas(l, consulta, l.length + 1));
+}
+
 /**
  * Prepara o trecho para mostrar: recorta uma janela de cerca de `tamanho` caracteres em volta do primeiro termo
  * achado (com reticências nas pontas cortadas) e marca os termos. Não mexe em HTML: devolve partes de texto, e a tela
