@@ -47,7 +47,8 @@ const ESTRUTURA: Estrutura[] = [
   { grupo: 'Cadastros Corporativos', icone: 'corporativo' },
   { grupo: 'Cadastros Farmacêuticos', icone: 'farmaceuticos' },
   { grupo: 'Tabelas Compartilhadas', icone: 'cadastros' },
-  { grupo: 'Base de conhecimento', icone: 'busca' },
+  // Abre pelo botão flutuante (Documentos e Buscar), não pelo menu lateral; continua na pesquisa de telas (Ctrl + K).
+  { grupo: 'Base de conhecimento', icone: 'busca', lateral: false },
   { grupo: 'Central de Notificações', icone: 'sino' },
   { grupo: 'Configuração da Plataforma', icone: 'construtor' },
   // A segurança da própria conta abre pelo menu da pessoa (avatar), não pelo menu lateral.
