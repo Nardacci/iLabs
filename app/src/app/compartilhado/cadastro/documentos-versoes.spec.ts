@@ -222,7 +222,7 @@ describe('aba Versões do cadastro de documentos', () => {
     botao(f, 'Enviar nova versão')?.click();
     f.detectChanges();
     await escolher(f, 'arquivo-da-versao', new File(['x'], 'programa.exe'));
-    expect(raiz(f).textContent).toContain('Use um arquivo TXT, DOCX ou PDF.');
+    expect(raiz(f).textContent).toContain('Use um arquivo TXT, MD, DOCX ou PDF.');
     escreverMotivo(f, 'Tentativa com arquivo errado');
     botao(f, 'Enviar versão')?.click();
     await espera(f);

@@ -120,15 +120,15 @@ describe('cadastro de documentos (base de conhecimento)', () => {
     expect(raiz(f).textContent).toContain('ANVISA');
   });
 
-  it('o documento novo pede o arquivo (TXT, DOCX ou PDF) no formulário', async () => {
+  it('o documento novo pede o arquivo (TXT, MD, DOCX ou PDF) no formulário', async () => {
     preparar();
     const f = await abrir();
     botao(f, 'Novo documento')?.click();
     f.detectChanges();
     const entrada = raiz(f).querySelector<HTMLInputElement>('#arquivo-do-documento');
     expect(entrada?.type).toBe('file');
-    expect(entrada?.accept).toBe('.txt,.docx,.pdf');
-    expect(raiz(f).textContent).toContain('Arquivo (TXT, DOCX ou PDF, até 50 MB)');
+    expect(entrada?.accept).toBe('.txt,.md,.docx,.pdf');
+    expect(raiz(f).textContent).toContain('Arquivo (TXT, MD, DOCX ou PDF, até 50 MB)');
   });
 
   it('sem escolher o arquivo não grava, mesmo com o resto preenchido', async () => {
@@ -185,7 +185,7 @@ describe('cadastro de documentos (base de conhecimento)', () => {
     botao(f, 'Novo documento')?.click();
     f.detectChanges();
     await escolherArquivo(f, new File(['x'], 'programa.exe'));
-    expect(raiz(f).textContent).toContain('Use um arquivo TXT, DOCX ou PDF.');
+    expect(raiz(f).textContent).toContain('Use um arquivo TXT, MD, DOCX ou PDF.');
     expect(envio.jaEnviado).not.toHaveBeenCalled();
     preencher(f, 'Título', 'Programa');
     preencherObrigatorios(f);
@@ -203,6 +203,16 @@ describe('cadastro de documentos (base de conhecimento)', () => {
     const texto = raiz(f).textContent?.replace(/\s+/g, ' ') ?? '';
     expect(texto).toContain('Este mesmo arquivo já foi enviado em: RDC 658/2022 (versão 2).');
     expect(texto).toContain('Você pode continuar');
+  });
+
+  it('o tipo Defeito está entre as opções de tipo', async () => {
+    preparar();
+    const f = await abrir();
+    botao(f, 'Novo documento')?.click();
+    f.detectChanges();
+    const tipos = [...(campo(f, 'Tipo') as HTMLSelectElement).options].map((o) => o.value);
+    expect(tipos).toContain('defeito');
+    expect(tipos).toContain('norma');
   });
 
   it('as datas e a confidencialidade são campos de verdade (data e lista)', async () => {

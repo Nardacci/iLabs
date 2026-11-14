@@ -574,6 +574,7 @@ export type Database = {
           checksum: string
           criado_em: string
           criado_por: string | null
+          fonte_ref: string | null
         }
         Insert: {
           id: string
@@ -587,6 +588,7 @@ export type Database = {
           checksum: string
           criado_em?: string
           criado_por?: string | null
+          fonte_ref?: string | null
         }
         Update: {
           id?: string
@@ -600,6 +602,7 @@ export type Database = {
           checksum?: string
           criado_em?: string
           criado_por?: string | null
+          fonte_ref?: string | null
         }
         Relationships: []
       }
@@ -622,6 +625,9 @@ export type Database = {
           criado_por: string | null
           atualizado_em: string | null
           atualizado_por: string | null
+          fonte_id: string | null
+          fonte_caminho: string | null
+          sumiu_da_fonte_em: string | null
         }
         Insert: {
           id: string
@@ -641,6 +647,9 @@ export type Database = {
           criado_por?: string | null
           atualizado_em?: string | null
           atualizado_por?: string | null
+          fonte_id?: string | null
+          fonte_caminho?: string | null
+          sumiu_da_fonte_em?: string | null
         }
         Update: {
           id?: string
@@ -654,6 +663,48 @@ export type Database = {
           identificacao_oficial?: string | null
           consultado_em?: string | null
           situacao_lida?: string | null
+          situacao?: string
+          ativo?: boolean | null
+          criado_em?: string
+          criado_por?: string | null
+          atualizado_em?: string | null
+          atualizado_por?: string | null
+          fonte_id?: string | null
+          fonte_caminho?: string | null
+          sumiu_da_fonte_em?: string | null
+        }
+        Relationships: []
+      }
+      kb_fontes: {
+        Row: {
+          id: string
+          empresa_id: string
+          nome: string
+          origem: string
+          situacao: string
+          ativo: boolean | null
+          criado_em: string
+          criado_por: string | null
+          atualizado_em: string | null
+          atualizado_por: string | null
+        }
+        Insert: {
+          id?: string
+          empresa_id: string
+          nome: string
+          origem: string
+          situacao?: string
+          ativo?: boolean | null
+          criado_em?: string
+          criado_por?: string | null
+          atualizado_em?: string | null
+          atualizado_por?: string | null
+        }
+        Update: {
+          id?: string
+          empresa_id?: string
+          nome?: string
+          origem?: string
           situacao?: string
           ativo?: boolean | null
           criado_em?: string
@@ -1115,6 +1166,10 @@ export type Database = {
       inativar_usuario: { Args: { p_usuario_id: string; p_motivo: string }; Returns: undefined }
       kb_arquivo_ja_existe: { Args: { p_checksum: string }; Returns: { documento_id: string | null; titulo: string | null; numero: number | null }[] }
       kb_criar_documento: { Args: { p_documento_id: string; p_versao_id: string; p_titulo: string; p_legenda: string; p_tipo: string; p_origem: string; p_confidencialidade: string; p_data_fonte: string; p_identificacao: string; p_consultado_em: string; p_situacao_lida: string; p_caminho: string; p_nome_original: string; p_tipo_arquivo: string; p_tamanho: number; p_checksum: string }; Returns: string }
+      kb_criar_fonte: { Args: { p_empresa_id: string; p_nome: string; p_origem: string }; Returns: string }
+      kb_importacao_estado: { Args: { p_empresa_id: string }; Returns: { documento_id: string | null; fonte_id: string | null; fonte_caminho: string | null; situacao: string | null; numero: number | null; checksum: string | null }[] }
+      kb_importar_documento: { Args: { p_empresa_id: string; p_fonte_id: string; p_fonte_caminho: string; p_fonte_ref: string; p_documento_id: string; p_versao_id: string; p_titulo: string; p_tipo: string; p_confidencialidade: string; p_arquivo_caminho: string; p_nome_original: string; p_tipo_arquivo: string; p_tamanho: number; p_checksum: string }; Returns: string }
+      kb_marcar_sumidos: { Args: { p_empresa_id: string; p_fonte_id: string; p_caminhos_presentes: string[] }; Returns: number }
       kb_nova_versao: { Args: { p_documento_id: string; p_versao_id: string; p_caminho: string; p_nome_original: string; p_tipo_arquivo: string; p_tamanho: number; p_checksum: string; p_motivo: string }; Returns: number }
       listar_contas_usuario: { Args: never; Returns: { tipo: string | null; id: string | null; nome: string | null; email: string | null; profissional_id: string | null; cpf: string | null; ativo: boolean | null; situacao: string | null; senha_a_trocar: boolean | null; bloqueado: boolean | null; valida_de: string | null; valida_ate: string | null; na_validade: boolean | null; convite_expira_em: string | null; perfis: Json | null }[] }
       listar_perfis: { Args: { p_incluir_inativos?: boolean }; Returns: { id: string | null; nome: string | null; descricao: string | null; ativo: boolean | null; qtd_usuarios: number | null; qtd_funcoes: number | null }[] }

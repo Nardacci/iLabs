@@ -334,13 +334,15 @@ const TAMANHO_DA_PAGINA = 10;
               @if (cadastro().envioDeArquivo && !editando()) {
                 <div class="field largo">
                   <label for="arquivo-do-documento"
-                    >Arquivo (TXT, DOCX ou PDF, até 50 MB)<span aria-hidden="true"> *</span></label
+                    >Arquivo (TXT, MD, DOCX ou PDF, até 50 MB)<span aria-hidden="true">
+                      *</span
+                    ></label
                   >
                   <input
                     class="input"
                     id="arquivo-do-documento"
                     type="file"
-                    accept=".txt,.docx,.pdf"
+                    accept=".txt,.md,.docx,.pdf"
                     (change)="escolherArquivo($event)"
                     [attr.aria-invalid]="erroDoArquivo() ? 'true' : null"
                     aria-describedby="arquivo-dica"
@@ -426,7 +428,7 @@ const TAMANHO_DA_PAGINA = 10;
             >
               <div class="field">
                 <label for="arquivo-da-versao"
-                  >Arquivo da nova versão (TXT, DOCX ou PDF, até 50 MB)<span aria-hidden="true">
+                  >Arquivo da nova versão (TXT, MD, DOCX ou PDF, até 50 MB)<span aria-hidden="true">
                     *</span
                   ></label
                 >
@@ -434,7 +436,7 @@ const TAMANHO_DA_PAGINA = 10;
                   class="input"
                   id="arquivo-da-versao"
                   type="file"
-                  accept=".txt,.docx,.pdf"
+                  accept=".txt,.md,.docx,.pdf"
                   (change)="escolherArquivoDaVersao($event)"
                   [attr.aria-invalid]="erroDoArquivoDaVersao() ? 'true' : null"
                 />
