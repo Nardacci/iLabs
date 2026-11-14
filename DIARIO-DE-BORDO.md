@@ -6,6 +6,7 @@ Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê
 
 - **Autorização do responsável ("Autorizo os dois"): migração 17 APLICADA no Supabase e função `processar-versao` PUBLICADA** (versão 1). Conferido no banco real: tabelas com RLS, as 2 versões existentes com leitura pendente, funções de serviço sem acesso para anônimo e autenticado, avisos só os já conhecidos. Registro em `banco/execucao/2026-11-14-migracao-17/resultado.md`.
 - **Falta provar com uso real:** ler o texto das 2 versões já cadastradas (aba Versões, "Ler o texto de novo", logado no app) e buscar na tela Buscar. A função exige a sessão de uma pessoa; por isso não foi chamada daqui. Não houve chamada real da função até agora.
+- **Provado com uso real (14/11/2026):** o responsável leu o texto e buscou `art. 333`: achou o RDC 658/2022, página 39, com as palavras marcadas. **Defeito achado:** o recorte mostrado se centrava na primeira palavra achada ("Art. 327") e não no "333"; agora a janela fica onde aparecem mais termos diferentes da busca (teste novo, app com 180 testes).
 - O texto abaixo é o da construção (escrito antes da aplicação): onde diz "NÃO aplicada", vale o parágrafo acima.
 
 - **Pedido do responsável:** "Sim, começar a 2a". Sem IA e sem provedor externo: ler o texto dos documentos, dividir em trechos e buscar por texto.

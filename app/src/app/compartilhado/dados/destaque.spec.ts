@@ -51,6 +51,14 @@ describe('partesDestacadas', () => {
     expect(marcadas(partes)).toEqual(['termo']);
   });
 
+  it('a janela mostra onde estão TODOS os termos da busca, não só o primeiro que aparece ("art. 333")', () => {
+    const texto = `Art. 327. ${'procedimentos escritos para reclamações '.repeat(12)}Art. 333. As informações relatadas devem ser registradas. ${'outros assuntos '.repeat(30)}`;
+    const partes = partesDestacadas(texto, 'art. 333', 200);
+    const inteiro = partes.map((p) => p.texto).join('');
+    expect(inteiro).toContain('Art. 333');
+    expect(marcadas(partes)).toEqual(['Art', '333']);
+  });
+
   it('texto curto não recebe reticências', () => {
     const partes = partesDestacadas('Texto curto com termo.', 'termo');
     expect(partes.map((p) => p.texto).join('')).toBe('Texto curto com termo.');
