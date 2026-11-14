@@ -30,21 +30,36 @@ const raiz = (termo: string): string => (termo.length > 5 ? termo.slice(0, -2) :
 export function partesDestacadas(texto: string, consulta: string, tamanho = 320): Parte[] {
   const limpo = texto.replace(/\s+/g, ' ').trim();
   const raizes = termosDaBusca(consulta).map(raiz);
-  const casa = (palavra: string): boolean => {
-    const n = semAcento(palavra);
-    return raizes.some((r) => n.startsWith(r));
-  };
-  const palavras = [...limpo.matchAll(/[\p{L}\p{N}]+/gu)].map((m) => ({
-    inicio: m.index,
-    fim: m.index + m[0].length,
-    marca: casa(m[0]),
-  }));
+  const palavras = [...limpo.matchAll(/[\p{L}\p{N}]+/gu)].map((m) => {
+    const n = semAcento(m[0]);
+    return {
+      inicio: m.index,
+      fim: m.index + m[0].length,
+      termo: raizes.findIndex((r) => n.startsWith(r)),
+      marca: false,
+    };
+  });
+  for (const p of palavras) p.marca = p.termo !== -1;
 
   let inicio = 0;
   let fim = limpo.length;
   if (limpo.length > tamanho) {
-    const primeiro = palavras.find((p) => p.marca);
-    inicio = Math.max(0, (primeiro?.inicio ?? 0) - Math.floor(tamanho / 3));
+    // A janela começa perto da palavra achada que deixa MAIS termos diferentes da busca à vista (empate: a primeira).
+    // Assim, "art. 333" mostra o "Art. 333" e não o primeiro "Art." do trecho.
+    const recuo = Math.floor(tamanho / 3);
+    let melhor: { inicio: number; pontos: number } | undefined;
+    for (const ancora of palavras) {
+      if (!ancora.marca) continue;
+      const de = Math.max(0, ancora.inicio - recuo);
+      const vistos = new Set(
+        palavras
+          .filter((p) => p.marca && p.inicio >= de && p.fim <= de + tamanho)
+          .map((p) => p.termo),
+      );
+      if (!melhor || vistos.size > melhor.pontos)
+        melhor = { inicio: ancora.inicio, pontos: vistos.size };
+    }
+    inicio = Math.max(0, (melhor?.inicio ?? 0) - recuo);
     if (inicio > 0) {
       const espaco = limpo.indexOf(' ', inicio);
       if (espaco !== -1) inicio = espaco + 1;
