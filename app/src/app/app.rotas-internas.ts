@@ -1,6 +1,7 @@
 import type { Routes } from '@angular/router';
 import { guardaPermissao } from './compartilhado/guardas/guardas';
 import type { DadosDaRota } from './compartilhado/menu';
+import { documentos } from './cadastros/documentos';
 import { centrosCusto } from './cadastros/centros-custo';
 import { estruturaOrganizacional } from './cadastros/estrutura-organizacional';
 import { funcoesProfissionais } from './cadastros/funcoes-profissionais';
@@ -143,6 +144,19 @@ export const rotasInternas: Routes = [
     path: 'seguranca',
     data: dados({ titulo: 'Minha segurança', menu: { grupo: 'Minha conta' } }),
     loadComponent: () => import('./acesso/seguranca/seguranca').then((m) => m.Seguranca),
+  },
+  {
+    path: 'base-conhecimento/documentos',
+    canActivate: [guardaPermissao],
+    data: {
+      ...dados({
+        titulo: 'Documentos',
+        funcao: 'kb.documentos',
+        menu: { grupo: 'Base de conhecimento' },
+      }),
+      cadastro: documentos,
+    },
+    loadComponent: () => import('./compartilhado/cadastro/cadastro').then((m) => m.Cadastro),
   },
   // <novas-telas> (o gerador `npm run nova-tela` acrescenta acima desta linha)
 ];

@@ -71,3 +71,18 @@ where trigger_schema = 'ilab' and event_object_table in ('acessos', 'assinaturas
 -- 16. Pré-requisito do Supabase usado pelas funções (esperado: crypt existe no schema extensions)
 select n.nspname, p.proname from pg_proc p join pg_namespace n on n.oid = p.pronamespace
 where n.nspname = 'extensions' and p.proname = 'crypt';
+
+-- Migração 15 (base de conhecimento): conferir depois de aplicar.
+-- Esperado: 2 tabelas com RLS ligada; visitante sem nenhum privilégio; authenticated só com select.
+select c.relname, c.relrowsecurity as rls_ligada
+  from pg_class c join pg_namespace n on n.oid = c.relnamespace
+ where n.nspname = 'ilab' and c.relname in ('kb_documentos', 'kb_documento_versoes') order by 1;
+select grantee, table_name, string_agg(privilege_type, ',' order by privilege_type) as privilegios
+  from information_schema.role_table_grants
+ where table_schema = 'ilab' and table_name in ('kb_documentos', 'kb_documento_versoes') and grantee in ('anon', 'authenticated')
+ group by 1, 2 order by 1, 2;
+-- Esperado: bucket 'kb-documentos', privado (public = false), limite de 52428800 bytes, 3 tipos permitidos.
+select id, public, file_size_limit, allowed_mime_types from storage.buckets where id = 'kb-documentos';
+-- Esperado: exatamente 2 políticas do bucket (enviar e baixar); nenhuma de alterar ou excluir.
+select policyname, cmd from pg_policies where schemaname = 'storage' and tablename = 'objects' and policyname like 'kb_documentos_%' order by 1;
+
