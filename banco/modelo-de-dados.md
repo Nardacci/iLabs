@@ -95,3 +95,13 @@ erDiagram
 ### Perfis
 
 O Administrador criado com a empresa tem tudo **menos** assinar aprovações (regra de ouro, a validar). `ilab_interno.criar_perfis_de_teste(empresa)` cria os 22 perfis de teste (prefixo `T-`), um por papel da matriz proposta; **só para dados de teste**. Por enquanto só têm as funções de cadastro, acesso e assinatura: as funções da cadeia do lote entram com a migração 2.
+
+## Base de conhecimento, etapa 1 (migração 15, não aplicada)
+
+| Tabela | Para que serve |
+|---|---|
+| `kb_documentos` | Um documento da base: título, legenda opcional, tipo (norma, regra de negócio, especificação, fluxo, guia, outro), origem (ANVISA, legado, upload próprio, outro), confidencialidade (público, interno, confidencial), data da fonte, identificação oficial (por exemplo "RDC 658/2022"), data da consulta e situação lida (vigente, revogada, alterada, não verificada). Situação do cadastro: ativo, inativo ou excluído. |
+| `kb_documento_versoes` | Cada arquivo enviado do documento: número da versão (dado pelo banco), caminho no Storage, nome original, tipo (txt, docx, pdf), tamanho (até 50 MB) e checksum SHA-256. **Nunca se altera nem se apaga.** A versão atual é a de maior número. |
+
+Regras: escrita só pelas funções `ilab.kb_criar_documento`, `ilab.kb_nova_versao`, `ilab.alterar_cadastro` e `ilab.mudar_situacao`; documento da ANVISA exige a data da consulta; confidencial só para a função `kb.documentos_confidenciais`; o arquivo fica no bucket privado `kb-documentos`, no caminho `empresa/documento/versão.extensão`. `ilab.kb_arquivo_ja_existe(checksum)` avisa de arquivo repetido.
+
