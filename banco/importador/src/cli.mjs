@@ -2,6 +2,8 @@
 // Importador da base de conhecimento. Dois comandos:
 //   ensaio    lê as pastas e escreve o relatório; NÃO grava nada em lugar nenhum.
 //   importar  envia ao Supabase o que o ensaio classificou como novo ou versão nova (exige --confirmo).
+// Os dois comandos cobrem os documentos e o catálogo de regras (arquivos regras-*.jsonl). Opções: --sem-regras (só
+// documentos) e --so-regras (só o catálogo).
 //
 // Credenciais (só variáveis de ambiente, nunca em arquivo, no git ou na tela):
 //   ILABS_SUPABASE_URL, ILABS_SUPABASE_CHAVE_SERVICO, ILABS_EMPRESA_ID
@@ -16,6 +18,8 @@ import { createClient } from '@supabase/supabase-js';
 import { PASTAS_DO_PILOTO } from './config.mjs';
 import { escreverRelatorio, indexarEstado, montarRelatorio } from './ensaio.mjs';
 import { importar } from './importar.mjs';
+import { ensaiarRegras, importarRegras, resumoDoCatalogo } from './regras.mjs';
+import { ORIGEM_DA_FONTE } from './config.mjs';
 
 const NOME_DA_FONTE = 'Repositório do legado';
 
@@ -67,6 +71,15 @@ function mostrarResumo(r) {
   for (const [tipo, n] of Object.entries(r.achadosPorTipo)) console.log(`  achados: ${tipo}: ${n} arquivo(s)`);
 }
 
+function mostrarCatalogo(catalogo) {
+  console.log(`\nCatálogo de regras: ${catalogo.length} arquivo(s) de regras.`);
+  for (const a of catalogo) {
+    const conf = Object.entries(a.porConfidencialidade).map(([c, n]) => `${n} ${c}`).join(', ');
+    const alerta = a.acao === 'pronto' ? '' : `  [${a.acao}${a.erros.length ? `: ${a.erros.join('; ')}` : ''}]`;
+    console.log(`  ${String(a.total).padStart(5)}  ${a.caminho} (${conf || 'sem regras'})${alerta}`);
+  }
+}
+
 async function main() {
   const [comando, ...resto] = process.argv.slice(2);
   const o = opcoes(resto);
@@ -90,9 +103,13 @@ async function main() {
     } else {
       console.log('Ensaio sem consultar a base (sem credenciais ou com --sem-banco): tudo aparece como novo.');
     }
-    const relatorio = await montarRelatorio({ raiz, pastas, estado, liberados, aoProgresso: progresso });
+    const relatorio = o['so-regras']
+      ? { geradoEm: new Date().toISOString(), raiz, pastas, itens: [], ignorados: new Map(), resumo: { arquivos: 0, megabytes: 0, porAcao: {}, porPasta: {}, porTipo: {}, achadosPorTipo: {}, ignoradosPorMotivo: {} } }
+      : await montarRelatorio({ raiz, pastas, estado, liberados, aoProgresso: progresso });
+    if (!o['sem-regras']) relatorio.catalogo = resumoDoCatalogo(ensaiarRegras({ raiz, pastas, liberados }));
     const arquivos = escreverRelatorio(relatorio, saida);
-    mostrarResumo(relatorio.resumo);
+    if (!o['so-regras']) mostrarResumo(relatorio.resumo);
+    if (relatorio.catalogo) mostrarCatalogo(relatorio.catalogo);
     console.log(`\nRelatório gravado em:\n  ${arquivos.md}\n  ${arquivos.csv}\n  ${arquivos.json}\nNada foi enviado nem gravado na base.`);
     return;
   }
@@ -102,19 +119,44 @@ async function main() {
   const limite = o.limite && o.limite !== true ? Number(o.limite) : undefined;
   if (limite !== undefined && !(limite > 0)) falhar('--limite precisa ser um número maior que zero.');
   const referencia = referenciaDoGit(raiz);
-  console.log(`Importando${limite ? ` (no máximo ${limite} arquivos)` : ''}, referência ${referencia}…`);
-  const r = await importar({ cliente: servico.cliente, empresaId: servico.empresaId, fonteNome: NOME_DA_FONTE, referencia, raiz, pastas, liberados, limite, aoProgresso: progresso });
-  escreverRelatorio(r.relatorio, saida);
-  mostrarResumo(r.relatorio.resumo);
-  console.log(`\nResultado: ${r.resumo.novo} novos, ${r.resumo.versao_nova} versões novas, ${r.resumo.igual} já estavam iguais.`);
-  if (r.marcadosComoSumidos !== null) console.log(`Marcados como "sumiu da fonte": ${r.marcadosComoSumidos}.`);
-  else console.log('Marcação de "sumiu da fonte" não feita (importação parcial ou com falhas).');
-  if (r.parcial) console.log('Importação parcial: rode de novo, sem --limite, para o resto.');
-  if (r.falhas.length) {
-    console.log(`\n${r.falhas.length} falha(s):`);
-    for (const f of r.falhas.slice(0, 20)) console.log(`  ${f.caminho}: ${f.erro}`);
-    process.exitCode = 1;
+  let falhou = false;
+  let fonteId = null;
+  if (!o['so-regras']) {
+    console.log(`Importando${limite ? ` (no máximo ${limite} arquivos)` : ''}, referência ${referencia}…`);
+    const r = await importar({ cliente: servico.cliente, empresaId: servico.empresaId, fonteNome: NOME_DA_FONTE, referencia, raiz, pastas, liberados, limite, aoProgresso: progresso });
+    fonteId = r.fonteId;
+    if (!o['sem-regras']) r.relatorio.catalogo = resumoDoCatalogo(ensaiarRegras({ raiz, pastas, liberados }));
+    escreverRelatorio(r.relatorio, saida);
+    mostrarResumo(r.relatorio.resumo);
+    console.log(`\nResultado: ${r.resumo.novo} novos, ${r.resumo.versao_nova} versões novas, ${r.resumo.igual} já estavam iguais.`);
+    if (r.marcadosComoSumidos !== null) console.log(`Marcados como "sumiu da fonte": ${r.marcadosComoSumidos}.`);
+    else console.log('Marcação de "sumiu da fonte" não feita (importação parcial ou com falhas).');
+    if (r.parcial) console.log('Importação parcial: rode de novo, sem --limite, para o resto.');
+    if (r.falhas.length) {
+      falhou = true;
+      console.log(`\n${r.falhas.length} falha(s):`);
+      for (const f of r.falhas.slice(0, 20)) console.log(`  ${f.caminho}: ${f.erro}`);
+    }
   }
+  if (!o['sem-regras']) {
+    if (!fonteId) {
+      const { data, error } = await servico.cliente.rpc('kb_criar_fonte', { p_empresa_id: servico.empresaId, p_nome: NOME_DA_FONTE, p_origem: ORIGEM_DA_FONTE });
+      if (error) falhar(`kb_criar_fonte: ${error.message}`);
+      fonteId = data;
+    }
+    console.log('\nImportando o catálogo de regras…');
+    const c = await importarRegras({ cliente: servico.cliente, empresaId: servico.empresaId, fonteId, referencia, raiz, pastas, liberados, limite, aoProgresso: progresso });
+    mostrarCatalogo(c.arquivos);
+    console.log(`\nCatálogo: ${c.totais.novas} novas, ${c.totais.alteradas} alteradas, ${c.totais.iguais} iguais, ${c.totais.inativas} inativas (não mexidas).`);
+    if (c.marcadasComoSumidas !== null) console.log(`Regras marcadas como "sumiu da fonte": ${c.marcadasComoSumidas}.`);
+    else console.log('Marcação de "sumiu da fonte" das regras não feita (importação parcial, bloqueada ou com falhas).');
+    if (c.falhas.length) {
+      falhou = true;
+      console.log(`\n${c.falhas.length} falha(s) no catálogo:`);
+      for (const f of c.falhas.slice(0, 20)) console.log(`  ${f.caminho}: ${f.erro}`);
+    }
+  }
+  if (falhou) process.exitCode = 1;
 }
 
 main().catch((e) => falhar(e.message));

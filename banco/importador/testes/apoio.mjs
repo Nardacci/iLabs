@@ -48,7 +48,7 @@ export function pdf(texto) {
  * Guarda tudo em memória e registra as chamadas.
  */
 export function clienteFalso({ falharNoRpc = false } = {}) {
-  const estado = { docs: new Map(), objetos: new Map(), chamadas: [], marcados: null, fonteCriada: null, falharNoRpc };
+  const estado = { docs: new Map(), objetos: new Map(), chamadas: [], marcados: null, fonteCriada: null, falharNoRpc, regras: new Map(), lotesDeRegras: [], regrasPresentes: null };
   const rpc = async (nome, args) => {
     estado.chamadas.push(nome);
     if (nome === 'kb_criar_fonte') {
@@ -74,6 +74,24 @@ export function clienteFalso({ falharNoRpc = false } = {}) {
       if (args.p_arquivo_caminho !== `${args.p_empresa_id}/${atual.documentoId}/${args.p_versao_id}.${args.p_tipo_arquivo}`) return { data: null, error: { message: 'O caminho do arquivo não confere' } };
       atual.versoes.push({ numero: ultima.numero + 1, checksum: args.p_checksum, ref: args.p_fonte_ref });
       return { data: 'versao_nova', error: null };
+    }
+    if (nome === 'kb_importar_regras') {
+      if (estado.falharNoRpc) return { data: null, error: { message: 'falha simulada do banco' } };
+      if (args.p_regras.length > 500) return { data: null, error: { message: 'Regras demais num lote (máximo 500).' } };
+      estado.lotesDeRegras.push(args.p_regras.length);
+      const total = { novas: 0, alteradas: 0, iguais: 0, inativas: 0 };
+      for (const r of args.p_regras) {
+        const atual = estado.regras.get(r.id.toUpperCase());
+        if (!atual) total.novas++;
+        else if (JSON.stringify(atual) === JSON.stringify(r)) total.iguais++;
+        else total.alteradas++;
+        estado.regras.set(r.id.toUpperCase(), r);
+      }
+      return { data: total, error: null };
+    }
+    if (nome === 'kb_marcar_regras_sumidas') {
+      estado.regrasPresentes = args.p_codigos_presentes;
+      return { data: 0, error: null };
     }
     if (nome === 'kb_marcar_sumidos') {
       estado.marcados = args.p_caminhos_presentes;
