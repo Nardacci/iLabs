@@ -9,6 +9,8 @@ export interface ModuloDoSistema {
   pronto: boolean;
   /** Para onde o cartão leva, quando pronto. */
   rota?: string;
+  /** Função do banco que libera a tela. Sem permissão, o cartão não aparece (como no menu). Sem função, aparece para todos. */
+  funcao?: string;
 }
 
 /**
@@ -23,6 +25,15 @@ export const MODULOS: readonly ModuloDoSistema[] = [
     icone: 'acesso',
     pronto: true,
     rota: '/usuarios',
+  },
+  {
+    chave: 'base-conhecimento',
+    nome: 'Base de conhecimento',
+    resumo: 'Documentos, normas e regras do sistema, com versões e origem de cada um.',
+    icone: 'busca',
+    pronto: true,
+    rota: '/base-conhecimento/documentos',
+    funcao: 'kb.documentos',
   },
   {
     chave: 'producao',

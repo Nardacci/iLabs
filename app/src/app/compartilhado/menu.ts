@@ -47,7 +47,7 @@ const ESTRUTURA: Estrutura[] = [
   { grupo: 'Cadastros Corporativos', icone: 'corporativo' },
   { grupo: 'Cadastros Farmacêuticos', icone: 'farmaceuticos' },
   { grupo: 'Tabelas Compartilhadas', icone: 'cadastros' },
-  { grupo: 'Base de conhecimento', icone: 'documentos' },
+  { grupo: 'Base de conhecimento', icone: 'busca' },
   { grupo: 'Central de Notificações', icone: 'sino' },
   { grupo: 'Configuração da Plataforma', icone: 'construtor' },
   // A segurança da própria conta abre pelo menu da pessoa (avatar), não pelo menu lateral.
