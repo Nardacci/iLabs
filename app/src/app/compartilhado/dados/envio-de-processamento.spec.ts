@@ -32,7 +32,14 @@ function preparar(opcoes: { erroDoBanco?: boolean; erroDeLista?: boolean } = {})
       { provide: FuncoesDeBorda, useValue: { processarVersao } },
     ],
   });
-  return { servico: TestBed.inject(EnvioDeDocumentoService), processarVersao, em, de, selecionar };
+  return {
+    servico: TestBed.inject(EnvioDeDocumentoService),
+    processarVersao,
+    em,
+    de,
+    selecionar,
+    upload,
+  };
 }
 
 const pdf = (): File => new File(['conteudo'], 'norma.pdf', { type: 'application/pdf' });
@@ -54,6 +61,21 @@ describe('EnvioDeDocumentoService: leitura do texto', () => {
     await servico.criar(DADOS, pdf());
     expect(processarVersao).toHaveBeenCalledTimes(1);
     expect(processarVersao.mock.calls[0]?.[0]).toMatch(/^[0-9a-f-]{36}$/);
+  });
+
+  it('imagem não tem texto: não se pede a leitura (nem ao criar, nem ao enviar nova versão) e vai ao Storage como imagem', async () => {
+    const { servico, processarVersao, upload } = preparar();
+    await servico.criar(DADOS, new File(['x'], 'print.png', { type: 'image/png' }));
+    await servico.novaVersao(
+      'doc-1',
+      new File(['y'], 'print2.webp', { type: 'image/webp' }),
+      'Imagem nova',
+    );
+    expect(processarVersao).not.toHaveBeenCalled();
+    expect(upload.mock.calls.map((c) => (c[2] as { contentType: string }).contentType)).toEqual([
+      'image/png',
+      'image/webp',
+    ]);
   });
 
   it('depois de enviar nova versão, pede a leitura dela', async () => {

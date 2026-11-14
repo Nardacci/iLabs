@@ -156,16 +156,6 @@ export const rotasInternas: Routes = [
     loadComponent: () => import('./base-conhecimento/buscar').then((m) => m.BuscarKb),
   },
   {
-    path: 'base-conhecimento/regras',
-    canActivate: [guardaPermissao],
-    data: dados({
-      titulo: 'Regras de negócio',
-      funcao: 'kb.documentos',
-      menu: { grupo: 'Base de conhecimento' },
-    }),
-    loadComponent: () => import('./base-conhecimento/regras').then((m) => m.RegrasKb),
-  },
-  {
     path: 'base-conhecimento/documentos',
     canActivate: [guardaPermissao],
     data: {

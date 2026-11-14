@@ -5,6 +5,7 @@ import {
   checksumDe,
   conferirArquivo,
   EnvioDeDocumentoService,
+  ehImagem,
   extensaoDe,
   tamanhoLegivel,
 } from './envio-de-documento';
@@ -56,6 +57,21 @@ const DADOS = {
 const pdf = (nome = 'rdc-658.pdf', conteudo = 'conteudo') =>
   new File([conteudo], nome, { type: 'application/pdf' });
 
+describe('imagens no envio de arquivo', () => {
+  it('PNG, JPG, JPEG e WEBP são aceitos, em qualquer caixa, e reconhecidos como imagem', () => {
+    for (const nome of ['print.png', 'Foto.JPG', 'x.jpeg', 'tela.WebP']) {
+      expect(extensaoDe(nome)).not.toBeNull();
+      expect(conferirArquivo({ name: nome, size: 100 })).toBeNull();
+    }
+    expect(['png', 'jpg', 'jpeg', 'webp', 'PNG'].every(ehImagem)).toBe(true);
+    expect(['pdf', 'md', 'docx', 'txt', 'gif'].some(ehImagem)).toBe(false);
+  });
+
+  it('GIF continua sem ser aceito', () => {
+    expect(extensaoDe('animacao.gif')).toBeNull();
+  });
+});
+
 describe('apoio ao envio de arquivo', () => {
   it('só aceita TXT, DOCX e PDF (em qualquer caixa)', () => {
     expect(extensaoDe('a.pdf')).toBe('pdf');
@@ -67,7 +83,9 @@ describe('apoio ao envio de arquivo', () => {
 
   it('avisa de arquivo vazio, grande demais ou de tipo não aceito', () => {
     expect(conferirArquivo({ name: 'a.pdf', size: 10 })).toBeNull();
-    expect(conferirArquivo({ name: 'a.exe', size: 10 })).toMatch(/TXT, MD, DOCX ou PDF/);
+    expect(conferirArquivo({ name: 'a.exe', size: 10 })).toMatch(
+      /TXT, MD, DOCX, PDF ou imagem \(PNG, JPG ou WEBP\)/,
+    );
     expect(conferirArquivo({ name: 'a.pdf', size: 0 })).toMatch(/vazio/);
     expect(conferirArquivo({ name: 'a.pdf', size: 52_428_801 })).toMatch(/50 MB/);
   });
@@ -124,7 +142,9 @@ describe('EnvioDeDocumentoService', () => {
 
   it('recusa arquivo de tipo não aceito antes de tocar no Storage ou no banco', async () => {
     const { servico, upload, rpc } = preparar();
-    await expect(servico.criar(DADOS, pdf('programa.exe'))).rejects.toThrow(/TXT, MD, DOCX ou PDF/);
+    await expect(servico.criar(DADOS, pdf('programa.exe'))).rejects.toThrow(
+      /TXT, MD, DOCX, PDF ou imagem \(PNG, JPG ou WEBP\)/,
+    );
     expect(upload).not.toHaveBeenCalled();
     expect(rpc).not.toHaveBeenCalled();
   });

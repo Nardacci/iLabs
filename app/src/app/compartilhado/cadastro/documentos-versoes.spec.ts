@@ -44,14 +44,22 @@ const VERSOES = [
 ];
 
 function preparar(
-  opcoes: { situacao?: string; alterar?: boolean; estados?: [string, unknown][] } = {},
+  opcoes: {
+    situacao?: string;
+    alterar?: boolean;
+    estados?: [string, unknown][];
+    versoes?: unknown[];
+    legenda?: string | null;
+  } = {},
 ) {
   const banco = comBancoFalso();
   banco.respostas['usos_cadastros'] = [{ registro_id: 'd1', usos: 2 }];
   const consulta = {
     listar: vi.fn(() =>
       Promise.resolve({
-        linhas: [{ ...DOCUMENTO, situacao: opcoes.situacao ?? 'ativo' }],
+        linhas: [
+          { ...DOCUMENTO, legenda: opcoes.legenda ?? null, situacao: opcoes.situacao ?? 'ativo' },
+        ],
         total: 1,
       }),
     ),
@@ -61,7 +69,10 @@ function preparar(
   const envio = {
     criar: vi.fn(() => Promise.resolve('novo-id')),
     jaEnviado: vi.fn(() => Promise.resolve([])),
-    versoes: vi.fn(() => Promise.resolve(VERSOES)),
+    versoes: vi.fn(() => Promise.resolve(opcoes.versoes ?? VERSOES)),
+    enderecoParaVer: vi.fn<(...args: unknown[]) => Promise<string>>(() =>
+      Promise.resolve('https://exemplo.invalid/ver?x=1'),
+    ),
     novaVersao: vi.fn<(...args: unknown[]) => Promise<number>>(() => Promise.resolve(3)),
     estadosDeProcessamento: vi.fn<(...args: unknown[]) => Promise<Map<string, unknown>>>(() =>
       Promise.resolve(
@@ -238,7 +249,9 @@ describe('aba Versões do cadastro de documentos', () => {
     botao(f, 'Enviar nova versão')?.click();
     f.detectChanges();
     await escolher(f, 'arquivo-da-versao', new File(['x'], 'programa.exe'));
-    expect(raiz(f).textContent).toContain('Use um arquivo TXT, MD, DOCX ou PDF.');
+    expect(raiz(f).textContent).toContain(
+      'Use um arquivo TXT, MD, DOCX, PDF ou imagem (PNG, JPG ou WEBP).',
+    );
     escreverMotivo(f, 'Tentativa com arquivo errado');
     botao(f, 'Enviar versão')?.click();
     await espera(f);
@@ -261,6 +274,63 @@ describe('aba Versões do cadastro de documentos', () => {
     await espera(f);
     expect(raiz(f).textContent).toContain('Este arquivo já é uma versão deste documento.');
     expect(raiz(f).textContent).not.toContain('enviada e registrada');
+  });
+
+  const IMAGEM = {
+    id: 'v1',
+    numero: 1,
+    nome_original: 'login.png',
+    tipo_arquivo: 'png',
+    tamanho_bytes: 20_480,
+    checksum: 'c'.repeat(64),
+    arquivo_caminho: 'emp/d1/v1.png',
+    criado_em: '2026-11-13T21:00:00Z',
+  };
+
+  it('versão de imagem: mostra a imagem com o título e a legenda como texto alternativo, e diz que é achada pelo título e pela legenda', async () => {
+    const { envio } = preparar({ versoes: [IMAGEM], legenda: 'Print da tela de login' });
+    const f = await abrir();
+    await abrirDocumento(f, 'Editar');
+    await abrirAbaVersoes(f);
+    expect(envio.enderecoParaVer).toHaveBeenCalledWith(
+      expect.objectContaining({ arquivo_caminho: 'emp/d1/v1.png' }),
+    );
+    const img = raiz(f).querySelector('img');
+    expect(img?.getAttribute('src')).toBe('https://exemplo.invalid/ver?x=1');
+    expect(img?.getAttribute('alt')).toBe('RDC 658/2022: Print da tela de login');
+    const texto = raiz(f).textContent?.replace(/\s+/g, ' ') ?? '';
+    expect(texto).toContain(
+      'Imagem: é achada pelo título e pela legenda do documento (não há texto para ler).',
+    );
+    expect(texto).not.toContain('Leitura do texto para a busca');
+    expect(envio.estadosDeProcessamento).toHaveBeenCalled();
+  });
+
+  it('versão de imagem nunca oferece "Ler o texto de novo", mesmo sem registro de leitura', async () => {
+    preparar({ versoes: [IMAGEM], estados: [] });
+    const f = await abrir();
+    await abrirDocumento(f, 'Editar');
+    await abrirAbaVersoes(f);
+    expect(botao(f, 'Ler o texto de novo')).toBeUndefined();
+  });
+
+  it('se a imagem não puder ser mostrada, a aba continua valendo (dá para baixar)', async () => {
+    const { envio } = preparar({ versoes: [IMAGEM] });
+    envio.enderecoParaVer.mockRejectedValueOnce(new Error('falhou'));
+    const f = await abrir();
+    await abrirDocumento(f, 'Editar');
+    await abrirAbaVersoes(f);
+    expect(raiz(f).querySelector('img')).toBeNull();
+    expect(botao(f, 'Baixar versão 1')).toBeDefined();
+  });
+
+  it('documento de texto não pede endereço de imagem', async () => {
+    const { envio } = preparar();
+    const f = await abrir();
+    await abrirDocumento(f, 'Editar');
+    await abrirAbaVersoes(f);
+    expect(envio.enderecoParaVer).not.toHaveBeenCalled();
+    expect(raiz(f).querySelector('img')).toBeNull();
   });
 
   it('mostra a situação da leitura do texto de cada versão', async () => {

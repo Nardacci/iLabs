@@ -55,7 +55,7 @@ export interface DescricaoDeCadastro {
    */
   arvore?: { pai: string };
   /**
-   * O cadastro NOVO exige um arquivo (TXT, MD, DOCX ou PDF): o navegador envia ao bucket privado e o banco registra o
+   * O cadastro NOVO exige um arquivo (TXT, MD, DOCX, PDF ou imagem (PNG, JPG ou WEBP)): o navegador envia ao bucket privado e o banco registra o
    * documento pela função `kb_criar_documento`. Alterar os dados continua pela alteração genérica, com motivo.
    */
   envioDeArquivo?: boolean;

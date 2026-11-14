@@ -13,7 +13,7 @@ describe('Markdown no envio de documentos', () => {
 
   it('a mensagem de tipo não aceito cita o Markdown', () => {
     expect(conferirArquivo({ name: 'programa.exe', size: 10 })).toBe(
-      'Use um arquivo TXT, MD, DOCX ou PDF.',
+      'Use um arquivo TXT, MD, DOCX, PDF ou imagem (PNG, JPG ou WEBP).',
     );
   });
 

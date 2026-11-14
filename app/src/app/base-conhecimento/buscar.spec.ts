@@ -21,6 +21,9 @@ const RESULTADO = {
   trecho: 'A conferência física compara a quantidade recebida com a nota e confere o lote.',
   relevancia: 0.4,
   repetido_em: 0,
+  tipo_arquivo: 'md',
+  modulo: '3.estoque',
+  legenda: null,
 };
 
 function preparar(achados: unknown[] = [RESULTADO]) {
@@ -57,9 +60,16 @@ function preparar(achados: unknown[] = [RESULTADO]) {
         : null,
     );
   });
-  TestBed.overrideProvider(BuscaKbService, { useValue: { buscar, trecho, vizinho } });
+  const modulos = vi.fn<(...args: unknown[]) => Promise<unknown>>(() =>
+    Promise.resolve([
+      { modulo: '1.principal', total: 12 },
+      { modulo: '3.estoque', total: 7 },
+      { modulo: 'Documentação', total: 3 },
+    ]),
+  );
+  TestBed.overrideProvider(BuscaKbService, { useValue: { buscar, trecho, vizinho, modulos } });
   TestBed.overrideProvider(ConsultaService, { useValue: { listar } });
-  return { buscar, listar, trecho, vizinho };
+  return { buscar, listar, trecho, vizinho, modulos };
 }
 
 async function abrir(q?: string) {
@@ -88,6 +98,16 @@ async function buscarPor(f: Fixture, texto: string): Promise<void> {
   await new Promise((r) => setTimeout(r, 0));
   f.detectChanges();
 }
+
+const botao = (f: Fixture, texto: string): HTMLButtonElement | undefined =>
+  [...raiz(f).querySelectorAll('button')].find((b) => b.textContent?.trim() === texto);
+const clicar = async (f: Fixture, texto: string): Promise<void> => {
+  botao(f, texto)?.click();
+  await f.whenStable();
+  await new Promise((r) => setTimeout(r, 0));
+  f.detectChanges();
+};
+const textoDe = (f: Fixture): string => raiz(f).textContent?.replace(/\s+/g, ' ') ?? '';
 
 describe('tela Buscar na base de conhecimento', () => {
   it('mostra o campo de busca, o filtro de tipo com todos os tipos e o de fonte com as fontes da empresa', async () => {
@@ -137,7 +157,7 @@ describe('tela Buscar na base de conhecimento', () => {
     expect(texto).toContain('1 documento encontrado.');
     expect(texto).toContain('Recebimento de Material');
     expect(texto).toContain(
-      'Especificação · Sistema legado · Repositório do legado · versão 2 · Conferência',
+      'Especificação · Sistema legado · Estoque · Repositório do legado · versão 2 · Conferência',
     );
     expect([...raiz(f).querySelectorAll('mark')].map((m) => m.textContent)).toEqual([
       'conferência',
@@ -233,20 +253,117 @@ describe('tela Buscar na base de conhecimento', () => {
     const f = await abrir();
     await buscarPor(f, 'lote');
     expect(raiz(f).querySelector('img')).toBeNull();
-    expect(raiz(f).querySelector('h2')?.textContent).toBe('<b>Título</b>');
+    expect(raiz(f).querySelector('h2')?.textContent?.trim()).toBe('<b>Título</b>');
+  });
+
+  describe('módulo, título e legenda', () => {
+    const IMAGEM = {
+      ...RESULTADO,
+      trecho_id: null,
+      versao_id: 'v9',
+      documento_id: 'd9',
+      titulo: 'Tela de Login (print)',
+      tipo: 'outro',
+      tipo_arquivo: 'png',
+      modulo: '1.principal',
+      secao: null,
+      trecho: null,
+      legenda: 'Print da tela de login com o campo usuário',
+      caminho: null,
+    };
+
+    it('o filtro Módulo traz os módulos com o nome para a pessoa e a contagem, e a escolha vai para a busca', async () => {
+      const { buscar, modulos } = preparar();
+      const f = await abrir();
+      expect(modulos).toHaveBeenCalledTimes(1);
+      const opcoes = [...(campo(f, 'filtro-modulo-kb') as HTMLSelectElement).options].map((o) => [
+        o.value,
+        o.textContent?.trim(),
+      ]);
+      expect(opcoes).toEqual([
+        ['', 'Todos'],
+        ['1.principal', 'Principal (12)'],
+        ['3.estoque', 'Estoque (7)'],
+        ['Documentação', 'Documentação (3)'],
+      ]);
+      const el = campo(f, 'filtro-modulo-kb') as HTMLSelectElement;
+      el.value = '3.estoque';
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+      await buscarPor(f, 'lote');
+      expect(buscar).toHaveBeenCalledWith('lote', {
+        tipos: [],
+        fonteId: undefined,
+        modulo: '3.estoque',
+        limite: 30,
+      });
+    });
+
+    it('sem escolher módulo, a busca não manda módulo', async () => {
+      const { buscar } = preparar();
+      const f = await abrir();
+      await buscarPor(f, 'lote');
+      expect(buscar).toHaveBeenCalledWith('lote', expect.objectContaining({ modulo: undefined }));
+    });
+
+    it('se os módulos não carregarem, a busca continua valendo e o filtro fica só com "Todos"', async () => {
+      const { modulos } = preparar();
+      modulos.mockRejectedValueOnce(new Error('falhou'));
+      const f = await abrir();
+      expect(
+        [...(campo(f, 'filtro-modulo-kb') as HTMLSelectElement).options].map((o) => o.value),
+      ).toEqual(['']);
+      await buscarPor(f, 'lote');
+      expect(textoDe(f)).toContain('1 documento encontrado.');
+    });
+
+    it('o resultado mostra o módulo ao lado da fonte', async () => {
+      preparar();
+      const f = await abrir();
+      await buscarPor(f, 'lote');
+      expect(textoDe(f)).toContain(
+        'Especificação · Sistema legado · Estoque · Repositório do legado · versão 2',
+      );
+    });
+
+    it('imagem achada pelo título/legenda: selo "Imagem", a legenda no lugar do trecho e sem "Ver mais"', async () => {
+      preparar([IMAGEM]);
+      const f = await abrir();
+      await buscarPor(f, 'campo usuario');
+      const t = textoDe(f);
+      expect(t).toContain('Tela de Login (print) Imagem');
+      expect(t).toContain('Principal');
+      expect([...raiz(f).querySelectorAll('mark')].map((m) => m.textContent)).toEqual([
+        'campo',
+        'usuário',
+      ]);
+      expect(raiz(f).querySelector('.trecho')?.textContent?.replace(/\s+/g, ' ').trim()).toBe(
+        'Print da tela de login com o campo usuário',
+      );
+      expect(botao(f, 'Ver mais')).toBeUndefined();
+      expect(raiz(f).querySelector('a.btn')?.getAttribute('href')).toBe(
+        '/base-conhecimento/documentos?registro=d9&aba=versoes',
+      );
+    });
+
+    it('documento achado só pelo título, sem legenda: diz que foi achado pelo título', async () => {
+      preparar([{ ...IMAGEM, tipo_arquivo: 'pdf', legenda: null, titulo: 'Manual de segurança' }]);
+      const f = await abrir();
+      await buscarPor(f, 'seguranca');
+      expect(textoDe(f)).toContain('Achado pelo título do documento.');
+      expect(raiz(f).querySelector('.pill')).toBeNull();
+      expect(botao(f, 'Ver mais')).toBeUndefined();
+    });
+
+    it('a lista com imagem e documento de texto, sem trecho_id repetido, não tem violações de acessibilidade', async () => {
+      preparar([IMAGEM, RESULTADO]);
+      const f = await abrir();
+      await buscarPor(f, 'lote');
+      expect(raiz(f).querySelectorAll('article')).toHaveLength(2);
+      expect(await violacoesDeAcessibilidade(f)).toEqual([]);
+    });
   });
 
   describe('Ver mais', () => {
-    const botao = (f: Fixture, texto: string): HTMLButtonElement | undefined =>
-      [...raiz(f).querySelectorAll('button')].find((b) => b.textContent?.trim() === texto);
-    const clicar = async (f: Fixture, texto: string): Promise<void> => {
-      botao(f, texto)?.click();
-      await f.whenStable();
-      await new Promise((r) => setTimeout(r, 0));
-      f.detectChanges();
-    };
-    const textoDe = (f: Fixture): string => raiz(f).textContent?.replace(/\s+/g, ' ') ?? '';
-
     it('mostra o trecho inteiro, uma linha por parágrafo e com as palavras marcadas; "Ver menos" volta ao recorte', async () => {
       const { trecho } = preparar();
       const f = await abrir();
