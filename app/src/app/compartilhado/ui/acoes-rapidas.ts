@@ -13,13 +13,12 @@ import { Icone, type NomeDeIcone } from './icone';
 interface Opcao {
   rotulo: string;
   rota: string;
-  parametros?: Record<string, string>;
   icone: NomeDeIcone;
 }
 
 /**
- * Botão flutuante, em todas as telas da área logada: ao clicar, abre as opções de cadastrar ou buscar na base de
- * conhecimento (decisão do responsável, 14/11/2026). O que aparece vem das permissões que o banco já devolveu
+ * Botão flutuante (ícone de IA), em todas as telas da área logada: ao clicar, abre as opções Documentos (a lista, de
+ * onde se cadastra) e Buscar na base de conhecimento (decisão do responsável, 14/11/2026). O que aparece vem das permissões que o banco já devolveu
  * (a mesma regra do menu); quem não pode nada ali não vê o botão. Nenhuma regra mora aqui.
  */
 @Component({
@@ -92,12 +91,7 @@ interface Opcao {
         @if (aberto()) {
           <div class="lista" id="acoes-rapidas-lista" role="group" aria-label="Ações rápidas">
             @for (o of opcoes(); track o.rota) {
-              <a
-                class="opcao"
-                [routerLink]="o.rota"
-                [queryParams]="o.parametros"
-                (click)="fechar()"
-              >
+              <a class="opcao" [routerLink]="o.rota" (click)="fechar()">
                 <il-icone [nome]="o.icone" />
                 <span>{{ o.rotulo }}</span>
               </a>
@@ -107,13 +101,13 @@ interface Opcao {
         <button
           type="button"
           class="fab"
-          aria-label="Ações rápidas: cadastrar ou buscar"
+          aria-label="Ações rápidas: documentos ou buscar"
           aria-haspopup="true"
           aria-controls="acoes-rapidas-lista"
           [attr.aria-expanded]="aberto()"
           (click)="alternar()"
         >
-          <il-icone [nome]="aberto() ? 'fechar' : 'mais'" />
+          <il-icone [nome]="aberto() ? 'fechar' : 'brilho'" />
         </button>
       </div>
     }
@@ -127,15 +121,12 @@ export class AcoesRapidas {
 
   protected readonly opcoes = computed<Opcao[]>(() => {
     const opcoes: Opcao[] = [];
-    if (this.sessao.pode('kb.documentos', 'incluir')) {
+    if (this.sessao.pode('kb.documentos')) {
       opcoes.push({
-        rotulo: 'Cadastrar documento',
+        rotulo: 'Documentos',
         rota: '/base-conhecimento/documentos',
-        parametros: { criar: '1' },
         icone: 'documentos',
       });
-    }
-    if (this.sessao.pode('kb.documentos')) {
       opcoes.push({
         rotulo: 'Buscar na base de conhecimento',
         rota: '/base-conhecimento/buscar',

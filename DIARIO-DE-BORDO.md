@@ -2,6 +2,12 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-14 · Claude · Ajustes do botão flutuante e do menu
+
+- **Pedidos do responsável (após testar o botão):** (1) tirar a **Base de conhecimento do menu lateral**; (2) trocar o ícone "+" por algo parecido com os da IA; (3) **Documentos** deve abrir a **lista** de documentos, e não o cadastro de um documento novo.
+- **Feito:** (1) o grupo ganhou `lateral: false` (sai da barra lateral e **continua na pesquisa de telas, Ctrl + K**; as rotas não mudaram); (2) ícone novo `brilho` (estrela grande e duas pequenas, o símbolo de IA) no botão fechado, e o de fechar (X) quando aberto; (3) a opção virou **Documentos** → `/base-conhecimento/documentos` (a lista; o cadastro novo continua no botão **Novo documento** dentro dela). Como as duas opções agora só abrem telas de consulta, **as duas valem para quem pode consultar documentos** (antes, "cadastrar" exigia incluir).
+- **Testes:** app 219; `npm run verificar` completo OK.
+
 ## 2026-11-14 · Claude · Botão flutuante de ações rápidas (cadastrar ou buscar)
 
 - **Pedido do responsável:** botão/ícone flutuante que, ao clicar, abre as opções de cadastrar ou buscar. Respostas: aparece em **todas as telas**; por enquanto **duas opções**: Documentos (cadastrar) e Base de conhecimento (buscar).

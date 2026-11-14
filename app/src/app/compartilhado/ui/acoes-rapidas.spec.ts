@@ -32,21 +32,21 @@ const NADA: Pode = (funcao) => !funcao;
 describe('botão flutuante de ações rápidas', () => {
   it('fechado, mostra só o botão, com nome acessível e sem as opções', () => {
     const f = abrir(TUDO);
-    expect(botao(f)?.getAttribute('aria-label')).toBe('Ações rápidas: cadastrar ou buscar');
+    expect(botao(f)?.getAttribute('aria-label')).toBe('Ações rápidas: documentos ou buscar');
     expect(botao(f)?.getAttribute('aria-expanded')).toBe('false');
     expect(links(f)).toHaveLength(0);
   });
 
-  it('ao clicar, abre as opções Cadastrar documento e Buscar, com os endereços certos', () => {
+  it('ao clicar, abre as opções Documentos (a lista, não o cadastro novo) e Buscar, com os endereços certos', () => {
     const f = abrir(TUDO);
     clicar(f);
     expect(botao(f)?.getAttribute('aria-expanded')).toBe('true');
     expect(links(f).map((a) => a.textContent?.trim())).toEqual([
-      'Cadastrar documento',
+      'Documentos',
       'Buscar na base de conhecimento',
     ]);
     expect(links(f).map((a) => a.getAttribute('href'))).toEqual([
-      '/base-conhecimento/documentos?criar=1',
+      '/base-conhecimento/documentos',
       '/base-conhecimento/buscar',
     ]);
   });
@@ -93,10 +93,21 @@ describe('botão flutuante de ações rápidas', () => {
     expect(links(f)).toHaveLength(0);
   });
 
-  it('quem só consulta documentos vê só a opção Buscar (cadastrar exige a permissão de incluir)', () => {
+  it('quem só consulta documentos vê as duas opções (o cadastro novo é do botão Novo documento, dentro da lista)', () => {
     const f = abrir(SO_CONSULTA);
     clicar(f);
-    expect(links(f).map((a) => a.textContent?.trim())).toEqual(['Buscar na base de conhecimento']);
+    expect(links(f).map((a) => a.textContent?.trim())).toEqual([
+      'Documentos',
+      'Buscar na base de conhecimento',
+    ]);
+  });
+
+  it('o botão fechado usa o ícone de IA (brilhos) e, aberto, o de fechar', () => {
+    const f = abrir(TUDO);
+    const caminhos = (): number => botao(f)?.querySelectorAll('path').length ?? 0;
+    expect(caminhos()).toBe(3); // uma estrela grande e duas pequenas
+    clicar(f);
+    expect(caminhos()).toBe(1); // o X
   });
 
   it('quem não pode nada na base de conhecimento não vê o botão', () => {

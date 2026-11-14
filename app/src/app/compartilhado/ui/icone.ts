@@ -54,6 +54,12 @@ export const ICONES = {
   ],
   sino: [c('M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 21h4')],
   seta: [c('M6 9l6 6 6-6')],
+  // brilhos (o símbolo de IA): uma estrela grande e duas pequenas
+  brilho: [
+    c('M10 4l1.7 4.8L16.5 10.5l-4.8 1.7L10 17l-1.7-4.8L3.5 10.5l4.8-1.7z'),
+    c('M18.5 3.5l.6 1.7 1.7.6-1.7.6-.6 1.7-.6-1.7-1.7-.6 1.7-.6z'),
+    c('M18.5 14.5l.6 1.7 1.7.6-1.7.6-.6 1.7-.6-1.7-1.7-.6 1.7-.6z'),
+  ],
   mais: [c('M12 5v14M5 12h14')],
   fechar: [c('M6 6l12 12M18 6L6 18')],
 } satisfies Record<string, Forma[]>;

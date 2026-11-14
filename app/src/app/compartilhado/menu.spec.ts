@@ -24,7 +24,6 @@ describe('menu por permissão e guarda de rota (mesmo resultado)', () => {
       'Cadastros Corporativos',
       'Cadastros Farmacêuticos',
       'Tabelas Compartilhadas',
-      'Base de conhecimento',
       'Central de Notificações',
       'Configuração da Plataforma',
     ]);
@@ -45,6 +44,19 @@ describe('menu por permissão e guarda de rota (mesmo resultado)', () => {
     const grupo = menuDasRotas(rotasInternas, () => true).find((g) => g.grupo === 'Minha conta');
     expect(grupo?.lateral).toBe(false);
     expect(grupo?.itens.map((i) => i.rota)).toEqual(['/seguranca']);
+  });
+
+  it('a Base de conhecimento fica fora do menu lateral (abre pelo botão flutuante), mas continua na pesquisa de telas', () => {
+    const grupo = menuDasRotas(rotasInternas, () => true).find(
+      (g) => g.grupo === 'Base de conhecimento',
+    );
+    expect(grupo?.lateral).toBe(false);
+    expect(grupo?.itens.map((i) => i.rota).sort()).toEqual([
+      '/base-conhecimento/buscar',
+      '/base-conhecimento/documentos',
+    ]);
+    const lateral = menuDasRotas(rotasInternas, () => true).filter((g) => g.lateral !== false);
+    expect(lateral.some((g) => g.grupo === 'Base de conhecimento')).toBe(false);
   });
 
   it('grupo com telas que a pessoa não pode abrir some; só o grupo sem tela nenhuma vira "em breve"', () => {
