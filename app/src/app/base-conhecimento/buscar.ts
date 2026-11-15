@@ -66,10 +66,24 @@ interface Turno {
   /** Resultados com "Ver mais" aberto, por id do trecho. */
   expandidos: Record<string, Expandido>;
   /** A resposta escrita da IA (chega separada da busca; a busca nunca espera por ela). */
-  iaEstado: 'carregando' | 'pronta' | 'sem_base' | 'desativada' | 'erro';
+  iaEstado: 'sem_ia' | 'carregando' | 'pronta' | 'sem_base' | 'desativada' | 'erro';
   iaPartes: ParteDaIa[];
   iaFontes: FonteDaIa[];
   iaMensagem: string | null;
+}
+
+/**
+ * A pessoa pede a resposta escrita da IA começando a pergunta pelo nome: "AI Know, por que…". Sem o nome, é só busca nos
+ * documentos (rápida e sem custo). Isto só escolhe qual chamada a tela faz: a permissão, a proteção de Confidencial e os
+ * limites são conferidos pelo servidor em toda chamada à IA, com ou sem o nome.
+ * Aceita maiúsculas, "ai know", "AIKnow", "A.I. Know" e, depois do nome, vírgula, dois pontos, hífen ou ponto.
+ */
+const NOME_DA_IA = /^\s*a\.?\s*i\.?\s*know\b[\s,:;.\-–—]*/i;
+export function lerPedido(texto: string): { busca: string; comIa: boolean } {
+  const m = NOME_DA_IA.exec(texto);
+  return m
+    ? { busca: texto.slice(m[0].length).trim(), comIa: true }
+    : { busca: texto.trim(), comIa: false };
 }
 
 const opcoesDe = (nome: string): readonly { valor: string; rotulo: string }[] =>
@@ -509,8 +523,8 @@ const rotuloDe = (nome: string, valor: string | null): string =>
         </button>
       </div>
       <p class="nota" id="dica-pergunta-kb">
-        Enter envia; Shift + Enter pula linha. Use aspas para achar uma frase exata. Acentos e
-        maiúsculas não importam.
+        Enter envia; Shift + Enter pula linha. Comece com “AI Know,” para pedir uma resposta escrita
+        pela IA; sem isso, só busca nos documentos. Use aspas para achar uma frase exata.
       </p>
     </form>
   `,
@@ -671,8 +685,11 @@ export class BuscarKb {
   }
 
   protected async perguntar(bruto: string): Promise<void> {
-    const texto = bruto.trim();
-    if (!texto || this.ocupado()) return;
+    const original = bruto.trim();
+    if (!original || this.ocupado()) return;
+    const { busca: texto, comIa } = lerPedido(original);
+    // só o nome, sem pergunta: não há o que buscar nem o que perguntar
+    if (!texto) return;
     this.ocupado.set(true);
     this.pergunta.setValue('');
     const id = this.proximoId++;
@@ -680,20 +697,23 @@ export class BuscarKb {
       ...todos,
       {
         id,
-        pergunta: texto,
+        pergunta: original,
         estado: 'buscando',
         erro: null,
         resultados: [],
         expandidos: {},
-        iaEstado: 'carregando',
+        iaEstado: comIa ? 'carregando' : 'sem_ia',
         iaPartes: [],
         iaFontes: [],
         iaMensagem: null,
       },
     ]);
     this.mostrar(id);
-    // A busca e a IA andam juntas; uma não espera pela outra (a IA é mais lenta e pode estar desligada).
-    await Promise.all([this.buscarDocumentos(id, texto), this.perguntarIa(id, texto)]);
+    // Com o nome, a busca e a IA andam juntas; uma não espera pela outra (a IA é mais lenta e pode estar desligada).
+    await Promise.all([
+      this.buscarDocumentos(id, texto),
+      comIa ? this.perguntarIa(id, texto) : Promise.resolve(),
+    ]);
     this.ocupado.set(false);
     this.mostrar(id);
     this.campo()?.nativeElement.focus();

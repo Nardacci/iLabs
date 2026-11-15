@@ -276,11 +276,69 @@ describe('tela AI Know (busca na base de conhecimento)', () => {
     expect(raiz(f).querySelector('h2')?.textContent?.trim()).toBe('<b>Título</b>');
   });
 
+  describe('quando a IA é chamada: só com o nome "AI Know" no começo', () => {
+    it('sem o nome, só busca nos documentos: a IA não é chamada e não aparece aviso dela', async () => {
+      const { buscar, perguntarIa } = preparar([RESULTADO], IA_RESPONDEU);
+      const f = await abrir();
+      await buscarPor(f, 'conferencia de material');
+      expect(perguntarIa).not.toHaveBeenCalled();
+      expect(buscar).toHaveBeenCalledWith('conferencia de material', { limite: 30 });
+      expect(raiz(f).querySelector('.ia')).toBeNull();
+      expect(textoDe(f)).not.toContain('AI Know está lendo');
+      expect(textoDe(f)).not.toContain('ainda não foi ativada');
+      expect(textoDe(f)).toContain('1 documento encontrado.');
+    });
+
+    it.each([
+      'AI Know, por que falha',
+      'ai know: por que falha',
+      'Ai Know - por que falha',
+      'AIKnow por que falha',
+      'A.I. Know, por que falha',
+      '  AI KNOW; por que falha',
+    ])('com o nome (%s), chama a IA e busca só o que vem depois dele', async (digitado) => {
+      const { buscar, perguntarIa } = preparar([RESULTADO], IA_RESPONDEU);
+      const f = await abrir();
+      await buscarPor(f, digitado);
+      expect(perguntarIa).toHaveBeenCalledWith('por que falha');
+      expect(buscar).toHaveBeenCalledWith('por que falha', { limite: 30 });
+    });
+
+    it('na conversa aparece o que a pessoa digitou, com o nome', async () => {
+      preparar([RESULTADO], IA_RESPONDEU);
+      const f = await abrir();
+      await buscarPor(f, 'AI Know, por que falha');
+      expect(raiz(f).querySelector('.pergunta')?.textContent).toContain('AI Know, por que falha');
+    });
+
+    it('o nome no meio da frase não conta, e outra palavra que começa igual também não', async () => {
+      const { perguntarIa } = preparar([RESULTADO], IA_RESPONDEU);
+      const f = await abrir();
+      await buscarPor(f, 'o que é o AI Know');
+      await buscarPor(f, 'ai knowledge base');
+      expect(perguntarIa).not.toHaveBeenCalled();
+    });
+
+    it('só o nome, sem pergunta, não faz nada', async () => {
+      const { buscar, perguntarIa } = preparar([RESULTADO], IA_RESPONDEU);
+      const f = await abrir();
+      await buscarPor(f, 'AI Know,');
+      expect(perguntarIa).not.toHaveBeenCalled();
+      expect(buscar).not.toHaveBeenCalled();
+    });
+
+    it('o texto de ajuda explica como pedir a resposta da IA', async () => {
+      preparar();
+      const f = await abrir();
+      expect(textoDe(f)).toContain('Comece com “AI Know,” para pedir uma resposta escrita pela IA');
+    });
+  });
+
   describe('resposta escrita da IA', () => {
     it('a pergunta vai à IA e à busca juntas, com o mesmo texto', async () => {
       const { buscar, perguntarIa } = preparar([RESULTADO], IA_RESPONDEU);
       const f = await abrir();
-      await buscarPor(f, 'como funciona a conferência?');
+      await buscarPor(f, 'AI Know, como funciona a conferência?');
       expect(perguntarIa).toHaveBeenCalledWith('como funciona a conferência?');
       expect(buscar).toHaveBeenCalledWith('como funciona a conferência?', { limite: 30 });
     });
@@ -288,7 +346,7 @@ describe('tela AI Know (busca na base de conhecimento)', () => {
     it('mostra a resposta com o número da fonte, a fonte com o trecho citado e o aviso de "não validada"', async () => {
       preparar([RESULTADO], IA_RESPONDEU);
       const f = await abrir();
-      await buscarPor(f, 'conferencia');
+      await buscarPor(f, 'AI Know, conferencia');
       const ia = raiz(f).querySelector('.ia');
       expect(ia).not.toBeNull();
       expect(ia?.querySelector('.texto-ia')?.textContent?.replace(/\s+/g, ' ').trim()).toBe(
@@ -306,7 +364,7 @@ describe('tela AI Know (busca na base de conhecimento)', () => {
     it('os cartões de documentos continuam embaixo da resposta', async () => {
       preparar([RESULTADO], IA_RESPONDEU);
       const f = await abrir();
-      await buscarPor(f, 'conferencia');
+      await buscarPor(f, 'AI Know, conferencia');
       const resposta = raiz(f).querySelector('.resposta');
       expect(resposta?.firstElementChild?.className).toContain('ia');
       expect(resposta?.querySelectorAll('article')).toHaveLength(1);
@@ -320,7 +378,7 @@ describe('tela AI Know (busca na base de conhecimento)', () => {
         fontes: [{ ...FONTE_DA_IA, citado: '<b>negrito</b>' }],
       });
       const f = await abrir();
-      await buscarPor(f, 'lote');
+      await buscarPor(f, 'AI Know, lote');
       expect(raiz(f).querySelector('.ia img')).toBeNull();
       expect(raiz(f).querySelector('.ia b')).toBeNull();
       expect(raiz(f).querySelector('.ia .texto-ia')?.textContent).toContain(
@@ -336,7 +394,7 @@ describe('tela AI Know (busca na base de conhecimento)', () => {
         fontes: [],
       });
       const f = await abrir();
-      await buscarPor(f, 'xyzabc');
+      await buscarPor(f, 'AI Know, xyzabc');
       expect(raiz(f).querySelector('.ia')?.textContent).toContain(
         'Não encontrei isso nos documentos.',
       );
@@ -347,7 +405,7 @@ describe('tela AI Know (busca na base de conhecimento)', () => {
     it('IA desligada: avisa com calma e a busca continua normal', async () => {
       preparar();
       const f = await abrir();
-      await buscarPor(f, 'lote');
+      await buscarPor(f, 'AI Know, lote');
       expect(raiz(f).querySelector('.ia')).toBeNull();
       expect(textoDe(f)).toContain('A resposta escrita da AI Know ainda não foi ativada.');
       expect(textoDe(f)).toContain('1 documento encontrado.');
@@ -357,7 +415,7 @@ describe('tela AI Know (busca na base de conhecimento)', () => {
     it('erro da IA aparece como alerta e a busca continua mostrando os documentos', async () => {
       preparar([RESULTADO], { tipo: 'erro', mensagem: 'A AI Know não conseguiu responder agora.' });
       const f = await abrir();
-      await buscarPor(f, 'lote');
+      await buscarPor(f, 'AI Know, lote');
       expect(raiz(f).querySelector('[role="alert"]')?.textContent).toContain(
         'não conseguiu responder agora',
       );
@@ -370,7 +428,7 @@ describe('tela AI Know (busca na base de conhecimento)', () => {
       perguntarIa.mockReturnValueOnce(new Promise((resolve) => (liberar = resolve)));
       const f = await abrir();
       const el = campo(f);
-      el.value = 'lote';
+      el.value = 'AI Know, lote';
       el.dispatchEvent(new Event('input', { bubbles: true }));
       raiz(f)
         .querySelector('form')
@@ -389,7 +447,7 @@ describe('tela AI Know (busca na base de conhecimento)', () => {
     it('a tela com a resposta da IA e as fontes não tem violações de acessibilidade', async () => {
       preparar([RESULTADO], IA_RESPONDEU);
       const f = await abrir();
-      await buscarPor(f, 'lote');
+      await buscarPor(f, 'AI Know, lote');
       expect(await violacoesDeAcessibilidade(f)).toEqual([]);
     });
   });

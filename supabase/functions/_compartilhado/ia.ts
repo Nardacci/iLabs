@@ -23,7 +23,10 @@ export interface TrechoParaIa {
 
 export const MODELO_PADRAO = 'claude-sonnet-5-5';
 export const LIMITE_DE_TRECHOS = 8;
-export const MAXIMO_DE_TOKENS_DA_RESPOSTA = 1500;
+// O modelo gasta parte deste limite "pensando" antes de escrever; com 1500 a resposta saía cortada.
+export const MAXIMO_DE_TOKENS_DA_RESPOSTA = 4096;
+export const AVISO_RESPOSTA_CORTADA =
+  '\n\n[A resposta ficou longa e foi interrompida. Faça uma pergunta mais específica.]';
 export const MENSAGEM_SEM_BASE = 'Não encontrei isso nos documentos.';
 
 export const INSTRUCOES = [
