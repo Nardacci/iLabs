@@ -444,6 +444,26 @@ describe('tela AI Know (busca na base de conhecimento)', () => {
       expect(raiz(f).querySelector('button.enviar')?.hasAttribute('disabled')).toBe(false);
     });
 
+    it('sem documentos achados, não diz "Nada encontrado" enquanto a IA ainda está lendo', async () => {
+      const { perguntarIa } = preparar([], IA_RESPONDEU);
+      let liberar: (r: RespostaDaIa) => void = () => undefined;
+      perguntarIa.mockReturnValueOnce(new Promise((resolve) => (liberar = resolve)));
+      const f = await abrir();
+      const el = campo(f);
+      el.value = 'AI Know, xyzabc';
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+      raiz(f)
+        .querySelector('form')
+        ?.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+      await new Promise((r) => setTimeout(r, 0));
+      f.detectChanges();
+      expect(textoDe(f)).toContain('A AI Know está lendo os documentos…');
+      expect(textoDe(f)).not.toContain('Nada encontrado');
+      liberar({ tipo: 'erro', mensagem: 'A AI Know não conseguiu responder agora.' });
+      await esperar(f);
+      expect(textoDe(f).replace(/\s+/g, ' ')).toContain('Nada encontrado para “xyzabc”.');
+    });
+
     it('a tela com a resposta da IA e as fontes não tem violações de acessibilidade', async () => {
       preparar([RESULTADO], IA_RESPONDEU);
       const f = await abrir();

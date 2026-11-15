@@ -60,6 +60,8 @@ interface Expandido {
 interface Turno {
   id: number;
   pergunta: string;
+  /** O que foi buscado nos documentos (a pergunta sem o nome "AI Know"). */
+  termo: string;
   estado: 'buscando' | 'pronto' | 'erro';
   erro: string | null;
   resultados: ResultadoNaTela[];
@@ -304,7 +306,9 @@ const rotuloDe = (nome: string, valor: string | null): string =>
             <p class="pergunta"><span class="sr">Você: </span>{{ t.pergunta }}</p>
             <div class="resposta">
               @if (t.iaEstado === 'carregando') {
-                <p class="sub" role="status">A AI Know está lendo os documentos…</p>
+                <p class="sub" role="status">
+                  A AI Know está lendo os documentos… pode levar até um minuto.
+                </p>
               } @else if (t.iaEstado === 'pronta' || t.iaEstado === 'sem_base') {
                 <section class="ia" aria-label="Resposta da AI Know">
                   <h2>AI Know</h2>
@@ -360,10 +364,13 @@ const rotuloDe = (nome: string, valor: string | null): string =>
               } @else if (t.estado === 'erro') {
                 <p class="msg bad" role="alert">{{ t.erro }}</p>
               } @else if (t.resultados.length === 0) {
-                @if (t.iaEstado !== 'pronta' && t.iaEstado !== 'sem_base') {
+                @if (
+                  t.iaEstado !== 'pronta' &&
+                  t.iaEstado !== 'sem_base' &&
+                  t.iaEstado !== 'carregando'
+                ) {
                   <p>
-                    Nada encontrado para “{{ t.pergunta }}”. Tente outras palavras ou menos
-                    palavras.
+                    Nada encontrado para “{{ t.termo }}”. Tente outras palavras ou menos palavras.
                   </p>
                 }
               } @else {
@@ -698,6 +705,7 @@ export class BuscarKb {
       {
         id,
         pergunta: original,
+        termo: texto,
         estado: 'buscando',
         erro: null,
         resultados: [],
