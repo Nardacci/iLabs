@@ -14,3 +14,8 @@ verify_jwt = false
 # A "buscar-cep" exige a sessão da própria pessoa (ela mesma confere o token). Só o CEP sai do sistema.
 [functions.buscar-cep]
 verify_jwt = false
+
+# A "perguntar-kb" (AI Know) exige a sessão da própria pessoa e confere o token e as permissões dela. A chave do
+# provedor de IA fica no segredo ANTHROPIC_API_KEY da função (painel do Supabase), nunca neste arquivo.
+[functions.perguntar-kb]
+verify_jwt = false

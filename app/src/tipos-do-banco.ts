@@ -717,6 +717,51 @@ export type Database = {
         }
         Relationships: []
       }
+      kb_ia_interacoes: {
+        Row: {
+          id: string
+          empresa_id: string
+          usuario_id: string
+          pergunta: string
+          resposta: string | null
+          estado: string
+          modelo: string | null
+          tokens_entrada: number | null
+          tokens_saida: number | null
+          fontes: Json
+          validacao: string
+          criado_em: string
+        }
+        Insert: {
+          id?: string
+          empresa_id: string
+          usuario_id: string
+          pergunta: string
+          resposta?: string | null
+          estado: string
+          modelo?: string | null
+          tokens_entrada?: number | null
+          tokens_saida?: number | null
+          fontes?: Json
+          validacao?: string
+          criado_em?: string
+        }
+        Update: {
+          id?: string
+          empresa_id?: string
+          usuario_id?: string
+          pergunta?: string
+          resposta?: string | null
+          estado?: string
+          modelo?: string | null
+          tokens_entrada?: number | null
+          tokens_saida?: number | null
+          fontes?: Json
+          validacao?: string
+          criado_em?: string
+        }
+        Relationships: []
+      }
       kb_processamento: {
         Row: {
           versao_id: string
@@ -1685,6 +1730,7 @@ export type Database = {
       inativar_usuario: { Args: { p_usuario_id: string; p_motivo: string }; Returns: undefined }
       kb_arquivo_ja_existe: { Args: { p_checksum: string }; Returns: { documento_id: string | null; titulo: string | null; numero: number | null }[] }
       kb_buscar: { Args: { p_consulta: string; p_tipos?: string[]; p_fonte_id?: string; p_limite?: number; p_modulo?: string }; Returns: { trecho_id: string | null; documento_id: string | null; versao_id: string | null; versao_numero: number | null; titulo: string | null; tipo: string | null; origem: string | null; fonte_nome: string | null; caminho: string | null; secao: string | null; pagina: number | null; trecho: string | null; relevancia: number | null; repetido_em: number | null; tipo_arquivo: string | null; modulo: string | null; legenda: string | null }[] }
+      kb_buscar_para_ia: { Args: { p_consulta: string; p_limite?: number }; Returns: { trecho_id: string | null; documento_id: string | null; versao_id: string | null; versao_numero: number | null; titulo: string | null; tipo: string | null; origem: string | null; identificacao_oficial: string | null; consultado_em: string | null; situacao_lida: string | null; secao: string | null; pagina: number | null; texto: string | null; relevancia: number | null }[] }
       kb_buscar_regras: { Args: { p_consulta?: string; p_menu?: string; p_tela?: string; p_tipo?: string; p_situacao?: string; p_limite?: number }; Returns: { id: string | null; codigo: string | null; modulo: string | null; menu: string | null; tela: string | null; tipo: string | null; confidencialidade: string | null; gatilho: string | null; condicao: string | null; regra: string | null; efeito: string | null; mensagem: string | null; onde_aplicada: string | null; valores_limites: string | null; excecoes: string | null; quem: string | null; fonte_codigo: string[] | null; situacao_regra: string | null; teste: string[] | null; defeito: string[] | null; norma: string | null; como_deve_ser: string | null; ids_anteriores: string[] | null; sumiu_da_fonte: boolean | null; relevancia: number | null }[] }
       kb_criar_documento: { Args: { p_documento_id: string; p_versao_id: string; p_titulo: string; p_legenda: string; p_tipo: string; p_origem: string; p_confidencialidade: string; p_data_fonte: string; p_identificacao: string; p_consultado_em: string; p_situacao_lida: string; p_caminho: string; p_nome_original: string; p_tipo_arquivo: string; p_tamanho: number; p_checksum: string }; Returns: string }
       kb_criar_fonte: { Args: { p_empresa_id: string; p_nome: string; p_origem: string }; Returns: string }
@@ -1697,6 +1743,7 @@ export type Database = {
       kb_marcar_sumidos: { Args: { p_empresa_id: string; p_fonte_id: string; p_caminhos_presentes: string[] }; Returns: number }
       kb_modulos: { Args: never; Returns: { modulo: string | null; total: number | null }[] }
       kb_nova_versao: { Args: { p_documento_id: string; p_versao_id: string; p_caminho: string; p_nome_original: string; p_tipo_arquivo: string; p_tamanho: number; p_checksum: string; p_motivo: string }; Returns: number }
+      kb_registrar_interacao: { Args: { p_empresa_id: string; p_usuario_id: string; p_pergunta: string; p_resposta: string; p_estado: string; p_modelo: string; p_tokens_entrada: number; p_tokens_saida: number; p_fontes: Json }; Returns: string }
       kb_regras_telas: { Args: never; Returns: { menu: string | null; tela: string | null; total: number | null }[] }
       kb_versoes_pendentes: { Args: { p_empresa_id: string; p_limite?: number }; Returns: { versao_id: string | null; documento_id: string | null }[] }
       listar_contas_usuario: { Args: never; Returns: { tipo: string | null; id: string | null; nome: string | null; email: string | null; profissional_id: string | null; cpf: string | null; ativo: boolean | null; situacao: string | null; senha_a_trocar: boolean | null; bloqueado: boolean | null; valida_de: string | null; valida_ate: string | null; na_validade: boolean | null; convite_expira_em: string | null; perfis: Json | null }[] }

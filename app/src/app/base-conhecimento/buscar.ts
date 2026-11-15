@@ -19,6 +19,11 @@ import {
 } from '../compartilhado/dados/busca-kb';
 import { ehImagem } from '../compartilhado/dados/envio-de-documento';
 import { linhasDestacadas, type Parte, partesDestacadas } from '../compartilhado/dados/destaque';
+import {
+  type FonteDaIa,
+  FuncoesDeBorda,
+  type ParteDaIa,
+} from '../compartilhado/dados/funcoes-de-borda';
 import { mensagemDeErro } from '../compartilhado/dados/mensagem';
 
 interface ResultadoNaTela extends ResultadoDeBusca {
@@ -60,6 +65,11 @@ interface Turno {
   resultados: ResultadoNaTela[];
   /** Resultados com "Ver mais" aberto, por id do trecho. */
   expandidos: Record<string, Expandido>;
+  /** A resposta escrita da IA (chega separada da busca; a busca nunca espera por ela). */
+  iaEstado: 'carregando' | 'pronta' | 'sem_base' | 'desativada' | 'erro';
+  iaPartes: ParteDaIa[];
+  iaFontes: FonteDaIa[];
+  iaMensagem: string | null;
 }
 
 const opcoesDe = (nome: string): readonly { valor: string; rotulo: string }[] =>
@@ -152,6 +162,51 @@ const rotuloDe = (nome: string, valor: string | null): string =>
     .bloco .trecho {
       margin: 4px 0;
     }
+    .ia {
+      border-left: 4px solid var(--accent);
+      background: var(--surface);
+      border-radius: 8px;
+      padding: 12px 14px;
+      display: grid;
+      gap: 8px;
+    }
+    .ia h2 {
+      font-size: 0.8rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--accent-text);
+      margin: 0;
+    }
+    .ia .texto-ia {
+      margin: 0;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    .ref {
+      color: var(--accent-text);
+      font-weight: 700;
+      font-size: 0.75em;
+      margin: 0 1px;
+    }
+    .fontes-ia {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 8px;
+      font-size: 0.9rem;
+    }
+    .fontes-ia .citado {
+      margin: 2px 0;
+      color: var(--muted);
+      overflow-wrap: anywhere;
+    }
+    .aviso-ia {
+      margin: 0;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
     .compositor {
       position: sticky;
       bottom: 0;
@@ -234,14 +289,69 @@ const rotuloDe = (nome: string, valor: string | null): string =>
           <div class="turno" [id]="'turno-' + t.id">
             <p class="pergunta"><span class="sr">Você: </span>{{ t.pergunta }}</p>
             <div class="resposta">
+              @if (t.iaEstado === 'carregando') {
+                <p class="sub" role="status">A AI Know está lendo os documentos…</p>
+              } @else if (t.iaEstado === 'pronta' || t.iaEstado === 'sem_base') {
+                <section class="ia" aria-label="Resposta da AI Know">
+                  <h2>AI Know</h2>
+                  <p class="texto-ia">
+                    @for (p of t.iaPartes; track $index) {
+                      <span [textContent]="p.texto"></span>
+                      @for (n of p.fontes; track n) {
+                        <sup class="ref" [attr.aria-label]="'fonte ' + n">[{{ n }}]</sup>
+                      }
+                    }
+                  </p>
+                  @if (t.iaFontes.length > 0) {
+                    <ul class="fontes-ia" aria-label="Fontes citadas">
+                      @for (f of t.iaFontes; track f.n) {
+                        <li>
+                          <span class="ref">[{{ f.n }}]</span>&ngsp;
+                          <strong>{{ f.titulo }}</strong>
+                          <span class="sub">
+                            · versão {{ f.versao_numero }}
+                            @if (f.secao) {
+                              · {{ f.secao }}
+                            }
+                            @if (f.pagina) {
+                              · página {{ f.pagina }}
+                            }
+                          </span>
+                          @if (f.citado) {
+                            <p class="citado">“<span [textContent]="f.citado"></span>”</p>
+                          }
+                          <a
+                            [routerLink]="['/base-conhecimento/documentos']"
+                            [queryParams]="{ registro: f.documento_id, aba: 'versoes' }"
+                            [attr.aria-label]="'Abrir o documento ' + f.titulo"
+                            >Abrir documento</a
+                          >
+                        </li>
+                      }
+                    </ul>
+                  }
+                  @if (t.iaEstado === 'pronta') {
+                    <p class="aviso-ia">
+                      Resposta gerada por IA, ainda não validada. Confira nas fontes citadas.
+                    </p>
+                  }
+                </section>
+              } @else if (t.iaEstado === 'erro') {
+                <p class="msg bad" role="alert">{{ t.iaMensagem }}</p>
+              } @else if (t.iaMensagem) {
+                <p class="sub">{{ t.iaMensagem }}</p>
+              }
               @if (t.estado === 'buscando') {
                 <p role="status">Buscando…</p>
               } @else if (t.estado === 'erro') {
                 <p class="msg bad" role="alert">{{ t.erro }}</p>
               } @else if (t.resultados.length === 0) {
-                <p>
-                  Nada encontrado para “{{ t.pergunta }}”. Tente outras palavras ou menos palavras.
-                </p>
+                @if (t.iaEstado !== 'pronta' && t.iaEstado !== 'sem_base') {
+                  <p>
+                    Nada encontrado para “{{ t.pergunta }}”. Tente outras palavras ou menos
+                    palavras.
+                  </p>
+                }
               } @else {
                 <p class="sub">
                   {{ t.resultados.length }}
@@ -410,6 +520,7 @@ export class BuscarKb {
   readonly q = input<string>();
 
   private readonly busca = inject(BuscaKbService);
+  private readonly funcoes = inject(FuncoesDeBorda);
   private readonly campo = viewChild<ElementRef<HTMLTextAreaElement>>('campo');
   private readonly anfitriao = inject<ElementRef<HTMLElement>>(ElementRef);
   private proximoId = 1;
@@ -567,9 +678,47 @@ export class BuscarKb {
     const id = this.proximoId++;
     this.turnos.update((todos) => [
       ...todos,
-      { id, pergunta: texto, estado: 'buscando', erro: null, resultados: [], expandidos: {} },
+      {
+        id,
+        pergunta: texto,
+        estado: 'buscando',
+        erro: null,
+        resultados: [],
+        expandidos: {},
+        iaEstado: 'carregando',
+        iaPartes: [],
+        iaFontes: [],
+        iaMensagem: null,
+      },
     ]);
     this.mostrar(id);
+    // A busca e a IA andam juntas; uma não espera pela outra (a IA é mais lenta e pode estar desligada).
+    await Promise.all([this.buscarDocumentos(id, texto), this.perguntarIa(id, texto)]);
+    this.ocupado.set(false);
+    this.mostrar(id);
+    this.campo()?.nativeElement.focus();
+  }
+
+  private async perguntarIa(id: number, texto: string): Promise<void> {
+    const r = await this.funcoes.perguntarIa(texto);
+    this.mudarTurno(id, (t) => {
+      if (r.tipo === 'resposta') {
+        return {
+          ...t,
+          iaEstado: r.estado === 'sem_base' ? 'sem_base' : 'pronta',
+          iaPartes: r.partes,
+          iaFontes: r.fontes,
+        };
+      }
+      return {
+        ...t,
+        iaEstado: r.tipo === 'desativada' ? 'desativada' : 'erro',
+        iaMensagem: r.mensagem,
+      };
+    });
+  }
+
+  private async buscarDocumentos(id: number, texto: string): Promise<void> {
     try {
       const achados = await this.busca.buscar(texto, { limite: 30 });
       this.mudarTurno(id, (t) => ({
@@ -596,10 +745,6 @@ export class BuscarKb {
       }));
     } catch (e) {
       this.mudarTurno(id, (t) => ({ ...t, estado: 'erro', erro: mensagemDeErro(e) }));
-    } finally {
-      this.ocupado.set(false);
-      this.mostrar(id);
-      this.campo()?.nativeElement.focus();
     }
   }
 }

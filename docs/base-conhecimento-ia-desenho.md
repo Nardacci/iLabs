@@ -2,6 +2,8 @@
 
 Status: **proposta, com a maior parte das decisões já tomadas** (14/11/2026; ver seção 9). **A Fase 2a foi construída em 14/11/2026** (leitura do texto, trechos, busca por texto e tela Buscar; migração 17 e função `processar-versao` escritas e testadas, **aplicada e publicada em 14/11/2026**, com autorização do responsável; falta provar com uso real). O restante do desenho (2b a 3) não foi construído.
 
+**Atualização de 15/11/2026 (Fase 2c construída, ainda não aplicada nem publicada):** a tela de busca virou a conversa **AI Know** (nome decidido pelo responsável) e a resposta escrita com citações foi construída: migração 23 (`kb_buscar_para_ia`, `kb_ia_interacoes`, `kb_registrar_interacao`) e função `perguntar-kb`. Decisões desta etapa: começa com **Sonnet** (troca por segredo, sem mexer no código); a recuperação usa **qualquer palavra da pergunta** (a busca da tela exige todas); cada trecho vai ao modelo como documento com citações nativas; sem trechos, **o modelo não é chamado**; **Confidencial nunca vai ao provedor** (regra no banco); por enquanto vale a função `kb.documentos` e a função própria da IA vem depois; a conversa não é gravada (só o registro de uso). A revisão (2d) e os limites de uso continuam para depois. Falta: o responsável criar a conta e a chave na API da Anthropic e cadastrá-la como segredo; aplicar a migração; publicar a função; medir com as perguntas de avaliação.
+
 ## 1. O que a ferramenta faz
 Três usos, do mais simples ao mais delicado:
 
