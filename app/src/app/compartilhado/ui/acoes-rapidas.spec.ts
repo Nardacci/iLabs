@@ -43,7 +43,7 @@ describe('botão flutuante de ações rápidas', () => {
     expect(botao(f)?.getAttribute('aria-expanded')).toBe('true');
     expect(links(f).map((a) => a.textContent?.trim())).toEqual([
       'Documentos',
-      'Buscar na base de conhecimento',
+      'Base de conhecimento',
     ]);
     expect(links(f).map((a) => a.getAttribute('href'))).toEqual([
       '/base-conhecimento/documentos',
@@ -98,7 +98,7 @@ describe('botão flutuante de ações rápidas', () => {
     clicar(f);
     expect(links(f).map((a) => a.textContent?.trim())).toEqual([
       'Documentos',
-      'Buscar na base de conhecimento',
+      'Base de conhecimento',
     ]);
   });
 

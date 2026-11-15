@@ -18,7 +18,7 @@ interface Opcao {
 
 /**
  * Botão flutuante (ícone de IA), em todas as telas da área logada: ao clicar, abre as opções Documentos (a lista, de
- * onde se cadastra) e Buscar na base de conhecimento (decisão do responsável, 14/11/2026). O que aparece vem das permissões que o banco já devolveu
+ * onde se cadastra) e Base de conhecimento, que abre a busca (decisão do responsável, 14/11/2026). O que aparece vem das permissões que o banco já devolveu
  * (a mesma regra do menu); quem não pode nada ali não vê o botão. Nenhuma regra mora aqui.
  */
 @Component({
@@ -128,7 +128,7 @@ export class AcoesRapidas {
         icone: 'documentos',
       });
       opcoes.push({
-        rotulo: 'Buscar na base de conhecimento',
+        rotulo: 'Base de conhecimento',
         rota: '/base-conhecimento/buscar',
         icone: 'busca',
       });
