@@ -176,6 +176,8 @@ const m19 = await import('./testes_kb_imagens_e_modulo.mjs');
 await m19.rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB });
 const m20 = await import('./testes_profissional_completo.mjs');
 await m20.rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB });
+const m23 = await import('./testes_kb_ia_perguntar.mjs');
+await m23.rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB });
 
 console.log(`\n${ok} testes passaram, ${falhas} falharam.`);
 process.exit(falhas ? 1 : 0);

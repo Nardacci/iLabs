@@ -2,6 +2,16 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-15 · Claude · AI Know: resposta com IA e citações (Fase 2c) construída, sem aplicar nem publicar
+
+- **Pedido do responsável:** implementar a IA, testar e só depois colocar a permissão. Plano Max não cobre a API; a conta e a chave na API da Anthropic são do responsável (explicado a ele).
+- **Banco (migração 23, `20261120090000_base_conhecimento_ia_perguntar.sql`, NÃO aplicada):** `kb_buscar_para_ia` (acesso da pessoa, só Público ou Interno, qualquer palavra da pergunta, sem texto repetido, no máximo 3 trechos por documento e 12 no total), `kb_ia_interacoes` (registro de cada pergunta, só a própria pessoa vê) e `kb_registrar_interacao` (só chave de serviço). Banco: 990 testes.
+- **Função `perguntar-kb` (NÃO publicada):** confere a sessão e `kb.documentos`; sem a chave `ANTHROPIC_API_KEY` responde "ainda não ativada" (503) e a busca segue; sem trechos responde "não encontrei" sem chamar o modelo; com trechos, manda cada um como documento com citações nativas e devolve o texto ligado às fontes ([1], [2]…); falha do provedor vira mensagem simples; registra o consumo; nada do texto dos documentos vai ao log. Modelo padrão `claude-sonnet-5-5` (segredo opcional `KB_IA_MODELO`). Deno: 74 testes (16 novos).
+- **Tela:** a resposta da IA aparece acima dos cartões de documentos, com a fonte, o trecho citado e o aviso "gerada por IA, ainda não validada"; a busca nunca espera pela IA. App: testes novos da tela e de `FuncoesDeBorda.perguntarIa`.
+- **Permissão:** por ora vale `kb.documentos`; a função própria da IA (`kb.ia`) vem depois, a pedido do responsável. Enquanto isso, quem consulta documentos poderia gastar crédito: hoje só o responsável usa.
+- **Para ligar (só com autorização do responsável):** (1) criar conta e chave na API da Anthropic, com limite mensal de gasto; (2) aplicar a migração 23; (3) cadastrar o segredo `ANTHROPIC_API_KEY` na função e publicar `perguntar-kb`; (4) testar na tela com perguntas reais.
+- **Não provado:** a chamada real ao provedor (testes usam um modelo de mentira); o formato exato da resposta com citações foi conferido só pela documentação. Primeira chamada real deve ser conferida pelo responsável.
+
 ## 2026-11-15 · Claude · AI Know em formato de conversa
 
 - **Pedido do responsável:** a tela do AI Know deve parecer o chat do Claude, sem combos; depois vem a IA.

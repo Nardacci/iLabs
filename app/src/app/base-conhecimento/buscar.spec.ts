@@ -2,6 +2,11 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { comBancoFalso, violacoesDeAcessibilidade } from '../../testing/apoio';
 import { BuscaKbService } from '../compartilhado/dados/busca-kb';
+import {
+  type FonteDaIa,
+  FuncoesDeBorda,
+  type RespostaDaIa,
+} from '../compartilhado/dados/funcoes-de-borda';
 import { ErroDoBanco } from '../compartilhado/dados/banco';
 import { BuscarKb } from './buscar';
 
@@ -25,7 +30,32 @@ const RESULTADO = {
   legenda: null,
 };
 
-function preparar(achados: unknown[] = [RESULTADO]) {
+const IA_DESLIGADA: RespostaDaIa = {
+  tipo: 'desativada',
+  mensagem: 'A resposta escrita da AI Know ainda não foi ativada. A busca continua funcionando.',
+};
+const FONTE_DA_IA: FonteDaIa = {
+  n: 1,
+  trecho_id: 't1',
+  documento_id: 'd1',
+  versao_id: 'v1',
+  versao_numero: 2,
+  titulo: 'Recebimento de Material',
+  secao: 'Conferência',
+  pagina: null,
+  citado: 'A conferência física compara a quantidade recebida com a nota.',
+};
+const IA_RESPONDEU: RespostaDaIa = {
+  tipo: 'resposta',
+  estado: 'respondida',
+  partes: [
+    { texto: 'O material fica bloqueado ', fontes: [] },
+    { texto: 'até a Qualidade liberar.', fontes: [1] },
+  ],
+  fontes: [FONTE_DA_IA],
+};
+
+function preparar(achados: unknown[] = [RESULTADO], ia: RespostaDaIa = IA_DESLIGADA) {
   comBancoFalso();
   TestBed.configureTestingModule({ providers: [provideRouter([])] });
   const buscar = vi.fn<(...args: unknown[]) => Promise<unknown[]>>(() => Promise.resolve(achados));
@@ -57,7 +87,11 @@ function preparar(achados: unknown[] = [RESULTADO]) {
     );
   });
   TestBed.overrideProvider(BuscaKbService, { useValue: { buscar, trecho, vizinho } });
-  return { buscar, trecho, vizinho };
+  const perguntarIa = vi.fn<(...args: unknown[]) => Promise<RespostaDaIa>>(() =>
+    Promise.resolve(ia),
+  );
+  TestBed.overrideProvider(FuncoesDeBorda, { useValue: { perguntarIa } });
+  return { buscar, trecho, vizinho, perguntarIa };
 }
 
 async function abrir(q?: string) {
@@ -240,6 +274,124 @@ describe('tela AI Know (busca na base de conhecimento)', () => {
     await buscarPor(f, 'lote');
     expect(raiz(f).querySelector('img')).toBeNull();
     expect(raiz(f).querySelector('h2')?.textContent?.trim()).toBe('<b>Título</b>');
+  });
+
+  describe('resposta escrita da IA', () => {
+    it('a pergunta vai à IA e à busca juntas, com o mesmo texto', async () => {
+      const { buscar, perguntarIa } = preparar([RESULTADO], IA_RESPONDEU);
+      const f = await abrir();
+      await buscarPor(f, 'como funciona a conferência?');
+      expect(perguntarIa).toHaveBeenCalledWith('como funciona a conferência?');
+      expect(buscar).toHaveBeenCalledWith('como funciona a conferência?', { limite: 30 });
+    });
+
+    it('mostra a resposta com o número da fonte, a fonte com o trecho citado e o aviso de "não validada"', async () => {
+      preparar([RESULTADO], IA_RESPONDEU);
+      const f = await abrir();
+      await buscarPor(f, 'conferencia');
+      const ia = raiz(f).querySelector('.ia');
+      expect(ia).not.toBeNull();
+      expect(ia?.querySelector('.texto-ia')?.textContent?.replace(/\s+/g, ' ').trim()).toBe(
+        'O material fica bloqueado até a Qualidade liberar.[1]',
+      );
+      const fonte = ia?.querySelector('.fontes-ia li')?.textContent?.replace(/\s+/g, ' ') ?? '';
+      expect(fonte).toContain('[1] Recebimento de Material · versão 2 · Conferência');
+      expect(fonte).toContain('“A conferência física compara a quantidade recebida com a nota.”');
+      expect(ia?.textContent).toContain('Resposta gerada por IA, ainda não validada');
+      expect(ia?.querySelector<HTMLAnchorElement>('.fontes-ia a')?.getAttribute('href')).toBe(
+        '/base-conhecimento/documentos?registro=d1&aba=versoes',
+      );
+    });
+
+    it('os cartões de documentos continuam embaixo da resposta', async () => {
+      preparar([RESULTADO], IA_RESPONDEU);
+      const f = await abrir();
+      await buscarPor(f, 'conferencia');
+      const resposta = raiz(f).querySelector('.resposta');
+      expect(resposta?.firstElementChild?.className).toContain('ia');
+      expect(resposta?.querySelectorAll('article')).toHaveLength(1);
+    });
+
+    it('o texto da resposta e o trecho citado nunca são interpretados como HTML', async () => {
+      preparar([RESULTADO], {
+        tipo: 'resposta',
+        estado: 'respondida',
+        partes: [{ texto: 'Veja <img src=x onerror=alert(1)> aqui.', fontes: [1] }],
+        fontes: [{ ...FONTE_DA_IA, citado: '<b>negrito</b>' }],
+      });
+      const f = await abrir();
+      await buscarPor(f, 'lote');
+      expect(raiz(f).querySelector('.ia img')).toBeNull();
+      expect(raiz(f).querySelector('.ia b')).toBeNull();
+      expect(raiz(f).querySelector('.ia .texto-ia')?.textContent).toContain(
+        '<img src=x onerror=alert(1)>',
+      );
+    });
+
+    it('quando a IA diz que não achou, mostra isso sem aviso de "não validada" e sem repetir "Nada encontrado"', async () => {
+      preparar([], {
+        tipo: 'resposta',
+        estado: 'sem_base',
+        partes: [{ texto: 'Não encontrei isso nos documentos.', fontes: [] }],
+        fontes: [],
+      });
+      const f = await abrir();
+      await buscarPor(f, 'xyzabc');
+      expect(raiz(f).querySelector('.ia')?.textContent).toContain(
+        'Não encontrei isso nos documentos.',
+      );
+      expect(raiz(f).querySelector('.ia')?.textContent).not.toContain('não validada');
+      expect(textoDe(f)).not.toContain('Nada encontrado para');
+    });
+
+    it('IA desligada: avisa com calma e a busca continua normal', async () => {
+      preparar();
+      const f = await abrir();
+      await buscarPor(f, 'lote');
+      expect(raiz(f).querySelector('.ia')).toBeNull();
+      expect(textoDe(f)).toContain('A resposta escrita da AI Know ainda não foi ativada.');
+      expect(textoDe(f)).toContain('1 documento encontrado.');
+      expect(raiz(f).querySelector('.resposta [role="alert"]')).toBeNull();
+    });
+
+    it('erro da IA aparece como alerta e a busca continua mostrando os documentos', async () => {
+      preparar([RESULTADO], { tipo: 'erro', mensagem: 'A AI Know não conseguiu responder agora.' });
+      const f = await abrir();
+      await buscarPor(f, 'lote');
+      expect(raiz(f).querySelector('[role="alert"]')?.textContent).toContain(
+        'não conseguiu responder agora',
+      );
+      expect(textoDe(f)).toContain('1 documento encontrado.');
+    });
+
+    it('enquanto a IA lê, aparece o aviso, a busca não espera e o botão fica travado', async () => {
+      const { perguntarIa } = preparar([RESULTADO], IA_RESPONDEU);
+      let liberar: (r: RespostaDaIa) => void = () => undefined;
+      perguntarIa.mockReturnValueOnce(new Promise((resolve) => (liberar = resolve)));
+      const f = await abrir();
+      const el = campo(f);
+      el.value = 'lote';
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+      raiz(f)
+        .querySelector('form')
+        ?.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+      await new Promise((r) => setTimeout(r, 0));
+      f.detectChanges();
+      expect(textoDe(f)).toContain('A AI Know está lendo os documentos…');
+      expect(textoDe(f)).toContain('1 documento encontrado.');
+      expect(raiz(f).querySelector('button.enviar')?.hasAttribute('disabled')).toBe(true);
+      liberar(IA_RESPONDEU);
+      await esperar(f);
+      expect(raiz(f).querySelector('.ia')).not.toBeNull();
+      expect(raiz(f).querySelector('button.enviar')?.hasAttribute('disabled')).toBe(false);
+    });
+
+    it('a tela com a resposta da IA e as fontes não tem violações de acessibilidade', async () => {
+      preparar([RESULTADO], IA_RESPONDEU);
+      const f = await abrir();
+      await buscarPor(f, 'lote');
+      expect(await violacoesDeAcessibilidade(f)).toEqual([]);
+    });
   });
 
   describe('módulo, título e legenda', () => {
