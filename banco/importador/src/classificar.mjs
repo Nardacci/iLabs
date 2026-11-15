@@ -1,5 +1,5 @@
 import { basename } from 'node:path/posix';
-import { CONFIDENCIAL_PELO_NOME, CONFIDENCIALIDADE_PADRAO, REGRAS_DE_TIPO, TIPO_PADRAO } from './config.mjs';
+import { CONFIDENCIAL_PELO_CONTEUDO, CONFIDENCIAL_PELO_NOME, CONFIDENCIALIDADE_PADRAO, REGRAS_DE_TIPO, TIPO_PADRAO } from './config.mjs';
 
 /** Tipo do documento, pela pasta e pelo nome do arquivo. */
 export function tipoDe(caminho) {
@@ -34,6 +34,6 @@ export function tituloDe(caminho, texto) {
 }
 
 export function classificar(caminho, texto) {
-  const confidencial = CONFIDENCIAL_PELO_NOME.test(basename(caminho));
+  const confidencial = CONFIDENCIAL_PELO_NOME.test(basename(caminho)) || (!!texto && CONFIDENCIAL_PELO_CONTEUDO.test(texto));
   return { tipo: tipoDe(caminho), titulo: tituloDe(caminho, texto), confidencialidade: confidencial ? 'confidencial' : CONFIDENCIALIDADE_PADRAO };
 }
