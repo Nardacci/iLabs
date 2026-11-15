@@ -2,6 +2,13 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-15 · Claude · Correção da verificação "Aplicação" que falhou no GitHub depois do PR #39
+
+- **O que aconteceu:** o PR #39 (ficha do Profissional e CEP por API) foi mesclado e a verificação "Aplicação" do GitHub **falhou**: 243 testes passavam, mas um **erro não tratado** (`matchMedia is not a function`, no ambiente de teste do GitHub) derrubava a execução.
+- **Causa (erro meu):** numa correção de lint, tirei um `?.` do código e **não rodei os testes de novo**; na verificação final eu filtrei a saída e escondi a linha "1 error". Não é defeito do produto (o navegador sempre tem `matchMedia`).
+- **Correção:** o teste agora simula `matchMedia` (como já fazia com `scrollIntoView`); o código do produto não mudou. Conferido com o **código de saída** de cada passo: lint, tipos, formatação, testes do app (243 de 243, sem erro oculto), build e navegador (26 de 26) todos com saída 0.
+- **Lição para quem trabalha aqui:** conferir o código de saída e a linha "Errors" dos testes, não só "passed".
+
 ## 2026-11-15 · Claude · Ficha do Profissional redesenhada e busca de CEP por API (função `buscar-cep` PUBLICADA no Supabase)
 
 - **Pedido do responsável:** a tela do Profissional não agradou ("algo mais atual"); CEP por API gratuita; esquecer o parâmetro `usa_estoque`; opinar sobre reaproveitar o cadastro de CPF excluído.
