@@ -10,3 +10,7 @@ verify_jwt = false
 # A "processar-versao" exige a sessão da própria pessoa e confere o token e as permissões dela (como as outras).
 [functions.processar-versao]
 verify_jwt = false
+
+# A "buscar-cep" exige a sessão da própria pessoa (ela mesma confere o token). Só o CEP sai do sistema.
+[functions.buscar-cep]
+verify_jwt = false

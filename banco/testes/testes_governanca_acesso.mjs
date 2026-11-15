@@ -1,3 +1,4 @@
+import { OBR_COLS, OBR_VALS } from './_profissional_obrigatorio.mjs';
 // Testes da migração 11: Funções profissionais, Grupos de usuários e Profissionais (separado da Conta).
 export async function rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB }) {
   const q = async (sql, params) => (await db.query(sql, params)).rows;
@@ -33,19 +34,19 @@ export async function rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB 
   const g2 = await novo(`insert into ilab.grupos_usuarios (codigo, nome) values ('G03', 'Grupo sem uso')`);
 
   console.log('  profissionais');
-  t = await tenta(`insert into ilab.profissionais (codigo, nome, cpf, funcao_profissional_id) values ('P1', 'Sem CPF válido', '12345678063', '${f1.id}')`);
+  t = await tenta(`insert into ilab.profissionais (${OBR_COLS}, codigo, nome, cpf, funcao_profissional_id) values (${OBR_VALS}, 'P1', 'Sem CPF válido', '12345678063', '${f1.id}')`);
   registrar('profissional com CPF inválido é recusado pelo banco', !!t.erro, t.erro);
-  t = await tenta(`insert into ilab.profissionais (codigo, nome, cpf, funcao_profissional_id) values ('P1', 'Sem função', '${CPF1}', null)`);
+  t = await tenta(`insert into ilab.profissionais (${OBR_COLS}, codigo, nome, cpf, funcao_profissional_id) values (${OBR_VALS}, 'P1', 'Sem função', '${CPF1}', null)`);
   registrar('profissional sem função profissional é recusado', !!t.erro, t.erro);
-  t = await tenta(`insert into ilab.profissionais (codigo, nome, cpf, cbo, funcao_profissional_id) values ('P1', 'CBO errado', '${CPF1}', '22340', '${f1.id}')`);
+  t = await tenta(`insert into ilab.profissionais (${OBR_COLS}, codigo, nome, cpf, cbo, funcao_profissional_id) values (${OBR_VALS}, 'P1', 'CBO errado', '${CPF1}', '22340', '${f1.id}')`);
   registrar('CBO fora do formato 0000-00 é recusado', !!t.erro, t.erro);
-  const p1 = await novo(`insert into ilab.profissionais (codigo, nome, cpf, cbo, funcao_profissional_id, grupo_id) values ('P1', 'Carla Teste', '${CPF1}', '2234-05', '${f1.id}', '${g1.id}')`);
+  const p1 = await novo(`insert into ilab.profissionais (${OBR_COLS}, codigo, nome, cpf, cbo, funcao_profissional_id, grupo_id) values (${OBR_VALS}, 'P1', 'Carla Teste', '${CPF1}', '2234-05', '${f1.id}', '${g1.id}')`);
   registrar('profissional válido grava, sem conta de usuário', !p1.erro, p1.erro);
-  t = await tenta(`insert into ilab.profissionais (codigo, nome, cpf, funcao_profissional_id) values ('P2', 'CPF repetido', '${CPF1}', '${f1.id}')`);
+  t = await tenta(`insert into ilab.profissionais (${OBR_COLS}, codigo, nome, cpf, funcao_profissional_id) values (${OBR_VALS}, 'P2', 'CPF repetido', '${CPF1}', '${f1.id}')`);
   registrar('CPF repetido na empresa é recusado', !!t.erro, t.erro);
-  const p2 = await novo(`insert into ilab.profissionais (codigo, nome, cpf, funcao_profissional_id) values ('P2', 'Rui Teste', '${CPF2}', '${f2.id}')`);
-  const cols = await q(`select column_name from information_schema.columns where table_schema = 'ilab' and table_name = 'profissionais' and column_name ~ '(mae|pai)'`);
-  registrar('não existe nome da mãe nem do pai (minimização de dados)', cols.length === 0);
+  const p2 = await novo(`insert into ilab.profissionais (${OBR_COLS}, codigo, nome, cpf, funcao_profissional_id) values (${OBR_VALS}, 'P2', 'Rui Teste', '${CPF2}', '${f2.id}')`);
+  const cols = await q(`select column_name from information_schema.columns where table_schema = 'ilab' and table_name = 'profissionais' and column_name in ('mae', 'pai')`);
+  registrar('nome da mãe e do pai existem (decisão de 13/11/2026 reverteu a de 06/11)', cols.length === 2);
 
   console.log('  conta de usuário opcional, ligada ao profissional');
   t = await alterar('profissionais', p2.id, { usuario_id: X }, 'Ligando a conta ao profissional');
@@ -64,7 +65,7 @@ export async function rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB 
   registrar('altera com motivo', !t.erro, t.erro);
   await dono();
   const aud = (await q(`select motivo, antes->>'nome' a, depois->>'nome' d from ilab.auditoria where tabela = 'profissionais' and registro_id = $1 and acao = 'A' order by id desc limit 1`, [p1.id]))[0];
-  registrar('a auditoria guardou antes, depois e motivo', aud?.a === 'Carla Teste' && aud.d === 'Carla Teste Silva' && /sobrenome/.test(aud.motivo ?? ''), JSON.stringify(aud));
+  registrar('a auditoria guardou antes, depois e motivo', aud?.a === 'CARLA TESTE' && aud.d === 'CARLA TESTE SILVA' && /sobrenome/.test(aud.motivo ?? ''), JSON.stringify(aud));
   await como(A);
   t = await mudar('funcoes_profissionais', f1.id, 'excluido', 'Tentando excluir função em uso');
   registrar('função profissional em uso não se exclui (só inativa)', !!t.erro && /já foi usado em 1 lugar/.test(t.erro), t.erro);
@@ -87,11 +88,11 @@ export async function rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB 
   registrar('empresa B não vê funções, grupos nem profissionais da empresa A', (await q(`select (select count(*) from ilab.funcoes_profissionais)::int + (select count(*) from ilab.grupos_usuarios)::int + (select count(*) from ilab.profissionais)::int n`))[0].n === 0);
   t = await alterar('profissionais', p1.id, { nome: 'Empresa B mexendo' }, 'Empresa B tentando mexer na A');
   registrar('empresa B não altera profissional da empresa A', !!t.erro && /não encontrado/.test(t.erro), t.erro);
-  t = await tenta(`insert into ilab.profissionais (codigo, nome, cpf, funcao_profissional_id) values ('PB', 'Cruzando empresas', '${CPF3}', '${f1.id}')`);
+  t = await tenta(`insert into ilab.profissionais (${OBR_COLS}, codigo, nome, cpf, funcao_profissional_id) values (${OBR_VALS}, 'PB', 'Cruzando empresas', '${CPF3}', '${f1.id}')`);
   registrar('empresa B não usa função profissional da empresa A', !!t.erro, t.erro);
   await como(X);
   registrar('quem não tem a função de Profissionais não lê nada', (await q(`select count(*)::int n from ilab.profissionais`))[0].n === 0);
-  t = await tenta(`insert into ilab.profissionais (codigo, nome, cpf, funcao_profissional_id) values ('PX', 'Sem permissão', '${CPF3}', '${f1.id}')`);
+  t = await tenta(`insert into ilab.profissionais (${OBR_COLS}, codigo, nome, cpf, funcao_profissional_id) values (${OBR_VALS}, 'PX', 'Sem permissão', '${CPF3}', '${f1.id}')`);
   registrar('quem não tem a função não inclui', !!t.erro, t.erro);
   await como('anon');
   t = await tenta(`select count(*)::int n from ilab.profissionais`);

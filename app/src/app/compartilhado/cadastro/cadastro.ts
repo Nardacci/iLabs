@@ -1,4 +1,4 @@
-import { DatePipe, Location } from '@angular/common';
+import { DatePipe, Location, NgComponentOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,6 +9,7 @@ import {
   inject,
   input,
   signal,
+  type Type,
   untracked,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -38,7 +39,11 @@ import { RascunhoService } from '../sessao/rascunho.service';
 import { SessaoService } from '../sessao/sessao.service';
 import { Campo, type OpcaoDeLista } from '../ui/campo';
 import { Janela } from '../ui/janela';
-import type { CampoDeCadastro, DescricaoDeCadastro } from './descricao';
+import type {
+  CampoDeCadastro,
+  DescricaoDeCadastro,
+  EntradasDoFormularioProprio,
+} from './descricao';
 import { type Diferenca, diferencas, ROTULO_DA_ACAO } from './historico';
 
 type Linha = Record<string, unknown>;
@@ -83,7 +88,7 @@ const TAMANHO_DA_PAGINA = 10;
  */
 @Component({
   selector: 'il-cadastro-por-metadados',
-  imports: [ReactiveFormsModule, DatePipe, Campo, Janela],
+  imports: [ReactiveFormsModule, DatePipe, NgComponentOutlet, Campo, Janela],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '(click)': 'aoClicarNoComponente($event)',
@@ -339,6 +344,7 @@ const TAMANHO_DA_PAGINA = 10;
       }
       <section
         class="panel"
+        [class.sem-moldura]="abaAtual() === 'dados' && !!cadastro().formularioProprio"
         id="painel-cadastro"
         role="tabpanel"
         [attr.aria-labelledby]="abasDaPagina().length > 1 ? 'aba-' + abaAtual() : null"
@@ -347,7 +353,13 @@ const TAMANHO_DA_PAGINA = 10;
         @if (erroDaJanela(); as texto) {
           <p class="msg bad" role="alert">{{ texto }}</p>
         }
-        @if (abaAtual() === 'dados') {
+        @if (abaAtual() === 'dados' && cadastro().formularioProprio) {
+          @if (formularioProprio(); as componente) {
+            <ng-container *ngComponentOutlet="componente; inputs: entradasDoFormulario()" />
+          } @else {
+            <p>Carregando…</p>
+          }
+        } @else if (abaAtual() === 'dados') {
           <form id="form-cadastro" [formGroup]="formulario" (ngSubmit)="salvar()" novalidate>
             <div class="grade-campos">
               @if (cadastro().envioDeArquivo && !editando()) {
@@ -725,6 +737,16 @@ export class Cadastro {
   );
   /** O cadastro aberto (novo ou existente) ocupa a página inteira; a lista fica escondida. */
   protected readonly naPagina = computed(() => this.janela() === 'formulario');
+  /** Formulário próprio do cadastro (quando o genérico não basta), carregado só quando alguém abre a página. */
+  protected readonly formularioProprio = signal<Type<unknown> | null>(null);
+  protected readonly entradasDoFormulario = computed<Record<string, unknown>>(() => {
+    const entradas: EntradasDoFormularioProprio = {
+      registro: this.alvo(),
+      aoSalvar: (r) => void this.aoSalvarFormularioProprio(r),
+      aoCancelar: () => this.voltarParaLista(),
+    };
+    return { ...entradas };
+  });
   private readonly alvoEditavel = computed(() => {
     const alvo = this.alvo();
     return alvo ? this.podeAlterar() && this.situacaoDe(alvo) !== 'excluido' : this.podeIncluir();
@@ -801,6 +823,11 @@ export class Cadastro {
 
   constructor() {
     effect(() => {
+      const carregarFormulario = this.cadastro().formularioProprio;
+      this.formularioProprio.set(null);
+      if (carregarFormulario) {
+        void carregarFormulario().then((componente) => this.formularioProprio.set(componente));
+      }
       this.cadastro();
       // Só a troca de cadastro reinicia a tela. O que carregar() lê (página, filtros) não pode virar dependência
       // deste efeito: senão mudar um filtro reiniciaria a própria tela.
@@ -1521,6 +1548,14 @@ export class Cadastro {
     } finally {
       this.trabalhando.set(false);
     }
+  }
+
+  /** O formulário próprio já gravou no banco: volta à lista, avisa e confere se alguém precisa entrar de novo. */
+  private async aoSalvarFormularioProprio(r: { id: string; alteracao: boolean }): Promise<void> {
+    this.voltarParaLista();
+    this.aviso.set(r.alteracao ? 'Alteração salva e registrada no histórico.' : 'Registro salvo.');
+    if (r.alteracao) await this.verificarNovoLogin(r.id);
+    await this.carregar();
   }
 
   /** Pergunta ao banco se a alteração que acabou de ser salva exige que alguém entre de novo no sistema. */

@@ -1368,6 +1368,545 @@ td {
   color: var(--muted);
 }
 
+/* Ficha do Profissional: resumo vivo à esquerda, cartões por seção, etiquetas, CEP automático e barra flutuante.
+   Usa só os tokens de cor do tema (claro e escuro); a animação respeita "reduzir movimento". */
+.panel.sem-moldura {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+}
+.ficha {
+  display: grid;
+  grid-template-columns: 290px minmax(0, 1fr);
+  gap: 22px 28px;
+  align-items: start;
+}
+.ficha-lateral {
+  position: sticky;
+  top: 12px;
+  display: grid;
+  gap: 14px;
+}
+.ficha-resumo {
+  color: #fff;
+  border-radius: 20px;
+  padding: 20px;
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgb(255 128 21 / 0.35) 0%, transparent 55%),
+    linear-gradient(160deg, #1d1f22 0%, #26282b 55%, #5c2500 100%);
+  box-shadow: 0 18px 40px -22px rgb(0 0 0 / 0.55);
+}
+.ficha-topo {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+.ficha-avatar {
+  --matiz: 24;
+  flex: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  font: 700 20px var(--font-display);
+  letter-spacing: 0.02em;
+  color: #fff;
+  background: linear-gradient(
+    135deg,
+    hsl(var(--matiz) 62% 34%),
+    hsl(calc(var(--matiz) + 28) 70% 26%)
+  );
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.22);
+}
+.ficha-avatar.vazio {
+  background: rgb(255 255 255 / 0.12);
+}
+.ficha-quem {
+  min-width: 0;
+}
+.ficha-nome {
+  margin: 0;
+  font: 700 16px/1.25 var(--font-display);
+  overflow-wrap: anywhere;
+}
+.ficha-sub {
+  margin: 3px 0 0;
+  font-size: 13px;
+  color: #d3d6da;
+  overflow-wrap: anywhere;
+}
+.ficha-progresso {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid rgb(255 255 255 / 0.14);
+}
+.anel {
+  position: relative;
+  flex: none;
+  width: 64px;
+  height: 64px;
+}
+.anel svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+.anel circle {
+  fill: none;
+  stroke-width: 6;
+}
+.anel-fundo {
+  stroke: rgb(255 255 255 / 0.16);
+}
+.anel-valor {
+  stroke: var(--brand);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.5s ease;
+}
+.anel-texto {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font: 700 13px var(--font-body);
+  font-variant-numeric: tabular-nums;
+}
+.ficha-progresso-texto {
+  display: grid;
+  gap: 2px;
+  font-size: 13px;
+  color: #d3d6da;
+  min-width: 0;
+}
+.ficha-progresso-texto strong {
+  color: #fff;
+  font-size: 14px;
+}
+.ficha-trilho {
+  display: grid;
+  gap: 2px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 6px;
+}
+.trilho-item {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  grid-template-areas: 'marca texto' 'marca estado';
+  column-gap: 10px;
+  align-items: center;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  border-radius: 11px;
+  padding: 8px 10px;
+  cursor: pointer;
+  font: 600 14px var(--font-body);
+}
+.trilho-item:hover {
+  background: var(--accent-soft);
+}
+.trilho-item.ativa {
+  background: var(--accent-soft);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+.trilho-marca {
+  grid-area: marca;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  display: grid;
+  place-items: center;
+  color: #fff;
+}
+.trilho-marca il-icone {
+  width: 12px;
+  height: 12px;
+}
+.trilho-marca.ok {
+  background: var(--ok);
+  border-color: var(--ok);
+}
+.trilho-marca.falta {
+  border-color: var(--warn);
+}
+.trilho-texto {
+  grid-area: texto;
+}
+.trilho-estado {
+  grid-area: estado;
+  font: 400 12px var(--font-body);
+  color: var(--muted);
+}
+.ficha-conteudo {
+  display: grid;
+  gap: 18px;
+  min-width: 0;
+}
+.cartao {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 22px 24px 24px;
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.04),
+    0 14px 30px -24px rgb(0 0 0 / 0.35);
+  scroll-margin-top: 14px;
+}
+.cartao-cab {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.cartao-cab h2 {
+  margin: 0;
+  font: 700 18px var(--font-display);
+}
+.cartao-cab p {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+.cartao-icone {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+.grade {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 6px 18px;
+}
+.grade > .col-2 {
+  grid-column: span 2;
+}
+.grade > .col-3 {
+  grid-column: span 3;
+}
+.grade > .col-4 {
+  grid-column: span 4;
+}
+.grade > .col-6 {
+  grid-column: 1 / -1;
+}
+.ficha .input {
+  min-height: 44px;
+  border-radius: 11px;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.ficha .input:focus-visible {
+  border-color: var(--focus);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 28%, transparent);
+}
+.ficha il-campo.destaque .input {
+  animation: auto-preenchido 2.2s ease;
+}
+@keyframes auto-preenchido {
+  0%,
+  35% {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+  }
+}
+.fone {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.fone legend {
+  font: 600 13px var(--font-body);
+  padding: 0;
+  margin: 0 0 2px;
+}
+.fone-linha {
+  display: grid;
+  grid-template-columns: 5rem 5rem minmax(0, 1fr);
+  gap: 0 10px;
+}
+.fone-linha.com-operadora {
+  grid-template-columns: 5rem 5rem minmax(0, 1fr) minmax(0, 1.1fr);
+}
+.cep {
+  min-width: 0;
+}
+.cep-estado {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: -2px 0 8px;
+  font-size: 13px;
+  color: var(--muted);
+  min-height: 20px;
+}
+.cep-estado.ok {
+  color: var(--ok);
+}
+.cep-estado.aviso {
+  color: var(--warn);
+}
+.cep-estado il-icone {
+  width: 16px;
+  height: 16px;
+}
+.girando {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  border-top-color: var(--accent);
+  animation: girar 0.7s linear infinite;
+}
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.dupla {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 28px;
+}
+.bloco-chips {
+  min-width: 0;
+}
+.bloco-chips h3 {
+  margin: 0 0 6px;
+  font: 700 14px var(--font-display);
+}
+.combo-caixa {
+  position: relative;
+}
+.combo-lista {
+  position: absolute;
+  z-index: 20;
+  left: 0;
+  right: 0;
+  top: calc(100% + 4px);
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  max-height: 260px;
+  overflow: auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 18px 36px -16px rgb(0 0 0 / 0.45);
+}
+.combo-lista li {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.combo-lista li.ativa,
+.combo-lista li:hover {
+  background: var(--accent-soft);
+}
+.combo-detalhe {
+  flex: none;
+  font: 500 12px var(--font-mono);
+  color: var(--muted);
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.chip {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  max-width: 100%;
+  padding: 5px 6px 5px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg);
+  font-size: 13.5px;
+}
+.chip.principal {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+.chip-cod {
+  font: 500 12px var(--font-mono);
+  color: var(--muted);
+}
+.chip-texto {
+  overflow-wrap: anywhere;
+}
+.chip-tag {
+  font: 700 11px var(--font-body);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+}
+.chip-x,
+.chip-estrela {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+.chip-estrela {
+  margin-left: -6px;
+}
+.chip-x:hover {
+  background: var(--bad-soft);
+  color: var(--bad);
+}
+.chip-estrela:hover,
+.chip-estrela[aria-pressed='true'] {
+  color: var(--accent);
+}
+.chip-estrela[aria-pressed='true'] il-icone {
+  fill: currentColor;
+}
+.chip-x il-icone,
+.chip-estrela il-icone {
+  width: 15px;
+  height: 15px;
+}
+.chips-vazio {
+  width: 100%;
+  padding: 14px;
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+}
+.barra-flutuante {
+  grid-column: 2;
+  position: sticky;
+  bottom: 14px;
+  z-index: 10;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 12px 10px 18px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 18px 40px -18px rgb(0 0 0 / 0.5);
+}
+.barra-estado {
+  flex: 1;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 13.5px;
+  color: var(--muted);
+}
+.barra-estado il-icone {
+  width: 16px;
+  height: 16px;
+  color: var(--ok);
+}
+.ponto {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--warn);
+}
+.atalho {
+  margin-left: 8px;
+  padding: 1px 6px;
+  border-radius: 6px;
+  border: 1px solid rgb(255 255 255 / 0.45);
+  font: 500 11px var(--font-mono);
+}
+.resumo-mudancas {
+  margin: 0 0 14px;
+  padding-left: 20px;
+  display: grid;
+  gap: 2px;
+}
+@media (max-width: 1100px) {
+  .ficha {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ficha-lateral {
+    position: static;
+  }
+  .ficha-trilho {
+    position: sticky;
+    top: 0;
+    z-index: 11;
+    display: flex;
+    overflow-x: auto;
+    gap: 4px;
+  }
+  .trilho-item {
+    flex: none;
+    grid-template-columns: 22px auto;
+  }
+  .trilho-estado {
+    display: none;
+  }
+  .barra-flutuante {
+    grid-column: 1;
+  }
+  .dupla {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 760px) {
+  .grade {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .grade > .col-2,
+  .grade > .col-3,
+  .grade > .col-4,
+  .grade > .col-6 {
+    grid-column: 1 / -1;
+  }
+  .cartao {
+    padding: 18px 16px 20px;
+  }
+  .atalho {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .anel-valor,
+  .ficha .input,
+  .girando,
+  .ficha il-campo.destaque .input {
+    animation: none;
+    transition: none;
+  }
+}
+
 /* Contas de usuário: perfis em etiquetas e resumo da conta */
 .perfil-chip {
   display: inline-block;
