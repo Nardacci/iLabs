@@ -1,3 +1,4 @@
+import { OBR_COLS, OBR_VALS } from './_profissional_obrigatorio.mjs';
 // Testes da migração 12: Estrutura organizacional (árvore) e Centros de custo.
 export async function rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB }) {
   const q = async (sql, params) => (await db.query(sql, params)).rows;
@@ -53,9 +54,9 @@ export async function rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB 
   console.log('  responsável (profissional da mesma empresa)');
   await dono();
   const func = (await q(`insert into ilab.funcoes_profissionais (empresa_id, codigo, descricao) values ($1, 'RESP', 'Responsável de setor') returning id`, [eA]))[0].id;
-  const prof = (await q(`insert into ilab.profissionais (empresa_id, codigo, nome, cpf, funcao_profissional_id) values ($1, 'PRESP', 'Responsável Teste', '45678901249', $2) returning id`, [eA, func]))[0].id;
+  const prof = (await q(`insert into ilab.profissionais (${OBR_COLS}, empresa_id, codigo, nome, cpf, funcao_profissional_id) values (${OBR_VALS}, $1, 'PRESP', 'Responsável Teste', '45678901249', $2) returning id`, [eA, func]))[0].id;
   const profB = (await q(`insert into ilab.funcoes_profissionais (empresa_id, codigo, descricao) values ($1, 'RB', 'Função B') returning id`, [eB]))[0].id;
-  const pB = (await q(`insert into ilab.profissionais (empresa_id, codigo, nome, cpf, funcao_profissional_id) values ($1, 'PB', 'Profissional B', '23456789092', $2) returning id`, [eB, profB]))[0].id;
+  const pB = (await q(`insert into ilab.profissionais (${OBR_COLS}, empresa_id, codigo, nome, cpf, funcao_profissional_id) values (${OBR_VALS}, $1, 'PB', 'Profissional B', '23456789092', $2) returning id`, [eB, profB]))[0].id;
   await como(A);
   t = await alterar('estrutura_organizacional', setorDireto.id, { responsavel_id: prof }, 'Definindo o responsável pelo almoxarifado');
   registrar('liga um profissional como responsável', !t.erro, t.erro);

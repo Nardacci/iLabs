@@ -2,6 +2,17 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-15 · Claude · Migrações 20, 21 e 22 aplicadas no Supabase (Profissional completo)
+
+- **Autorização do responsável** ("pode aplicar", 15/11/2026), depois dos testes (635 de 635). Registro completo: `banco/execucao/2026-11-15-migracoes-20-22/resultado.md`.
+- **Aplicado em ordem:** 20 (`profissional_completo`), 21 (`dados_de_apoio_profissional`: 27 UF, 5.571 municípios, 2.538 ocupações, 33 órgãos, 6 operadoras) e 22 (`sem_exclusao_fisica_search_path`, que corrige um aviso do Supabase trazido pela 20).
+- **Achado antes de aplicar:** o banco real tem migrações `kb_*` (base de conhecimento, outra linha de trabalho; na hora não estavam nesta branch e agora vieram pela mescla com a `main`) e `colunas_editaveis` tinha a entrada `kb_documentos`. A migração 20 reescreve a lista inteira; **mantive a entrada** antes de aplicar. Quem trouxer as migrações `kb_*` para este repositório deve conferir essa lista.
+- **Como a 21 entrou:** os 327 KB foram buscados pelo próprio banco no repositório público e executados só depois de conferir o hash; a extensão `http` ficou ligada apenas durante a aplicação e foi removida (conferido).
+- **Conferido no banco real:** contagens, RLS em todas as tabelas, só `SELECT` para `authenticated` nas tabelas novas, funções novas só para `authenticated`, gatilhos, `kb_documentos` intacto. Avisos de segurança: só os já conhecidos.
+- **Não provado:** o cadastro pela tela contra o banco real. Sem profissionais gravados antes, nada ficou incompleto.
+- **Para o app novo aparecer no site:** o site publica a partir da `main`; esta linha de trabalho está na branch `main-oomvmm`, que ainda precisa ser levada à `main` (decisão do responsável).
+- **Numeração:** a base de conhecimento (outro chat) usa nos textos as migrações 15 a 19; as do Profissional completo viram **20, 21 e 22** (a ordem em que entraram no banco). Os arquivos têm nomes por data e não colidem.
+
 ## 2026-11-14 · Claude · Nome da IA: AI Know
 
 - **Decisão do responsável:** a IA se chama **AI Know** (alusão a "I know"; AI = Artificial Intelligence, em inglês). Pendente do responsável: conferir se o nome já é usado por outro produto.
@@ -140,6 +151,27 @@ Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê
 - **Testes:** `banco/testes/testes_base_conhecimento.mjs` (73 testes novos); total do banco **615 de 615**. Um teste antigo de segurança (lista das funções internas que o usuário logado pode chamar) foi atualizado para incluir as duas regras de caminho do Storage, que as políticas do bucket precisam executar.
 - **Migração 15 APLICADA no Supabase** (`LabPharma`) em 13/11/2026, com a autorização do responsável, depois dos testes (615/615), e conferida no banco real (tabelas, RLS, privilégios, funções, bucket privado e as duas políticas do Storage; 0 sobras). Registro em `banco/execucao/2026-11-13-migracao-15/resultado.md`. Avisos do Supabase: só os já conhecidos. **Não provado:** um envio real de arquivo pela tela e a leitura dele de volta; as políticas do Storage só se provam no primeiro envio. Para ver a tela: sair e entrar de novo no app.
 - **Ainda não feito:** a tela "Documentos" no app (lista, envio com cálculo do checksum, abas Dados e Versões); extração de texto, trechos, vetores e IA (próximas migrações); limpeza de arquivos enviados cujo registro falhou (hoje o arquivo fica sem registro; um serviço de limpeza com a chave de serviço entra depois); registro da decisão do schema em `docs/decisoes.md`.
+## 2026-11-13 · Claude · Profissional completo: banco (migrações 20 e 21), dados de apoio e tela nova (aplicado em 15/11, ver entrada acima)
+
+- **Pedido do responsável:** construir as etapas 1 a 3 do `docs/principal/profissional.md` (banco, dados de apoio, tela), com as regras do legado e layout novo.
+- **Banco (migração 20, `20261115090000_profissional_completo.sql`):** dados pessoais (nascimento, sexo, mãe, pai, naturalidade), documentos (identidade, órgão emissor, emissão, identidade profissional com órgão da classe), 2 telefones e 2 celulares com operadora, e-mail, endereço (Brasil com CEP, UF, município e bairro; exterior com código postal e cidade), cargo, matrícula e especialização. **Todas as regras no banco** (obrigatórios numa só mensagem, datas, e-mail, telefone sem DDD, operadora sem número, município da UF, grupo obrigatório se a empresa usa o Estoque via `empresas.usa_estoque`). Normalização (maiúsculas, sem espaços repetidos); sem número, DDI e DDD ficam vazios (DV-PRI-004). **Ocupações e funções são vínculos** com quem pôs e quando, retirar inativa com motivo e nunca apaga (corrige RN-PRI-ADM01-013); `ilab.salvar_profissional` grava tudo numa transação, com permissão e motivo; `ilab.buscar_cep`; vínculos próprios não contam como "uso" na exclusão.
+- **Dados (migração 21):** UF (27) e **5.571 municípios do IBGE** (pacote público `@br-geo-kit/ibge`, edição 2026), CBO (2.538), órgãos (33), operadoras (6), países (2), 1 logradouro de amostra. Migra o CBO e a função já gravados para os vínculos.
+- **Desvio da especificação:** o **bairro é texto digitado** (não existe base de bairros acessível). Registrado em `docs/decisoes.md`.
+- **App:** formulário próprio (`app/src/app/cadastros/profissional/formulario-profissional.ts`) em seis seções com índice (Identificação, Documentos, Contatos, Endereço, Trabalho, Ocupações e funções), busca de CEP, listas de ocupações e funções com cargo principal e botão Retirar, motivo na alteração, aviso de "entrar de novo". O motor de cadastros ganhou o gancho `formularioProprio`. Conferido a olho em computador e celular.
+- **Testes:** banco **635 de 635** (85 novos; os 548 antigos foram ajustados só para o nome em maiúsculas e para os campos novos obrigatórios), app **95 de 95**, ponta a ponta **26 de 26** (axe incluído), tipos, lint e formatação limpos.
+- **Não feito:** etapa 4 (impressão e exportação com filtro e permissão; CPF mascarado na lista); carga completa de logradouros por CEP; tela para ligar `usa_estoque`; a aba Histórico ainda mostra nomes técnicos das colunas.
+- **Pendências do responsável:** autorizar a aplicação das migrações 15 e 16 no Supabase (antes, conferir os profissionais já gravados: ficam incompletos até alguém completar); origem dos logradouros por CEP; CPF de excluído; listas de sexo e órgão da classe; mãe obrigatória (hoje sim, como no legado).
+
+## 2026-11-13 · Claude · Profissional: comparação com o legado e especificação do cadastro completo (só documentação)
+
+- **Pedido do responsável:** comparar a tela Profissional do legado com a nossa e montar o sistema **com as regras de negócio do legado, pautado nas normas da Anvisa, sem copiar o layout do legado**.
+- **Comparação:** o legado tem cadastro completo; o nosso tinha 7 campos. Faltavam nascimento, sexo, naturalidade, documentos, identidade profissional e órgão da classe, contatos, endereço, cargo, matrícula, especialização e **várias** ocupações e funções (o nosso só tinha uma de cada).
+- **Decisões do responsável:** (1) nome da mãe e do pai **voltam** (reverte a de 06/11; leitura do "Sim" dele, a confirmar); (2) entram **todos** os blocos; (3) CEP **como no legado**, base própria no banco.
+- **Achado:** a base de CEP do legado entregue é só uma amostra (RJ, 1 município, 1 bairro, 1 logradouro). CBO (2.538), órgãos emissores (33) e operadoras estão completos no `dml.sql` do legado.
+- **Feito:** `docs/principal/profissional.md` (campos, regras no banco, correções de falhas do legado, layout novo, etapas, pendências) e duas linhas em `docs/decisoes.md`. **Nenhuma migração e nenhuma tela foram escritas ainda.**
+- **Pendências do responsável (em `profissional.md`, seção 7):** origem da base de CEP completa; como o banco sabe que o Estoque está ativo; CPF de excluído; listas de sexo e órgão da classe; mãe obrigatória ou não.
+- **Próximo passo:** migração 15 (tabelas de apoio, colunas, ocupações e funções com vínculo auditável) com testes; depois carga de dados, tela e relatório.
+- **Commit WIP da área de trabalho:** desfeito (`reset --mixed`); a linha `"analytics": false` de `app/angular.json` continua como alteração não commitada, aguardando a decisão do responsável.
 
 ## 2026-11-13 · Claude · Regra do "entrar de novo" (setor e grupo do profissional) e campo Setor (migração 14 aplicada no Supabase)
 

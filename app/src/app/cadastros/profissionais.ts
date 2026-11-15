@@ -2,7 +2,8 @@ import { definirCadastro } from '../compartilhado/cadastro/descricao';
 
 /**
  * Profissionais: a pessoa que executa e assina. É separado da conta de usuário (a conta é opcional).
- * Sem nome da mãe nem do pai (decisão de 06/11/2026).
+ * Cadastro completo, com as regras do legado (decisão de 13/11/2026; nome da mãe e do pai voltaram): o formulário é
+ * próprio (`profissional/formulario-profissional.ts`). Os `campos` abaixo servem à lista, à busca e às mensagens.
  */
 export const profissionais = definirCadastro({
   tabela: 'profissionais',
@@ -13,9 +14,11 @@ export const profissionais = definirCadastro({
   identificador: 'nome',
   busca: ['codigo', 'nome', 'cpf'],
   ordenarPor: 'nome',
+  formularioProprio: () =>
+    import('./profissional/formulario-profissional').then((m) => m.FormularioProfissional),
   campos: [
     { nome: 'codigo', rotulo: 'Código', obrigatorio: true, max: 20 },
-    { nome: 'nome', rotulo: 'Nome completo', obrigatorio: true, max: 120 },
+    { nome: 'nome', rotulo: 'Nome completo', obrigatorio: true, max: 255 },
     {
       nome: 'cpf',
       rotulo: 'CPF',
@@ -25,17 +28,10 @@ export const profissionais = definirCadastro({
     },
     {
       nome: 'funcao_profissional_id',
-      rotulo: 'Função profissional (cargo principal)',
+      rotulo: 'Cargo principal (função profissional)',
       tipo: 'lista',
       obrigatorio: true,
       referencia: { tabela: 'funcoes_profissionais', rotulo: 'descricao' },
-    },
-    {
-      nome: 'cbo',
-      rotulo: 'Ocupação (CBO)',
-      max: 7,
-      dica: 'No formato 0000-00, por exemplo 2234-05.',
-      naLista: false,
     },
     {
       nome: 'setor_id',
