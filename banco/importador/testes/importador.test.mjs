@@ -71,6 +71,12 @@ test('arquivo cujo nome diz "confidencial" entra como Confidencial; os demais, c
   assert.equal(classificar('homologacao/1/normal.md', '# x').confidencialidade, 'interno');
 });
 
+test('documento que cita o endereço de desenvolvimento (urldesenv) entra como Confidencial', () => {
+  assert.equal(classificar('homologacao/x/login.md', '# Login\nO campo urlDesenv aponta para o ambiente.').confidencialidade, 'confidencial');
+  assert.equal(classificar('homologacao/x/login.md', '# Login\nSem nada sensível.').confidencialidade, 'interno');
+  assert.equal(classificar('homologacao/x/login.md', undefined).confidencialidade, 'interno');
+});
+
 // ---------- seleção ----------
 function arvorePadrao(extra = {}) {
   return criarArvore({

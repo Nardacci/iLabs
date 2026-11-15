@@ -2,6 +2,13 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-14 · Claude · Importador: documento que cita `urldesenv` entra como Confidencial
+
+- **Decisões do responsável:** (1) os cerca de 20 Markdown que citam `urldesenv` entram como **Confidenciais** ("não vejo problemas"); (2) **sem campo Módulo** no cadastro (o filtro Módulo só vale para o que o importador trouxer); (3) imagens do legado: **ainda vai testar**, nada a fazer por ora.
+- **Feito:** `CONFIDENCIAL_PELO_CONTEUDO` em `banco/importador/src/config.mjs`; `classificar` marca Confidencial quando o **texto** cita `urldesenv` (além de quando o nome diz "confidencial" ou "seguranca-e-acesso"). Teste novo em `testes/importador.test.mjs` (importador: 37 testes). Efeito colateral aceito: o Markdown "geral" de regras, que ainda traz a entrada do glossário sobre `urldesenv`, também entra como Confidencial até o outro chat mover essa entrada para o arquivo de segurança.
+- **Pendente:** pedir ao outro chat que mova essa entrada (linha 38 do `regras-de-negocio-detalhadas-geral.md`); o responsável roda o ensaio do importador, depois `--limite=10`, depois tudo; depois medir a busca com as 24 perguntas.
+- **Não feito:** nada commitado; nada aplicado no Supabase (não há migração nova).
+
 ## 2026-11-14 · Claude · Ajustes do botão flutuante e do menu
 
 - **Pedidos do responsável (após testar o botão):** (1) tirar a **Base de conhecimento do menu lateral**; (2) trocar o ícone "+" por algo parecido com os da IA; (3) **Documentos** deve abrir a **lista** de documentos, e não o cadastro de um documento novo.

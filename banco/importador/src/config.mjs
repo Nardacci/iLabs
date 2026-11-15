@@ -24,6 +24,12 @@ export const CONFIDENCIALIDADE_PADRAO = 'interno';
  */
 export const CONFIDENCIAL_PELO_NOME = /(confidencial|seguranca-e-acesso)/i;
 
+/**
+ * Documento cujo TEXTO cita o endereço do ambiente de desenvolvimento do legado (`urldesenv`) também entra como
+ * Confidencial (decisão do responsável, 14/11/2026): Interno pode ir ao provedor de IA, Confidencial nunca vai.
+ */
+export const CONFIDENCIAL_PELO_CONTEUDO = /urldesenv/i;
+
 /** Origem do que é importado deste repositório. */
 export const ORIGEM_DA_FONTE = 'legado';
 
