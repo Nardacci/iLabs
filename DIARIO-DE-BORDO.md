@@ -2,6 +2,13 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-15 · Claude · AI Know: correção do "statement timeout" (regras de acesso lentas) e, com o nome, só a IA
+
+- **Defeito achado em uso real:** a pergunta "AI Know, gere pra mim um resumo do módulo principal..." falhou com "canceling statement due to statement timeout". Causa medida: a busca da IA usa "qualquer palavra" e casa com quase todos os 2.075 trechos; a regra de acesso (RLS) chamava `empresa_atual()` e `pode()` uma vez por linha. Com a pessoa logada: **5.011 ms** (sem a regra: 22 ms); o limite da pessoa logada é 8 s.
+- **Correção (migração 24, `20261121090000`):** as regras de acesso de `kb_documentos`, `kb_documento_versoes`, `kb_trechos`, `kb_processamento`, `kb_fontes`, `kb_regras` e `kb_ia_interacoes` passam a chamar as funções dentro de `(select ...)`, calculadas uma vez por consulta. **Nenhuma regra mudou** (mesma empresa, mesma função, mesmo confidencial). Provado no banco real numa transação desfeita: 5.011 ms caiu para 29 ms. Teste novo trava a forma rápida (991 testes no banco).
+- **Decisão do responsável:** com o nome "AI Know" a tela só chama a IA (não roda a busca de documentos); sem o nome, só a busca. "Nada encontrado" só aparece na busca sem o nome. App: testes ajustados.
+- **Pendência:** a migração 24 só entra no Supabase com a autorização do responsável. A espera de cerca de 1 minuto da IA (raciocínio do modelo) segue como ponto a melhorar.
+
 ## 2026-11-15 · Claude · AI Know no ar (IA ligada) e a IA só responde quando a pergunta começa com "AI Know"
 
 - **Aplicado com autorização do responsável:** migração 23 no Supabase e função `perguntar-kb` publicada (versão 3). A chave `ANTHROPIC_API_KEY` foi cadastrada pelo responsável como segredo (nunca passou pelo chat nem por arquivo).
