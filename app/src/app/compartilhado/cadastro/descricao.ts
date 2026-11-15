@@ -6,7 +6,7 @@ export interface CampoDeCadastro {
   /** Nome da coluna no banco. */
   nome: string;
   rotulo: string;
-  tipo?: 'texto' | 'textolongo' | 'email' | 'lista';
+  tipo?: 'texto' | 'textolongo' | 'email' | 'lista' | 'data';
   obrigatorio?: boolean;
   min?: number;
   max?: number;
@@ -27,6 +27,8 @@ export interface CampoDeCadastro {
   };
   /** Como mostrar o valor na lista (o banco guarda só os dígitos). */
   formato?: 'cpf';
+  /** Aparece só na lista (e como filtro): não entra no formulário nem na alteração. */
+  somenteLista?: boolean;
 }
 
 /**
@@ -71,6 +73,16 @@ export interface DescricaoDeCadastro {
    * `EntradasDoFormularioProprio` como entradas.
    */
   formularioProprio?: () => Promise<Type<unknown>>;
+  /**
+   * O cadastro NOVO exige um arquivo (TXT, MD, DOCX, PDF ou imagem (PNG, JPG ou WEBP)): o navegador envia ao bucket privado e o banco registra o
+   * documento pela função `kb_criar_documento`. Alterar os dados continua pela alteração genérica, com motivo.
+   */
+  envioDeArquivo?: boolean;
+  /**
+   * Filtros extras na barra da lista: nomes de campos do tipo lista com `referencia` (por exemplo, a fonte do documento).
+   * Cada um vira uma escolha "Todos" ou um dos registros do outro cadastro.
+   */
+  filtros?: readonly string[];
 }
 
 /** Só confere o formato da descrição em tempo de compilação. */

@@ -27,6 +27,9 @@ else console.warn('Aviso: Deno não encontrado; os testes das funções de servi
 if (existsSync(join(raiz, 'banco', 'testes', 'node_modules'))) {
   passos.push({ nome: 'Banco (PGlite)', cmd: npm, args: ['test', '--silent'], cwd: join(raiz, 'banco', 'testes') });
 } else console.warn('Aviso: dependências de banco/testes não instaladas; os testes do banco foram PULADOS.');
+if (existsSync(join(raiz, 'banco', 'importador', 'node_modules'))) {
+  passos.push({ nome: 'Importador da base de conhecimento', cmd: npm, args: ['test', '--silent'], cwd: join(raiz, 'banco', 'importador') });
+} else console.warn('Aviso: dependências de banco/importador não instaladas; os testes do importador foram PULADOS.');
 
 const resultado = [];
 for (const p of passos) {

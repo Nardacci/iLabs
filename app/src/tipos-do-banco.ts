@@ -564,6 +564,345 @@ export type Database = {
         }
         Relationships: []
       }
+      kb_documento_versoes: {
+        Row: {
+          id: string
+          empresa_id: string
+          documento_id: string
+          numero: number
+          arquivo_caminho: string
+          nome_original: string
+          tipo_arquivo: string
+          tamanho_bytes: number
+          checksum: string
+          criado_em: string
+          criado_por: string | null
+          fonte_ref: string | null
+        }
+        Insert: {
+          id: string
+          empresa_id: string
+          documento_id: string
+          numero: number
+          arquivo_caminho: string
+          nome_original: string
+          tipo_arquivo: string
+          tamanho_bytes: number
+          checksum: string
+          criado_em?: string
+          criado_por?: string | null
+          fonte_ref?: string | null
+        }
+        Update: {
+          id?: string
+          empresa_id?: string
+          documento_id?: string
+          numero?: number
+          arquivo_caminho?: string
+          nome_original?: string
+          tipo_arquivo?: string
+          tamanho_bytes?: number
+          checksum?: string
+          criado_em?: string
+          criado_por?: string | null
+          fonte_ref?: string | null
+        }
+        Relationships: []
+      }
+      kb_documentos: {
+        Row: {
+          id: string
+          empresa_id: string
+          titulo: string
+          legenda: string | null
+          tipo: string
+          origem: string
+          confidencialidade: string
+          data_fonte: string | null
+          identificacao_oficial: string | null
+          consultado_em: string | null
+          situacao_lida: string | null
+          situacao: string
+          ativo: boolean | null
+          criado_em: string
+          criado_por: string | null
+          atualizado_em: string | null
+          atualizado_por: string | null
+          fonte_id: string | null
+          fonte_caminho: string | null
+          sumiu_da_fonte_em: string | null
+        }
+        Insert: {
+          id: string
+          empresa_id: string
+          titulo: string
+          legenda?: string | null
+          tipo: string
+          origem: string
+          confidencialidade: string
+          data_fonte?: string | null
+          identificacao_oficial?: string | null
+          consultado_em?: string | null
+          situacao_lida?: string | null
+          situacao?: string
+          ativo?: boolean | null
+          criado_em?: string
+          criado_por?: string | null
+          atualizado_em?: string | null
+          atualizado_por?: string | null
+          fonte_id?: string | null
+          fonte_caminho?: string | null
+          sumiu_da_fonte_em?: string | null
+        }
+        Update: {
+          id?: string
+          empresa_id?: string
+          titulo?: string
+          legenda?: string | null
+          tipo?: string
+          origem?: string
+          confidencialidade?: string
+          data_fonte?: string | null
+          identificacao_oficial?: string | null
+          consultado_em?: string | null
+          situacao_lida?: string | null
+          situacao?: string
+          ativo?: boolean | null
+          criado_em?: string
+          criado_por?: string | null
+          atualizado_em?: string | null
+          atualizado_por?: string | null
+          fonte_id?: string | null
+          fonte_caminho?: string | null
+          sumiu_da_fonte_em?: string | null
+        }
+        Relationships: []
+      }
+      kb_fontes: {
+        Row: {
+          id: string
+          empresa_id: string
+          nome: string
+          origem: string
+          situacao: string
+          ativo: boolean | null
+          criado_em: string
+          criado_por: string | null
+          atualizado_em: string | null
+          atualizado_por: string | null
+        }
+        Insert: {
+          id?: string
+          empresa_id: string
+          nome: string
+          origem: string
+          situacao?: string
+          ativo?: boolean | null
+          criado_em?: string
+          criado_por?: string | null
+          atualizado_em?: string | null
+          atualizado_por?: string | null
+        }
+        Update: {
+          id?: string
+          empresa_id?: string
+          nome?: string
+          origem?: string
+          situacao?: string
+          ativo?: boolean | null
+          criado_em?: string
+          criado_por?: string | null
+          atualizado_em?: string | null
+          atualizado_por?: string | null
+        }
+        Relationships: []
+      }
+      kb_processamento: {
+        Row: {
+          versao_id: string
+          empresa_id: string
+          documento_id: string
+          estado: string
+          tentativas: number
+          trechos: number
+          erro: string | null
+          atualizado_em: string
+        }
+        Insert: {
+          versao_id: string
+          empresa_id: string
+          documento_id: string
+          estado?: string
+          tentativas?: number
+          trechos?: number
+          erro?: string | null
+          atualizado_em?: string
+        }
+        Update: {
+          versao_id?: string
+          empresa_id?: string
+          documento_id?: string
+          estado?: string
+          tentativas?: number
+          trechos?: number
+          erro?: string | null
+          atualizado_em?: string
+        }
+        Relationships: []
+      }
+      kb_regras: {
+        Row: {
+          id: string
+          empresa_id: string
+          fonte_id: string
+          codigo: string
+          modulo: string | null
+          menu: string
+          tela: string
+          tipo: string
+          gatilho: string | null
+          condicao: string | null
+          regra: string
+          efeito: string | null
+          mensagem: string | null
+          onde_aplicada: string | null
+          valores_limites: string | null
+          excecoes: string | null
+          quem: string | null
+          fonte_codigo: string[]
+          situacao_regra: string | null
+          teste: string[]
+          defeito: string[]
+          norma: string | null
+          como_deve_ser: string | null
+          ids_anteriores: string[]
+          confidencialidade: string
+          fonte_ref: string | null
+          sumiu_da_fonte_em: string | null
+          busca: unknown | null
+          situacao: string
+          ativo: boolean | null
+          criado_em: string
+          criado_por: string | null
+          atualizado_em: string | null
+          atualizado_por: string | null
+        }
+        Insert: {
+          id?: string
+          empresa_id: string
+          fonte_id: string
+          codigo: string
+          modulo?: string | null
+          menu: string
+          tela: string
+          tipo: string
+          gatilho?: string | null
+          condicao?: string | null
+          regra: string
+          efeito?: string | null
+          mensagem?: string | null
+          onde_aplicada?: string | null
+          valores_limites?: string | null
+          excecoes?: string | null
+          quem?: string | null
+          fonte_codigo?: string[]
+          situacao_regra?: string | null
+          teste?: string[]
+          defeito?: string[]
+          norma?: string | null
+          como_deve_ser?: string | null
+          ids_anteriores?: string[]
+          confidencialidade: string
+          fonte_ref?: string | null
+          sumiu_da_fonte_em?: string | null
+          busca?: unknown | null
+          situacao?: string
+          ativo?: boolean | null
+          criado_em?: string
+          criado_por?: string | null
+          atualizado_em?: string | null
+          atualizado_por?: string | null
+        }
+        Update: {
+          id?: string
+          empresa_id?: string
+          fonte_id?: string
+          codigo?: string
+          modulo?: string | null
+          menu?: string
+          tela?: string
+          tipo?: string
+          gatilho?: string | null
+          condicao?: string | null
+          regra?: string
+          efeito?: string | null
+          mensagem?: string | null
+          onde_aplicada?: string | null
+          valores_limites?: string | null
+          excecoes?: string | null
+          quem?: string | null
+          fonte_codigo?: string[]
+          situacao_regra?: string | null
+          teste?: string[]
+          defeito?: string[]
+          norma?: string | null
+          como_deve_ser?: string | null
+          ids_anteriores?: string[]
+          confidencialidade?: string
+          fonte_ref?: string | null
+          sumiu_da_fonte_em?: string | null
+          busca?: unknown | null
+          situacao?: string
+          ativo?: boolean | null
+          criado_em?: string
+          criado_por?: string | null
+          atualizado_em?: string | null
+          atualizado_por?: string | null
+        }
+        Relationships: []
+      }
+      kb_trechos: {
+        Row: {
+          id: string
+          empresa_id: string
+          documento_id: string
+          versao_id: string
+          ordem: number
+          secao: string | null
+          pagina: number | null
+          texto: string
+          versao_atual: boolean
+          busca: unknown | null
+          criado_em: string
+        }
+        Insert: {
+          id?: string
+          empresa_id: string
+          documento_id: string
+          versao_id: string
+          ordem: number
+          secao?: string | null
+          pagina?: number | null
+          texto: string
+          versao_atual?: boolean
+          busca?: unknown | null
+          criado_em?: string
+        }
+        Update: {
+          id?: string
+          empresa_id?: string
+          documento_id?: string
+          versao_id?: string
+          ordem?: number
+          secao?: string | null
+          pagina?: number | null
+          texto?: string
+          versao_atual?: boolean
+          busca?: unknown | null
+          criado_em?: string
+        }
+        Relationships: []
+      }
       logradouros: {
         Row: {
           id: number
@@ -1344,6 +1683,22 @@ export type Database = {
       efeito_da_ultima_alteracao: { Args: { p_tabela: string; p_id: string }; Returns: { exige_novo_login: boolean | null; proprio: boolean | null; nome: string | null; campos: string[] | null }[] }
       exigir_troca_de_senha: { Args: { p_usuario_id: string; p_motivo: string }; Returns: undefined }
       inativar_usuario: { Args: { p_usuario_id: string; p_motivo: string }; Returns: undefined }
+      kb_arquivo_ja_existe: { Args: { p_checksum: string }; Returns: { documento_id: string | null; titulo: string | null; numero: number | null }[] }
+      kb_buscar: { Args: { p_consulta: string; p_tipos?: string[]; p_fonte_id?: string; p_limite?: number; p_modulo?: string }; Returns: { trecho_id: string | null; documento_id: string | null; versao_id: string | null; versao_numero: number | null; titulo: string | null; tipo: string | null; origem: string | null; fonte_nome: string | null; caminho: string | null; secao: string | null; pagina: number | null; trecho: string | null; relevancia: number | null; repetido_em: number | null; tipo_arquivo: string | null; modulo: string | null; legenda: string | null }[] }
+      kb_buscar_regras: { Args: { p_consulta?: string; p_menu?: string; p_tela?: string; p_tipo?: string; p_situacao?: string; p_limite?: number }; Returns: { id: string | null; codigo: string | null; modulo: string | null; menu: string | null; tela: string | null; tipo: string | null; confidencialidade: string | null; gatilho: string | null; condicao: string | null; regra: string | null; efeito: string | null; mensagem: string | null; onde_aplicada: string | null; valores_limites: string | null; excecoes: string | null; quem: string | null; fonte_codigo: string[] | null; situacao_regra: string | null; teste: string[] | null; defeito: string[] | null; norma: string | null; como_deve_ser: string | null; ids_anteriores: string[] | null; sumiu_da_fonte: boolean | null; relevancia: number | null }[] }
+      kb_criar_documento: { Args: { p_documento_id: string; p_versao_id: string; p_titulo: string; p_legenda: string; p_tipo: string; p_origem: string; p_confidencialidade: string; p_data_fonte: string; p_identificacao: string; p_consultado_em: string; p_situacao_lida: string; p_caminho: string; p_nome_original: string; p_tipo_arquivo: string; p_tamanho: number; p_checksum: string }; Returns: string }
+      kb_criar_fonte: { Args: { p_empresa_id: string; p_nome: string; p_origem: string }; Returns: string }
+      kb_gravar_trechos: { Args: { p_empresa_id: string; p_versao_id: string; p_trechos: Json }; Returns: number }
+      kb_importacao_estado: { Args: { p_empresa_id: string }; Returns: { documento_id: string | null; fonte_id: string | null; fonte_caminho: string | null; situacao: string | null; numero: number | null; checksum: string | null }[] }
+      kb_importar_documento: { Args: { p_empresa_id: string; p_fonte_id: string; p_fonte_caminho: string; p_fonte_ref: string; p_documento_id: string; p_versao_id: string; p_titulo: string; p_tipo: string; p_confidencialidade: string; p_arquivo_caminho: string; p_nome_original: string; p_tipo_arquivo: string; p_tamanho: number; p_checksum: string }; Returns: string }
+      kb_importar_regras: { Args: { p_empresa_id: string; p_fonte_id: string; p_fonte_ref: string; p_regras: Json }; Returns: Json }
+      kb_marcar_processamento: { Args: { p_empresa_id: string; p_versao_id: string; p_estado: string; p_erro?: string }; Returns: undefined }
+      kb_marcar_regras_sumidas: { Args: { p_empresa_id: string; p_fonte_id: string; p_codigos_presentes: string[] }; Returns: number }
+      kb_marcar_sumidos: { Args: { p_empresa_id: string; p_fonte_id: string; p_caminhos_presentes: string[] }; Returns: number }
+      kb_modulos: { Args: never; Returns: { modulo: string | null; total: number | null }[] }
+      kb_nova_versao: { Args: { p_documento_id: string; p_versao_id: string; p_caminho: string; p_nome_original: string; p_tipo_arquivo: string; p_tamanho: number; p_checksum: string; p_motivo: string }; Returns: number }
+      kb_regras_telas: { Args: never; Returns: { menu: string | null; tela: string | null; total: number | null }[] }
+      kb_versoes_pendentes: { Args: { p_empresa_id: string; p_limite?: number }; Returns: { versao_id: string | null; documento_id: string | null }[] }
       listar_contas_usuario: { Args: never; Returns: { tipo: string | null; id: string | null; nome: string | null; email: string | null; profissional_id: string | null; cpf: string | null; ativo: boolean | null; situacao: string | null; senha_a_trocar: boolean | null; bloqueado: boolean | null; valida_de: string | null; valida_ate: string | null; na_validade: boolean | null; convite_expira_em: string | null; perfis: Json | null }[] }
       listar_perfis: { Args: { p_incluir_inativos?: boolean }; Returns: { id: string | null; nome: string | null; descricao: string | null; ativo: boolean | null; qtd_usuarios: number | null; qtd_funcoes: number | null }[] }
       listar_profissionais_sem_conta: { Args: never; Returns: { id: string | null; codigo: string | null; nome: string | null; cpf: string | null }[] }

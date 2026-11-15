@@ -11,6 +11,8 @@ export interface PedidoDeLista {
   ordenarPor: string;
   /** Só estas situações (ativo, inativo, excluido). Sem isto, vêm todas. */
   situacoes?: readonly string[];
+  /** Só os registros em que cada coluna é igual ao valor (por exemplo, { fonte_id: '…' }). */
+  filtros?: Readonly<Record<string, string>>;
 }
 
 export interface Pagina<L> {
@@ -49,6 +51,9 @@ export class ConsultaService {
       .range(de, de + p.tamanho - 1);
     if (p.situacoes && p.situacoes.length > 0) {
       consulta = consulta.in('situacao' as never, [...p.situacoes] as never);
+    }
+    for (const [coluna, valor] of Object.entries(p.filtros ?? {})) {
+      if (valor) consulta = consulta.eq(coluna as never, valor);
     }
     const termo = p.busca.trim().replace(/[%,()*]/g, ' ');
     if (termo && p.colunasDeBusca.length > 0) {

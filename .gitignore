@@ -9,3 +9,6 @@ Thumbs.db
 /iLabs/
 /package-lock.json
 supabase/.temp/
+
+# Relatórios locais do importador da base de conhecimento (caminhos de arquivos do legado; ficam só no computador)
+/banco/importador/saida/

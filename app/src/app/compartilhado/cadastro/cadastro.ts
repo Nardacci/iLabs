@@ -25,6 +25,15 @@ import { debounceTime } from 'rxjs';
 import type { LinhaDe } from '../dados/banco';
 import { BancoService } from '../dados/banco';
 import { ConsultaService } from '../dados/consulta';
+import {
+  type ArquivoJaEnviado,
+  conferirArquivo,
+  ehImagem,
+  type DadosDoDocumento,
+  EnvioDeDocumentoService,
+  tamanhoLegivel,
+  type VersaoDeDocumento,
+} from '../dados/envio-de-documento';
 import { mensagemDeErro } from '../dados/mensagem';
 import { RascunhoService } from '../sessao/rascunho.service';
 import { SessaoService } from '../sessao/sessao.service';
@@ -39,7 +48,7 @@ import { type Diferenca, diferencas, ROTULO_DA_ACAO } from './historico';
 
 type Linha = Record<string, unknown>;
 type TipoDeJanela = 'nenhuma' | 'formulario' | 'motivo';
-type Aba = 'dados' | 'historico';
+type Aba = 'dados' | 'versoes' | 'historico';
 type AcaoDeSituacao = 'inativar' | 'reativar' | 'excluir' | 'restaurar';
 type FiltroDeSituacao = 'vivos' | 'ativo' | 'inativo' | 'excluido' | 'todos';
 
@@ -118,6 +127,24 @@ const TAMANHO_DA_PAGINA = 10;
               <option value="todos">Todos</option>
             </select>
           </div>
+          @for (nome of cadastro().filtros ?? []; track nome) {
+            @if (campoDoFiltro(nome); as filtro) {
+              <div class="field campo-situacao">
+                <label [for]="'filtro-' + nome">{{ filtro.rotulo }}</label>
+                <select
+                  class="input"
+                  [id]="'filtro-' + nome"
+                  [value]="valoresDosFiltros()[nome] ?? ''"
+                  (change)="mudarFiltro(nome, $event)"
+                >
+                  <option value="">Todos</option>
+                  @for (o of opcoesDeReferencia()[nome] ?? []; track o.valor) {
+                    <option [value]="o.valor">{{ o.rotulo }}</option>
+                  }
+                </select>
+              </div>
+            }
+          }
           <button type="button" class="btn" [class.sr]="!podeImprimir()" (click)="imprimir()">
             Imprimir
           </button>
@@ -334,7 +361,49 @@ const TAMANHO_DA_PAGINA = 10;
         } @else if (abaAtual() === 'dados') {
           <form id="form-cadastro" [formGroup]="formulario" (ngSubmit)="salvar()" novalidate>
             <div class="grade-campos">
-              @for (c of cadastro().campos; track c.nome) {
+              @if (cadastro().envioDeArquivo && !editando()) {
+                <div class="field largo">
+                  <label for="arquivo-do-documento"
+                    >Arquivo (TXT, MD, DOCX, PDF ou imagem (PNG, JPG ou WEBP), até 50 MB)<span
+                      aria-hidden="true"
+                    >
+                      *</span
+                    ></label
+                  >
+                  <input
+                    class="input"
+                    id="arquivo-do-documento"
+                    type="file"
+                    accept=".txt,.md,.docx,.pdf,.png,.jpg,.jpeg,.webp"
+                    (change)="escolherArquivo($event)"
+                    [attr.aria-invalid]="erroDoArquivo() ? 'true' : null"
+                    aria-describedby="arquivo-dica"
+                  />
+                  <span class="hint" id="arquivo-dica">
+                    @if (arquivo(); as a) {
+                      {{ a.name }} · {{ tamanhoLegivel(a.size) }}
+                    } @else {
+                      O arquivo fica guardado com segurança. Cada novo envio vira uma versão; nada é
+                      apagado.
+                    }
+                  </span>
+                  @if (erroDoArquivo(); as texto) {
+                    <span class="err" role="alert">{{ texto }}</span>
+                  }
+                  @if (repetidos().length > 0) {
+                    <p class="msg warn" role="status">
+                      Este mesmo arquivo já foi enviado em:
+                      @for (r of repetidos(); track r.documento_id + '-' + r.numero) {
+                        <strong>{{ r.titulo }}</strong> (versão {{ r.numero }}){{
+                          $last ? '.' : ', '
+                        }}
+                      }
+                      Você pode continuar, se for outro documento.
+                    </p>
+                  }
+                </div>
+              }
+              @for (c of camposDoFormulario(); track c.nome) {
                 <il-campo
                   [class.largo]="c.tipo === 'textolongo'"
                   [rotulo]="c.rotulo"
@@ -366,6 +435,130 @@ const TAMANHO_DA_PAGINA = 10;
               <button type="submit" class="btn primary" [disabled]="trabalhando()">Salvar</button>
             </div>
           </form>
+        } @else if (abaAtual() === 'versoes') {
+          <p class="sub">
+            Cada envio vira uma versão. A versão atual é a de maior número; as anteriores continuam
+            guardadas e nada é apagado.
+          </p>
+          @if (avisoDaVersao(); as texto) {
+            <p class="msg ok" role="status">{{ texto }}</p>
+          }
+          @if (podeEnviarVersao() && !novaVersaoAberta()) {
+            <div class="acoes nao-imprimir">
+              <button type="button" class="btn primary" (click)="abrirNovaVersao()">
+                Enviar nova versão
+              </button>
+            </div>
+          }
+          @if (novaVersaoAberta()) {
+            <form
+              class="panel nao-imprimir"
+              style="margin-bottom: 12px"
+              [formGroup]="grupoVersao"
+              (ngSubmit)="enviarNovaVersao()"
+              novalidate
+            >
+              <div class="field">
+                <label for="arquivo-da-versao"
+                  >Arquivo da nova versão (TXT, MD, DOCX, PDF ou imagem (PNG, JPG ou WEBP), até 50
+                  MB)<span aria-hidden="true"> *</span></label
+                >
+                <input
+                  class="input"
+                  id="arquivo-da-versao"
+                  type="file"
+                  accept=".txt,.md,.docx,.pdf,.png,.jpg,.jpeg,.webp"
+                  (change)="escolherArquivoDaVersao($event)"
+                  [attr.aria-invalid]="erroDoArquivoDaVersao() ? 'true' : null"
+                />
+                @if (arquivoDaVersao(); as a) {
+                  <span class="hint">{{ a.name }} · {{ tamanhoLegivel(a.size) }}</span>
+                }
+                @if (erroDoArquivoDaVersao(); as texto) {
+                  <span class="err" role="alert">{{ texto }}</span>
+                }
+              </div>
+              <il-campo
+                rotulo="Motivo da nova versão (obrigatório)"
+                tipo="textolongo"
+                dica="Pelo menos 5 caracteres. Fica registrado no histórico."
+                [obrigatorio]="true"
+                [controle]="motivoDaVersao"
+              />
+              <div class="acoes">
+                <button type="submit" class="btn primary" [disabled]="trabalhando()">
+                  Enviar versão
+                </button>
+                <button type="button" class="btn" (click)="cancelarNovaVersao()">Cancelar</button>
+              </div>
+            </form>
+          }
+          @if (alvo() && !podeEnviarVersao() && podeAlterar()) {
+            <p class="msg warn" role="status">
+              O documento não está ativo. Reative-o para enviar uma nova versão.
+            </p>
+          }
+          @for (v of versoes(); track v.id; let primeira = $first) {
+            <article class="panel" style="margin-bottom: 8px">
+              <strong>Versão {{ v.numero }}</strong>
+              @if (primeira) {
+                <span class="pill ok"> atual</span>
+              }
+              · enviada em {{ v.criado_em | date: 'dd/MM/yyyy HH:mm' }}
+              <p>
+                {{ v.nome_original }} · {{ v.tipo_arquivo.toUpperCase() }} ·
+                {{ tamanhoLegivel(v.tamanho_bytes) }}
+              </p>
+              <p class="sub" [title]="v.checksum">
+                Impressão digital (SHA-256): {{ v.checksum.slice(0, 16) }}…
+                @if (v.fonte_ref) {
+                  · referência na fonte: {{ v.fonte_ref }}
+                }
+              </p>
+              @if (imagemDaVersao(v)) {
+                @if (imagens()[v.id]; as url) {
+                  <!-- endereço temporário assinado do Storage: não passa pelo otimizador de imagens -->
+                  <!-- eslint-disable @angular-eslint/template/prefer-ngsrc -->
+                  <img
+                    [src]="url"
+                    [alt]="descricaoDaImagem()"
+                    style="display: block; max-width: 100%; max-height: 360px; margin: 6px 0"
+                  />
+                  <!-- eslint-enable @angular-eslint/template/prefer-ngsrc -->
+                }
+                <p class="sub" data-testid="leitura-do-texto">
+                  Imagem: é achada pelo título e pela legenda do documento (não há texto para ler).
+                </p>
+              } @else {
+                <p class="sub" data-testid="leitura-do-texto">
+                  Leitura do texto para a busca: {{ situacaoDoTexto(v.id) }}
+                </p>
+              }
+              <button type="button" class="btn nao-imprimir" (click)="baixar(v)">
+                Baixar versão {{ v.numero }}
+              </button>
+              @if (!imagemDaVersao(v) && podeProcessarDeNovo(v.id)) {
+                <button
+                  type="button"
+                  class="btn nao-imprimir"
+                  (click)="processarDeNovo(v)"
+                  [attr.aria-label]="'Ler o texto da versão ' + v.numero + ' de novo'"
+                >
+                  Ler o texto de novo
+                </button>
+              }
+            </article>
+          } @empty {
+            @if (!carregandoVersoes()) {
+              <p>Nenhuma versão encontrada.</p>
+            }
+          }
+          <div class="rodape-acoes nao-imprimir">
+            <button type="button" class="btn" (click)="atualizarVersoes()">
+              Atualizar situação
+            </button>
+            <button type="button" class="btn" (click)="voltarParaLista()">Voltar</button>
+          </div>
         } @else {
           @for (h of historico(); track h.id) {
             <article class="panel" style="margin-bottom: 8px">
@@ -454,6 +647,7 @@ export class Cadastro {
   readonly aba = input<string>();
 
   private readonly consulta = inject(ConsultaService);
+  private readonly envio = inject(EnvioDeDocumentoService);
   private readonly banco = inject(BancoService);
   private readonly sessao = inject(SessaoService);
   private readonly rascunho = inject(RascunhoService);
@@ -477,6 +671,11 @@ export class Cadastro {
   protected readonly carregando = signal(false);
   protected readonly erro = signal<string | null>(null);
   protected readonly aviso = signal<string | null>(null);
+  /** Cadastro com envio de arquivo (documentos): o arquivo escolhido, o aviso sobre ele e os envios iguais já feitos. */
+  protected readonly arquivo = signal<File | null>(null);
+  protected readonly erroDoArquivo = signal<string | null>(null);
+  protected readonly repetidos = signal<ArquivoJaEnviado[]>([]);
+  protected readonly tamanhoLegivel = tamanhoLegivel;
   protected readonly janela = signal<TipoDeJanela>('nenhuma');
   protected readonly erroDaJanela = signal<string | null>(null);
   protected readonly trabalhando = signal(false);
@@ -493,6 +692,25 @@ export class Cadastro {
     nonNullable: true,
   });
   protected readonly historico = signal<LinhaDe<'auditoria'>[]>([]);
+  /** Aba Versões (cadastro com envio de arquivo): as versões, o envio de uma nova e o download. */
+  protected readonly versoes = signal<VersaoDeDocumento[]>([]);
+  protected readonly estadosDoTexto = signal<Map<string, LinhaDe<'kb_processamento'>>>(new Map());
+  /** Endereço temporário para mostrar cada versão que é imagem, por id da versão. */
+  protected readonly imagens = signal<Record<string, string>>({});
+  protected readonly carregandoVersoes = signal(false);
+  protected readonly novaVersaoAberta = signal(false);
+  protected readonly avisoDaVersao = signal<string | null>(null);
+  protected readonly arquivoDaVersao = signal<File | null>(null);
+  protected readonly erroDoArquivoDaVersao = signal<string | null>(null);
+  protected readonly motivoDaVersao = new FormControl('', {
+    nonNullable: true,
+    validators: [Validators.required, Validators.minLength(5)],
+  });
+  protected readonly grupoVersao = new FormGroup({ motivo: this.motivoDaVersao });
+  protected readonly podeEnviarVersao = computed(() => {
+    const alvo = this.alvo();
+    return !!alvo && this.podeAlterar() && this.situacaoDe(alvo) === 'ativo';
+  });
   protected readonly abaAtual = signal<Aba>('dados');
   /** Depois de salvar: mudou algo que só vale no próximo login? (quem decide é o banco) */
   protected readonly avisoNovoLogin = signal<{
@@ -507,6 +725,12 @@ export class Cadastro {
   protected readonly colunas = computed(() =>
     this.cadastro().campos.filter((c) => c.naLista !== false),
   );
+  /** Os campos que entram no formulário (os "só na lista", como a fonte do documento, ficam de fora). */
+  protected readonly camposDoFormulario = computed(() =>
+    this.cadastro().campos.filter((c) => c.somenteLista !== true),
+  );
+  /** Valores escolhidos nos filtros extras da barra (coluna -> id; vazio = todos). */
+  protected readonly valoresDosFiltros = signal<Record<string, string>>({});
   protected readonly editando = computed(
     () => this.alvo() !== null && this.janela() === 'formulario',
   );
@@ -528,6 +752,9 @@ export class Cadastro {
   });
   protected readonly abasDaPagina = computed<{ id: Aba; rotulo: string }[]>(() => [
     ...(this.alvoEditavel() ? [{ id: 'dados' as const, rotulo: 'Dados' }] : []),
+    ...(this.alvo() && this.cadastro().envioDeArquivo
+      ? [{ id: 'versoes' as const, rotulo: 'Versões' }]
+      : []),
     ...(this.alvo() && this.podeHistorico()
       ? [{ id: 'historico' as const, rotulo: 'Histórico' }]
       : []),
@@ -600,9 +827,15 @@ export class Cadastro {
       if (carregarFormulario) {
         void carregarFormulario().then((componente) => this.formularioProprio.set(componente));
       }
-      this.pagina.set(1);
-      void this.carregarReferencias();
-      void this.carregar();
+      this.cadastro();
+      // Só a troca de cadastro reinicia a tela. O que carregar() lê (página, filtros) não pode virar dependência
+      // deste efeito: senão mudar um filtro reiniciaria a própria tela.
+      untracked(() => {
+        this.pagina.set(1);
+        this.valoresDosFiltros.set({});
+        void this.carregarReferencias();
+        void this.carregar();
+      });
     });
     this.busca.valueChanges.pipe(debounceTime(300), takeUntilDestroyed()).subscribe((v) => {
       this.termoBusca.set(v);
@@ -689,14 +922,35 @@ export class Cadastro {
     return nome && linha ? this.texto(linha[nome]) : '';
   }
 
-  protected tipoDoCampo(c: CampoDeCadastro): 'text' | 'email' | 'lista' | 'textolongo' {
+  protected tipoDoCampo(c: CampoDeCadastro): 'text' | 'email' | 'lista' | 'textolongo' | 'date' {
     return c.tipo === 'lista'
       ? 'lista'
       : c.tipo === 'textolongo'
         ? 'textolongo'
         : c.tipo === 'email'
           ? 'email'
-          : 'text';
+          : c.tipo === 'data'
+            ? 'date'
+            : 'text';
+  }
+
+  /** Arquivo escolhido no cadastro com envio: confere o básico, sugere o título e avisa de arquivo repetido. */
+  protected async escolherArquivo(evento: Event): Promise<void> {
+    const escolhido = (evento.target as HTMLInputElement).files?.[0] ?? null;
+    this.repetidos.set([]);
+    this.arquivo.set(escolhido);
+    this.erroDoArquivo.set(escolhido ? conferirArquivo(escolhido) : null);
+    if (!escolhido || this.erroDoArquivo()) return;
+    const primeiro = this.cadastro().campos[0]?.nome;
+    const titulo = primeiro ? this.formulario.controls[primeiro] : undefined;
+    if (titulo && !titulo.value.trim()) {
+      titulo.setValue(escolhido.name.replace(/\.[^.]+$/, '').slice(0, 200));
+    }
+    try {
+      this.repetidos.set(await this.envio.jaEnviado(escolhido));
+    } catch {
+      /* o aviso de arquivo repetido é só conveniência; o envio segue */
+    }
   }
 
   protected controle(nome: string): FormControl<string> {
@@ -724,6 +978,7 @@ export class Cadastro {
         tamanho: d.arvore ? 500 : TAMANHO_DA_PAGINA,
         ordenarPor: d.ordenarPor,
         situacoes: SITUACOES_DO_FILTRO[this.filtroSituacao.value],
+        filtros: this.valoresDosFiltros(),
       });
       this.linhas.set(resultado.linhas);
       this.total.set(resultado.total);
@@ -738,6 +993,17 @@ export class Cadastro {
   /** O banco guarda o CPF só com dígitos; a pessoa pode digitar com pontos e traço. */
   private normalizar(c: CampoDeCadastro, valor: string): string {
     return c.formato === 'cpf' ? valor.replace(/\D/g, '') : valor.trim();
+  }
+
+  protected campoDoFiltro(nome: string): CampoDeCadastro | undefined {
+    return this.cadastro().campos.find((c) => c.nome === nome && c.referencia);
+  }
+
+  protected mudarFiltro(nome: string, evento: Event): void {
+    const valor = (evento.target as HTMLSelectElement).value;
+    this.valoresDosFiltros.update((v) => ({ ...v, [nome]: valor }));
+    this.pagina.set(1);
+    void this.carregar();
   }
 
   private async carregarReferencias(): Promise<void> {
@@ -815,7 +1081,7 @@ export class Cadastro {
     empurrarEndereco = true,
   ): void {
     const controles: Record<string, FormControl<string>> = {};
-    for (const c of this.cadastro().campos) {
+    for (const c of this.camposDoFormulario()) {
       const validadores = [
         ...(c.obrigatorio ? [Validators.required] : []),
         ...(c.min ? [Validators.minLength(c.min)] : []),
@@ -829,12 +1095,22 @@ export class Cadastro {
     }
     this.formulario = new FormRecord(controles);
     this.motivo.reset('');
+    this.arquivo.set(null);
+    this.erroDoArquivo.set(null);
+    this.repetidos.set([]);
     this.historico.set([]);
+    this.versoes.set([]);
+    this.novaVersaoAberta.set(false);
+    this.avisoDaVersao.set(null);
+    this.arquivoDaVersao.set(null);
+    this.erroDoArquivoDaVersao.set(null);
+    this.motivoDaVersao.reset('');
     this.abrir('formulario', linha);
     const disponiveis = this.abasDaPagina().map((a) => a.id);
     const escolhida: Aba = disponiveis.includes(aba) ? aba : (disponiveis[0] ?? 'dados');
     this.abaAtual.set(escolhida);
     if (escolhida === 'historico' && linha) void this.carregarHistorico(linha);
+    if (escolhida === 'versoes' && linha) void this.carregarVersoes(linha);
     if (empurrarEndereco) this.empurrarEndereco(linha, escolhida);
     setTimeout(() => document.getElementById('titulo-pagina')?.focus());
   }
@@ -843,9 +1119,10 @@ export class Cadastro {
     this.abaAtual.set(aba);
     const alvo = this.alvo();
     if (aba === 'historico' && alvo) void this.carregarHistorico(alvo);
+    if (aba === 'versoes' && alvo) void this.carregarVersoes(alvo);
     this.roteador
       .navigate([], {
-        queryParams: { aba: aba === 'historico' ? 'historico' : null },
+        queryParams: { aba: aba === 'dados' ? null : aba },
         queryParamsHandling: 'merge',
         replaceUrl: true,
       })
@@ -860,7 +1137,7 @@ export class Cadastro {
         queryParams: {
           registro: linha ? this.idDe(linha) : null,
           criar: linha ? null : '1',
-          aba: aba === 'historico' ? 'historico' : null,
+          aba: aba === 'dados' ? null : aba,
         },
         queryParamsHandling: 'merge',
       })
@@ -914,7 +1191,7 @@ export class Cadastro {
         return;
       }
       this.urlEmpurrada = false;
-      this.abrirFormulario(linha, aba === 'historico' ? 'historico' : 'dados', false);
+      this.abrirFormulario(linha, aba === 'historico' || aba === 'versoes' ? aba : 'dados', false);
     } else if (criar) {
       if (this.naPagina() && !this.alvo()) return;
       if (!this.podeIncluir()) return;
@@ -1048,6 +1325,162 @@ export class Cadastro {
     this.abrirFormulario(linha, 'historico');
   }
 
+  private async carregarVersoes(linha: Linha): Promise<void> {
+    this.versoes.set([]);
+    this.imagens.set({});
+    this.estadosDoTexto.set(new Map());
+    this.carregandoVersoes.set(true);
+    try {
+      this.versoes.set(await this.envio.versoes(String(linha['id'])));
+    } catch (e) {
+      this.erroDaJanela.set(mensagemDeErro(e));
+    } finally {
+      this.carregandoVersoes.set(false);
+    }
+    await this.carregarEstadosDoTexto();
+    await this.carregarImagens();
+  }
+
+  protected imagemDaVersao(v: VersaoDeDocumento): boolean {
+    return ehImagem(v.tipo_arquivo);
+  }
+
+  /** Texto alternativo da imagem: o título e a legenda do documento aberto. */
+  protected descricaoDaImagem(): string {
+    const doc = this.alvo();
+    const t = doc?.['titulo'];
+    const l = doc?.['legenda'];
+    const titulo = typeof t === 'string' ? t : '';
+    const legenda = typeof l === 'string' ? l : '';
+    return legenda ? `${titulo}: ${legenda}` : titulo;
+  }
+
+  /** Mostrar a imagem é conveniência: se o endereço não sair, o resto da aba continua valendo. */
+  private async carregarImagens(): Promise<void> {
+    const mostradas: Record<string, string> = {};
+    for (const v of this.versoes().filter((x) => ehImagem(x.tipo_arquivo))) {
+      try {
+        mostradas[v.id] = await this.envio.enderecoParaVer(v);
+      } catch {
+        // sem a prévia, ainda dá para baixar a versão
+      }
+    }
+    this.imagens.set(mostradas);
+  }
+
+  /** A situação da leitura do texto é informação extra: se não carregar, as versões continuam aparecendo. */
+  private async carregarEstadosDoTexto(): Promise<void> {
+    try {
+      this.estadosDoTexto.set(
+        await this.envio.estadosDeProcessamento(this.versoes().map((v) => v.id)),
+      );
+    } catch {
+      this.estadosDoTexto.set(new Map());
+    }
+  }
+
+  protected async atualizarVersoes(): Promise<void> {
+    await this.carregarEstadosDoTexto();
+  }
+
+  protected situacaoDoTexto(versaoId: string): string {
+    const e = this.estadosDoTexto().get(versaoId);
+    switch (e?.estado) {
+      case 'pronto':
+        return `pronta (${e.trechos} ${e.trechos === 1 ? 'trecho' : 'trechos'})`;
+      case 'processando':
+        return 'lendo agora';
+      case 'sem_texto':
+        return 'sem texto legível (arquivo escaneado ou vazio)';
+      case 'falhou':
+        return `falhou${e.erro ? `: ${e.erro}` : ''}`;
+      default:
+        return 'aguardando leitura';
+    }
+  }
+
+  protected podeProcessarDeNovo(versaoId: string): boolean {
+    const estado = this.estadosDoTexto().get(versaoId)?.estado;
+    return this.podeAlterar() && estado !== 'pronto' && estado !== 'processando';
+  }
+
+  protected async processarDeNovo(versao: VersaoDeDocumento): Promise<void> {
+    this.erroDaJanela.set(null);
+    const aceito = await this.envio.processarDeNovo(versao.id);
+    if (!aceito) {
+      this.erroDaJanela.set(
+        'Não foi possível pedir a leitura do texto agora. Tente de novo em instantes.',
+      );
+    }
+    await this.carregarEstadosDoTexto();
+  }
+
+  protected abrirNovaVersao(): void {
+    this.erroDaJanela.set(null);
+    this.arquivoDaVersao.set(null);
+    this.erroDoArquivoDaVersao.set(null);
+    this.motivoDaVersao.reset('');
+    this.avisoDaVersao.set(null);
+    this.novaVersaoAberta.set(true);
+  }
+
+  protected cancelarNovaVersao(): void {
+    this.novaVersaoAberta.set(false);
+    this.erroDoArquivoDaVersao.set(null);
+  }
+
+  protected escolherArquivoDaVersao(evento: Event): void {
+    const escolhido = (evento.target as HTMLInputElement).files?.[0] ?? null;
+    this.arquivoDaVersao.set(escolhido);
+    this.erroDoArquivoDaVersao.set(escolhido ? conferirArquivo(escolhido) : null);
+  }
+
+  protected async enviarNovaVersao(): Promise<void> {
+    const documento = this.alvo();
+    const escolhido = this.arquivoDaVersao();
+    this.motivoDaVersao.markAsTouched();
+    if (!documento || this.trabalhando()) return;
+    const aviso = escolhido ? conferirArquivo(escolhido) : 'Escolha o arquivo da nova versão.';
+    if (!escolhido || aviso) {
+      this.erroDoArquivoDaVersao.set(aviso);
+      return;
+    }
+    if (this.motivoDaVersao.invalid) return;
+    this.trabalhando.set(true);
+    this.erroDaJanela.set(null);
+    try {
+      const numero = await this.envio.novaVersao(
+        String(documento['id']),
+        escolhido,
+        this.motivoDaVersao.value.trim(),
+      );
+      this.novaVersaoAberta.set(false);
+      this.avisoDaVersao.set(`Versão ${numero} enviada e registrada no histórico.`);
+      await this.carregarVersoes(documento);
+    } catch (e) {
+      this.erroDaJanela.set(mensagemDeErro(e));
+    } finally {
+      this.trabalhando.set(false);
+    }
+  }
+
+  /** Baixa uma versão: o banco gera um endereço temporário, só para quem enxerga a versão. */
+  protected async baixar(versao: VersaoDeDocumento): Promise<void> {
+    this.erroDaJanela.set(null);
+    try {
+      const endereco = await this.envio.enderecoDeDownload(versao);
+      const ancora = document.createElement('a');
+      ancora.href = endereco;
+      ancora.rel = 'noopener';
+      ancora.download = versao.nome_original;
+      document.body.appendChild(ancora);
+      ancora.click();
+      ancora.remove();
+    } catch (e) {
+      this.erroDaJanela.set(mensagemDeErro(e));
+    }
+  }
+
   private async carregarHistorico(linha: Linha): Promise<void> {
     this.historico.set([]);
     try {
@@ -1071,7 +1504,7 @@ export class Cadastro {
       if (atual) {
         // Só vai o que mudou. Campo opcional esvaziado vai como vazio (nulo). O motivo é conferido pelo banco.
         const mudou: Record<string, string | null> = {};
-        for (const c of this.cadastro().campos) {
+        for (const c of this.camposDoFormulario()) {
           const antes = this.texto(atual[c.nome]).replace('—', '');
           const depois = this.normalizar(c, valores[c.nome] ?? '');
           if (antes !== depois)
@@ -1089,11 +1522,21 @@ export class Cadastro {
         });
       } else {
         const novos: Record<string, string | null> = {};
-        for (const c of this.cadastro().campos) {
+        for (const c of this.camposDoFormulario()) {
           const v = this.normalizar(c, valores[c.nome] ?? '');
           novos[c.nome] = v === '' && c.obrigatorio !== true ? null : v;
         }
-        await this.consulta.incluir(this.cadastro().tabela, novos);
+        if (this.cadastro().envioDeArquivo) {
+          const escolhido = this.arquivo();
+          const aviso = escolhido ? conferirArquivo(escolhido) : 'Escolha o arquivo do documento.';
+          if (!escolhido || aviso) {
+            this.erroDoArquivo.set(aviso);
+            return;
+          }
+          await this.envio.criar(novos as unknown as DadosDoDocumento, escolhido);
+        } else {
+          await this.consulta.incluir(this.cadastro().tabela, novos);
+        }
       }
       this.voltarParaLista();
       this.aviso.set(atual ? 'Alteração salva e registrada no histórico.' : 'Registro salvo.');

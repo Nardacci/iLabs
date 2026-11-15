@@ -39,6 +39,16 @@ const botao = (raiz: HTMLElement, nome: string | RegExp): HTMLButtonElement =>
   )!;
 
 describe('casca da área logada', () => {
+  it('o botão flutuante de ações rápidas aparece na moldura (todas as telas) para quem pode, e não para quem não pode', async () => {
+    preparar((f) => f === undefined || f === 'kb.documentos');
+    const f = await abrir();
+    expect(el(f).querySelector('il-acoes-rapidas button.fab')).not.toBeNull();
+    TestBed.resetTestingModule();
+    preparar((f2) => f2 === undefined);
+    const g = await abrir();
+    expect(el(g).querySelector('il-acoes-rapidas button.fab')).toBeNull();
+  });
+
   it('o menu mostra só o que o banco permite (mesmo resultado de minhas_permissoes)', async () => {
     preparar((f) => f === undefined || f === 'acesso.usuarios');
     const f = await abrir();

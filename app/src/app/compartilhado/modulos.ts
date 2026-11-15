@@ -9,11 +9,15 @@ export interface ModuloDoSistema {
   pronto: boolean;
   /** Para onde o cartão leva, quando pronto. */
   rota?: string;
+  /** Função do banco que libera a tela. Sem permissão, o cartão não aparece (como no menu). Sem função, aparece para todos. */
+  funcao?: string;
 }
 
 /**
  * Os módulos do iLabPharma, na ordem em que aparecem nos cartões da página inicial.
  * O módulo em que a pessoa está NÃO aparece nos cartões; os outros, sim (decisão do responsável, 06/11/2026).
+ * A Base de conhecimento NÃO tem cartão (decisão do responsável, 14/11/2026): ela será aberta por botões flutuantes
+ * (cadastrar ou buscar), e não por um cartão de módulo.
  */
 export const MODULOS: readonly ModuloDoSistema[] = [
   {

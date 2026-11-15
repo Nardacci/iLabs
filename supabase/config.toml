@@ -6,3 +6,7 @@ verify_jwt = false
 
 [functions.senha-alterada]
 verify_jwt = false
+
+# A "processar-versao" exige a sessão da própria pessoa e confere o token e as permissões dela (como as outras).
+[functions.processar-versao]
+verify_jwt = false
