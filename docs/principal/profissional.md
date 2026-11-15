@@ -65,7 +65,7 @@ Obrigatórios; limites de tamanho; datas (nascimento, emissão); CPF (dígitos, 
 Cada etapa termina com testes, entrada no `DIARIO-DE-BORDO.md` e, só com autorização, aplicação no Supabase.
 
 ## 7. Pendências para o responsável
-1. **CEP: decidido (15/11/2026)** BrasilAPI gratuita, pela função de servidor `buscar-cep` (feita e testada; **falta publicar**, depende da autorização do responsável). A base do banco guarda cada CEP consultado.
+1. **CEP: decidido (15/11/2026)** BrasilAPI gratuita, pela função de servidor `buscar-cep` (feita, testada e **publicada em 15/11/2026**; falta provar ao vivo, pela tela). A base do banco guarda cada CEP consultado.
 2. **Estoque ativo: abandonado (15/11/2026).** A coluna `usa_estoque` fica desligada, sem tela; o grupo é opcional.
 3. **CPF de excluído:** o responsável propôs **reaproveitar o cadastro excluído para edição** (restaurar e editar), já que nada é apagado de verdade. Falta confirmar o desenho (ver o diário de 15/11/2026).
 4. **Lista de sexo e órgão da classe:** confirmar as opções (legado: lista fixa e a mesma tabela de órgãos).

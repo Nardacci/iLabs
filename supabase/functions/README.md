@@ -7,6 +7,9 @@
 | `processar-versao` | Lê o texto de uma versão de documento (Markdown, TXT, DOCX ou PDF com texto), divide em trechos e grava para a busca da base de conhecimento. Exige a sessão de quem pode incluir ou alterar documentos; só processa o que a pessoa consegue ver; nunca devolve nem registra o texto. |
 | `buscar-cep`       | Endereço pelo CEP. Procura na base do banco (`ilab.buscar_cep`); se não achar, pergunta à **BrasilAPI** (gratuita, base dos Correios) e guarda o resultado na base. Exige sessão; **só o CEP (8 dígitos) sai do sistema**; se a API cair, a pessoa digita o endereço.                 |
 
+**Publicadas no Supabase (`LabPharma`):** `login`, `senha-alterada`, `processar-versao` e, desde 15/11/2026,
+`buscar-cep` (versão 1).
+
 A regra de segurança mora no banco (`ilab.registrar_acesso`, `ilab.bloquear_por_tentativas`, `ilab.meu_estado`,
 `ilab.registrar_troca_de_senha`). Estas funções só chamam e repassam.
 
