@@ -1,5 +1,6 @@
 import type { Type } from '@angular/core';
-import type { NomeDaTabela } from '../dados/banco';
+import type { NomeDaFuncao, NomeDaTabela } from '../dados/banco';
+import type { ColunaDeCsv } from '../dados/csv';
 import type { OpcaoDeLista } from '../ui/campo';
 
 export interface CampoDeCadastro {
@@ -25,8 +26,11 @@ export interface CampoDeCadastro {
     /** Só oferece os registros em que a coluna tem este valor (conveniência da tela: o banco confere a gravação). */
     onde?: { coluna: string; valor: string };
   };
-  /** Como mostrar o valor na lista (o banco guarda só os dígitos). */
-  formato?: 'cpf';
+  /**
+   * Como mostrar o valor na lista (o banco guarda só os dígitos). `cpf-mascarado` esconde o começo e o fim
+   * (***.982.247-**): só a lista e a impressão; o cadastro aberto mostra inteiro para quem pode alterar.
+   */
+  formato?: 'cpf' | 'cpf-mascarado';
   /** Aparece só na lista (e como filtro): não entra no formulário nem na alteração. */
   somenteLista?: boolean;
 }
@@ -67,6 +71,17 @@ export interface DescricaoDeCadastro {
    * de uma vez (sem páginas); com busca, mostra só os que combinam, sem recuo.
    */
   arvore?: { pai: string };
+  /**
+   * Exportação da lista em CSV pelo banco (função própria, com permissão "imprimir", dados mínimos e registro na
+   * auditoria). `filtros` liga cada filtro extra da lista (coluna) ao parâmetro da função do banco. A exportação
+   * respeita a busca, a situação e esses filtros, como a lista.
+   */
+  exportacao?: {
+    funcaoDoBanco: NomeDaFuncao;
+    arquivo: string;
+    colunas: readonly ColunaDeCsv[];
+    filtros?: Readonly<Record<string, string>>;
+  };
   /**
    * Cadastro com muitos campos: um componente próprio no lugar do formulário genérico da aba Dados (migalhas, abas,
    * histórico, situação e o aviso de "entrar de novo" continuam sendo do cadastro genérico). Recebe

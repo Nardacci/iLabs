@@ -39,4 +39,5 @@ export const ROTULO_DA_ACAO: Record<string, string> = {
   I: 'Inclusão',
   A: 'Alteração',
   E: 'Exclusão',
+  X: 'Exportação ou impressão',
 };
