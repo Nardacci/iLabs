@@ -56,11 +56,6 @@ import { Icone } from '../compartilhado/ui/icone';
         }
       </div>
     </section>
-    <section class="panel" aria-labelledby="atalhos">
-      <h2 id="atalhos">Por onde começar</h2>
-      <p class="sub">Os itens do menu mostram só o que o seu perfil permite.</p>
-      <p><a routerLink="/seguranca">Minha segurança</a> · senha, duas etapas e sessões.</p>
-    </section>
   `,
 })
 export class Inicio {

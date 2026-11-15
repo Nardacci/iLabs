@@ -96,7 +96,7 @@ const rotuloDe = (nome: string, valor: string | null): string =>
     }
   `,
   template: `
-    <div class="barra"><h1>Buscar na base de conhecimento</h1></div>
+    <div class="barra"><h1>IA Know</h1></div>
     <section class="panel" aria-label="Busca">
       <form [formGroup]="formulario" (ngSubmit)="buscar()" novalidate>
         <div class="barra barra-pesquisa">

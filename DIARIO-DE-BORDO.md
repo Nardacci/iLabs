@@ -2,6 +2,18 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-14 · Claude · Nome da IA: IA Know
+
+- **Decisão do responsável:** a IA se chama **IA Know** (alusão a "I know"). Pendente do responsável: conferir se o nome já é usado por outro produto.
+- **Feito:** a opção do botão flutuante e o título da tela de busca agora dizem **IA Know**. A busca continua a mesma; a IA entra nesse lugar quando existir (Fase 2c). Nada mudou no banco.
+- **Testes:** `npm run verificar` completo.
+
+## 2026-11-14 · Claude · Início sem "Por onde começar" e botão "Base de conhecimento"
+
+- **Pedido do responsável:** tirar o card "Por onde começar" da tela inicial e trocar o texto "Buscar na base de conhecimento" do botão flutuante. A entrada da Base de conhecimento é o ponto de partida da futura IA (nome em avaliação: **IA Know**).
+- **Feito:** card removido (a **Minha segurança** continua no menu do avatar e na pesquisa Ctrl + K); a opção do botão agora é **Base de conhecimento** (continua abrindo a busca). Escrevi "de", como no resto do produto, e não "do". Título da tela Buscar não mudou.
+- **Testes:** `npm run verificar` completo OK.
+
 ## 2026-11-14 · Claude · Importador: documento que cita `urldesenv` entra como Confidencial
 
 - **Decisões do responsável:** (1) os cerca de 20 Markdown que citam `urldesenv` entram como **Confidenciais** ("não vejo problemas"); (2) **sem campo Módulo** no cadastro (o filtro Módulo só vale para o que o importador trouxer); (3) imagens do legado: **ainda vai testar**, nada a fazer por ora.

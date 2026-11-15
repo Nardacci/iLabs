@@ -41,10 +41,7 @@ describe('botão flutuante de ações rápidas', () => {
     const f = abrir(TUDO);
     clicar(f);
     expect(botao(f)?.getAttribute('aria-expanded')).toBe('true');
-    expect(links(f).map((a) => a.textContent?.trim())).toEqual([
-      'Documentos',
-      'Buscar na base de conhecimento',
-    ]);
+    expect(links(f).map((a) => a.textContent?.trim())).toEqual(['Documentos', 'IA Know']);
     expect(links(f).map((a) => a.getAttribute('href'))).toEqual([
       '/base-conhecimento/documentos',
       '/base-conhecimento/buscar',
@@ -96,10 +93,7 @@ describe('botão flutuante de ações rápidas', () => {
   it('quem só consulta documentos vê as duas opções (o cadastro novo é do botão Novo documento, dentro da lista)', () => {
     const f = abrir(SO_CONSULTA);
     clicar(f);
-    expect(links(f).map((a) => a.textContent?.trim())).toEqual([
-      'Documentos',
-      'Buscar na base de conhecimento',
-    ]);
+    expect(links(f).map((a) => a.textContent?.trim())).toEqual(['Documentos', 'IA Know']);
   });
 
   it('o botão fechado usa o ícone de IA (brilhos) e, aberto, o de fechar', () => {
