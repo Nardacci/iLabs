@@ -2,6 +2,14 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-15 · Claude · AI Know no ar (IA ligada) e a IA só responde quando a pergunta começa com "AI Know"
+
+- **Aplicado com autorização do responsável:** migração 23 no Supabase e função `perguntar-kb` publicada (versão 3). A chave `ANTHROPIC_API_KEY` foi cadastrada pelo responsável como segredo (nunca passou pelo chat nem por arquivo).
+- **Primeira chamada real funcionou** (citações [1], [2] com trecho exato e link). Defeito achado no registro de uso: a resposta saía cortada porque o limite de 1500 tokens de saída era gasto em parte "pensando". Limite subiu para 4096 e, se ainda cortar, a resposta traz o aviso "A resposta ficou longa e foi interrompida" (Deno: 75 testes).
+- **Decisão do responsável:** a IA só é chamada quando a pergunta começa com o nome "AI Know" (aceita maiúsculas, "AIKnow", "A.I. Know", vírgula, dois pontos, hífen). Sem o nome é só busca nos documentos (rápida, sem custo). Isso é só roteamento da tela (`lerPedido` em `buscar.ts`); permissão, Confidencial e limites continuam no servidor, em toda chamada. Só o nome, sem pergunta, não faz nada. Texto de ajuda sob o campo explica. App: 269 testes.
+- **Custo observado:** cerca de 15 a 17 mil tokens de entrada por pergunta (8 trechos). Conferir o consumo real no console da Anthropic.
+- **Pendências:** permissão própria da IA (`kb.ia`) e limite diário por pessoa; revisão (2d); medir com as 24 perguntas de avaliação; respostas ainda saem mais longas que as "cerca de 10 linhas" pedidas (ajustar instrução se o responsável quiser).
+
 ## 2026-11-15 · Claude · AI Know: resposta com IA e citações (Fase 2c) construída, sem aplicar nem publicar
 
 - **Pedido do responsável:** implementar a IA, testar e só depois colocar a permissão. Plano Max não cobre a API; a conta e a chave na API da Anthropic são do responsável (explicado a ele).
