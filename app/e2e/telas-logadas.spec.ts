@@ -310,8 +310,12 @@ test.describe('Telas de acesso logadas', () => {
       ),
     ).toBe(true);
     await page.getByLabel('Setor', { exact: true }).selectOption('s-1');
+    await page.getByRole('button', { name: /^Salvar/ }).click();
+    await expect(page.getByRole('heading', { name: 'Confirmar as alterações' })).toBeVisible();
+    await expect(page.getByRole('dialog').getByText('Setor', { exact: true })).toBeVisible(); // o resumo diz o que mudou
+    await conferirAcessibilidade(page, 'confirmação das alterações do profissional');
     await page.getByLabel(/Motivo/).fill('Passa para o controle de qualidade');
-    await page.getByRole('button', { name: 'Salvar' }).click();
+    await page.getByRole('button', { name: 'Confirmar e salvar' }).click();
     await expect(page.getByRole('heading', { name: 'É preciso entrar de novo' })).toBeVisible();
     await conferirAcessibilidade(page, 'aviso de novo login');
     const corpo = chamadas?.find((c) => c.alvo === 'rpc:salvar_profissional')?.corpo as {

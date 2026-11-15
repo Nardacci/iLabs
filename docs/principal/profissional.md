@@ -54,7 +54,7 @@ País, UF, município, logradouro (CEP), órgão emissor (e da classe), operador
 Obrigatórios; limites de tamanho; datas (nascimento, emissão); CPF (dígitos, único); e-mail; órgão da classe obrigatório com identidade profissional; operadora só com DDD e número; endereço do Brasil exige CEP, UF, município e bairro, e do exterior exige código postal e cidade; ocupações e funções sem repetição; grupo obrigatório quando o Estoque está ativo; inativação e exclusão com justificativa; ninguém exclui o próprio cadastro; conta ligada impede a exclusão do profissional (DV-PRI-006); **toda gravação confere permissão** (DV-PRI-025, DV-PRI-023); auditoria por gatilho, **campo a campo, com valor antigo e novo corretos** (DV-PRI-004), **incluindo grupo** (RN-PRI-ADM01-017) e **a exclusão** (DV-PRI-014).
 
 ## 5. Layout novo (não segue o legado)
-Cadastro A (página inteira, rodapé fixo com Cancelar e Salvar) com seções navegáveis em vez de uma coluna longa: **Dados pessoais · Documentos · Contatos · Endereço · Trabalho · Ocupações e funções · Histórico**. Ocupações e funções como lista com busca e botão de adicionar, mostrando quem adicionou e quando. Campos agrupados por afinidade, rótulos claros, acessibilidade WCAG AA, funciona no celular. O front só apresenta e coleta; o aviso rápido vem do mesmo contrato do banco.
+**Ficha** (redesenhada em 15/11/2026): cartão-resumo vivo à esquerda (avatar com iniciais, nome, cargo principal e setor, anel de campos obrigatórios), índice de seções que acompanha a rolagem e mostra o estado de cada uma, e à direita um cartão por seção: **Identificação · Documentos · Contatos · Endereço · Trabalho · Ocupações e funções**, mais a aba **Histórico** do cadastro. O CEP preenche o endereço sozinho ao completar os 8 números; ocupações e funções são etiquetas com busca por digitação, e a estrela marca o cargo principal. Na alteração, **Salvar** abre a confirmação com o resumo do que mudou e o motivo; a barra flutuante tem o atalho **Ctrl+S**. Antes disso, a versão em coluna única (descrita abaixo, ainda válida nas regras). Ocupações e funções como lista com busca e botão de adicionar, mostrando quem adicionou e quando. Campos agrupados por afinidade, rótulos claros, acessibilidade WCAG AA, funciona no celular. O front só apresenta e coleta; o aviso rápido vem do mesmo contrato do banco.
 **Lista (Pesquisa A):** filtros por nome, CPF, grupo, situação e função profissional; CPF mascarado na lista; **a impressão e a exportação respeitam o filtro e a permissão** (N-039; RN-PRI-ADM01-020); mãe, pai, identidade e endereço **não** saem em lista nem exportação.
 
 ## 6. Etapas de construção
@@ -65,8 +65,8 @@ Cadastro A (página inteira, rodapé fixo com Cancelar e Salvar) com seções na
 Cada etapa termina com testes, entrada no `DIARIO-DE-BORDO.md` e, só com autorização, aplicação no Supabase.
 
 ## 7. Pendências para o responsável
-1. **Base de CEP (logradouros):** de onde vem a carga? Municípios e UF já estão completos (IBGE); faltam os logradouros por CEP (e, se quiserem, uma lista de bairros). Hoje a busca por CEP só acha a amostra do RJ.
-2. **Estoque ativo:** como o banco sabe que a empresa usa o Estoque (hoje não há esse parâmetro)? Proposta: parâmetro da empresa.
-3. **CPF de excluído:** pode ser reaproveitado (legado permitia) ou continua único para sempre (proposta)?
+1. **CEP: decidido (15/11/2026)** BrasilAPI gratuita, pela função de servidor `buscar-cep` (feita e testada; **falta publicar**, depende da autorização do responsável). A base do banco guarda cada CEP consultado.
+2. **Estoque ativo: abandonado (15/11/2026).** A coluna `usa_estoque` fica desligada, sem tela; o grupo é opcional.
+3. **CPF de excluído:** o responsável propôs **reaproveitar o cadastro excluído para edição** (restaurar e editar), já que nada é apagado de verdade. Falta confirmar o desenho (ver o diário de 15/11/2026).
 4. **Lista de sexo e órgão da classe:** confirmar as opções (legado: lista fixa e a mesma tabela de órgãos).
 5. **Mãe e pai:** com a reversão, confirmar se a mãe segue obrigatória (como no legado) ou só o pai opcional.

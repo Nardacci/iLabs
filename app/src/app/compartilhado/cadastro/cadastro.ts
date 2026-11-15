@@ -344,6 +344,7 @@ const TAMANHO_DA_PAGINA = 10;
       }
       <section
         class="panel"
+        [class.sem-moldura]="abaAtual() === 'dados' && !!cadastro().formularioProprio"
         id="painel-cadastro"
         role="tabpanel"
         [attr.aria-labelledby]="abasDaPagina().length > 1 ? 'aba-' + abaAtual() : null"
