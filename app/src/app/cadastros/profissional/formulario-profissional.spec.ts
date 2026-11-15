@@ -171,8 +171,12 @@ async function preencherOBasico(x: Fixture): Promise<void> {
 
 describe('ficha do Profissional (cadastro completo)', () => {
   beforeAll(() => {
-    // o jsdom não implementa a rolagem; no navegador ela existe
+    // o jsdom não implementa a rolagem nem o matchMedia (conforme a versão); no navegador eles existem
     Element.prototype.scrollIntoView = vi.fn();
+    Object.defineProperty(window, 'matchMedia', {
+      configurable: true,
+      value: vi.fn(() => ({ matches: false })),
+    });
   });
 
   it('mostra o resumo vivo e as seis seções do legado, com layout novo e obrigatórios marcados', async () => {
