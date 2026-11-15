@@ -277,6 +277,20 @@ Deno.test('resposta sem texto vira erro (não mostra resposta vazia)', async () 
   assertEquals(s.registros.map((x) => x.estado), ['erro']);
 });
 
+Deno.test('resposta interrompida por limite de tamanho avisa que o texto não terminou', async () => {
+  const s = simulacao({
+    resposta: {
+      content: [{ type: 'text', text: 'Texto que parou no meio' }],
+      stop_reason: 'max_tokens',
+      usage: { input_tokens: 5, output_tokens: 4096 },
+    },
+  });
+  const corpo = await (await pedir(s.dep, { pergunta: 'oi' })).json();
+  assertEquals(corpo.estado, 'respondida');
+  assertStringIncludes(corpo.partes.at(-1).texto, 'foi interrompida');
+  assertEquals(s.pedidos[0].max_tokens, 4096);
+});
+
 Deno.test('se o registro falhar, a pessoa ainda recebe a resposta', async () => {
   const s = simulacao({ falhaNoRegistro: true });
   const r = await pedir(s.dep, { pergunta: 'oi' });

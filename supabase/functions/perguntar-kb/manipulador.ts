@@ -13,6 +13,7 @@
 
 import { CABECALHOS_CORS, responderJson } from '../_compartilhado/http.ts';
 import {
+  AVISO_RESPOSTA_CORTADA,
   type FonteCitada,
   lerResposta,
   LIMITE_DE_TRECHOS,
@@ -193,6 +194,11 @@ export function criarManipuladorPerguntar(dep: DependenciasPerguntar): (req: Req
           ok: false,
           mensagem: 'A AI Know não conseguiu responder agora. Tente de novo; a busca continua funcionando.',
         }, 502);
+      }
+      // o modelo parou por limite de tamanho: a pessoa precisa saber que o texto não terminou
+      if (resposta.stop_reason === 'max_tokens') {
+        lida.partes.push({ texto: AVISO_RESPOSTA_CORTADA, fontes: [] });
+        lida.texto += AVISO_RESPOSTA_CORTADA;
       }
       await registrarSemFalhar(dep, {
         ...base,
