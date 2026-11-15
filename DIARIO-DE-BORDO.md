@@ -2,6 +2,14 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-15 · Claude · AI Know em formato de conversa
+
+- **Pedido do responsável:** a tela do AI Know deve parecer o chat do Claude, sem combos; depois vem a IA.
+- **Feito (`app/src/app/base-conhecimento/buscar.ts`):** tela vazia com título e caixa de pergunta; ao enviar (Enter; Shift + Enter pula linha) a pergunta aparece à direita e a resposta embaixo, com os mesmos cartões de antes (trecho marcado, **Ver mais**, trecho anterior/seguinte, **Abrir documento**). As perguntas ficam empilhadas; a caixa fica fixa embaixo. **Sem filtros** de tipo, módulo e fonte (a busca roda sobre tudo o que a pessoa pode ver). `?q=` ainda faz a primeira pergunta. A conversa vive só na tela (não é gravada) e some ao sair.
+- **Correção de passagem:** o "Ver menos" comparava o id com ele mesmo (`id !== id`); agora filtra certo.
+- **Não mexi no banco:** `kb_buscar` continua aceitando tipo, fonte e módulo; a tela só não os usa mais. Quando a IA entrar, a resposta escrita ocupa o lugar do "N documentos encontrados".
+- **Testes:** `npm run verificar` completo OK (21 testes da tela). **Não conferi o visual no navegador**: o responsável testa.
+
 ## 2026-11-15 · Claude · Correção da verificação "Aplicação" que falhou no GitHub depois do PR #39
 
 - **O que aconteceu:** o PR #39 (ficha do Profissional e CEP por API) foi mesclado e a verificação "Aplicação" do GitHub **falhou**: 243 testes passavam, mas um **erro não tratado** (`matchMedia is not a function`, no ambiente de teste do GitHub) derrubava a execução.

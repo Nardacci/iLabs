@@ -2,13 +2,15 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
+  ElementRef,
   inject,
   input,
-  signal,
   untracked,
+  signal,
+  viewChild,
 } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { documentos } from '../cadastros/documentos';
 import {
   BuscaKbService,
@@ -16,12 +18,11 @@ import {
   rotuloDoModulo,
 } from '../compartilhado/dados/busca-kb';
 import { ehImagem } from '../compartilhado/dados/envio-de-documento';
-import { ConsultaService } from '../compartilhado/dados/consulta';
 import { linhasDestacadas, type Parte, partesDestacadas } from '../compartilhado/dados/destaque';
 import { mensagemDeErro } from '../compartilhado/dados/mensagem';
 
 interface ResultadoNaTela extends ResultadoDeBusca {
-  /** Identifica o resultado na lista (o trecho achado ou, se a busca achou só pelo título, o documento). */
+  /** Identifica o resultado na resposta (o trecho achado ou, se a busca achou só pelo título, o documento). */
   chave: string;
   /** O trecho achado; nulo quando o documento foi achado só pelo título, pela legenda ou pela identificação. */
   trechoId: string | null;
@@ -50,21 +51,78 @@ interface Expandido {
   temSeguinte: boolean;
 }
 
+/** Uma pergunta e a resposta dela. A conversa é uma lista destes, da mais antiga para a mais nova. */
+interface Turno {
+  id: number;
+  pergunta: string;
+  estado: 'buscando' | 'pronto' | 'erro';
+  erro: string | null;
+  resultados: ResultadoNaTela[];
+  /** Resultados com "Ver mais" aberto, por id do trecho. */
+  expandidos: Record<string, Expandido>;
+}
+
 const opcoesDe = (nome: string): readonly { valor: string; rotulo: string }[] =>
   documentos.campos.find((c) => c.nome === nome)?.opcoes ?? [];
 const rotuloDe = (nome: string, valor: string | null): string =>
   opcoesDe(nome).find((o) => o.valor === valor)?.rotulo ?? valor ?? '';
 
 /**
- * Busca na base de conhecimento (Fase 2a, sem IA): palavras ou frase entre aspas, com filtro por tipo e por fonte.
- * Mostra no máximo um trecho por documento, com as palavras achadas marcadas. O que a pessoa vê é decidido pelo
- * banco (empresa, função e confidencialidade); aqui só se apresenta.
+ * AI Know, em formato de conversa (decisão do responsável, 15/11/2026): a pessoa escreve, a resposta aparece embaixo,
+ * sem filtros. Por enquanto a resposta é a busca (Fase 2a, sem IA): no máximo um trecho por documento, com as palavras
+ * achadas marcadas. Quando a IA entrar, é nesta mesma tela. O que a pessoa vê é decidido pelo banco (empresa, função e
+ * confidencialidade); aqui só se apresenta. A conversa vive só na tela: não é gravada.
  */
 @Component({
   selector: 'il-buscar-kb',
   imports: [ReactiveFormsModule, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
+    :host {
+      display: block;
+      max-width: 860px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    .vazio {
+      text-align: center;
+      padding: 12vh 8px 24px;
+    }
+    .vazio h1 {
+      font-size: 2rem;
+      margin: 0 0 8px;
+    }
+    .vazio p {
+      color: var(--muted);
+      margin: 6px auto;
+      max-width: 560px;
+    }
+    .fio {
+      display: grid;
+      gap: 22px;
+    }
+    .turno {
+      display: grid;
+      gap: 12px;
+      scroll-margin-top: 72px;
+    }
+    .pergunta {
+      justify-self: end;
+      max-width: 80%;
+      background: var(--accent-soft);
+      color: var(--ink);
+      padding: 10px 14px;
+      border-radius: 16px 16px 4px 16px;
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
+    }
+    .resposta {
+      display: grid;
+      gap: 10px;
+    }
+    .resposta > p {
+      margin: 0;
+    }
     .trecho {
       margin: 6px 0 10px;
       line-height: 1.5;
@@ -77,14 +135,14 @@ const rotuloDe = (nome: string, valor: string | null): string =>
       font-weight: 600;
     }
     .resultado {
-      margin-bottom: 10px;
+      margin: 0;
     }
     .resultado h2 {
       font-size: 1.05rem;
       margin: 0 0 2px;
     }
     .bloco {
-      border-left: 3px solid var(--border, #ccc);
+      border-left: 3px solid var(--line, #ccc);
       padding-left: 10px;
       margin: 8px 0;
     }
@@ -94,306 +152,346 @@ const rotuloDe = (nome: string, valor: string | null): string =>
     .bloco .trecho {
       margin: 4px 0;
     }
+    .compositor {
+      position: sticky;
+      bottom: 0;
+      margin-top: 22px;
+      padding: 12px 0 4px;
+      background: linear-gradient(to bottom, transparent, var(--bg) 18px);
+    }
+    .caixa {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--muted);
+      border-radius: 24px;
+      padding: 8px 8px 8px 18px;
+    }
+    .caixa:focus-within {
+      outline: 2px solid var(--focus);
+      outline-offset: 2px;
+    }
+    .caixa textarea {
+      flex: 1;
+      border: 0;
+      outline: 0;
+      resize: none;
+      background: transparent;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.5;
+      padding: 6px 0;
+      min-height: 1.5em;
+      max-height: 9em;
+      field-sizing: content;
+    }
+    .enviar {
+      flex: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 0;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      background: var(--accent);
+      color: var(--accent-ink);
+    }
+    .enviar:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+    .sr {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+    .nota {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin: 6px 0 0;
+    }
   `,
   template: `
-    <div class="barra"><h1>AI Know</h1></div>
-    <section class="panel" aria-label="Busca">
-      <form [formGroup]="formulario" (ngSubmit)="buscar()" novalidate>
-        <div class="barra barra-pesquisa">
-          <div class="field campo-busca">
-            <label for="busca-kb">O que você procura?</label>
-            <input
-              class="input"
-              id="busca-kb"
-              type="search"
-              formControlName="consulta"
-              autocomplete="off"
-              aria-describedby="dica-busca-kb"
-            />
-          </div>
-          <div class="field campo-situacao">
-            <label for="filtro-tipo-kb">Tipo</label>
-            <select class="input" id="filtro-tipo-kb" formControlName="tipo">
-              <option value="">Todos</option>
-              @for (o of tipos; track o.valor) {
-                <option [value]="o.valor">{{ o.rotulo }}</option>
-              }
-            </select>
-          </div>
-          <div class="field campo-situacao">
-            <label for="filtro-modulo-kb">Módulo</label>
-            <select class="input" id="filtro-modulo-kb" formControlName="modulo">
-              <option value="">Todos</option>
-              @for (m of modulos(); track m.valor) {
-                <option [value]="m.valor">{{ m.rotulo }}</option>
-              }
-            </select>
-          </div>
-          <div class="field campo-situacao">
-            <label for="filtro-fonte-kb">Fonte</label>
-            <select class="input" id="filtro-fonte-kb" formControlName="fonte">
-              <option value="">Todas</option>
-              @for (f of fontes(); track f.valor) {
-                <option [value]="f.valor">{{ f.rotulo }}</option>
-              }
-            </select>
-          </div>
-          <button type="submit" class="btn primary" [disabled]="buscando()">Buscar</button>
-        </div>
-        <span class="hint" id="dica-busca-kb"
-          >Digite palavras ou uma frase entre aspas. Acentos e maiúsculas não importam. Acha pelo
-          texto, pelo título e pela legenda (imagens são achadas pelo título e pela legenda).</span
-        >
-      </form>
-
-      @if (erro(); as texto) {
-        <p class="msg bad" role="alert">{{ texto }}</p>
-      }
-      @if (buscando()) {
-        <p role="status">Buscando…</p>
-      } @else if (ultima() !== null) {
-        @if (resultados().length === 0) {
-          <p role="status">
-            Nada encontrado para “{{ ultima() }}”. Tente outras palavras, menos palavras ou tire os
-            filtros.
-          </p>
-        } @else {
-          <p class="sub" role="status">
-            {{ resultados().length }}
-            {{ resultados().length === 1 ? 'documento encontrado' : 'documentos encontrados' }}.
-          </p>
-          @for (r of resultados(); track r.chave) {
-            <article class="panel resultado">
-              <h2>
-                {{ r.titulo }}
-                @if (r.imagem) {
-                  <span class="pill">Imagem</span>
-                }
-              </h2>
-              <p class="sub">
-                {{ r.rotuloDoTipo }} · {{ r.rotuloDaOrigem }}
-                @if (r.rotuloDoModulo) {
-                  · {{ r.rotuloDoModulo }}
-                }
-                @if (r.fonte_nome) {
-                  · {{ r.fonte_nome }}
-                }
-                · versão {{ r.versao_numero }}
-                @if (r.secao) {
-                  · {{ r.secao }}
-                }
-                @if (r.pagina) {
-                  · página {{ r.pagina }}
-                }
-              </p>
-              @if (aberto(r); as e) {
-                <div class="texto-aberto" [id]="'texto-' + r.chave">
-                  @if (e.temAnterior) {
-                    <button
-                      type="button"
-                      class="btn"
-                      [disabled]="e.carregando"
-                      (click)="vizinho(r, 'anterior')"
-                    >
-                      Mostrar o trecho anterior
-                    </button>
-                  }
-                  @for (b of e.blocos; track b.id) {
-                    <div class="bloco" [class.atual]="b.atual">
-                      @for (linha of b.linhas; track $index) {
-                        <p class="trecho">
-                          @for (p of linha; track $index) {
-                            @if (p.marca) {
-                              <mark [textContent]="p.texto"></mark>
-                            } @else {
-                              <span [textContent]="p.texto"></span>
-                            }
-                          }
-                        </p>
-                      }
-                    </div>
-                  }
-                  @if (e.temSeguinte) {
-                    <button
-                      type="button"
-                      class="btn"
-                      [disabled]="e.carregando"
-                      (click)="vizinho(r, 'seguinte')"
-                    >
-                      Mostrar o trecho seguinte
-                    </button>
-                  }
-                  @if (e.blocos.length > 1) {
-                    <p class="sub">
-                      Os trechos se sobrepõem um pouco: as últimas palavras de um se repetem no
-                      começo do seguinte.
-                    </p>
-                  }
-                  @if (e.erro) {
-                    <p class="msg bad" role="alert">{{ e.erro }}</p>
-                  }
-                </div>
-              } @else if (r.partes.length > 0) {
-                <p class="trecho">
-                  @for (p of r.partes; track $index) {
-                    @if (p.marca) {
-                      <mark [textContent]="p.texto"></mark>
-                    } @else {
-                      <span [textContent]="p.texto"></span>
-                    }
-                  }
+    @if (turnos().length === 0) {
+      <section class="vazio" aria-labelledby="ai-know-titulo">
+        <h1 id="ai-know-titulo">AI Know</h1>
+        <p>Escreva o que você procura nos documentos da base de conhecimento.</p>
+        <p>
+          Por enquanto a AI Know mostra os trechos encontrados, com a fonte. As respostas escritas
+          virão na próxima etapa.
+        </p>
+      </section>
+    } @else {
+      <h1 class="sr">AI Know</h1>
+      <div class="fio" role="log" aria-label="Conversa" aria-live="polite">
+        @for (t of turnos(); track t.id) {
+          <div class="turno" [id]="'turno-' + t.id">
+            <p class="pergunta"><span class="sr">Você: </span>{{ t.pergunta }}</p>
+            <div class="resposta">
+              @if (t.estado === 'buscando') {
+                <p role="status">Buscando…</p>
+              } @else if (t.estado === 'erro') {
+                <p class="msg bad" role="alert">{{ t.erro }}</p>
+              } @else if (t.resultados.length === 0) {
+                <p>
+                  Nada encontrado para “{{ t.pergunta }}”. Tente outras palavras ou menos palavras.
                 </p>
               } @else {
-                <p class="trecho sub">Achado pelo título do documento.</p>
-              }
-              @if (r.caminho) {
-                <p class="sub">Arquivo: {{ r.caminho }}</p>
-              }
-              @if ((r.repetido_em ?? 0) > 0) {
                 <p class="sub">
-                  O mesmo conteúdo existe em mais {{ r.repetido_em }}
-                  {{ r.repetido_em === 1 ? 'arquivo' : 'arquivos' }} (aparece só este).
+                  {{ t.resultados.length }}
+                  {{
+                    t.resultados.length === 1 ? 'documento encontrado' : 'documentos encontrados'
+                  }}.
                 </p>
+                @for (r of t.resultados; track r.chave) {
+                  <article class="panel resultado">
+                    <h2>
+                      {{ r.titulo }}
+                      @if (r.imagem) {
+                        <span class="pill">Imagem</span>
+                      }
+                    </h2>
+                    <p class="sub">
+                      {{ r.rotuloDoTipo }} · {{ r.rotuloDaOrigem }}
+                      @if (r.rotuloDoModulo) {
+                        · {{ r.rotuloDoModulo }}
+                      }
+                      @if (r.fonte_nome) {
+                        · {{ r.fonte_nome }}
+                      }
+                      · versão {{ r.versao_numero }}
+                      @if (r.secao) {
+                        · {{ r.secao }}
+                      }
+                      @if (r.pagina) {
+                        · página {{ r.pagina }}
+                      }
+                    </p>
+                    @if (aberto(t, r); as e) {
+                      <div class="texto-aberto" [id]="'texto-' + t.id + '-' + r.chave">
+                        @if (e.temAnterior) {
+                          <button
+                            type="button"
+                            class="btn"
+                            [disabled]="e.carregando"
+                            (click)="vizinho(t, r, 'anterior')"
+                          >
+                            Mostrar o trecho anterior
+                          </button>
+                        }
+                        @for (b of e.blocos; track b.id) {
+                          <div class="bloco" [class.atual]="b.atual">
+                            @for (linha of b.linhas; track $index) {
+                              <p class="trecho">
+                                @for (p of linha; track $index) {
+                                  @if (p.marca) {
+                                    <mark [textContent]="p.texto"></mark>
+                                  } @else {
+                                    <span [textContent]="p.texto"></span>
+                                  }
+                                }
+                              </p>
+                            }
+                          </div>
+                        }
+                        @if (e.temSeguinte) {
+                          <button
+                            type="button"
+                            class="btn"
+                            [disabled]="e.carregando"
+                            (click)="vizinho(t, r, 'seguinte')"
+                          >
+                            Mostrar o trecho seguinte
+                          </button>
+                        }
+                        @if (e.blocos.length > 1) {
+                          <p class="sub">
+                            Os trechos se sobrepõem um pouco: as últimas palavras de um se repetem
+                            no começo do seguinte.
+                          </p>
+                        }
+                        @if (e.erro) {
+                          <p class="msg bad" role="alert">{{ e.erro }}</p>
+                        }
+                      </div>
+                    } @else if (r.partes.length > 0) {
+                      <p class="trecho">
+                        @for (p of r.partes; track $index) {
+                          @if (p.marca) {
+                            <mark [textContent]="p.texto"></mark>
+                          } @else {
+                            <span [textContent]="p.texto"></span>
+                          }
+                        }
+                      </p>
+                    } @else {
+                      <p class="trecho sub">Achado pelo título do documento.</p>
+                    }
+                    @if (r.caminho) {
+                      <p class="sub">Arquivo: {{ r.caminho }}</p>
+                    }
+                    @if ((r.repetido_em ?? 0) > 0) {
+                      <p class="sub">
+                        O mesmo conteúdo existe em mais {{ r.repetido_em }}
+                        {{ r.repetido_em === 1 ? 'arquivo' : 'arquivos' }} (aparece só este).
+                      </p>
+                    }
+                    @if (r.trechoId) {
+                      <button
+                        type="button"
+                        class="btn"
+                        [attr.aria-expanded]="aberto(t, r) ? 'true' : 'false'"
+                        [attr.aria-controls]="'texto-' + t.id + '-' + r.chave"
+                        [attr.aria-label]="
+                          (aberto(t, r) ? 'Ver menos de ' : 'Ver mais de ') + r.titulo
+                        "
+                        (click)="alternar(t, r)"
+                      >
+                        {{ aberto(t, r) ? 'Ver menos' : 'Ver mais' }}
+                      </button>
+                    }
+                    <a
+                      class="btn"
+                      [routerLink]="['/base-conhecimento/documentos']"
+                      [queryParams]="{ registro: r.documento_id, aba: 'versoes' }"
+                      [attr.aria-label]="'Abrir o documento ' + r.titulo"
+                      >Abrir documento</a
+                    >
+                  </article>
+                }
               }
-              @if (r.trechoId) {
-                <button
-                  type="button"
-                  class="btn"
-                  [attr.aria-expanded]="aberto(r) ? 'true' : 'false'"
-                  [attr.aria-controls]="'texto-' + r.chave"
-                  [attr.aria-label]="(aberto(r) ? 'Ver menos de ' : 'Ver mais de ') + r.titulo"
-                  (click)="alternar(r)"
-                >
-                  {{ aberto(r) ? 'Ver menos' : 'Ver mais' }}
-                </button>
-              }
-              <a
-                class="btn"
-                [routerLink]="['/base-conhecimento/documentos']"
-                [queryParams]="{ registro: r.documento_id, aba: 'versoes' }"
-                [attr.aria-label]="'Abrir o documento ' + r.titulo"
-                >Abrir documento</a
-              >
-            </article>
-          }
+            </div>
+          </div>
         }
-      }
-    </section>
+      </div>
+    }
+
+    <form class="compositor" (submit)="enviar($event)" novalidate>
+      <div class="caixa">
+        <label class="sr" for="pergunta-kb">Sua pergunta</label>
+        <textarea
+          #campo
+          id="pergunta-kb"
+          rows="1"
+          [formControl]="pergunta"
+          placeholder="Escreva o que você procura…"
+          autocomplete="off"
+          aria-describedby="dica-pergunta-kb"
+          (keydown)="aoTeclar($event)"
+        ></textarea>
+        <button type="submit" class="enviar" aria-label="Enviar" [disabled]="ocupado()">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+            <path
+              d="M12 19V5M5 12l7-7 7 7"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.4"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
+      <p class="nota" id="dica-pergunta-kb">
+        Enter envia; Shift + Enter pula linha. Use aspas para achar uma frase exata. Acentos e
+        maiúsculas não importam.
+      </p>
+    </form>
   `,
 })
 export class BuscarKb {
-  /** Do endereço (?q=…): quem recebe o link já vê a busca feita. */
+  /** Do endereço (?q=…): quem recebe o link já vê a pergunta feita. */
   readonly q = input<string>();
 
   private readonly busca = inject(BuscaKbService);
-  private readonly consulta = inject(ConsultaService);
-  private readonly roteador = inject(Router);
+  private readonly campo = viewChild<ElementRef<HTMLTextAreaElement>>('campo');
+  private readonly anfitriao = inject<ElementRef<HTMLElement>>(ElementRef);
+  private proximoId = 1;
+  private ultimaDoEndereco: string | null = null;
 
-  protected readonly tipos = opcoesDe('tipo');
-  protected readonly fontes = signal<{ valor: string; rotulo: string }[]>([]);
-  protected readonly modulos = signal<{ valor: string; rotulo: string }[]>([]);
-  protected readonly resultados = signal<ResultadoNaTela[]>([]);
-  protected readonly buscando = signal(false);
-  protected readonly erro = signal<string | null>(null);
-  /** O texto da última busca feita (nulo = ainda não buscou). */
-  protected readonly ultima = signal<string | null>(null);
-  /** Resultados com "Ver mais" aberto, por id do trecho. */
-  protected readonly expandidos = signal<Record<string, Expandido>>({});
-
-  protected readonly formulario = new FormGroup({
-    consulta: new FormControl('', { nonNullable: true }),
-    tipo: new FormControl('', { nonNullable: true }),
-    modulo: new FormControl('', { nonNullable: true }),
-    fonte: new FormControl('', { nonNullable: true }),
-  });
+  protected readonly turnos = signal<Turno[]>([]);
+  protected readonly ocupado = signal(false);
+  protected readonly pergunta = new FormControl('', { nonNullable: true });
 
   constructor() {
-    void this.carregarFontes();
-    void this.carregarModulos();
     effect(() => {
       const q = this.q();
       untracked(() => {
-        if (q && q !== this.ultima()) {
-          this.formulario.controls.consulta.setValue(q);
-          void this.buscar(false);
+        if (q && q !== this.ultimaDoEndereco) {
+          this.ultimaDoEndereco = q;
+          void this.perguntar(q);
         }
       });
     });
   }
 
-  private async carregarModulos(): Promise<void> {
-    try {
-      const lista = await this.busca.modulos();
-      this.modulos.set(
-        lista.flatMap((m) =>
-          m.modulo
-            ? [{ valor: m.modulo, rotulo: `${rotuloDoModulo(m.modulo)} (${m.total ?? 0})` }]
-            : [],
-        ),
-      );
-    } catch {
-      this.modulos.set([]); // sem os módulos o filtro fica só com "Todos"; a busca continua valendo
+  protected aoTeclar(ev: KeyboardEvent): void {
+    if (ev.key === 'Enter' && !ev.shiftKey && !ev.isComposing) {
+      ev.preventDefault();
+      void this.perguntar(this.pergunta.value);
     }
   }
 
-  private async carregarFontes(): Promise<void> {
-    try {
-      const r = await this.consulta.listar({
-        tabela: 'kb_fontes',
-        colunasDeBusca: [],
-        busca: '',
-        pagina: 1,
-        tamanho: 100,
-        ordenarPor: 'nome',
-        situacoes: ['ativo'],
-      });
-      this.fontes.set(r.linhas.map((f) => ({ valor: f.id, rotulo: f.nome })));
-    } catch {
-      this.fontes.set([]); // sem as fontes o filtro fica só com "Todas"; a busca continua valendo
-    }
+  protected enviar(ev: Event): void {
+    ev.preventDefault();
+    void this.perguntar(this.pergunta.value);
   }
 
-  protected aberto(r: ResultadoNaTela): Expandido | undefined {
-    return r.trechoId ? this.expandidos()[r.trechoId] : undefined;
+  protected aberto(t: Turno, r: ResultadoNaTela): Expandido | undefined {
+    return r.trechoId ? t.expandidos[r.trechoId] : undefined;
   }
 
-  private atualizar(id: string, mudar: (e: Expandido) => Expandido): void {
-    this.expandidos.update((todos) => {
-      const e = todos[id];
-      return e ? { ...todos, [id]: mudar(e) } : todos;
+  private mudarTurno(id: number, mudar: (t: Turno) => Turno): void {
+    this.turnos.update((todos) => todos.map((t) => (t.id === id ? mudar(t) : t)));
+  }
+
+  private atualizar(turnoId: number, trechoId: string, mudar: (e: Expandido) => Expandido): void {
+    this.mudarTurno(turnoId, (t) => {
+      const e = t.expandidos[trechoId];
+      return e ? { ...t, expandidos: { ...t.expandidos, [trechoId]: mudar(e) } } : t;
     });
   }
 
   /** "Ver mais" / "Ver menos": mostra o trecho inteiro, com as palavras marcadas, e deixa pedir os vizinhos. */
-  protected async alternar(r: ResultadoNaTela): Promise<void> {
+  protected async alternar(t: Turno, r: ResultadoNaTela): Promise<void> {
     const id = r.trechoId;
     if (!id) return;
-    if (this.aberto(r)) {
-      this.expandidos.update((todos) =>
-        Object.fromEntries(Object.entries(todos).filter(([id]) => id !== id)),
-      );
+    if (this.aberto(t, r)) {
+      this.mudarTurno(t.id, (x) => ({
+        ...x,
+        expandidos: Object.fromEntries(Object.entries(x.expandidos).filter(([k]) => k !== id)),
+      }));
       return;
     }
-    const consulta = this.ultima() ?? '';
+    const consulta = t.pergunta;
     const bloco: BlocoLido = {
-      id: id,
+      id,
       ordem: null,
       linhas: linhasDestacadas(r.trecho ?? '', consulta),
       atual: true,
     };
-    this.expandidos.update((todos) => ({
-      ...todos,
-      [id]: {
-        blocos: [bloco],
-        carregando: true,
-        erro: null,
-        temAnterior: false,
-        temSeguinte: false,
+    this.mudarTurno(t.id, (x) => ({
+      ...x,
+      expandidos: {
+        ...x.expandidos,
+        [id]: {
+          blocos: [bloco],
+          carregando: true,
+          erro: null,
+          temAnterior: false,
+          temSeguinte: false,
+        },
       },
     }));
     try {
       const lido = await this.busca.trecho(id);
-      this.atualizar(id, (e) => ({
+      this.atualizar(t.id, id, (e) => ({
         ...e,
         carregando: false,
         blocos: lido
@@ -407,23 +505,26 @@ export class BuscarKb {
         temSeguinte: !!lido,
       }));
     } catch (erro) {
-      this.atualizar(id, (e) => ({ ...e, carregando: false, erro: mensagemDeErro(erro) }));
+      this.atualizar(t.id, id, (e) => ({ ...e, carregando: false, erro: mensagemDeErro(erro) }));
     }
   }
 
   /** Mostra o trecho de antes ou de depois do que já está na tela. */
-  protected async vizinho(r: ResultadoNaTela, sentido: 'anterior' | 'seguinte'): Promise<void> {
+  protected async vizinho(
+    t: Turno,
+    r: ResultadoNaTela,
+    sentido: 'anterior' | 'seguinte',
+  ): Promise<void> {
     const id = r.trechoId;
     if (!id) return;
-    const atual = this.aberto(r);
+    const atual = this.turnoAtual(t.id)?.expandidos[id];
     if (!atual || atual.carregando) return;
     const ponta = sentido === 'anterior' ? atual.blocos[0] : atual.blocos[atual.blocos.length - 1];
     if (ponta?.ordem == null) return;
-    this.atualizar(id, (e) => ({ ...e, carregando: true, erro: null }));
+    this.atualizar(t.id, id, (e) => ({ ...e, carregando: true, erro: null }));
     try {
       const lido = await this.busca.vizinho(r.versaoId, ponta.ordem, sentido);
-      const consulta = this.ultima() ?? '';
-      this.atualizar(id, (e) => {
+      this.atualizar(t.id, id, (e) => {
         if (!lido) {
           return sentido === 'anterior'
             ? { ...e, carregando: false, temAnterior: false }
@@ -432,7 +533,7 @@ export class BuscarKb {
         const novo: BlocoLido = {
           id: lido.id,
           ordem: lido.ordem,
-          linhas: linhasDestacadas(lido.texto, consulta),
+          linhas: linhasDestacadas(lido.texto, t.pergunta),
           atual: false,
         };
         return sentido === 'anterior'
@@ -440,32 +541,41 @@ export class BuscarKb {
           : { ...e, carregando: false, blocos: [...e.blocos, novo] };
       });
     } catch (erro) {
-      this.atualizar(id, (e) => ({ ...e, carregando: false, erro: mensagemDeErro(erro) }));
+      this.atualizar(t.id, id, (e) => ({ ...e, carregando: false, erro: mensagemDeErro(erro) }));
     }
   }
 
-  protected async buscar(atualizarEndereco = true): Promise<void> {
-    const { consulta, tipo, modulo, fonte } = this.formulario.getRawValue();
-    const texto = consulta.trim();
-    if (!texto || this.buscando()) return;
-    this.buscando.set(true);
-    this.erro.set(null);
-    this.ultima.set(texto);
-    if (atualizarEndereco) {
-      this.roteador
-        .navigate([], { queryParams: { q: texto }, replaceUrl: true })
-        .catch(() => false);
-    }
+  private turnoAtual(id: number): Turno | undefined {
+    return this.turnos().find((t) => t.id === id);
+  }
+
+  /** Vai para o começo da pergunta feita, para a leitura da resposta começar do alto. */
+  private mostrar(turnoId: number): void {
+    setTimeout(() => {
+      const turno = this.anfitriao.nativeElement.querySelector(`#turno-${turnoId}`);
+      // o ambiente de testes (jsdom) não tem scrollIntoView
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      turno?.scrollIntoView?.({ block: 'start' });
+    });
+  }
+
+  protected async perguntar(bruto: string): Promise<void> {
+    const texto = bruto.trim();
+    if (!texto || this.ocupado()) return;
+    this.ocupado.set(true);
+    this.pergunta.setValue('');
+    const id = this.proximoId++;
+    this.turnos.update((todos) => [
+      ...todos,
+      { id, pergunta: texto, estado: 'buscando', erro: null, resultados: [], expandidos: {} },
+    ]);
+    this.mostrar(id);
     try {
-      const achados = await this.busca.buscar(texto, {
-        tipos: tipo ? [tipo] : [],
-        fonteId: fonte || undefined,
-        modulo: modulo || undefined,
-        limite: 30,
-      });
-      this.expandidos.set({});
-      this.resultados.set(
-        achados.flatMap((r) =>
+      const achados = await this.busca.buscar(texto, { limite: 30 });
+      this.mudarTurno(id, (t) => ({
+        ...t,
+        estado: 'pronto',
+        resultados: achados.flatMap((r) =>
           r.versao_id && r.documento_id
             ? [
                 {
@@ -483,12 +593,13 @@ export class BuscarKb {
               ]
             : [],
         ),
-      );
+      }));
     } catch (e) {
-      this.resultados.set([]);
-      this.erro.set(mensagemDeErro(e));
+      this.mudarTurno(id, (t) => ({ ...t, estado: 'erro', erro: mensagemDeErro(e) }));
     } finally {
-      this.buscando.set(false);
+      this.ocupado.set(false);
+      this.mostrar(id);
+      this.campo()?.nativeElement.focus();
     }
   }
 }

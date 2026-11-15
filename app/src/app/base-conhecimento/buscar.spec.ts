@@ -1,8 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { provideRouter, Router } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { comBancoFalso, violacoesDeAcessibilidade } from '../../testing/apoio';
 import { BuscaKbService } from '../compartilhado/dados/busca-kb';
-import { ConsultaService } from '../compartilhado/dados/consulta';
 import { ErroDoBanco } from '../compartilhado/dados/banco';
 import { BuscarKb } from './buscar';
 
@@ -30,9 +29,6 @@ function preparar(achados: unknown[] = [RESULTADO]) {
   comBancoFalso();
   TestBed.configureTestingModule({ providers: [provideRouter([])] });
   const buscar = vi.fn<(...args: unknown[]) => Promise<unknown[]>>(() => Promise.resolve(achados));
-  const listar = vi.fn<(...args: unknown[]) => Promise<unknown>>(() =>
-    Promise.resolve({ linhas: [{ id: 'f1', nome: 'Repositório do legado' }], total: 1 }),
-  );
   const trecho = vi.fn<(...args: unknown[]) => Promise<unknown>>(() =>
     Promise.resolve({
       id: 't1',
@@ -60,16 +56,8 @@ function preparar(achados: unknown[] = [RESULTADO]) {
         : null,
     );
   });
-  const modulos = vi.fn<(...args: unknown[]) => Promise<unknown>>(() =>
-    Promise.resolve([
-      { modulo: '1.principal', total: 12 },
-      { modulo: '3.estoque', total: 7 },
-      { modulo: 'Documentação', total: 3 },
-    ]),
-  );
-  TestBed.overrideProvider(BuscaKbService, { useValue: { buscar, trecho, vizinho, modulos } });
-  TestBed.overrideProvider(ConsultaService, { useValue: { listar } });
-  return { buscar, listar, trecho, vizinho, modulos };
+  TestBed.overrideProvider(BuscaKbService, { useValue: { buscar, trecho, vizinho } });
+  return { buscar, trecho, vizinho };
 }
 
 async function abrir(q?: string) {
@@ -82,21 +70,24 @@ async function abrir(q?: string) {
 }
 type Fixture = Awaited<ReturnType<typeof abrir>>;
 const raiz = (f: Fixture): HTMLElement => f.nativeElement as HTMLElement;
-const campo = (f: Fixture, id: string): HTMLInputElement | HTMLSelectElement => {
-  const el = raiz(f).querySelector<HTMLInputElement>(`#${id}`);
-  if (!el) throw new Error(`campo ${id} não encontrado`);
+const campo = (f: Fixture): HTMLTextAreaElement => {
+  const el = raiz(f).querySelector<HTMLTextAreaElement>('#pergunta-kb');
+  if (!el) throw new Error('caixa de pergunta não encontrada');
   return el;
 };
+async function esperar(f: Fixture): Promise<void> {
+  await f.whenStable();
+  await new Promise((r) => setTimeout(r, 0));
+  f.detectChanges();
+}
 async function buscarPor(f: Fixture, texto: string): Promise<void> {
-  const el = campo(f, 'busca-kb');
+  const el = campo(f);
   el.value = texto;
   el.dispatchEvent(new Event('input', { bubbles: true }));
   raiz(f)
     .querySelector('form')
     ?.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
-  await f.whenStable();
-  await new Promise((r) => setTimeout(r, 0));
-  f.detectChanges();
+  await esperar(f);
 }
 
 const botao = (f: Fixture, texto: string): HTMLButtonElement | undefined =>
@@ -110,31 +101,13 @@ const clicar = async (f: Fixture, texto: string): Promise<void> => {
 const textoDe = (f: Fixture): string => raiz(f).textContent?.replace(/\s+/g, ' ') ?? '';
 
 describe('tela AI Know (busca na base de conhecimento)', () => {
-  it('mostra o campo de busca, o filtro de tipo com todos os tipos e o de fonte com as fontes da empresa', async () => {
+  it('abre como uma conversa vazia: só a caixa de pergunta, sem filtros nem combos', async () => {
     preparar();
     const f = await abrir();
     expect(raiz(f).querySelector('h1')?.textContent).toContain('AI Know');
-    const tipos = [...(campo(f, 'filtro-tipo-kb') as HTMLSelectElement).options].map(
-      (o) => o.value,
-    );
-    expect(tipos).toEqual([
-      '',
-      'norma',
-      'regra_negocio',
-      'especificacao',
-      'fluxo',
-      'guia',
-      'defeito',
-      'outro',
-    ]);
-    const fontes = [...(campo(f, 'filtro-fonte-kb') as HTMLSelectElement).options].map((o) => [
-      o.value,
-      o.textContent?.trim(),
-    ]);
-    expect(fontes).toEqual([
-      ['', 'Todas'],
-      ['f1', 'Repositório do legado'],
-    ]);
+    expect(campo(f).tagName).toBe('TEXTAREA');
+    expect(raiz(f).querySelectorAll('select')).toHaveLength(0);
+    expect(raiz(f).querySelector('[role="log"]')).toBeNull();
   });
 
   it('busca em branco não chama nada', async () => {
@@ -148,11 +121,7 @@ describe('tela AI Know (busca na base de conhecimento)', () => {
     const { buscar } = preparar();
     const f = await abrir();
     await buscarPor(f, 'conferencia lote');
-    expect(buscar).toHaveBeenCalledWith('conferencia lote', {
-      tipos: [],
-      fonteId: undefined,
-      limite: 30,
-    });
+    expect(buscar).toHaveBeenCalledWith('conferencia lote', { limite: 30 });
     const texto = raiz(f).textContent?.replace(/\s+/g, ' ') ?? '';
     expect(texto).toContain('1 documento encontrado.');
     expect(texto).toContain('Recebimento de Material');
@@ -179,17 +148,44 @@ describe('tela AI Know (busca na base de conhecimento)', () => {
     expect(link?.getAttribute('aria-label')).toBe('Abrir o documento Recebimento de Material');
   });
 
-  it('os filtros de tipo e de fonte vão para a busca', async () => {
+  it('a pergunta aparece na conversa, a caixa esvazia e a resposta vem embaixo', async () => {
+    preparar();
+    const f = await abrir();
+    await buscarPor(f, 'conferencia lote');
+    expect(campo(f).value).toBe('');
+    const turnos = raiz(f).querySelectorAll('.turno');
+    expect(turnos).toHaveLength(1);
+    expect(turnos[0]?.querySelector('.pergunta')?.textContent?.replace(/s+/g, ' ')).toContain(
+      'conferencia lote',
+    );
+    expect(turnos[0]?.querySelector('article')).not.toBeNull();
+  });
+
+  it('Enter envia; Shift + Enter não envia', async () => {
     const { buscar } = preparar();
     const f = await abrir();
-    const tipo = campo(f, 'filtro-tipo-kb') as HTMLSelectElement;
-    tipo.value = 'defeito';
-    tipo.dispatchEvent(new Event('change', { bubbles: true }));
-    const fonte = campo(f, 'filtro-fonte-kb') as HTMLSelectElement;
-    fonte.value = 'f1';
-    fonte.dispatchEvent(new Event('change', { bubbles: true }));
-    await buscarPor(f, 'lotes');
-    expect(buscar).toHaveBeenCalledWith('lotes', { tipos: ['defeito'], fonteId: 'f1', limite: 30 });
+    campo(f).value = 'lote';
+    campo(f).dispatchEvent(new Event('input', { bubbles: true }));
+    campo(f).dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter', shiftKey: true, bubbles: true }),
+    );
+    await esperar(f);
+    expect(buscar).not.toHaveBeenCalled();
+    campo(f).dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }),
+    );
+    await esperar(f);
+    expect(buscar).toHaveBeenCalledWith('lote', { limite: 30 });
+  });
+
+  it('cada pergunta vira uma resposta nova e as anteriores ficam na tela', async () => {
+    const { buscar } = preparar();
+    const f = await abrir();
+    await buscarPor(f, 'lote');
+    await buscarPor(f, 'conferencia');
+    expect(buscar).toHaveBeenCalledTimes(2);
+    expect(raiz(f).querySelectorAll('.turno')).toHaveLength(2);
+    expect(raiz(f).querySelectorAll('article')).toHaveLength(2);
   });
 
   it('sem resultado, diz que não achou e sugere o que fazer', async () => {
@@ -224,22 +220,12 @@ describe('tela AI Know (busca na base de conhecimento)', () => {
     expect(raiz(f).querySelector('article')).toBeNull();
   });
 
-  it('quem abre o endereço com ?q= já vê a busca feita', async () => {
+  it('quem abre o endereço com ?q= já vê a pergunta feita', async () => {
     const { buscar } = preparar();
     const f = await abrir('conferencia');
     expect(buscar).toHaveBeenCalledTimes(1);
-    expect((campo(f, 'busca-kb') as HTMLInputElement).value).toBe('conferencia');
+    expect(raiz(f).querySelector('.pergunta')?.textContent).toContain('conferencia');
     expect(raiz(f).textContent).toContain('1 documento encontrado.');
-  });
-
-  it('buscar guarda a busca no endereço (?q=), sem repetir a busca', async () => {
-    const { buscar } = preparar();
-    const roteador = TestBed.inject(Router);
-    const navegar = vi.spyOn(roteador, 'navigate').mockResolvedValue(true);
-    const f = await abrir();
-    await buscarPor(f, 'lote');
-    expect(navegar).toHaveBeenCalledWith([], { queryParams: { q: 'lote' }, replaceUrl: true });
-    expect(buscar).toHaveBeenCalledTimes(1);
   });
 
   it('o texto do documento nunca é interpretado como HTML', async () => {
@@ -271,50 +257,6 @@ describe('tela AI Know (busca na base de conhecimento)', () => {
       legenda: 'Print da tela de login com o campo usuário',
       caminho: null,
     };
-
-    it('o filtro Módulo traz os módulos com o nome para a pessoa e a contagem, e a escolha vai para a busca', async () => {
-      const { buscar, modulos } = preparar();
-      const f = await abrir();
-      expect(modulos).toHaveBeenCalledTimes(1);
-      const opcoes = [...(campo(f, 'filtro-modulo-kb') as HTMLSelectElement).options].map((o) => [
-        o.value,
-        o.textContent?.trim(),
-      ]);
-      expect(opcoes).toEqual([
-        ['', 'Todos'],
-        ['1.principal', 'Principal (12)'],
-        ['3.estoque', 'Estoque (7)'],
-        ['Documentação', 'Documentação (3)'],
-      ]);
-      const el = campo(f, 'filtro-modulo-kb') as HTMLSelectElement;
-      el.value = '3.estoque';
-      el.dispatchEvent(new Event('change', { bubbles: true }));
-      await buscarPor(f, 'lote');
-      expect(buscar).toHaveBeenCalledWith('lote', {
-        tipos: [],
-        fonteId: undefined,
-        modulo: '3.estoque',
-        limite: 30,
-      });
-    });
-
-    it('sem escolher módulo, a busca não manda módulo', async () => {
-      const { buscar } = preparar();
-      const f = await abrir();
-      await buscarPor(f, 'lote');
-      expect(buscar).toHaveBeenCalledWith('lote', expect.objectContaining({ modulo: undefined }));
-    });
-
-    it('se os módulos não carregarem, a busca continua valendo e o filtro fica só com "Todos"', async () => {
-      const { modulos } = preparar();
-      modulos.mockRejectedValueOnce(new Error('falhou'));
-      const f = await abrir();
-      expect(
-        [...(campo(f, 'filtro-modulo-kb') as HTMLSelectElement).options].map((o) => o.value),
-      ).toEqual(['']);
-      await buscarPor(f, 'lote');
-      expect(textoDe(f)).toContain('1 documento encontrado.');
-    });
 
     it('o resultado mostra o módulo ao lado da fonte', async () => {
       preparar();
