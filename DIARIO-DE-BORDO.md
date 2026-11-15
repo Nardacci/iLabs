@@ -2,6 +2,16 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-15 · Claude · Ficha do Profissional redesenhada e busca de CEP por API (função `buscar-cep` PUBLICADA no Supabase)
+
+- **Pedido do responsável:** a tela do Profissional não agradou ("algo mais atual"); CEP por API gratuita; esquecer o parâmetro `usa_estoque`; opinar sobre reaproveitar o cadastro de CPF excluído.
+- **Tela nova (só app, nada no banco):** "ficha" com cartão-resumo vivo (avatar, nome, cargo, setor, anel de obrigatórios), índice de seções que acompanha a rolagem com o estado de cada uma, um cartão por seção, CEP que preenche sozinho ao completar os 8 números (campos preenchidos piscam), máscara de CPF e CEP, ocupações e funções em etiquetas com busca por digitação (novo componente `ui/combobox.ts`, padrão ARIA) e estrela do cargo principal, confirmação das alterações com **resumo do que mudou** e motivo, barra flutuante com Ctrl+S. Responde ao celular (índice vira faixa rolável). Tema claro e escuro pelos tokens. Conferido a olho (computador e celular).
+- **CEP por API:** função de servidor `supabase/functions/buscar-cep` (BrasilAPI, gratuita). Procura primeiro na base do banco (`ilab.buscar_cep`, com a sessão da pessoa); se não achar, consulta a API, casa o município com o IBGE e **guarda na base**; só o CEP sai do sistema; API fora do ar → "digite o endereço". 12 testes Deno (58 no total). **Publicada no Supabase em 15/11/2026, com a autorização do responsável** ("pode publicar"): `buscar-cep`, versão 1, ativa, sem token do Supabase na porta (`verify_jwt` desligado, como as outras: ela mesma confere a sessão). Conferido: o conteúdo no Supabase é o testado (3 arquivos). **Não provada ao vivo:** o ambiente desta sessão não alcança o Supabase nem a BrasilAPI. Prova sugerida: Profissionais, Novo, CEP 01310-100 (deve vir Avenida Paulista, Bela Vista, São Paulo, SP); depois conferir o registro da função e a linha nova em `ilab.logradouros`. A tela nova (ficha) e o cliente do CEP **só estão na branch `main-oomvmm`**: o site só os mostra depois de um novo PR para a `main`.
+- **Testes:** app **243 de 243**, ponta a ponta **26 de 26** (axe na ficha e na janela de confirmação), funções Deno 58 de 58, tipos, lint e formatação limpos. Banco não mudou.
+- **`usa_estoque`:** abandonado a pedido ("muito planejado"); a coluna fica desligada, sem tela.
+- **CPF de excluído, opinião registrada:** reaproveitar o cadastro excluído (restaurar e editar) é melhor que criar um segundo: mantém **uma pessoa, um cadastro**, e as assinaturas e o histórico continuam ligados a ela. Desenho proposto: ao salvar um CPF que já existe como excluído, o sistema avisa e oferece restaurar e editar (exige a função de restaurar, com motivo); o banco passa a recusar CPF repetido também entre excluídos. **Aguarda o ok do responsável.**
+- **Pendências:** provar `buscar-cep` ao vivo; PR da ficha para a `main`; CPF de excluído; etapa 4 (impressão e exportação com filtro e permissão, CPF mascarado na lista); lista de sexo e órgão da classe; mãe obrigatória.
+
 ## 2026-11-15 · Claude · Migrações 20, 21 e 22 aplicadas no Supabase (Profissional completo)
 
 - **Autorização do responsável** ("pode aplicar", 15/11/2026), depois dos testes (635 de 635). Registro completo: `banco/execucao/2026-11-15-migracoes-20-22/resultado.md`.

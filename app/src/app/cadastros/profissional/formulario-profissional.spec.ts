@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { comBancoFalso, violacoesDeAcessibilidade } from '../../../testing/apoio';
 import { ErroDoBanco } from '../../compartilhado/dados/banco';
 import { ConsultaService } from '../../compartilhado/dados/consulta';
+import { type EnderecoDoCep, FuncoesDeBorda } from '../../compartilhado/dados/funcoes-de-borda';
 import { FormularioProfissional } from './formulario-profissional';
 
 const APOIO: Record<string, Record<string, unknown>[]> = {
@@ -71,8 +72,14 @@ function preparar() {
       ),
     ),
   };
+  const borda = {
+    buscarCep: vi.fn<
+      (cep: string) => Promise<{ achado: EnderecoDoCep | null; indisponivel: boolean } | null>
+    >(() => Promise.resolve({ achado: null, indisponivel: false })),
+  };
   TestBed.overrideProvider(ConsultaService, { useValue: consulta });
-  return { banco, consulta };
+  TestBed.overrideProvider(FuncoesDeBorda, { useValue: borda });
+  return { banco, consulta, borda };
 }
 
 async function abrir(registro: Record<string, unknown> | null = null) {
@@ -91,11 +98,15 @@ async function abrir(registro: Record<string, unknown> | null = null) {
 
 type Fixture = Awaited<ReturnType<typeof abrir>>;
 
+/** O texto do rótulo sem o asterisco de obrigatório. */
+function textoDoRotulo(l: Element): string {
+  return (l.textContent ?? '').replace(/\s*\*\s*$/, '').trim();
+}
+
+/** O campo de um rótulo: o texto exato (ou uma expressão), na ocorrência pedida. */
 function campo(el: HTMLElement, rotulo: string | RegExp, ocorrencia = 0): HTMLInputElement {
   const rotulos = [...el.querySelectorAll('label')].filter((l) =>
-    typeof rotulo === 'string'
-      ? l.textContent?.trim().startsWith(rotulo)
-      : rotulo.test(l.textContent ?? ''),
+    typeof rotulo === 'string' ? textoDoRotulo(l) === rotulo : rotulo.test(textoDoRotulo(l)),
   );
   const alvo = el.querySelector<HTMLInputElement>(
     `#${rotulos[ocorrencia]?.getAttribute('for') ?? ''}`,
@@ -117,14 +128,25 @@ async function esperar(x: Fixture): Promise<void> {
   x.f.detectChanges();
 }
 
-function clicar(el: HTMLElement, texto: string | RegExp, dentro?: Element): void {
-  const botao = [...(dentro ?? el).querySelectorAll('button')].find((b) =>
+function clicar(el: HTMLElement | Element, texto: string | RegExp): void {
+  const botao = [...el.querySelectorAll('button')].find((b) =>
     typeof texto === 'string'
-      ? b.textContent?.trim().startsWith(texto)
-      : texto.test(b.textContent ?? ''),
+      ? (b.textContent ?? '').trim().startsWith(texto)
+      : texto.test(b.textContent ?? '') || texto.test(b.getAttribute('aria-label') ?? ''),
   );
   if (!botao) throw new Error(`Botão não encontrado: ${String(texto)}`);
   botao.click();
+}
+
+/** Escolhe a primeira sugestão de um campo de busca (combobox) depois de digitar nele. */
+async function buscarEEscolher(x: Fixture, rotulo: string, termo: string): Promise<void> {
+  const c = campo(x.el, rotulo);
+  c.dispatchEvent(new Event('focus'));
+  c.value = termo;
+  c.dispatchEvent(new Event('input'));
+  await esperar(x);
+  x.el.querySelector<HTMLElement>('[role="option"]')?.click();
+  x.f.detectChanges();
 }
 
 async function preencherOBasico(x: Fixture): Promise<void> {
@@ -138,45 +160,82 @@ async function preencherOBasico(x: Fixture): Promise<void> {
   await esperar(x);
   digitar(x.el, 'Naturalidade', '3304557');
   digitar(x.el, 'Logradouro', 'rua um');
-  digitar(x.el, 'Número', '10', 1);
-  digitar(x.el, 'UF', 'RJ', 1);
+  digitar(x.el, 'Número do endereço', '10');
+  digitar(x.el, 'UF', 'RJ');
   await esperar(x);
   digitar(x.el, 'Município', '3304557');
   digitar(x.el, 'Bairro', 'centro');
   digitar(x.el, 'CEP', '20.000-000');
+  await esperar(x);
 }
 
-describe('formulário do Profissional (cadastro completo)', () => {
-  it('mostra as seis seções do legado, com layout novo e obrigatórios marcados', async () => {
+describe('ficha do Profissional (cadastro completo)', () => {
+  beforeAll(() => {
+    // o jsdom não implementa a rolagem; no navegador ela existe
+    Element.prototype.scrollIntoView = vi.fn();
+  });
+
+  it('mostra o resumo vivo e as seis seções do legado, com layout novo e obrigatórios marcados', async () => {
     preparar();
     const { el } = await abrir();
-    expect([...el.querySelectorAll('section h2')].map((h) => h.textContent?.trim())).toEqual([
-      'Identificação',
-      'Documentos',
-      'Contatos',
-      'Endereço',
-      'Trabalho',
-      'Ocupações e funções',
-    ]);
+    expect(el.querySelector('.ficha-nome')?.textContent).toContain('Novo profissional');
+    expect([...el.querySelectorAll('section.cartao h2')].map((h) => h.textContent?.trim())).toEqual(
+      ['Identificação', 'Documentos', 'Contatos', 'Endereço', 'Trabalho', 'Ocupações e funções'],
+    );
     for (const rotulo of [
       'Nome da mãe',
       'Nome do pai',
       'Identidade profissional',
       'Órgão da classe',
-      'Celular 2',
     ]) {
       expect(el.textContent).toContain(rotulo);
     }
     expect(el.querySelector('label[for]')?.textContent).toContain('*');
   });
 
+  it('o anel e o índice acompanham o preenchimento (aviso rápido; o banco é quem confere)', async () => {
+    preparar();
+    const x = await abrir();
+    const anel = (): string => x.el.querySelector('.anel')?.getAttribute('aria-label') ?? '';
+    expect(anel()).toMatch(/^1 de 16 campos obrigatórios/); // só o país (Brasil) já vem marcado
+    expect(x.el.querySelector('.ficha-progresso-texto')?.textContent).toContain('Faltam');
+    await preencherOBasico(x);
+    await buscarEEscolher(x, 'Adicionar função', 'resp');
+    expect(anel()).toBe('16 de 16 campos obrigatórios preenchidos');
+    expect(x.el.querySelector('.ficha-progresso-texto')?.textContent).toContain(
+      'Obrigatórios completos',
+    );
+    const secoes = [...x.el.querySelectorAll('.trilho-item')].map((b) =>
+      b.textContent?.replace(/\s+/g, ' ').trim(),
+    );
+    expect(secoes[0]).toContain('Identificação completa');
+    expect(secoes[1]).toContain('Documentos opcional');
+  });
+
+  it('o resumo mostra o nome em maiúsculas, as iniciais e o cargo principal', async () => {
+    preparar();
+    const x = await abrir(REGISTRO);
+    expect(x.el.querySelector('.ficha-nome')?.textContent).toContain('CARLA TESTE');
+    expect(x.el.querySelector('.ficha-avatar')?.textContent?.trim()).toBe('CT');
+    expect(x.el.querySelector('.ficha-sub')?.textContent).toContain('Responsável técnico');
+  });
+
+  it('CPF e CEP ganham máscara enquanto se digita', async () => {
+    preparar();
+    const x = await abrir();
+    digitar(x.el, 'CPF', '52998224725');
+    expect(campo(x.el, 'CPF').value).toBe('529.982.247-25');
+    digitar(x.el, 'CEP', '2263100');
+    expect(campo(x.el, 'CEP').value).toBe('22.631-00');
+  });
+
   it('o endereço começa no Brasil; fora do Brasil trocam CEP, UF, município e bairro por código postal e cidade', async () => {
     preparar();
     const x = await abrir();
-    expect(x.el.textContent).toContain('Buscar CEP');
+    expect(x.el.textContent).toContain('Ao digitar os 8 números');
     digitar(x.el, 'País', '3');
     await esperar(x);
-    expect(x.el.textContent).not.toContain('Buscar CEP');
+    expect(x.el.textContent).not.toContain('Ao digitar os 8 números');
     expect(x.el.textContent).toContain('Código postal');
     expect(x.el.textContent).toContain('Cidade');
   });
@@ -194,167 +253,253 @@ describe('formulário do Profissional (cadastro completo)', () => {
     expect(campo(x.el, 'Naturalidade').textContent).toContain('Rio de Janeiro');
   });
 
-  it('inclui: manda ao banco os dados, as ocupações, as funções e o cargo principal numa chamada só', async () => {
-    const { banco } = preparar();
-    banco.respostas['salvar_profissional'] = 'novo-id';
-    const x = await abrir();
-    await preencherOBasico(x);
-    digitar(x.el, 'Procurar ocupação', 'farmac');
-    await esperar(x);
-    clicar(x.el, 'Adicionar', x.el.querySelector('.resultados')!);
-    x.f.detectChanges();
-    digitar(x.el, 'Adicionar função', 'f1');
-    clicar(x.el, /^Adicionar$/, x.el.querySelector('.linha-adicionar')!);
-    x.f.detectChanges();
-    clicar(x.el, 'Salvar');
-    await esperar(x);
-    const chamada = banco.chamadas.find((c) => c.nome === 'salvar_profissional')?.args as Record<
-      string,
-      unknown
-    >;
-    expect(chamada).toBeTruthy();
-    expect(chamada['p_id']).toBeNull();
-    expect(chamada['p_motivo']).toBeNull();
-    expect(chamada['p_ocupacoes']).toEqual(['223405']);
-    expect(chamada['p_funcoes']).toEqual(['f1']);
-    expect(chamada['p_principal']).toBe('f1');
-    expect(chamada['p_dados']).toMatchObject({
-      codigo: 'P9',
-      nome: 'ana souza',
-      cpf: '52998224725',
-      pais_id: 1,
-      municipio_id: 3304557,
-      naturalidade_municipio_id: 3304557,
-      pai: null,
-      bairro: 'centro',
+  describe('CEP automático', () => {
+    it('ao completar os 8 números busca sozinho e preenche logradouro, bairro, UF e município', async () => {
+      const { borda } = preparar();
+      borda.buscarCep.mockResolvedValue({
+        achado: {
+          logradouro: 'Avenida das Américas',
+          complemento: null,
+          uf: 'RJ',
+          municipio_id: 3304557,
+          municipio: 'Rio de Janeiro',
+          bairro: 'BARRA DA TIJUCA',
+          origem: 'api',
+        },
+        indisponivel: false,
+      });
+      const x = await abrir();
+      digitar(x.el, 'CEP', '22631003');
+      await esperar(x);
+      await esperar(x);
+      expect(borda.buscarCep).toHaveBeenCalledWith('22631003');
+      expect(campo(x.el, 'Logradouro').value).toBe('AVENIDA DAS AMÉRICAS');
+      expect(campo(x.el, 'Bairro').value).toBe('BARRA DA TIJUCA');
+      expect(campo(x.el, 'UF').value).toBe('RJ');
+      expect(campo(x.el, 'Município').value).toBe('3304557');
+      expect(x.el.textContent).toContain('Endereço preenchido pelo CEP');
     });
-    expect(x.aoSalvar).toHaveBeenCalledWith({ id: 'novo-id', alteracao: false });
+
+    it('não busca antes dos 8 números nem repete o mesmo CEP', async () => {
+      const { borda } = preparar();
+      const x = await abrir();
+      digitar(x.el, 'CEP', '2263100');
+      await esperar(x);
+      expect(borda.buscarCep).not.toHaveBeenCalled();
+      digitar(x.el, 'CEP', '22631003');
+      await esperar(x);
+      digitar(x.el, 'CEP', '22.631-003');
+      await esperar(x);
+      expect(borda.buscarCep).toHaveBeenCalledTimes(1);
+    });
+
+    it('CEP desconhecido: avisa e deixa digitar o endereço', async () => {
+      const { borda } = preparar();
+      borda.buscarCep.mockResolvedValue({ achado: null, indisponivel: false });
+      const x = await abrir();
+      digitar(x.el, 'CEP', '99999999');
+      await esperar(x);
+      expect(x.el.textContent).toContain('CEP não encontrado');
+    });
+
+    it('serviço de CEP fora do ar: avisa que está indisponível e deixa digitar', async () => {
+      const { borda } = preparar();
+      borda.buscarCep.mockResolvedValue({ achado: null, indisponivel: true });
+      const x = await abrir();
+      digitar(x.el, 'CEP', '99999999');
+      await esperar(x);
+      expect(x.el.textContent).toContain('indisponível');
+    });
+
+    it('abrir um cadastro existente não dispara a busca', async () => {
+      const { borda } = preparar();
+      await abrir(REGISTRO);
+      expect(borda.buscarCep).not.toHaveBeenCalled();
+    });
   });
 
-  it('sem função profissional (cargo principal) não chama o banco e explica', async () => {
-    const { banco } = preparar();
-    const x = await abrir();
-    await preencherOBasico(x);
-    clicar(x.el, 'Salvar');
-    await esperar(x);
-    expect(banco.chamadas.some((c) => c.nome === 'salvar_profissional')).toBe(false);
-    expect(x.el.querySelector('[role="alert"]')?.textContent).toContain('cargo principal');
+  describe('ocupações e funções', () => {
+    it('procurar e escolher cria a etiqueta; o primeiro cargo vira o principal', async () => {
+      preparar();
+      const x = await abrir();
+      await buscarEEscolher(x, 'Procurar ocupação', 'farmac');
+      expect(x.el.querySelector('.chips .chip-cod')?.textContent).toContain('2234-05');
+      await buscarEEscolher(x, 'Adicionar função', 'resp');
+      const etiqueta = x.el.querySelector('.chip.principal');
+      expect(etiqueta?.textContent).toContain('Responsável técnico');
+      expect(etiqueta?.textContent).toContain('Cargo principal');
+    });
+
+    it('só sugere funções ativas que ainda não foram escolhidas', async () => {
+      preparar();
+      const x = await abrir();
+      const c = campo(x.el, 'Adicionar função');
+      c.dispatchEvent(new Event('focus'));
+      c.value = 'a';
+      c.dispatchEvent(new Event('input'));
+      await esperar(x);
+      const sugestoes = [...x.el.querySelectorAll('[role="option"]')].map((o) =>
+        o.textContent?.trim(),
+      );
+      expect(sugestoes).toContain('Responsável técnico');
+      expect(sugestoes).toContain('Analista');
+      expect(sugestoes.join()).not.toContain('Função antiga');
+    });
+
+    it('a estrela troca o cargo principal e retirar a principal passa a estrela para a que sobra', async () => {
+      preparar();
+      const x = await abrir(REGISTRO);
+      const etiquetas = [
+        ...x.el.querySelectorAll('ul[aria-label="Funções do profissional"] .chip'),
+      ];
+      expect(etiquetas.length).toBe(2);
+      clicar(etiquetas[1]!, /como cargo principal/);
+      x.f.detectChanges();
+      expect(x.el.querySelector('.chip.principal')?.textContent).toContain('Função antiga');
+      clicar(x.el.querySelector('.chip.principal')!, /Retirar a função/);
+      x.f.detectChanges();
+      expect(x.el.querySelector('.chip.principal')?.textContent).toContain('Responsável técnico');
+    });
   });
 
-  it('a mensagem de recusa do banco aparece no alto (a regra é dele, não da tela)', async () => {
-    const { banco } = preparar();
-    vi.spyOn(banco, 'rpc').mockRejectedValue(
-      new ErroDoBanco('Preencha: Data de nascimento, Sexo.'),
-    );
-    const x = await abrir();
-    digitar(x.el, 'Adicionar função', 'f1');
-    clicar(x.el, /^Adicionar$/, x.el.querySelector('.linha-adicionar')!);
-    x.f.detectChanges();
-    clicar(x.el, 'Salvar');
-    await esperar(x);
-    expect(x.el.querySelector('[role="alert"]')?.textContent).toContain(
-      'Preencha: Data de nascimento',
-    );
-    expect(x.aoSalvar).not.toHaveBeenCalled();
-  });
-
-  it('altera: carrega os dados e os vínculos gravados, exige motivo e manda o id', async () => {
-    const { banco } = preparar();
-    banco.respostas['salvar_profissional'] = 'p1';
-    const x = await abrir(REGISTRO);
-    expect(campo(x.el, 'Nome completo').value).toBe('CARLA TESTE');
-    expect(campo(x.el, 'CPF').value).toBe('529.982.247-25');
-    expect(campo(x.el, 'CEP').value).toBe('22.631-003');
-    expect(x.el.textContent).toContain('223405'.replace(/^(\d{4})/, '$1-'));
-    expect(x.el.textContent).toContain('Função antiga (inativa)');
-    clicar(x.el, 'Salvar');
-    await esperar(x);
-    expect(banco.chamadas.some((c) => c.nome === 'salvar_profissional')).toBe(false);
-    expect(x.el.querySelector('[role="alert"]')?.textContent).toContain('motivo');
-    digitar(x.el, /^Motivo da alteração/, 'Correção do cadastro');
-    clicar(x.el, 'Salvar');
-    await esperar(x);
-    const chamada = banco.chamadas.find((c) => c.nome === 'salvar_profissional')?.args as Record<
-      string,
-      unknown
-    >;
-    expect(chamada['p_id']).toBe('p1');
-    expect(chamada['p_motivo']).toBe('Correção do cadastro');
-    expect(chamada['p_funcoes']).toEqual(['f1', 'f3']);
-    expect(chamada['p_principal']).toBe('f1');
-    expect(x.aoSalvar).toHaveBeenCalledWith({ id: 'p1', alteracao: true });
-  });
-
-  it('retirar uma função tira da lista; o cargo principal passa para a que sobra', async () => {
-    const { banco } = preparar();
-    banco.respostas['salvar_profissional'] = 'p1';
-    const x = await abrir(REGISTRO);
-    const linhas = [...x.el.querySelectorAll('.lista-vinculo')][1]!.querySelectorAll('tbody tr');
-    clicar(x.el, 'Retirar', linhas[0]);
-    x.f.detectChanges();
-    expect(x.el.textContent).toContain('Alterações não salvas');
-    digitar(x.el, /^Motivo da alteração/, 'Retirou o cargo principal');
-    clicar(x.el, 'Salvar');
-    await esperar(x);
-    const chamada = banco.chamadas.find((c) => c.nome === 'salvar_profissional')?.args as Record<
-      string,
-      unknown
-    >;
-    expect(chamada['p_funcoes']).toEqual(['f3']);
-    expect(chamada['p_principal']).toBe('f3');
-  });
-
-  it('só oferece funções ativas para adicionar', async () => {
-    preparar();
-    const x = await abrir();
-    const opcoes = [...campo(x.el, 'Adicionar função').querySelectorAll('option')].map((o) =>
-      o.textContent?.trim(),
-    );
-    expect(opcoes).toContain('Responsável técnico');
-    expect(opcoes).not.toContain('Função antiga');
-  });
-
-  it('buscar CEP preenche logradouro, bairro, UF e município quando a base tem o CEP', async () => {
-    const { banco } = preparar();
-    banco.respostas['buscar_cep'] = [
-      {
-        logradouro: 'AVENIDA DAS AMÉRICAS',
-        complemento: null,
-        uf: 'RJ',
+  describe('salvar', () => {
+    it('inclui: manda ao banco os dados, as ocupações, as funções e o cargo principal numa chamada só', async () => {
+      const { banco } = preparar();
+      banco.respostas['salvar_profissional'] = 'novo-id';
+      const x = await abrir();
+      await preencherOBasico(x);
+      await buscarEEscolher(x, 'Procurar ocupação', 'farmac');
+      await buscarEEscolher(x, 'Adicionar função', 'resp');
+      clicar(x.el, 'Salvar');
+      await esperar(x);
+      const chamada = banco.chamadas.find((c) => c.nome === 'salvar_profissional')?.args as Record<
+        string,
+        unknown
+      >;
+      expect(chamada).toBeTruthy();
+      expect(chamada['p_id']).toBeNull();
+      expect(chamada['p_motivo']).toBeNull();
+      expect(chamada['p_ocupacoes']).toEqual(['223405']);
+      expect(chamada['p_funcoes']).toEqual(['f1']);
+      expect(chamada['p_principal']).toBe('f1');
+      expect(chamada['p_dados']).toMatchObject({
+        codigo: 'P9',
+        nome: 'ana souza',
+        cpf: '52998224725',
+        cep: '20000000',
+        pais_id: 1,
         municipio_id: 3304557,
-        municipio: 'Rio de Janeiro',
-        bairro: 'BARRA DA TIJUCA',
-      },
-    ];
-    const x = await abrir();
-    digitar(x.el, 'CEP', '22631003');
-    clicar(x.el, 'Buscar CEP');
-    await esperar(x);
-    expect(banco.chamadas.find((c) => c.nome === 'buscar_cep')?.args).toEqual({
-      p_cep: '22631003',
+        naturalidade_municipio_id: 3304557,
+        pai: null,
+        bairro: 'centro',
+      });
+      expect(x.aoSalvar).toHaveBeenCalledWith({ id: 'novo-id', alteracao: false });
     });
-    expect(campo(x.el, 'Logradouro').value).toBe('AVENIDA DAS AMÉRICAS');
-    expect(campo(x.el, 'Bairro').value).toBe('BARRA DA TIJUCA');
-    expect(campo(x.el, 'UF', 1).value).toBe('RJ');
-    expect(x.el.textContent).toContain('Endereço preenchido pelo CEP');
-  });
 
-  it('CEP fora da base: avisa e deixa digitar o endereço', async () => {
-    const { banco } = preparar();
-    banco.respostas['buscar_cep'] = [];
-    const x = await abrir();
-    digitar(x.el, 'CEP', '99999999');
-    clicar(x.el, 'Buscar CEP');
-    await esperar(x);
-    expect(x.el.textContent).toContain('CEP não encontrado na base');
-  });
+    it('Ctrl+S salva (na inclusão, sem janela de confirmação)', async () => {
+      const { banco } = preparar();
+      banco.respostas['salvar_profissional'] = 'novo-id';
+      const x = await abrir();
+      await preencherOBasico(x);
+      await buscarEEscolher(x, 'Adicionar função', 'resp');
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 's', ctrlKey: true }));
+      await esperar(x);
+      expect(banco.chamadas.some((c) => c.nome === 'salvar_profissional')).toBe(true);
+    });
 
-  it('Cancelar volta sem gravar', async () => {
-    const { banco } = preparar();
-    const x = await abrir();
-    clicar(x.el, 'Cancelar');
-    expect(x.aoCancelar).toHaveBeenCalled();
-    expect(banco.chamadas.length).toBe(0);
+    it('sem função profissional (cargo principal) não chama o banco e explica', async () => {
+      const { banco } = preparar();
+      const x = await abrir();
+      await preencherOBasico(x);
+      clicar(x.el, 'Salvar');
+      await esperar(x);
+      expect(banco.chamadas.some((c) => c.nome === 'salvar_profissional')).toBe(false);
+      expect(x.el.querySelector('[role="alert"]')?.textContent).toContain('cargo principal');
+    });
+
+    it('a mensagem de recusa do banco aparece no alto (a regra é dele, não da tela)', async () => {
+      const { banco } = preparar();
+      vi.spyOn(banco, 'rpc').mockRejectedValue(
+        new ErroDoBanco('Preencha: Data de nascimento, Sexo.'),
+      );
+      const x = await abrir();
+      await buscarEEscolher(x, 'Adicionar função', 'resp');
+      clicar(x.el, 'Salvar');
+      await esperar(x);
+      expect(x.el.querySelector('[role="alert"]')?.textContent).toContain(
+        'Preencha: Data de nascimento',
+      );
+      expect(x.aoSalvar).not.toHaveBeenCalled();
+    });
+
+    it('altera: carrega os vínculos, mostra "sem alterações" e recusa salvar sem mudar nada', async () => {
+      const { banco } = preparar();
+      const x = await abrir(REGISTRO);
+      expect(campo(x.el, 'Nome completo').value).toBe('CARLA TESTE');
+      expect(campo(x.el, 'CPF').value).toBe('529.982.247-25');
+      expect(campo(x.el, 'CEP').value).toBe('22.631-003');
+      expect(x.el.textContent).toContain('2234-05');
+      expect(x.el.textContent).toContain('Função antiga (inativa)');
+      expect(x.el.querySelector('.barra-estado')?.textContent).toContain('Sem alterações');
+      clicar(x.el, 'Salvar');
+      await esperar(x);
+      expect(x.el.querySelector('[role="alert"]')?.textContent).toContain('Nada mudou');
+      expect(banco.chamadas.some((c) => c.nome === 'salvar_profissional')).toBe(false);
+    });
+
+    it('altera: mostra o que mudou, pede o motivo numa janela e só então manda ao banco', async () => {
+      const { banco } = preparar();
+      banco.respostas['salvar_profissional'] = 'p1';
+      const x = await abrir(REGISTRO);
+      digitar(x.el, 'Cargo', 'Analista pleno');
+      x.f.detectChanges();
+      expect(x.el.querySelector('.barra-estado')?.textContent).toContain('1 alteração');
+      clicar(x.el, 'Salvar');
+      await esperar(x);
+      const janela = x.el.querySelector('[role="dialog"]');
+      expect(janela?.textContent).toContain('Confirmar as alterações');
+      expect(janela?.textContent).toContain('Cargo');
+      // motivo curto demais: a janela explica e nada vai ao banco
+      digitar(x.el, /^Motivo da alteração/, 'cur');
+      clicar(janela!, 'Confirmar e salvar');
+      await esperar(x);
+      expect(x.el.querySelector('[role="dialog"] [role="alert"]')?.textContent).toContain('motivo');
+      expect(banco.chamadas.some((c) => c.nome === 'salvar_profissional')).toBe(false);
+      digitar(x.el, /^Motivo da alteração/, 'Atualização do cargo');
+      clicar(x.el.querySelector('[role="dialog"]')!, 'Confirmar e salvar');
+      await esperar(x);
+      const chamada = banco.chamadas.find((c) => c.nome === 'salvar_profissional')?.args as Record<
+        string,
+        unknown
+      >;
+      expect(chamada['p_id']).toBe('p1');
+      expect(chamada['p_motivo']).toBe('Atualização do cargo');
+      expect(chamada['p_funcoes']).toEqual(['f1', 'f3']);
+      expect(chamada['p_principal']).toBe('f1');
+      expect(chamada['p_dados']).toMatchObject({ cargo: 'Analista pleno' });
+      expect(x.aoSalvar).toHaveBeenCalledWith({ id: 'p1', alteracao: true });
+    });
+
+    it('retirar uma função aparece no resumo das alterações', async () => {
+      preparar();
+      const x = await abrir(REGISTRO);
+      clicar(
+        x.el.querySelectorAll('ul[aria-label="Funções do profissional"] .chip')[1]!,
+        /Retirar a função/,
+      );
+      x.f.detectChanges();
+      clicar(x.el, 'Salvar');
+      await esperar(x);
+      expect(x.el.querySelector('.resumo-mudancas')?.textContent).toContain('Funções');
+    });
+
+    it('Cancelar volta sem gravar', async () => {
+      const { banco } = preparar();
+      const x = await abrir();
+      clicar(x.el, 'Cancelar');
+      expect(x.aoCancelar).toHaveBeenCalled();
+      expect(banco.chamadas.length).toBe(0);
+    });
   });
 
   it('passa na verificação de acessibilidade (axe), nova e em edição', async () => {
@@ -363,5 +508,15 @@ describe('formulário do Profissional (cadastro completo)', () => {
     TestBed.resetTestingModule();
     preparar();
     expect(await violacoesDeAcessibilidade((await abrir(REGISTRO)).f)).toEqual([]);
+  });
+
+  it('a janela de confirmação das alterações também passa no axe', async () => {
+    preparar();
+    const x = await abrir(REGISTRO);
+    digitar(x.el, 'Cargo', 'Outro cargo');
+    clicar(x.el, 'Salvar');
+    await esperar(x);
+    expect(x.el.querySelector('[role="dialog"]')).toBeTruthy();
+    expect(await violacoesDeAcessibilidade(x.f)).toEqual([]);
   });
 });
