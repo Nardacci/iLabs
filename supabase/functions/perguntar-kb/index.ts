@@ -44,7 +44,10 @@ Deno.serve(
       );
     },
     async trechos(token, pergunta, limite): Promise<TrechoParaIa[]> {
-      const { data, error } = await daPessoa(token).rpc('kb_buscar_para_ia', { p_consulta: pergunta, p_limite: limite });
+      const { data, error } = await daPessoa(token).rpc('kb_buscar_para_ia', {
+        p_consulta: pergunta,
+        p_limite: limite,
+      });
       if (error) throw new Error('kb_buscar_para_ia falhou');
       return (data ?? []) as TrechoParaIa[];
     },

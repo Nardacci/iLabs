@@ -35,7 +35,11 @@ const RESPOSTA: RespostaDoModelo = {
       text: 'até a Qualidade liberar.',
       citations: [{ type: 'char_location', document_index: 1, cited_text: 'Segunda frase.' }],
     },
-    { type: 'text', text: ' Há prazo por material.', citations: [{ document_index: 0, cited_text: 'Texto secreto do trecho 1.' }, { document_index: 1 }] },
+    {
+      type: 'text',
+      text: ' Há prazo por material.',
+      citations: [{ document_index: 0, cited_text: 'Texto secreto do trecho 1.' }, { document_index: 1 }],
+    },
   ],
   stop_reason: 'end_turn',
   usage: { input_tokens: 1200, output_tokens: 90 },
@@ -66,7 +70,9 @@ function simulacao(o: {
     },
     perguntarAoModelo: (p) => {
       pedidos.push(p);
-      return o.falhaDoModelo ? Promise.reject(new Error('Texto secreto do provedor')) : Promise.resolve(o.resposta ?? RESPOSTA);
+      return o.falhaDoModelo
+        ? Promise.reject(new Error('Texto secreto do provedor'))
+        : Promise.resolve(o.resposta ?? RESPOSTA);
     },
     registrar: (r) => {
       registros.push(r);
@@ -76,15 +82,31 @@ function simulacao(o: {
   return { dep, pedidos, registros, buscas };
 }
 
-const pedir = (dep: DependenciasPerguntar, corpo: unknown, cabecalhos: Record<string, string> = { authorization: 'Bearer bom' }) =>
+const pedir = (
+  dep: DependenciasPerguntar,
+  corpo: unknown,
+  cabecalhos: Record<string, string> = { authorization: 'Bearer bom' },
+) =>
   criarManipuladorPerguntar(dep)(
-    new Request('http://x/perguntar-kb', { method: 'POST', headers: cabecalhos, body: typeof corpo === 'string' ? corpo : JSON.stringify(corpo) }),
+    new Request('http://x/perguntar-kb', {
+      method: 'POST',
+      headers: cabecalhos,
+      body: typeof corpo === 'string' ? corpo : JSON.stringify(corpo),
+    }),
   );
 
 // ---------- o pedido e a leitura da resposta ----------
 
 Deno.test('o pedido manda cada trecho como documento com citações ligadas, e a pergunta no fim', () => {
-  const p = montarPedido('Como funciona a quarentena?', [trecho(1), trecho(2, { identificacao_oficial: 'RDC 658/2022', consultado_em: '2026-11-14', situacao_lida: 'vigente em 14/11/2026', pagina: 7 })], 'm');
+  const p = montarPedido('Como funciona a quarentena?', [
+    trecho(1),
+    trecho(2, {
+      identificacao_oficial: 'RDC 658/2022',
+      consultado_em: '2026-11-14',
+      situacao_lida: 'vigente em 14/11/2026',
+      pagina: 7,
+    }),
+  ], 'm');
   assertEquals(p.model, 'm');
   assertEquals(p.system, INSTRUCOES);
   const blocos = p.messages[0].content;
@@ -117,12 +139,23 @@ Deno.test('a resposta liga cada pedaço às fontes citadas, numeradas na ordem e
   const l = lerResposta(RESPOSTA, [trecho(1), trecho(2)]);
   assertEquals(l.texto, 'O material fica bloqueado até a Qualidade liberar. Há prazo por material.');
   assertEquals(l.partes.map((p) => p.fontes), [[], [1], [2, 1]]);
-  assertEquals(l.fontes.map((f) => [f.n, f.trecho_id, f.citado]), [[1, 't2', 'Segunda frase.'], [2, 't1', 'Texto secreto do trecho 1.']]);
+  assertEquals(l.fontes.map((f) => [f.n, f.trecho_id, f.citado]), [[1, 't2', 'Segunda frase.'], [
+    2,
+    't1',
+    'Texto secreto do trecho 1.',
+  ]]);
 });
 
 Deno.test('citação que aponta para fora da lista enviada é ignorada, e blocos que não são texto também', () => {
   const l = lerResposta(
-    { ...RESPOSTA, content: [{ type: 'thinking' }, { type: 'text', text: 'Resposta.', citations: [{ document_index: 9 }, { document_index: -1 }, {}] }, { type: 'text', text: '' }] },
+    {
+      ...RESPOSTA,
+      content: [{ type: 'thinking' }, {
+        type: 'text',
+        text: 'Resposta.',
+        citations: [{ document_index: 9 }, { document_index: -1 }, {}],
+      }, { type: 'text', text: '' }],
+    },
     [trecho(1)],
   );
   assertEquals(l.partes, [{ texto: 'Resposta.', fontes: [] }]);
@@ -140,12 +173,22 @@ Deno.test('responde com texto ligado às fontes, registra o consumo e só os ide
   assertEquals(corpo.estado, 'respondida');
   assertEquals(corpo.modelo, 'modelo-de-teste');
   assertEquals(corpo.partes.length, 3);
-  assertEquals(corpo.fontes.map((f: { n: number; documento_id: string }) => [f.n, f.documento_id]), [[1, 'd2'], [2, 'd1']]);
+  assertEquals(corpo.fontes.map((f: { n: number; documento_id: string }) => [f.n, f.documento_id]), [[1, 'd2'], [
+    2,
+    'd1',
+  ]]);
   assertEquals(s.buscas, [{ pergunta: 'Como funciona a quarentena?', limite: 8 }]);
   assertEquals(s.pedidos.length, 1);
   assertEquals(s.registros.length, 1);
   const reg = s.registros[0];
-  assertEquals([reg.estado, reg.tokensEntrada, reg.tokensSaida, reg.modelo, reg.usuarioId, reg.empresaId], ['respondida', 1200, 90, 'modelo-de-teste', 'u1', 'e1']);
+  assertEquals([reg.estado, reg.tokensEntrada, reg.tokensSaida, reg.modelo, reg.usuarioId, reg.empresaId], [
+    'respondida',
+    1200,
+    90,
+    'modelo-de-teste',
+    'u1',
+    'e1',
+  ]);
   assertEquals(reg.fontes, [
     { trecho_id: 't1', documento_id: 'd1', versao_id: 'v1', versao_numero: 1 },
     { trecho_id: 't2', documento_id: 'd2', versao_id: 'v2', versao_numero: 1 },
@@ -214,14 +257,22 @@ Deno.test('provedor fora do ar: 502 com mensagem simples, registra "erro" e não
 });
 
 Deno.test('recusa do modelo: 422 e registra "recusada" com o consumo', async () => {
-  const s = simulacao({ resposta: { content: [], stop_reason: 'refusal', usage: { input_tokens: 10, output_tokens: 0 } } });
+  const s = simulacao({
+    resposta: { content: [], stop_reason: 'refusal', usage: { input_tokens: 10, output_tokens: 0 } },
+  });
   const r = await pedir(s.dep, { pergunta: 'oi' });
   assertEquals(r.status, 422);
   assertEquals(s.registros.map((x) => [x.estado, x.tokensEntrada]), [['recusada', 10]]);
 });
 
 Deno.test('resposta sem texto vira erro (não mostra resposta vazia)', async () => {
-  const s = simulacao({ resposta: { content: [{ type: 'thinking' }], stop_reason: 'end_turn', usage: { input_tokens: 5, output_tokens: 1 } } });
+  const s = simulacao({
+    resposta: {
+      content: [{ type: 'thinking' }],
+      stop_reason: 'end_turn',
+      usage: { input_tokens: 5, output_tokens: 1 },
+    },
+  });
   assertEquals((await pedir(s.dep, { pergunta: 'oi' })).status, 502);
   assertEquals(s.registros.map((x) => x.estado), ['erro']);
 });

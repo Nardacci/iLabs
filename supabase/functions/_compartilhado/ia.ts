@@ -65,7 +65,11 @@ const ROTULO_DA_ORIGEM: Record<string, string> = {
 };
 
 function contextoDo(t: TrechoParaIa): string {
-  const partes = [`Origem: ${ROTULO_DA_ORIGEM[t.origem] ?? t.origem}`, `Tipo: ${t.tipo}`, `Versão do documento: ${t.versao_numero}`];
+  const partes = [
+    `Origem: ${ROTULO_DA_ORIGEM[t.origem] ?? t.origem}`,
+    `Tipo: ${t.tipo}`,
+    `Versão do documento: ${t.versao_numero}`,
+  ];
   if (t.identificacao_oficial) partes.push(`Identificação oficial: ${t.identificacao_oficial}`);
   if (t.consultado_em) partes.push(`Data da consulta: ${t.consultado_em}`);
   if (t.situacao_lida) partes.push(`Situação lida na consulta: ${t.situacao_lida}`);

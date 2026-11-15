@@ -14,8 +14,8 @@
 import { CABECALHOS_CORS, responderJson } from '../_compartilhado/http.ts';
 import {
   type FonteCitada,
-  LIMITE_DE_TRECHOS,
   lerResposta,
+  LIMITE_DE_TRECHOS,
   MENSAGEM_SEM_BASE,
   montarPedido,
   type ParteDaResposta,
@@ -74,7 +74,12 @@ export interface RespostaDaFuncao {
 }
 
 const fontesDoRegistro = (ts: readonly TrechoParaIa[]): RegistroDeInteracao['fontes'] =>
-  ts.map((t) => ({ trecho_id: t.trecho_id, documento_id: t.documento_id, versao_id: t.versao_id, versao_numero: t.versao_numero }));
+  ts.map((t) => ({
+    trecho_id: t.trecho_id,
+    documento_id: t.documento_id,
+    versao_id: t.versao_id,
+    versao_numero: t.versao_numero,
+  }));
 
 export function criarManipuladorPerguntar(dep: DependenciasPerguntar): (req: Request) => Promise<Response> {
   return async (req: Request): Promise<Response> => {
@@ -93,7 +98,10 @@ export function criarManipuladorPerguntar(dep: DependenciasPerguntar): (req: Req
     const pergunta = typeof corpo.pergunta === 'string' ? corpo.pergunta.trim() : '';
     if (!pergunta) return responderJson({ ok: false, mensagem: 'Escreva a pergunta.' }, 400);
     if (pergunta.length > LIMITE_DA_PERGUNTA) {
-      return responderJson({ ok: false, mensagem: `A pergunta pode ter no máximo ${LIMITE_DA_PERGUNTA} caracteres.` }, 400);
+      return responderJson(
+        { ok: false, mensagem: `A pergunta pode ter no máximo ${LIMITE_DA_PERGUNTA} caracteres.` },
+        400,
+      );
     }
 
     let contexto: Contexto | null = null;
@@ -140,23 +148,67 @@ export function criarManipuladorPerguntar(dep: DependenciasPerguntar): (req: Req
       } catch (e) {
         // só o tipo do erro vai para o log: nunca a pergunta nem o texto dos documentos
         console.error(`perguntar-kb: o provedor falhou (${e instanceof Error ? e.constructor.name : 'Erro'})`);
-        await registrarSemFalhar(dep, { ...base, resposta: null, estado: 'erro', modelo: dep.modelo, tokensEntrada: null, tokensSaida: null, fontes: fontesDoRegistro(trechos) });
-        return responderJson({ ok: false, mensagem: 'A AI Know não conseguiu responder agora. Tente de novo; a busca continua funcionando.' }, 502);
+        await registrarSemFalhar(dep, {
+          ...base,
+          resposta: null,
+          estado: 'erro',
+          modelo: dep.modelo,
+          tokensEntrada: null,
+          tokensSaida: null,
+          fontes: fontesDoRegistro(trechos),
+        });
+        return responderJson({
+          ok: false,
+          mensagem: 'A AI Know não conseguiu responder agora. Tente de novo; a busca continua funcionando.',
+        }, 502);
       }
 
       const tokens = { tokensEntrada: resposta.usage.input_tokens, tokensSaida: resposta.usage.output_tokens };
       if (resposta.stop_reason === 'refusal') {
-        await registrarSemFalhar(dep, { ...base, resposta: null, estado: 'recusada', modelo: dep.modelo, ...tokens, fontes: fontesDoRegistro(trechos) });
-        return responderJson({ ok: false, mensagem: 'A AI Know não pôde responder a essa pergunta. Tente reformular; a busca continua funcionando.' }, 422);
+        await registrarSemFalhar(dep, {
+          ...base,
+          resposta: null,
+          estado: 'recusada',
+          modelo: dep.modelo,
+          ...tokens,
+          fontes: fontesDoRegistro(trechos),
+        });
+        return responderJson({
+          ok: false,
+          mensagem: 'A AI Know não pôde responder a essa pergunta. Tente reformular; a busca continua funcionando.',
+        }, 422);
       }
 
       const lida = lerResposta(resposta, trechos);
       if (lida.texto.trim() === '') {
-        await registrarSemFalhar(dep, { ...base, resposta: null, estado: 'erro', modelo: dep.modelo, ...tokens, fontes: fontesDoRegistro(trechos) });
-        return responderJson({ ok: false, mensagem: 'A AI Know não conseguiu responder agora. Tente de novo; a busca continua funcionando.' }, 502);
+        await registrarSemFalhar(dep, {
+          ...base,
+          resposta: null,
+          estado: 'erro',
+          modelo: dep.modelo,
+          ...tokens,
+          fontes: fontesDoRegistro(trechos),
+        });
+        return responderJson({
+          ok: false,
+          mensagem: 'A AI Know não conseguiu responder agora. Tente de novo; a busca continua funcionando.',
+        }, 502);
       }
-      await registrarSemFalhar(dep, { ...base, resposta: lida.texto, estado: 'respondida', modelo: dep.modelo, ...tokens, fontes: fontesDoRegistro(trechos) });
-      const ok: RespostaDaFuncao = { ok: true, estado: 'respondida', partes: lida.partes, fontes: lida.fontes, modelo: dep.modelo };
+      await registrarSemFalhar(dep, {
+        ...base,
+        resposta: lida.texto,
+        estado: 'respondida',
+        modelo: dep.modelo,
+        ...tokens,
+        fontes: fontesDoRegistro(trechos),
+      });
+      const ok: RespostaDaFuncao = {
+        ok: true,
+        estado: 'respondida',
+        partes: lida.partes,
+        fontes: lida.fontes,
+        modelo: dep.modelo,
+      };
       return responderJson(ok);
     } catch {
       console.error('perguntar-kb: não foi possível concluir');
