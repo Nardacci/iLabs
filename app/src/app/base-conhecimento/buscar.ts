@@ -364,11 +364,7 @@ const rotuloDe = (nome: string, valor: string | null): string =>
               } @else if (t.estado === 'erro') {
                 <p class="msg bad" role="alert">{{ t.erro }}</p>
               } @else if (t.resultados.length === 0) {
-                @if (
-                  t.iaEstado !== 'pronta' &&
-                  t.iaEstado !== 'sem_base' &&
-                  t.iaEstado !== 'carregando'
-                ) {
+                @if (t.iaEstado === 'sem_ia') {
                   <p>
                     Nada encontrado para “{{ t.termo }}”. Tente outras palavras ou menos palavras.
                   </p>
@@ -706,7 +702,8 @@ export class BuscarKb {
         id,
         pergunta: original,
         termo: texto,
-        estado: 'buscando',
+        // com o nome "AI Know" não há busca de documentos na tela: só a IA (que acha os trechos no servidor)
+        estado: comIa ? 'pronto' : 'buscando',
         erro: null,
         resultados: [],
         expandidos: {},
@@ -717,11 +714,8 @@ export class BuscarKb {
       },
     ]);
     this.mostrar(id);
-    // Com o nome, a busca e a IA andam juntas; uma não espera pela outra (a IA é mais lenta e pode estar desligada).
-    await Promise.all([
-      this.buscarDocumentos(id, texto),
-      comIa ? this.perguntarIa(id, texto) : Promise.resolve(),
-    ]);
+    // Com o nome, só a IA; sem o nome, só a busca nos documentos (decisão do responsável, 15/11/2026).
+    await (comIa ? this.perguntarIa(id, texto) : this.buscarDocumentos(id, texto));
     this.ocupado.set(false);
     this.mostrar(id);
     this.campo()?.nativeElement.focus();
