@@ -2,6 +2,16 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-15 · Claude · Migrações 15, 16 e 17 aplicadas no Supabase (Profissional completo)
+
+- **Autorização do responsável** ("pode aplicar", 15/11/2026), depois dos testes (635 de 635). Registro completo: `banco/execucao/2026-11-15-migracoes-15-16/resultado.md`.
+- **Aplicado em ordem:** 15 (`profissional_completo`), 16 (`dados_de_apoio_profissional`: 27 UF, 5.571 municípios, 2.538 ocupações, 33 órgãos, 6 operadoras) e 17 (`sem_exclusao_fisica_search_path`, que corrige um aviso do Supabase trazido pela 15).
+- **Achado antes de aplicar:** o banco real tem migrações `kb_*` (base de conhecimento, outra linha de trabalho, não estão neste repositório) e `colunas_editaveis` tinha a entrada `kb_documentos`. A migração 15 reescreve a lista inteira; **mantive a entrada** antes de aplicar. Quem trouxer as migrações `kb_*` para este repositório deve conferir essa lista.
+- **Como a 16 entrou:** os 327 KB foram buscados pelo próprio banco no repositório público e executados só depois de conferir o hash; a extensão `http` ficou ligada apenas durante a aplicação e foi removida (conferido).
+- **Conferido no banco real:** contagens, RLS em todas as tabelas, só `SELECT` para `authenticated` nas tabelas novas, funções novas só para `authenticated`, gatilhos, `kb_documentos` intacto. Avisos de segurança: só os já conhecidos.
+- **Não provado:** o cadastro pela tela contra o banco real. Sem profissionais gravados antes, nada ficou incompleto.
+- **Para o app novo aparecer no site:** o site publica a partir da `main`; esta linha de trabalho está na branch `main-oomvmm`, que ainda precisa ser levada à `main` (decisão do responsável).
+
 ## 2026-11-13 · Claude · Profissional completo: banco (migrações 15 e 16), dados de apoio e tela nova (NÃO aplicado no Supabase)
 
 - **Pedido do responsável:** construir as etapas 1 a 3 do `docs/principal/profissional.md` (banco, dados de apoio, tela), com as regras do legado e layout novo.

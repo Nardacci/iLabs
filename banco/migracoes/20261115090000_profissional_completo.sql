@@ -339,6 +339,9 @@ language sql immutable set search_path = '' as $$
       'codigo_postal', 'cidade', 'cargo', 'matricula', 'especializacao']
     when 'estrutura_organizacional' then array['codigo', 'nome', 'tipo', 'pai_id', 'responsavel_id']
     when 'centros_custo'          then array['codigo', 'descricao']
+    -- mantido do banco real (migrações da base de conhecimento, feitas em outra linha de trabalho): esta lista é
+    -- reescrita inteira, então a entrada dele precisa continuar aqui
+    when 'kb_documentos'          then array['titulo', 'legenda', 'tipo', 'origem', 'confidencialidade', 'data_fonte', 'identificacao_oficial', 'consultado_em', 'situacao_lida']
   end
 $$;
 
