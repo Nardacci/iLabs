@@ -109,11 +109,11 @@ const clicar = async (f: Fixture, texto: string): Promise<void> => {
 };
 const textoDe = (f: Fixture): string => raiz(f).textContent?.replace(/\s+/g, ' ') ?? '';
 
-describe('tela Buscar na base de conhecimento', () => {
+describe('tela IA Know (busca na base de conhecimento)', () => {
   it('mostra o campo de busca, o filtro de tipo com todos os tipos e o de fonte com as fontes da empresa', async () => {
     preparar();
     const f = await abrir();
-    expect(raiz(f).querySelector('h1')?.textContent).toContain('Buscar na base de conhecimento');
+    expect(raiz(f).querySelector('h1')?.textContent).toContain('IA Know');
     const tipos = [...(campo(f, 'filtro-tipo-kb') as HTMLSelectElement).options].map(
       (o) => o.value,
     );
