@@ -402,7 +402,7 @@ const rotuloDe = (nome: string, valor: string | null): string =>
         @if (turnos().length === 0) {
           <section class="vazio" aria-labelledby="ai-know-titulo">
             <h1 id="ai-know-titulo">AI Know</h1>
-            <p>Todo o conhecimento da sua farmácia, a uma pergunta de distância.</p>
+            <p>Todo conhecimento da sua indústria, a uma pergunta de distância.</p>
           </section>
         } @else {
           <h1 class="sr">AI Know</h1>

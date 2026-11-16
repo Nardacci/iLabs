@@ -353,7 +353,7 @@ describe('tela AI Know (busca na base de conhecimento)', () => {
       const vazio = raiz(f).querySelector('.vazio');
       expect(vazio?.querySelector('h1')?.textContent).toBe('AI Know');
       expect(vazio?.querySelectorAll('p')).toHaveLength(1);
-      expect(vazio?.textContent).toContain('Todo o conhecimento da sua farmácia');
+      expect(vazio?.textContent).toContain('Todo conhecimento da sua indústria');
     });
   });
 
