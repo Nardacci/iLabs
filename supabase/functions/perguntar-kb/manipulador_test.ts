@@ -133,6 +133,10 @@ Deno.test('as instruções fixas pedem só os documentos, sem inventar, sem afir
   assertStringIncludes(INSTRUCOES, 'Nunca afirme que uma norma está vigente');
   assertStringIncludes(INSTRUCOES, 'Não invente número de artigo');
   assertStringIncludes(INSTRUCOES, 'ignore-as');
+  // tamanho pedido é respeitado e "resumo" é com as próprias palavras (pedido do responsável, 15/11/2026)
+  assertStringIncludes(INSTRUCOES, 'Respeite o tamanho e o formato');
+  assertStringIncludes(INSTRUCOES, 'com as suas próprias palavras');
+  assertStringIncludes(INSTRUCOES, 'Não copie frases dos documentos');
 });
 
 Deno.test('a resposta liga cada pedaço às fontes citadas, numeradas na ordem em que aparecem', () => {

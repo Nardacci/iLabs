@@ -281,6 +281,23 @@ const rotuloDe = (nome: string, valor: string | null): string =>
       clip-path: inset(50%);
       white-space: nowrap;
     }
+    .modo {
+      display: flex;
+      justify-content: center;
+      margin: 6px 0 0;
+    }
+    .modo label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .modo input {
+      accent-color: var(--accent);
+      margin: 0;
+    }
     .nota {
       text-align: center;
       font-size: 0.8rem;
@@ -507,7 +524,7 @@ const rotuloDe = (nome: string, valor: string | null): string =>
           id="pergunta-kb"
           rows="1"
           [formControl]="pergunta"
-          placeholder="Escreva o que você procura…"
+          [placeholder]="modoIa() ? 'Pergunte à AI Know…' : 'Escreva o que você procura…'"
           autocomplete="off"
           aria-describedby="dica-pergunta-kb"
           (keydown)="aoTeclar($event)"
@@ -524,6 +541,12 @@ const rotuloDe = (nome: string, valor: string | null): string =>
             />
           </svg>
         </button>
+      </div>
+      <div class="modo">
+        <label>
+          <input type="checkbox" [checked]="modoIa()" (change)="alternarModo($event)" />
+          Perguntar à AI Know
+        </label>
       </div>
       <p class="nota" id="dica-pergunta-kb">
         Enter envia; Shift + Enter pula linha. Comece com “AI Know,” para pedir uma resposta escrita
@@ -546,6 +569,13 @@ export class BuscarKb {
   protected readonly turnos = signal<Turno[]>([]);
   protected readonly ocupado = signal(false);
   protected readonly pergunta = new FormControl('', { nonNullable: true });
+  /** Chave "Perguntar à AI Know": ligada, toda pergunta vai à IA sem precisar digitar o nome. */
+  protected readonly modoIa = signal(false);
+
+  protected alternarModo(ev: Event): void {
+    this.modoIa.set((ev.target as HTMLInputElement).checked);
+    this.campo()?.nativeElement.focus();
+  }
 
   constructor() {
     effect(() => {
@@ -690,9 +720,12 @@ export class BuscarKb {
   protected async perguntar(bruto: string): Promise<void> {
     const original = bruto.trim();
     if (!original || this.ocupado()) return;
-    const { busca: texto, comIa } = lerPedido(original);
+    const { busca: texto, comIa: pelaNome } = lerPedido(original);
     // só o nome, sem pergunta: não há o que buscar nem o que perguntar
     if (!texto) return;
+    // digitar o nome liga a chave; com a chave ligada, o nome é opcional
+    if (pelaNome) this.modoIa.set(true);
+    const comIa = pelaNome || this.modoIa();
     this.ocupado.set(true);
     this.pergunta.setValue('');
     const id = this.proximoId++;
