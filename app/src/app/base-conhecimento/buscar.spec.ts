@@ -327,31 +327,56 @@ describe('tela AI Know (busca na base de conhecimento)', () => {
       expect(buscar).not.toHaveBeenCalled();
     });
 
-    it('o texto de ajuda explica como pedir a resposta da IA', async () => {
+    it('o painel "Como usar" explica a IA, as aspas, o tamanho, a privacidade e as teclas', async () => {
       preparar();
       const f = await abrir();
-      expect(textoDe(f)).toContain('Comece com “AI Know,” para pedir uma resposta escrita pela IA');
+      const painel = raiz(f).querySelector('aside.painel');
+      expect(painel?.getAttribute('aria-label')).toBe('Como usar a AI Know');
+      const t = painel?.textContent?.replace(/\s+/g, ' ') ?? '';
+      expect(t).toContain('comece a pergunta com “AI Know,”');
+      expect(t).toContain('Use aspas para achar uma frase exata');
+      expect(t).toContain('em 2 parágrafos');
+      expect(t).toContain('Documentos Confidenciais nunca são enviados à IA');
+      expect(t).toContain('Shift + Enter pula linha');
+    });
+
+    it('sob o campo não há mais texto de orientação, só o interruptor', async () => {
+      preparar();
+      const f = await abrir();
+      expect(raiz(f).querySelector('form .nota')).toBeNull();
+      expect(raiz(f).querySelector('form')?.textContent).not.toContain('Enter envia');
+    });
+
+    it('a tela vazia mostra só o nome e uma frase curta', async () => {
+      preparar();
+      const f = await abrir();
+      const vazio = raiz(f).querySelector('.vazio');
+      expect(vazio?.querySelector('h1')?.textContent).toBe('AI Know');
+      expect(vazio?.querySelectorAll('p')).toHaveLength(1);
+      expect(vazio?.textContent).toContain('Todo conhecimento da sua indústria');
     });
   });
 
   describe('chave "Perguntar à AI Know"', () => {
-    const chave = (f: Fixture): HTMLInputElement => {
-      const el = raiz(f).querySelector<HTMLInputElement>('.modo input[type="checkbox"]');
-      if (!el) throw new Error('chave não encontrada');
+    const chave = (f: Fixture): HTMLButtonElement => {
+      const el = raiz(f).querySelector<HTMLButtonElement>('.modo button[role="switch"]');
+      if (!el) throw new Error('interruptor não encontrado');
       return el;
     };
-    const ligar = async (f: Fixture, ligada: boolean): Promise<void> => {
-      const el = chave(f);
-      el.checked = ligada;
-      el.dispatchEvent(new Event('change', { bubbles: true }));
-      await esperar(f);
+    const ligada = (f: Fixture): boolean => chave(f).getAttribute('aria-checked') === 'true';
+    const ligar = async (f: Fixture, ligar: boolean): Promise<void> => {
+      if (ligada(f) !== ligar) {
+        chave(f).click();
+        await esperar(f);
+      }
     };
 
     it('nasce desligada e tem nome acessível', async () => {
       preparar();
       const f = await abrir();
-      expect(chave(f).checked).toBe(false);
-      expect(raiz(f).querySelector('.modo label')?.textContent?.trim()).toBe('Perguntar à AI Know');
+      expect(ligada(f)).toBe(false);
+      expect(chave(f).textContent?.trim()).toBe('Perguntar à AI Know');
+      expect(raiz(f).querySelector('input[type="checkbox"]')).toBeNull();
       expect(campo(f).placeholder).toBe('Escreva o que você procura…');
     });
 
@@ -388,7 +413,7 @@ describe('tela AI Know (busca na base de conhecimento)', () => {
       preparar([RESULTADO], IA_RESPONDEU);
       const f = await abrir();
       await buscarPor(f, 'AI Know, lote');
-      expect(chave(f).checked).toBe(true);
+      expect(ligada(f)).toBe(true);
     });
 
     it('a tela com a chave ligada não tem violações de acessibilidade', async () => {
