@@ -2,6 +2,13 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-15 · Claude · AI Know: chave "Perguntar à AI Know", resumo com palavras próprias e modelo Haiku (em teste)
+
+- **Chave na tela:** caixa discreta "Perguntar à AI Know" abaixo do campo. Ligada, toda pergunta vai à IA sem digitar o nome; digitar "AI Know," continua valendo e liga a chave. É só roteamento da tela: permissão, Confidencial e limites seguem no servidor. App: 48 testes na tela, com acessibilidade.
+- **Instruções da IA:** respeita o tamanho/formato pedido ("2 parágrafos", "em 3 linhas") e, em resumo/síntese/explicação, reescreve com as próprias palavras em texto corrido, sem copiar nem listar documento por documento; diz o que não foi encontrado.
+- **Modelo:** padrão trocado para `claude-haiku-5-5` (critério do responsável: custo-benefício, não só preço). Função `perguntar-kb` republicada (versão 4). **Em teste:** comparar na tela com a mesma pergunta que o Sonnet respondeu (resumo do módulo Principal); se a qualidade não servir, voltar ao Sonnet pelo segredo `KB_IA_MODELO=claude-sonnet-5-5`, sem mexer no código.
+- **Achado:** o documento "Acesso ao sistema - Documento Completo (confidencial)" está classificado como Público e foi enviado à IA; a regra olha o campo, não o título. Reclassificar é decisão do responsável (os 8 documentos atuais estão todos como Público).
+
 ## 2026-11-15 · Claude · AI Know: correção do "statement timeout" (regras de acesso lentas) e, com o nome, só a IA
 
 - **Defeito achado em uso real:** a pergunta "AI Know, gere pra mim um resumo do módulo principal..." falhou com "canceling statement due to statement timeout". Causa medida: a busca da IA usa "qualquer palavra" e casa com quase todos os 2.075 trechos; a regra de acesso (RLS) chamava `empresa_atual()` e `pode()` uma vez por linha. Com a pessoa logada: **5.011 ms** (sem a regra: 22 ms); o limite da pessoa logada é 8 s.

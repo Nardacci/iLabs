@@ -334,6 +334,71 @@ describe('tela AI Know (busca na base de conhecimento)', () => {
     });
   });
 
+  describe('chave "Perguntar à AI Know"', () => {
+    const chave = (f: Fixture): HTMLInputElement => {
+      const el = raiz(f).querySelector<HTMLInputElement>('.modo input[type="checkbox"]');
+      if (!el) throw new Error('chave não encontrada');
+      return el;
+    };
+    const ligar = async (f: Fixture, ligada: boolean): Promise<void> => {
+      const el = chave(f);
+      el.checked = ligada;
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+      await esperar(f);
+    };
+
+    it('nasce desligada e tem nome acessível', async () => {
+      preparar();
+      const f = await abrir();
+      expect(chave(f).checked).toBe(false);
+      expect(raiz(f).querySelector('.modo label')?.textContent?.trim()).toBe('Perguntar à AI Know');
+      expect(campo(f).placeholder).toBe('Escreva o que você procura…');
+    });
+
+    it('ligada, a pergunta vai à IA sem o nome e não busca documentos', async () => {
+      const { buscar, perguntarIa } = preparar([RESULTADO], IA_RESPONDEU);
+      const f = await abrir();
+      await ligar(f, true);
+      expect(campo(f).placeholder).toBe('Pergunte à AI Know…');
+      await buscarPor(f, 'resuma o módulo Principal');
+      expect(perguntarIa).toHaveBeenCalledWith('resuma o módulo Principal');
+      expect(buscar).not.toHaveBeenCalled();
+      expect(raiz(f).querySelector('.ia')).not.toBeNull();
+    });
+
+    it('ligada, o nome digitado continua valendo e não vai repetido à IA', async () => {
+      const { perguntarIa } = preparar([RESULTADO], IA_RESPONDEU);
+      const f = await abrir();
+      await ligar(f, true);
+      await buscarPor(f, 'AI Know, por que falha');
+      expect(perguntarIa).toHaveBeenCalledWith('por que falha');
+    });
+
+    it('desligada de novo, volta a só buscar nos documentos', async () => {
+      const { buscar, perguntarIa } = preparar([RESULTADO], IA_RESPONDEU);
+      const f = await abrir();
+      await ligar(f, true);
+      await ligar(f, false);
+      await buscarPor(f, 'lote');
+      expect(buscar).toHaveBeenCalledWith('lote', { limite: 30 });
+      expect(perguntarIa).not.toHaveBeenCalled();
+    });
+
+    it('digitar o nome liga a chave', async () => {
+      preparar([RESULTADO], IA_RESPONDEU);
+      const f = await abrir();
+      await buscarPor(f, 'AI Know, lote');
+      expect(chave(f).checked).toBe(true);
+    });
+
+    it('a tela com a chave ligada não tem violações de acessibilidade', async () => {
+      preparar();
+      const f = await abrir();
+      await ligar(f, true);
+      expect(await violacoesDeAcessibilidade(f)).toEqual([]);
+    });
+  });
+
   describe('resposta escrita da IA', () => {
     it('a pergunta vai só à IA (a busca de documentos da tela não roda)', async () => {
       const { buscar, perguntarIa } = preparar([RESULTADO], IA_RESPONDEU);
