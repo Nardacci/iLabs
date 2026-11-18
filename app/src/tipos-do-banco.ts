@@ -1727,6 +1727,7 @@ export type Database = {
       desbloquear_usuario: { Args: { p_usuario_id: string; p_motivo: string }; Returns: undefined }
       efeito_da_ultima_alteracao: { Args: { p_tabela: string; p_id: string }; Returns: { exige_novo_login: boolean | null; proprio: boolean | null; nome: string | null; campos: string[] | null }[] }
       exigir_troca_de_senha: { Args: { p_usuario_id: string; p_motivo: string }; Returns: undefined }
+      exportar_profissionais: { Args: { p_busca?: string; p_situacoes?: string[]; p_grupo?: string; p_funcao?: string }; Returns: { codigo: string | null; nome: string | null; cpf_mascarado: string | null; cargo_principal: string | null; setor: string | null; grupo: string | null; cargo: string | null; matricula: string | null; situacao: string | null }[] }
       inativar_usuario: { Args: { p_usuario_id: string; p_motivo: string }; Returns: undefined }
       kb_arquivo_ja_existe: { Args: { p_checksum: string }; Returns: { documento_id: string | null; titulo: string | null; numero: number | null }[] }
       kb_buscar: { Args: { p_consulta: string; p_tipos?: string[]; p_fonte_id?: string; p_limite?: number; p_modulo?: string }; Returns: { trecho_id: string | null; documento_id: string | null; versao_id: string | null; versao_numero: number | null; titulo: string | null; tipo: string | null; origem: string | null; fonte_nome: string | null; caminho: string | null; secao: string | null; pagina: number | null; trecho: string | null; relevancia: number | null; repetido_em: number | null; tipo_arquivo: string | null; modulo: string | null; legenda: string | null }[] }
@@ -1760,6 +1761,7 @@ export type Database = {
       reativar_usuario: { Args: { p_usuario_id: string; p_motivo: string }; Returns: undefined }
       registrar_acesso: { Args: { p_email: string; p_evento: string; p_resultado: string; p_ip?: string; p_navegador?: string; p_detalhe?: string }; Returns: number }
       registrar_atividade: { Args: never; Returns: undefined }
+      registrar_impressao: { Args: { p_tabela: string; p_filtros: Json; p_linhas: number }; Returns: undefined }
       registrar_troca_de_senha: { Args: { p_usuario_id: string; p_ip?: string; p_navegador?: string }; Returns: undefined }
       salvar_profissional: { Args: { p_id: string; p_dados: Json; p_ocupacoes: string[]; p_funcoes: string[]; p_principal: string; p_motivo: string }; Returns: string }
       trocar_perfil_usuario: { Args: { p_usuario_id: string; p_perfil_ids: string[]; p_motivo: string }; Returns: undefined }

@@ -25,6 +25,7 @@ import { debounceTime } from 'rxjs';
 import type { LinhaDe } from '../dados/banco';
 import { BancoService } from '../dados/banco';
 import { ConsultaService } from '../dados/consulta';
+import { baixarArquivo, gerarCsv } from '../dados/csv';
 import {
   type ArquivoJaEnviado,
   conferirArquivo,
@@ -148,6 +149,11 @@ const TAMANHO_DA_PAGINA = 10;
           <button type="button" class="btn" [class.sr]="!podeImprimir()" (click)="imprimir()">
             Imprimir
           </button>
+          @if (cadastro().exportacao && podeImprimir()) {
+            <button type="button" class="btn" [disabled]="exportando()" (click)="exportar()">
+              {{ exportando() ? 'Exportando…' : 'Exportar (CSV)' }}
+            </button>
+          }
           @if (podeIncluir()) {
             <button type="button" class="btn primary" (click)="abrirFormulario(null)">
               {{ novo() }} {{ cadastro().singular }}
@@ -897,6 +903,9 @@ export class Cadastro {
     if (c.formato === 'cpf' && typeof valor === 'string') {
       return valor.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
     }
+    if (c.formato === 'cpf-mascarado' && typeof valor === 'string') {
+      return valor.replace(/^\d{3}(\d{3})(\d{3})\d{2}$/, '***.$1.$2-**');
+    }
     return this.texto(valor);
   }
 
@@ -993,7 +1002,9 @@ export class Cadastro {
 
   /** O banco guarda o CPF só com dígitos; a pessoa pode digitar com pontos e traço. */
   private normalizar(c: CampoDeCadastro, valor: string): string {
-    return c.formato === 'cpf' ? valor.replace(/\D/g, '') : valor.trim();
+    return c.formato === 'cpf' || c.formato === 'cpf-mascarado'
+      ? valor.replace(/\D/g, '')
+      : valor.trim();
   }
 
   protected campoDoFiltro(nome: string): CampoDeCadastro | undefined {
@@ -1059,8 +1070,69 @@ export class Cadastro {
     void this.carregar();
   }
 
-  protected imprimir(): void {
+  /** Os filtros em uso (busca, situação e filtros extras), para o registro de impressão e para a exportação. */
+  private filtrosEmUso(): Record<string, string | string[]> {
+    const em: Record<string, string | string[]> = {
+      situacoes: [...SITUACOES_DO_FILTRO[this.filtroSituacao.value]],
+    };
+    const busca = this.busca.value.trim();
+    if (busca) em['busca'] = busca;
+    for (const [coluna, valor] of Object.entries(this.valoresDosFiltros()))
+      if (valor) em[coluna] = valor;
+    return em;
+  }
+
+  /**
+   * Imprimir: antes de abrir a impressão, o banco REGISTRA quem imprimiu, quando e com que filtros (o legado não
+   * registrava). Sem o registro, não imprime. O navegador imprime; o banco só consegue registrar, não impedir.
+   */
+  protected async imprimir(): Promise<void> {
+    this.erro.set(null);
+    try {
+      await this.banco.rpc('registrar_impressao', {
+        p_tabela: this.cadastro().tabela,
+        p_filtros: this.filtrosEmUso(),
+        p_linhas: this.linhasVisiveis().length,
+      });
+    } catch (e) {
+      this.erro.set(mensagemDeErro(e));
+      return;
+    }
     window.print();
+  }
+
+  protected readonly exportando = signal(false);
+
+  /**
+   * Exportar: o banco devolve só as colunas necessárias (CPF mascarado), respeitando a busca, a situação e os filtros
+   * da lista, confere a permissão "imprimir" e registra a exportação. O arquivo é montado aqui e baixado; nada
+   * fica guardado no servidor.
+   */
+  protected async exportar(): Promise<void> {
+    const exp = this.cadastro().exportacao;
+    if (!exp || this.exportando()) return;
+    this.exportando.set(true);
+    this.erro.set(null);
+    this.aviso.set(null);
+    try {
+      const em = this.filtrosEmUso();
+      const argumentos: Record<string, unknown> = {
+        p_busca: em['busca'] ?? null,
+        p_situacoes: em['situacoes'],
+      };
+      for (const [coluna, parametro] of Object.entries(exp.filtros ?? {})) {
+        argumentos[parametro] = em[coluna] ?? null;
+      }
+      const chamar = this.banco.rpc.bind(this.banco) as (n: string, a: unknown) => Promise<unknown>;
+      const linhas = (await chamar(exp.funcaoDoBanco, argumentos)) as Record<string, unknown>[];
+      const hoje = new Date().toISOString().slice(0, 10);
+      baixarArquivo(`${exp.arquivo}-${hoje}.csv`, gerarCsv(exp.colunas, linhas));
+      this.aviso.set(`Lista exportada (${linhas.length} linha(s)) e registrada na auditoria.`);
+    } catch (e) {
+      this.erro.set(mensagemDeErro(e));
+    } finally {
+      this.exportando.set(false);
+    }
   }
 
   protected fechar(): void {

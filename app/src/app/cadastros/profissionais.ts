@@ -14,6 +14,25 @@ export const profissionais = definirCadastro({
   identificador: 'nome',
   busca: ['codigo', 'nome', 'cpf'],
   ordenarPor: 'nome',
+  // Filtros extras da lista (a exportação e a impressão respeitam os mesmos; no legado o Excel os ignorava)
+  filtros: ['grupo_id', 'funcao_profissional_id'],
+  // Exportar: só o necessário (sem mãe, pai, identidade, endereço, telefones, e-mail), CPF mascarado, com registro na auditoria
+  exportacao: {
+    funcaoDoBanco: 'exportar_profissionais',
+    arquivo: 'profissionais',
+    filtros: { grupo_id: 'p_grupo', funcao_profissional_id: 'p_funcao' },
+    colunas: [
+      { chave: 'codigo', rotulo: 'Código' },
+      { chave: 'nome', rotulo: 'Nome' },
+      { chave: 'cpf_mascarado', rotulo: 'CPF' },
+      { chave: 'cargo_principal', rotulo: 'Cargo principal' },
+      { chave: 'setor', rotulo: 'Setor' },
+      { chave: 'grupo', rotulo: 'Grupo' },
+      { chave: 'cargo', rotulo: 'Cargo' },
+      { chave: 'matricula', rotulo: 'Matrícula' },
+      { chave: 'situacao', rotulo: 'Situação' },
+    ],
+  },
   formularioProprio: () =>
     import('./profissional/formulario-profissional').then((m) => m.FormularioProfissional),
   campos: [
@@ -23,7 +42,7 @@ export const profissionais = definirCadastro({
       nome: 'cpf',
       rotulo: 'CPF',
       obrigatorio: true,
-      formato: 'cpf',
+      formato: 'cpf-mascarado',
       dica: 'Pode digitar com pontos e traço. O sistema confere os dígitos.',
     },
     {

@@ -2,6 +2,21 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-18 · Claude · Migração 23 (exportar e imprimir Profissionais) APLICADA no Supabase
+
+- **Autorização do responsável** ("pode aplicar", 18/11/2026), depois dos testes. Registro e conferência: `banco/execucao/2026-11-18-migracao-23/resultado.md`.
+- **Antes:** a auditoria só aceitava I/A/E; nenhuma função nova existia; 0 profissionais; **todas as listas do app têm função mapeada** em `funcao_do_cadastro` (necessário porque "Imprimir" agora registra antes de abrir a impressão).
+- **Depois (banco real):** ação X aceita na auditoria; `exportar_profissionais` e `registrar_impressao` só para quem está logado; funções internas fechadas à API; máscara conferida (`***.982.247-**`); avisos de segurança só os conhecidos.
+- **Ordem de entrega cumprida:** com a migração no banco, o app da etapa 4 já pode ser mesclado e publicado.
+- **Não provado:** exportar e imprimir pela tela contra o banco real (0 linhas X na auditoria por enquanto).
+
+## 2026-11-15 · Claude · Etapa 4 do Profissional: exportar e imprimir com permissão, dados mínimos e registro (migração 23 NÃO aplicada)
+
+- **Banco (migração 23, `20261120090000_exportar_profissionais.sql`):** `ilab.exportar_profissionais` (busca, situação, grupo e cargo principal; só código, nome, **CPF mascarado** `***.982.247-**`, cargo principal, setor, grupo, cargo, matrícula e situação; sem mãe, pai, identidade, endereço, telefones, e-mail nem nascimento; exige a função "imprimir" de Profissionais); `ilab.registrar_impressao`; a **auditoria ganha a ação X** (quem, quando, filtros e quantas linhas, sem guardar os dados; imutável como o resto). Testes do banco: **1.020 de 1.020** (41 novos nesta migração).
+- **App:** a lista de Profissionais ganha os filtros **Grupo** e **Cargo principal**, o botão **Exportar (CSV)** (só com "imprimir"; Excel em português: ponto e vírgula, UTF-8 com marca, proteção contra fórmula), CPF mascarado na lista e na impressão, e **Imprimir só abre depois que o banco registra** (vale para todas as listas). Histórico mostra a ação X como "Exportação ou impressão". Testes do app **281 de 281**, build e navegador **26 de 26**, lint, tipos e formatação com saída 0.
+- **Honestidade sobre os limites:** o navegador imprime; o banco consegue **registrar, não impedir** (Ctrl+P continua existindo). O CPF mascarado na lista é só apresentação: o dado inteiro chega ao navegador de quem pode consultar o cadastro.
+- **ORDEM DE ENTREGA (importante):** a lista passa a chamar `ilab.registrar_impressao` ao imprimir. **Aplicar a migração 23 no Supabase ANTES de mesclar e publicar o app**; senão "Imprimir" falha em todas as listas ("função não existe") até a migração entrar.
+- **Pendências:** autorização para aplicar a 23; PR da etapa 4; prova ao vivo do CEP; CPF de excluído (aguarda ok); listas de sexo e órgão da classe; mãe obrigatória; aba Histórico com nomes técnicos das colunas.
 ## 2026-11-15 · Claude · AI Know: chave "Perguntar à AI Know", resumo com palavras próprias e modelo Haiku (em teste)
 
 - **Chave na tela:** caixa discreta "Perguntar à AI Know" abaixo do campo. Ligada, toda pergunta vai à IA sem digitar o nome; digitar "AI Know," continua valendo e liga a chave. É só roteamento da tela: permissão, Confidencial e limites seguem no servidor. App: 48 testes na tela, com acessibilidade.
