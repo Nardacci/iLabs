@@ -2,6 +2,14 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-18 · Claude · Passo 1 do estudo: cadastros globais (rascunho para validação)
+
+- **Método do responsável:** 1) cadastros globais para o Principal, 2) interdependências, 3) fluxos e informações, 4) só então telas e ondas. Este é o passo 1.
+- **Entregue:** `docs/roadmap/cadastros-globais.md` e `cadastros-globais.csv` (50 cadastros: 39 Principal, 6 no módulo, 5 plataforma). Base: 650 tabelas dos 9 módulos, cerca de 30 comparadas coluna a coluna.
+- **Achados:** pessoa jurídica em 4 versões; equipamento em 3; unidade de medida em 3; material em 2 modelos (Item do Estoque e Produto/Insumo da Produção); DCB, acondicionamento e embalagem copiados em Estoque e Produção.
+- **Em aberto (seção 5 do documento):** material único, qualificação de fornecedor, Local físico/Posto, SJB e Nível de Segurança, Instrumento × Equipamento, dados fiscais.
+- **Próximo:** passo 2 (interdependências e ordem de construção). O roadmap de telas anterior fica suspenso até o passo 4.
+
 ## 2026-11-18 · Claude · Correção de escopo: o iLabs é completo (nove módulos)
 
 - **Responsável:** "o nosso sistema será completo... remodelado e completo"; não é versão igual à do IVB. Gravado em `docs/decisoes.md`; aviso no topo de `docs/roadmap/roadmap-de-telas.md`.
