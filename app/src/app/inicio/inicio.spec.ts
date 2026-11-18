@@ -44,4 +44,10 @@ describe('tela principal (Início)', () => {
     const f = abrir([permissao('kb.documentos')]);
     expect(await violacoesDeAcessibilidade(f)).toEqual([]);
   });
+
+  it('tem o cartão que abre a avaliação dos cadastros globais, para qualquer pessoa logada', () => {
+    const f = abrir([]);
+    const link = (f.nativeElement as HTMLElement).querySelector<HTMLAnchorElement>('a.estudo-card');
+    expect(link?.getAttribute('href')).toBe('/estudo/cadastros-globais');
+  });
 });

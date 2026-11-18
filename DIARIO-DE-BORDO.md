@@ -2,6 +2,36 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-18 · Claude · Tela de avaliação dos cadastros globais, com cartão na página inicial
+
+- **Pedido do responsável:** "um card no sistema depois do login", chamando a tela de avaliação.
+- **Feito (app):** cartão "Estudo do roadmap" no Início (abre `/estudo/cadastros-globais`) e a tela `app/src/app/estudo/`: lista dos 50 cadastros com filtros, ficha por cadastro (decisão: concordo / com ajuste / discutir, e comentário), as 6 perguntas em aberto, andamento e "Resumo para colar no chat".
+- **Dados:** gerados da planilha `docs/roadmap/cadastros-globais.csv` por `node scripts/estudo-cadastros.mjs` (a planilha continua sendo a fonte; refazer o comando se ela mudar).
+- **Limites (de propósito):** não grava no banco; as respostas ficam só no navegador de quem avalia e saem pelo resumo, que vai ao chat e então ao git. A tela não tem função de permissão: qualquer pessoa logada a vê (não há regra de negócio nela). Não aparece no menu lateral, só pelo cartão e pela busca de telas.
+- **Conferido:** 294 testes, lint e build passam. **Não conferido:** a tela vista no navegador, logada (precisa do ambiente com login).
+- **Retirar depois:** quando o estudo terminar, remover o cartão, a rota e a pasta `estudo/`.
+
+## 2026-11-18 · Claude · Passo 1 do estudo: cadastros globais (rascunho para validação)
+
+- **Método do responsável:** 1) cadastros globais para o Principal, 2) interdependências, 3) fluxos e informações, 4) só então telas e ondas. Este é o passo 1.
+- **Entregue:** `docs/roadmap/cadastros-globais.md` e `cadastros-globais.csv` (50 cadastros: 39 Principal, 6 no módulo, 5 plataforma). Base: 650 tabelas dos 9 módulos, cerca de 30 comparadas coluna a coluna.
+- **Achados:** pessoa jurídica em 4 versões; equipamento em 3; unidade de medida em 3; material em 2 modelos (Item do Estoque e Produto/Insumo da Produção); DCB, acondicionamento e embalagem copiados em Estoque e Produção.
+- **Em aberto (seção 5 do documento):** material único, qualificação de fornecedor, Local físico/Posto, SJB e Nível de Segurança, Instrumento × Equipamento, dados fiscais.
+- **Próximo:** passo 2 (interdependências e ordem de construção). O roadmap de telas anterior fica suspenso até o passo 4.
+
+## 2026-11-18 · Claude · Correção de escopo: o iLabs é completo (nove módulos)
+
+- **Responsável:** "o nosso sistema será completo... remodelado e completo"; não é versão igual à do IVB. Gravado em `docs/decisoes.md`; aviso no topo de `docs/roadmap/roadmap-de-telas.md`.
+- **Efeito:** o roadmap de 18/11 (cinco módulos) está **incompleto**. Falta classificar Produção (~76 linhas de inventário), Comercial (~39), Rastreabilidade (~32) e OPE (~31) e reabrir os itens "adiar". **Próximo:** refazer o roadmap com os nove módulos.
+
+## 2026-11-18 · Claude · Estudo do roadmap de telas (rascunho para validação; nada construído)
+
+- **Pedido do responsável:** avaliar todos os repositórios do LabMedSys/iLabPharma e definir "as telas certas no momento certo" (base Principal, depois Estoque, CQ etc.).
+- **Entregue:** `docs/roadmap/roadmap-de-telas.md` (ondas 0 a 7, critérios, travas, mapa do edital do IVB, o que não construir, 13 decisões em aberto com a onda em que cada uma é necessária, riscos) e `docs/roadmap/telas-do-legado-para-o-novo.csv` (as 248 telas dos cinco módulos do IVB, cada uma com classe, onda e o que vira no iLabs).
+- **Conclusões principais:** são ~84 telas novas (não 248); o lote com situação única e a assinatura eletrônica vêm antes das telas de Estoque e CQ; Estoque e CQ são uma fatia só (recebimento até o laudo); a GQ se constrói pelas travas; reclamação e recolhimento não existem no legado e entram como construção nova.
+- **Limites:** a classificação das telas é proposta minha, feita pelos inventários, fluxos, integrações e diagnóstico (não li cada tela); sem estimativa de datas. Fora do escopo do IVB: Produção, OPE, Comercial, Rastreabilidade.
+- **Próximo:** o responsável valida e responde D1, D6, D11, D12 e D13; depois, plano detalhado da Onda 1 e desenho do modelo "situação única do lote".
+
 ## 2026-11-18 · Claude · Migração 23 (exportar e imprimir Profissionais) APLICADA no Supabase
 
 - **Autorização do responsável** ("pode aplicar", 18/11/2026), depois dos testes. Registro e conferência: `banco/execucao/2026-11-18-migracao-23/resultado.md`.

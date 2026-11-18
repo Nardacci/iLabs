@@ -30,6 +30,20 @@ import { Icone } from '../compartilhado/ui/icone';
         pela empresa.
       </p>
     }
+    <section class="estudo" aria-labelledby="estudo-t">
+      <h2 id="estudo-t">Estudo do roadmap</h2>
+      <a class="estudo-card" routerLink="/estudo/cadastros-globais">
+        <span class="modulo-ico"><il-icone nome="cadastros" /></span>
+        <span class="estudo-texto">
+          <strong>Avaliar os cadastros globais</strong>
+          <span>
+            Passo 1 do roadmap: quais dos cadastros do legado vão para o Principal. Abra, avalie e
+            comente.
+          </span>
+        </span>
+        <span class="entrar-modulo">Avaliar →</span>
+      </a>
+    </section>
     <section aria-labelledby="modulos-t">
       <h2 id="modulos-t">Módulos</h2>
       <div class="modulos">
@@ -56,6 +70,31 @@ import { Icone } from '../compartilhado/ui/icone';
         }
       </div>
     </section>
+  `,
+  styles: `
+    .estudo-card {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      padding: 1rem 1.25rem;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--accent);
+      border-radius: 12px;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .estudo-card:hover {
+      border-color: var(--accent);
+    }
+    .estudo-texto {
+      display: grid;
+      gap: 0.25rem;
+      flex: 1;
+    }
+    .estudo-texto span {
+      color: var(--muted);
+    }
   `,
 })
 export class Inicio {
