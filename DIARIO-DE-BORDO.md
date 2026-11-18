@@ -17,6 +17,20 @@ Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê
 - **Honestidade sobre os limites:** o navegador imprime; o banco consegue **registrar, não impedir** (Ctrl+P continua existindo). O CPF mascarado na lista é só apresentação: o dado inteiro chega ao navegador de quem pode consultar o cadastro.
 - **ORDEM DE ENTREGA (importante):** a lista passa a chamar `ilab.registrar_impressao` ao imprimir. **Aplicar a migração 23 no Supabase ANTES de mesclar e publicar o app**; senão "Imprimir" falha em todas as listas ("função não existe") até a migração entrar.
 - **Pendências:** autorização para aplicar a 23; PR da etapa 4; prova ao vivo do CEP; CPF de excluído (aguarda ok); listas de sexo e órgão da classe; mãe obrigatória; aba Histórico com nomes técnicos das colunas.
+## 2026-11-15 · Claude · AI Know: chave "Perguntar à AI Know", resumo com palavras próprias e modelo Haiku (em teste)
+
+- **Chave na tela:** caixa discreta "Perguntar à AI Know" abaixo do campo. Ligada, toda pergunta vai à IA sem digitar o nome; digitar "AI Know," continua valendo e liga a chave. É só roteamento da tela: permissão, Confidencial e limites seguem no servidor. App: 48 testes na tela, com acessibilidade.
+- **Tela mais limpa (pedido do responsável):** a chave virou um interruptor (`role="switch"`) discreto sob o campo; a tela vazia mostra só o nome e uma frase ("Todo conhecimento da sua indústria, a uma pergunta de distância."); os textos de orientação saíram de baixo do campo e foram para um painel "Como usar" na lateral direita (telas largas) ou um bloco recolhível (telas estreitas). App: 50 testes na tela. Não conferido visualmente no navegador.
+- **Instruções da IA:** respeita o tamanho/formato pedido ("2 parágrafos", "em 3 linhas") e, em resumo/síntese/explicação, reescreve com as próprias palavras em texto corrido, sem copiar nem listar documento por documento; diz o que não foi encontrado.
+- **Modelo:** padrão trocado para `claude-haiku-5-5` (critério do responsável: custo-benefício, não só preço). Função `perguntar-kb` republicada (versão 4). **Em teste:** comparar na tela com a mesma pergunta que o Sonnet respondeu (resumo do módulo Principal); se a qualidade não servir, voltar ao Sonnet pelo segredo `KB_IA_MODELO=claude-sonnet-5-5`, sem mexer no código.
+- **Achado:** o documento "Acesso ao sistema - Documento Completo (confidencial)" está classificado como Público e foi enviado à IA; a regra olha o campo, não o título. Reclassificar é decisão do responsável (os 8 documentos atuais estão todos como Público).
+
+## 2026-11-15 · Claude · AI Know: correção do "statement timeout" (regras de acesso lentas) e, com o nome, só a IA
+
+- **Defeito achado em uso real:** a pergunta "AI Know, gere pra mim um resumo do módulo principal..." falhou com "canceling statement due to statement timeout". Causa medida: a busca da IA usa "qualquer palavra" e casa com quase todos os 2.075 trechos; a regra de acesso (RLS) chamava `empresa_atual()` e `pode()` uma vez por linha. Com a pessoa logada: **5.011 ms** (sem a regra: 22 ms); o limite da pessoa logada é 8 s.
+- **Correção (migração 24, `20261121090000`):** as regras de acesso de `kb_documentos`, `kb_documento_versoes`, `kb_trechos`, `kb_processamento`, `kb_fontes`, `kb_regras` e `kb_ia_interacoes` passam a chamar as funções dentro de `(select ...)`, calculadas uma vez por consulta. **Nenhuma regra mudou** (mesma empresa, mesma função, mesmo confidencial). Provado no banco real numa transação desfeita: 5.011 ms caiu para 29 ms. Teste novo trava a forma rápida (991 testes no banco).
+- **Decisão do responsável:** com o nome "AI Know" a tela só chama a IA (não roda a busca de documentos); sem o nome, só a busca. "Nada encontrado" só aparece na busca sem o nome. App: testes ajustados.
+- **Pendência:** a migração 24 só entra no Supabase com a autorização do responsável. A espera de cerca de 1 minuto da IA (raciocínio do modelo) segue como ponto a melhorar.
 
 ## 2026-11-15 · Claude · AI Know no ar (IA ligada) e a IA só responde quando a pergunta começa com "AI Know"
 

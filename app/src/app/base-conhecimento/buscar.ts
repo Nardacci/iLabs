@@ -1,6 +1,8 @@
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   effect,
   ElementRef,
   inject,
@@ -101,14 +103,66 @@ const rotuloDe = (nome: string, valor: string | null): string =>
  */
 @Component({
   selector: 'il-buscar-kb',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, NgTemplateOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
     :host {
       display: block;
-      max-width: 860px;
       width: 100%;
       margin: 0 auto;
+    }
+    .tela {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 24px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    @media (min-width: 1100px) {
+      .tela {
+        grid-template-columns: minmax(0, 860px) 260px;
+        justify-content: center;
+        max-width: none;
+        gap: 40px;
+      }
+    }
+    .painel {
+      align-self: start;
+      position: sticky;
+      top: 72px;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .painel h2 {
+      font-size: 0.8rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin: 0 0 10px;
+    }
+    .painel summary {
+      cursor: pointer;
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .painel dl {
+      margin: 0;
+      display: grid;
+      gap: 12px;
+    }
+    .painel dt {
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .painel dd {
+      margin: 2px 0 0;
+      line-height: 1.45;
+    }
+    .painel kbd {
+      font: inherit;
+      border: 1px solid var(--muted);
+      border-radius: 4px;
+      padding: 0 4px;
     }
     .vazio {
       text-align: center;
@@ -120,6 +174,7 @@ const rotuloDe = (nome: string, valor: string | null): string =>
     }
     .vazio p {
       color: var(--muted);
+      font-size: 1.15rem;
       margin: 6px auto;
       max-width: 560px;
     }
@@ -281,259 +336,360 @@ const rotuloDe = (nome: string, valor: string | null): string =>
       clip-path: inset(50%);
       white-space: nowrap;
     }
-    .nota {
-      text-align: center;
+    .modo {
+      display: flex;
+      justify-content: flex-end;
+      margin: 8px 8px 0;
+    }
+    .interruptor {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 0;
+      background: transparent;
+      padding: 2px 0;
+      font: inherit;
       font-size: 0.8rem;
       color: var(--muted);
-      margin: 6px 0 0;
+      cursor: pointer;
+    }
+    .interruptor:focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 3px;
+      border-radius: 12px;
+    }
+    .trilho {
+      width: 34px;
+      height: 20px;
+      flex: none;
+      border-radius: 10px;
+      border: 1px solid var(--muted);
+      background: var(--surface);
+      position: relative;
+      transition: background 0.15s;
+    }
+    .bola {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--muted);
+      transition: transform 0.15s;
+    }
+    .interruptor[aria-checked='true'] {
+      color: var(--ink);
+    }
+    .interruptor[aria-checked='true'] .trilho {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .interruptor[aria-checked='true'] .bola {
+      background: var(--accent-ink);
+      transform: translateX(14px);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .trilho,
+      .bola {
+        transition: none;
+      }
     }
   `,
   template: `
-    @if (turnos().length === 0) {
-      <section class="vazio" aria-labelledby="ai-know-titulo">
-        <h1 id="ai-know-titulo">AI Know</h1>
-        <p>Escreva o que você procura nos documentos da base de conhecimento.</p>
-        <p>
-          Por enquanto a AI Know mostra os trechos encontrados, com a fonte. As respostas escritas
-          virão na próxima etapa.
-        </p>
-      </section>
-    } @else {
-      <h1 class="sr">AI Know</h1>
-      <div class="fio" role="log" aria-label="Conversa" aria-live="polite">
-        @for (t of turnos(); track t.id) {
-          <div class="turno" [id]="'turno-' + t.id">
-            <p class="pergunta"><span class="sr">Você: </span>{{ t.pergunta }}</p>
-            <div class="resposta">
-              @if (t.iaEstado === 'carregando') {
-                <p class="sub" role="status">
-                  A AI Know está lendo os documentos… pode levar até um minuto.
-                </p>
-              } @else if (t.iaEstado === 'pronta' || t.iaEstado === 'sem_base') {
-                <section class="ia" aria-label="Resposta da AI Know">
-                  <h2>AI Know</h2>
-                  <p class="texto-ia">
-                    @for (p of t.iaPartes; track $index) {
-                      <span [textContent]="p.texto"></span>
-                      @for (n of p.fontes; track n) {
-                        <sup class="ref" [attr.aria-label]="'fonte ' + n">[{{ n }}]</sup>
-                      }
-                    }
-                  </p>
-                  @if (t.iaFontes.length > 0) {
-                    <ul class="fontes-ia" aria-label="Fontes citadas">
-                      @for (f of t.iaFontes; track f.n) {
-                        <li>
-                          <span class="ref">[{{ f.n }}]</span>&ngsp;
-                          <strong>{{ f.titulo }}</strong>
-                          <span class="sub">
-                            · versão {{ f.versao_numero }}
-                            @if (f.secao) {
-                              · {{ f.secao }}
-                            }
-                            @if (f.pagina) {
-                              · página {{ f.pagina }}
-                            }
-                          </span>
-                          @if (f.citado) {
-                            <p class="citado">“<span [textContent]="f.citado"></span>”</p>
+    <div class="tela">
+      <div class="conversa">
+        @if (turnos().length === 0) {
+          <section class="vazio" aria-labelledby="ai-know-titulo">
+            <h1 id="ai-know-titulo">AI Know</h1>
+            <p>Todo conhecimento da sua indústria, a uma pergunta de distância.</p>
+          </section>
+        } @else {
+          <h1 class="sr">AI Know</h1>
+          <div class="fio" role="log" aria-label="Conversa" aria-live="polite">
+            @for (t of turnos(); track t.id) {
+              <div class="turno" [id]="'turno-' + t.id">
+                <p class="pergunta"><span class="sr">Você: </span>{{ t.pergunta }}</p>
+                <div class="resposta">
+                  @if (t.iaEstado === 'carregando') {
+                    <p class="sub" role="status">
+                      A AI Know está lendo os documentos… pode levar até um minuto.
+                    </p>
+                  } @else if (t.iaEstado === 'pronta' || t.iaEstado === 'sem_base') {
+                    <section class="ia" aria-label="Resposta da AI Know">
+                      <h2>AI Know</h2>
+                      <p class="texto-ia">
+                        @for (p of t.iaPartes; track $index) {
+                          <span [textContent]="p.texto"></span>
+                          @for (n of p.fontes; track n) {
+                            <sup class="ref" [attr.aria-label]="'fonte ' + n">[{{ n }}]</sup>
                           }
-                          <a
-                            [routerLink]="['/base-conhecimento/documentos']"
-                            [queryParams]="{ registro: f.documento_id, aba: 'versoes' }"
-                            [attr.aria-label]="'Abrir o documento ' + f.titulo"
-                            >Abrir documento</a
-                          >
-                        </li>
-                      }
-                    </ul>
-                  }
-                  @if (t.iaEstado === 'pronta') {
-                    <p class="aviso-ia">
-                      Resposta gerada por IA, ainda não validada. Confira nas fontes citadas.
-                    </p>
-                  }
-                </section>
-              } @else if (t.iaEstado === 'erro') {
-                <p class="msg bad" role="alert">{{ t.iaMensagem }}</p>
-              } @else if (t.iaMensagem) {
-                <p class="sub">{{ t.iaMensagem }}</p>
-              }
-              @if (t.estado === 'buscando') {
-                <p role="status">Buscando…</p>
-              } @else if (t.estado === 'erro') {
-                <p class="msg bad" role="alert">{{ t.erro }}</p>
-              } @else if (t.resultados.length === 0) {
-                @if (
-                  t.iaEstado !== 'pronta' &&
-                  t.iaEstado !== 'sem_base' &&
-                  t.iaEstado !== 'carregando'
-                ) {
-                  <p>
-                    Nada encontrado para “{{ t.termo }}”. Tente outras palavras ou menos palavras.
-                  </p>
-                }
-              } @else {
-                <p class="sub">
-                  {{ t.resultados.length }}
-                  {{
-                    t.resultados.length === 1 ? 'documento encontrado' : 'documentos encontrados'
-                  }}.
-                </p>
-                @for (r of t.resultados; track r.chave) {
-                  <article class="panel resultado">
-                    <h2>
-                      {{ r.titulo }}
-                      @if (r.imagem) {
-                        <span class="pill">Imagem</span>
-                      }
-                    </h2>
-                    <p class="sub">
-                      {{ r.rotuloDoTipo }} · {{ r.rotuloDaOrigem }}
-                      @if (r.rotuloDoModulo) {
-                        · {{ r.rotuloDoModulo }}
-                      }
-                      @if (r.fonte_nome) {
-                        · {{ r.fonte_nome }}
-                      }
-                      · versão {{ r.versao_numero }}
-                      @if (r.secao) {
-                        · {{ r.secao }}
-                      }
-                      @if (r.pagina) {
-                        · página {{ r.pagina }}
-                      }
-                    </p>
-                    @if (aberto(t, r); as e) {
-                      <div class="texto-aberto" [id]="'texto-' + t.id + '-' + r.chave">
-                        @if (e.temAnterior) {
-                          <button
-                            type="button"
-                            class="btn"
-                            [disabled]="e.carregando"
-                            (click)="vizinho(t, r, 'anterior')"
-                          >
-                            Mostrar o trecho anterior
-                          </button>
                         }
-                        @for (b of e.blocos; track b.id) {
-                          <div class="bloco" [class.atual]="b.atual">
-                            @for (linha of b.linhas; track $index) {
-                              <p class="trecho">
-                                @for (p of linha; track $index) {
-                                  @if (p.marca) {
-                                    <mark [textContent]="p.texto"></mark>
-                                  } @else {
-                                    <span [textContent]="p.texto"></span>
-                                  }
+                      </p>
+                      @if (t.iaFontes.length > 0) {
+                        <ul class="fontes-ia" aria-label="Fontes citadas">
+                          @for (f of t.iaFontes; track f.n) {
+                            <li>
+                              <span class="ref">[{{ f.n }}]</span>&ngsp;
+                              <strong>{{ f.titulo }}</strong>
+                              <span class="sub">
+                                · versão {{ f.versao_numero }}
+                                @if (f.secao) {
+                                  · {{ f.secao }}
                                 }
+                                @if (f.pagina) {
+                                  · página {{ f.pagina }}
+                                }
+                              </span>
+                              @if (f.citado) {
+                                <p class="citado">“<span [textContent]="f.citado"></span>”</p>
+                              }
+                              <a
+                                [routerLink]="['/base-conhecimento/documentos']"
+                                [queryParams]="{ registro: f.documento_id, aba: 'versoes' }"
+                                [attr.aria-label]="'Abrir o documento ' + f.titulo"
+                                >Abrir documento</a
+                              >
+                            </li>
+                          }
+                        </ul>
+                      }
+                      @if (t.iaEstado === 'pronta') {
+                        <p class="aviso-ia">
+                          Resposta gerada por IA, ainda não validada. Confira nas fontes citadas.
+                        </p>
+                      }
+                    </section>
+                  } @else if (t.iaEstado === 'erro') {
+                    <p class="msg bad" role="alert">{{ t.iaMensagem }}</p>
+                  } @else if (t.iaMensagem) {
+                    <p class="sub">{{ t.iaMensagem }}</p>
+                  }
+                  @if (t.estado === 'buscando') {
+                    <p role="status">Buscando…</p>
+                  } @else if (t.estado === 'erro') {
+                    <p class="msg bad" role="alert">{{ t.erro }}</p>
+                  } @else if (t.resultados.length === 0) {
+                    @if (t.iaEstado === 'sem_ia') {
+                      <p>
+                        Nada encontrado para “{{ t.termo }}”. Tente outras palavras ou menos
+                        palavras.
+                      </p>
+                    }
+                  } @else {
+                    <p class="sub">
+                      {{ t.resultados.length }}
+                      {{
+                        t.resultados.length === 1
+                          ? 'documento encontrado'
+                          : 'documentos encontrados'
+                      }}.
+                    </p>
+                    @for (r of t.resultados; track r.chave) {
+                      <article class="panel resultado">
+                        <h2>
+                          {{ r.titulo }}
+                          @if (r.imagem) {
+                            <span class="pill">Imagem</span>
+                          }
+                        </h2>
+                        <p class="sub">
+                          {{ r.rotuloDoTipo }} · {{ r.rotuloDaOrigem }}
+                          @if (r.rotuloDoModulo) {
+                            · {{ r.rotuloDoModulo }}
+                          }
+                          @if (r.fonte_nome) {
+                            · {{ r.fonte_nome }}
+                          }
+                          · versão {{ r.versao_numero }}
+                          @if (r.secao) {
+                            · {{ r.secao }}
+                          }
+                          @if (r.pagina) {
+                            · página {{ r.pagina }}
+                          }
+                        </p>
+                        @if (aberto(t, r); as e) {
+                          <div class="texto-aberto" [id]="'texto-' + t.id + '-' + r.chave">
+                            @if (e.temAnterior) {
+                              <button
+                                type="button"
+                                class="btn"
+                                [disabled]="e.carregando"
+                                (click)="vizinho(t, r, 'anterior')"
+                              >
+                                Mostrar o trecho anterior
+                              </button>
+                            }
+                            @for (b of e.blocos; track b.id) {
+                              <div class="bloco" [class.atual]="b.atual">
+                                @for (linha of b.linhas; track $index) {
+                                  <p class="trecho">
+                                    @for (p of linha; track $index) {
+                                      @if (p.marca) {
+                                        <mark [textContent]="p.texto"></mark>
+                                      } @else {
+                                        <span [textContent]="p.texto"></span>
+                                      }
+                                    }
+                                  </p>
+                                }
+                              </div>
+                            }
+                            @if (e.temSeguinte) {
+                              <button
+                                type="button"
+                                class="btn"
+                                [disabled]="e.carregando"
+                                (click)="vizinho(t, r, 'seguinte')"
+                              >
+                                Mostrar o trecho seguinte
+                              </button>
+                            }
+                            @if (e.blocos.length > 1) {
+                              <p class="sub">
+                                Os trechos se sobrepõem um pouco: as últimas palavras de um se
+                                repetem no começo do seguinte.
                               </p>
                             }
+                            @if (e.erro) {
+                              <p class="msg bad" role="alert">{{ e.erro }}</p>
+                            }
                           </div>
+                        } @else if (r.partes.length > 0) {
+                          <p class="trecho">
+                            @for (p of r.partes; track $index) {
+                              @if (p.marca) {
+                                <mark [textContent]="p.texto"></mark>
+                              } @else {
+                                <span [textContent]="p.texto"></span>
+                              }
+                            }
+                          </p>
+                        } @else {
+                          <p class="trecho sub">Achado pelo título do documento.</p>
                         }
-                        @if (e.temSeguinte) {
+                        @if (r.caminho) {
+                          <p class="sub">Arquivo: {{ r.caminho }}</p>
+                        }
+                        @if ((r.repetido_em ?? 0) > 0) {
+                          <p class="sub">
+                            O mesmo conteúdo existe em mais {{ r.repetido_em }}
+                            {{ r.repetido_em === 1 ? 'arquivo' : 'arquivos' }} (aparece só este).
+                          </p>
+                        }
+                        @if (r.trechoId) {
                           <button
                             type="button"
                             class="btn"
-                            [disabled]="e.carregando"
-                            (click)="vizinho(t, r, 'seguinte')"
+                            [attr.aria-expanded]="aberto(t, r) ? 'true' : 'false'"
+                            [attr.aria-controls]="'texto-' + t.id + '-' + r.chave"
+                            [attr.aria-label]="
+                              (aberto(t, r) ? 'Ver menos de ' : 'Ver mais de ') + r.titulo
+                            "
+                            (click)="alternar(t, r)"
                           >
-                            Mostrar o trecho seguinte
+                            {{ aberto(t, r) ? 'Ver menos' : 'Ver mais' }}
                           </button>
                         }
-                        @if (e.blocos.length > 1) {
-                          <p class="sub">
-                            Os trechos se sobrepõem um pouco: as últimas palavras de um se repetem
-                            no começo do seguinte.
-                          </p>
-                        }
-                        @if (e.erro) {
-                          <p class="msg bad" role="alert">{{ e.erro }}</p>
-                        }
-                      </div>
-                    } @else if (r.partes.length > 0) {
-                      <p class="trecho">
-                        @for (p of r.partes; track $index) {
-                          @if (p.marca) {
-                            <mark [textContent]="p.texto"></mark>
-                          } @else {
-                            <span [textContent]="p.texto"></span>
-                          }
-                        }
-                      </p>
-                    } @else {
-                      <p class="trecho sub">Achado pelo título do documento.</p>
+                        <a
+                          class="btn"
+                          [routerLink]="['/base-conhecimento/documentos']"
+                          [queryParams]="{ registro: r.documento_id, aba: 'versoes' }"
+                          [attr.aria-label]="'Abrir o documento ' + r.titulo"
+                          >Abrir documento</a
+                        >
+                      </article>
                     }
-                    @if (r.caminho) {
-                      <p class="sub">Arquivo: {{ r.caminho }}</p>
-                    }
-                    @if ((r.repetido_em ?? 0) > 0) {
-                      <p class="sub">
-                        O mesmo conteúdo existe em mais {{ r.repetido_em }}
-                        {{ r.repetido_em === 1 ? 'arquivo' : 'arquivos' }} (aparece só este).
-                      </p>
-                    }
-                    @if (r.trechoId) {
-                      <button
-                        type="button"
-                        class="btn"
-                        [attr.aria-expanded]="aberto(t, r) ? 'true' : 'false'"
-                        [attr.aria-controls]="'texto-' + t.id + '-' + r.chave"
-                        [attr.aria-label]="
-                          (aberto(t, r) ? 'Ver menos de ' : 'Ver mais de ') + r.titulo
-                        "
-                        (click)="alternar(t, r)"
-                      >
-                        {{ aberto(t, r) ? 'Ver menos' : 'Ver mais' }}
-                      </button>
-                    }
-                    <a
-                      class="btn"
-                      [routerLink]="['/base-conhecimento/documentos']"
-                      [queryParams]="{ registro: r.documento_id, aba: 'versoes' }"
-                      [attr.aria-label]="'Abrir o documento ' + r.titulo"
-                      >Abrir documento</a
-                    >
-                  </article>
-                }
-              }
-            </div>
+                  }
+                </div>
+              </div>
+            }
           </div>
         }
-      </div>
-    }
 
-    <form class="compositor" (submit)="enviar($event)" novalidate>
-      <div class="caixa">
-        <label class="sr" for="pergunta-kb">Sua pergunta</label>
-        <textarea
-          #campo
-          id="pergunta-kb"
-          rows="1"
-          [formControl]="pergunta"
-          placeholder="Escreva o que você procura…"
-          autocomplete="off"
-          aria-describedby="dica-pergunta-kb"
-          (keydown)="aoTeclar($event)"
-        ></textarea>
-        <button type="submit" class="enviar" aria-label="Enviar" [disabled]="ocupado()">
-          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
-            <path
-              d="M12 19V5M5 12l7-7 7 7"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.4"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </button>
+        <form class="compositor" (submit)="enviar($event)" novalidate>
+          <div class="caixa">
+            <label class="sr" for="pergunta-kb">Sua pergunta</label>
+            <textarea
+              #campo
+              id="pergunta-kb"
+              rows="1"
+              [formControl]="pergunta"
+              [placeholder]="modoIa() ? 'Pergunte à AI Know…' : 'Escreva o que você procura…'"
+              autocomplete="off"
+              (keydown)="aoTeclar($event)"
+            ></textarea>
+            <button type="submit" class="enviar" aria-label="Enviar" [disabled]="ocupado()">
+              <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+                <path
+                  d="M12 19V5M5 12l7-7 7 7"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+          <div class="modo">
+            <button
+              type="button"
+              class="interruptor"
+              role="switch"
+              [attr.aria-checked]="modoIa()"
+              (click)="alternarModo()"
+            >
+              <span class="trilho" aria-hidden="true"><span class="bola"></span></span>
+              Perguntar à AI Know
+            </button>
+          </div>
+        </form>
       </div>
-      <p class="nota" id="dica-pergunta-kb">
-        Enter envia; Shift + Enter pula linha. Comece com “AI Know,” para pedir uma resposta escrita
-        pela IA; sem isso, só busca nos documentos. Use aspas para achar uma frase exata.
-      </p>
-    </form>
+      <aside class="painel" aria-label="Como usar a AI Know">
+        @if (amplo()) {
+          <h2>Como usar</h2>
+          <ng-container [ngTemplateOutlet]="guia" />
+        } @else {
+          <details>
+            <summary>Como usar a AI Know</summary>
+            <ng-container [ngTemplateOutlet]="guia" />
+          </details>
+        }
+      </aside>
+    </div>
+    <ng-template #guia>
+      <dl id="guia-kb">
+        <div>
+          <dt>Buscar nos documentos</dt>
+          <dd>
+            Escreva o que procura. Use aspas para achar uma frase exata, como “conferência física”.
+          </dd>
+        </div>
+        <div>
+          <dt>Resposta escrita pela IA</dt>
+          <dd>
+            Ligue “Perguntar à AI Know” ou comece a pergunta com “AI Know,”. A resposta cita as
+            fontes e ainda não foi validada por uma pessoa.
+          </dd>
+        </div>
+        <div>
+          <dt>Peça do seu jeito</dt>
+          <dd>
+            Diga o tamanho que quer, como “em 2 parágrafos”, ou peça um resumo com outras palavras.
+          </dd>
+        </div>
+        <div>
+          <dt>Privacidade</dt>
+          <dd>Documentos Confidenciais nunca são enviados à IA.</dd>
+        </div>
+        <div>
+          <dt>Teclas</dt>
+          <dd><kbd>Enter</kbd> envia. <kbd>Shift</kbd> + <kbd>Enter</kbd> pula linha.</dd>
+        </div>
+      </dl>
+    </ng-template>
   `,
 })
 export class BuscarKb {
@@ -550,8 +706,25 @@ export class BuscarKb {
   protected readonly turnos = signal<Turno[]>([]);
   protected readonly ocupado = signal(false);
   protected readonly pergunta = new FormControl('', { nonNullable: true });
+  /** Chave "Perguntar à AI Know": ligada, toda pergunta vai à IA sem precisar digitar o nome. */
+  protected readonly modoIa = signal(false);
+
+  protected alternarModo(): void {
+    this.modoIa.update((v) => !v);
+    this.campo()?.nativeElement.focus();
+  }
+
+  /** Tela larga: o painel "Como usar" fica ao lado; tela estreita: vira um bloco que se abre e fecha. */
+  protected readonly amplo = signal(false);
 
   constructor() {
+    if (typeof matchMedia === 'function') {
+      const largura = matchMedia('(min-width: 1100px)');
+      this.amplo.set(largura.matches);
+      const mudou = (): void => this.amplo.set(largura.matches);
+      largura.addEventListener('change', mudou);
+      inject(DestroyRef).onDestroy(() => largura.removeEventListener('change', mudou));
+    }
     effect(() => {
       const q = this.q();
       untracked(() => {
@@ -694,9 +867,12 @@ export class BuscarKb {
   protected async perguntar(bruto: string): Promise<void> {
     const original = bruto.trim();
     if (!original || this.ocupado()) return;
-    const { busca: texto, comIa } = lerPedido(original);
+    const { busca: texto, comIa: pelaNome } = lerPedido(original);
     // só o nome, sem pergunta: não há o que buscar nem o que perguntar
     if (!texto) return;
+    // digitar o nome liga a chave; com a chave ligada, o nome é opcional
+    if (pelaNome) this.modoIa.set(true);
+    const comIa = pelaNome || this.modoIa();
     this.ocupado.set(true);
     this.pergunta.setValue('');
     const id = this.proximoId++;
@@ -706,7 +882,8 @@ export class BuscarKb {
         id,
         pergunta: original,
         termo: texto,
-        estado: 'buscando',
+        // com o nome "AI Know" não há busca de documentos na tela: só a IA (que acha os trechos no servidor)
+        estado: comIa ? 'pronto' : 'buscando',
         erro: null,
         resultados: [],
         expandidos: {},
@@ -717,11 +894,8 @@ export class BuscarKb {
       },
     ]);
     this.mostrar(id);
-    // Com o nome, a busca e a IA andam juntas; uma não espera pela outra (a IA é mais lenta e pode estar desligada).
-    await Promise.all([
-      this.buscarDocumentos(id, texto),
-      comIa ? this.perguntarIa(id, texto) : Promise.resolve(),
-    ]);
+    // Com o nome, só a IA; sem o nome, só a busca nos documentos (decisão do responsável, 15/11/2026).
+    await (comIa ? this.perguntarIa(id, texto) : this.buscarDocumentos(id, texto));
     this.ocupado.set(false);
     this.mostrar(id);
     this.campo()?.nativeElement.focus();

@@ -296,12 +296,12 @@ describe('tela AI Know (busca na base de conhecimento)', () => {
       'AIKnow por que falha',
       'A.I. Know, por que falha',
       '  AI KNOW; por que falha',
-    ])('com o nome (%s), chama a IA e busca só o que vem depois dele', async (digitado) => {
+    ])('com o nome (%s), chama só a IA, com o que vem depois dele', async (digitado) => {
       const { buscar, perguntarIa } = preparar([RESULTADO], IA_RESPONDEU);
       const f = await abrir();
       await buscarPor(f, digitado);
       expect(perguntarIa).toHaveBeenCalledWith('por que falha');
-      expect(buscar).toHaveBeenCalledWith('por que falha', { limite: 30 });
+      expect(buscar).not.toHaveBeenCalled();
     });
 
     it('na conversa aparece o que a pessoa digitou, com o nome', async () => {
@@ -327,20 +327,110 @@ describe('tela AI Know (busca na base de conhecimento)', () => {
       expect(buscar).not.toHaveBeenCalled();
     });
 
-    it('o texto de ajuda explica como pedir a resposta da IA', async () => {
+    it('o painel "Como usar" explica a IA, as aspas, o tamanho, a privacidade e as teclas', async () => {
       preparar();
       const f = await abrir();
-      expect(textoDe(f)).toContain('Comece com “AI Know,” para pedir uma resposta escrita pela IA');
+      const painel = raiz(f).querySelector('aside.painel');
+      expect(painel?.getAttribute('aria-label')).toBe('Como usar a AI Know');
+      const t = painel?.textContent?.replace(/\s+/g, ' ') ?? '';
+      expect(t).toContain('comece a pergunta com “AI Know,”');
+      expect(t).toContain('Use aspas para achar uma frase exata');
+      expect(t).toContain('em 2 parágrafos');
+      expect(t).toContain('Documentos Confidenciais nunca são enviados à IA');
+      expect(t).toContain('Shift + Enter pula linha');
+    });
+
+    it('sob o campo não há mais texto de orientação, só o interruptor', async () => {
+      preparar();
+      const f = await abrir();
+      expect(raiz(f).querySelector('form .nota')).toBeNull();
+      expect(raiz(f).querySelector('form')?.textContent).not.toContain('Enter envia');
+    });
+
+    it('a tela vazia mostra só o nome e uma frase curta', async () => {
+      preparar();
+      const f = await abrir();
+      const vazio = raiz(f).querySelector('.vazio');
+      expect(vazio?.querySelector('h1')?.textContent).toBe('AI Know');
+      expect(vazio?.querySelectorAll('p')).toHaveLength(1);
+      expect(vazio?.textContent).toContain('Todo conhecimento da sua indústria');
+    });
+  });
+
+  describe('chave "Perguntar à AI Know"', () => {
+    const chave = (f: Fixture): HTMLButtonElement => {
+      const el = raiz(f).querySelector<HTMLButtonElement>('.modo button[role="switch"]');
+      if (!el) throw new Error('interruptor não encontrado');
+      return el;
+    };
+    const ligada = (f: Fixture): boolean => chave(f).getAttribute('aria-checked') === 'true';
+    const ligar = async (f: Fixture, ligar: boolean): Promise<void> => {
+      if (ligada(f) !== ligar) {
+        chave(f).click();
+        await esperar(f);
+      }
+    };
+
+    it('nasce desligada e tem nome acessível', async () => {
+      preparar();
+      const f = await abrir();
+      expect(ligada(f)).toBe(false);
+      expect(chave(f).textContent?.trim()).toBe('Perguntar à AI Know');
+      expect(raiz(f).querySelector('input[type="checkbox"]')).toBeNull();
+      expect(campo(f).placeholder).toBe('Escreva o que você procura…');
+    });
+
+    it('ligada, a pergunta vai à IA sem o nome e não busca documentos', async () => {
+      const { buscar, perguntarIa } = preparar([RESULTADO], IA_RESPONDEU);
+      const f = await abrir();
+      await ligar(f, true);
+      expect(campo(f).placeholder).toBe('Pergunte à AI Know…');
+      await buscarPor(f, 'resuma o módulo Principal');
+      expect(perguntarIa).toHaveBeenCalledWith('resuma o módulo Principal');
+      expect(buscar).not.toHaveBeenCalled();
+      expect(raiz(f).querySelector('.ia')).not.toBeNull();
+    });
+
+    it('ligada, o nome digitado continua valendo e não vai repetido à IA', async () => {
+      const { perguntarIa } = preparar([RESULTADO], IA_RESPONDEU);
+      const f = await abrir();
+      await ligar(f, true);
+      await buscarPor(f, 'AI Know, por que falha');
+      expect(perguntarIa).toHaveBeenCalledWith('por que falha');
+    });
+
+    it('desligada de novo, volta a só buscar nos documentos', async () => {
+      const { buscar, perguntarIa } = preparar([RESULTADO], IA_RESPONDEU);
+      const f = await abrir();
+      await ligar(f, true);
+      await ligar(f, false);
+      await buscarPor(f, 'lote');
+      expect(buscar).toHaveBeenCalledWith('lote', { limite: 30 });
+      expect(perguntarIa).not.toHaveBeenCalled();
+    });
+
+    it('digitar o nome liga a chave', async () => {
+      preparar([RESULTADO], IA_RESPONDEU);
+      const f = await abrir();
+      await buscarPor(f, 'AI Know, lote');
+      expect(ligada(f)).toBe(true);
+    });
+
+    it('a tela com a chave ligada não tem violações de acessibilidade', async () => {
+      preparar();
+      const f = await abrir();
+      await ligar(f, true);
+      expect(await violacoesDeAcessibilidade(f)).toEqual([]);
     });
   });
 
   describe('resposta escrita da IA', () => {
-    it('a pergunta vai à IA e à busca juntas, com o mesmo texto', async () => {
+    it('a pergunta vai só à IA (a busca de documentos da tela não roda)', async () => {
       const { buscar, perguntarIa } = preparar([RESULTADO], IA_RESPONDEU);
       const f = await abrir();
       await buscarPor(f, 'AI Know, como funciona a conferência?');
       expect(perguntarIa).toHaveBeenCalledWith('como funciona a conferência?');
-      expect(buscar).toHaveBeenCalledWith('como funciona a conferência?', { limite: 30 });
+      expect(buscar).not.toHaveBeenCalled();
     });
 
     it('mostra a resposta com o número da fonte, a fonte com o trecho citado e o aviso de "não validada"', async () => {
@@ -361,13 +451,14 @@ describe('tela AI Know (busca na base de conhecimento)', () => {
       );
     });
 
-    it('os cartões de documentos continuam embaixo da resposta', async () => {
+    it('com o nome, a tela mostra só a resposta, sem cartões de documentos', async () => {
       preparar([RESULTADO], IA_RESPONDEU);
       const f = await abrir();
       await buscarPor(f, 'AI Know, conferencia');
       const resposta = raiz(f).querySelector('.resposta');
       expect(resposta?.firstElementChild?.className).toContain('ia');
-      expect(resposta?.querySelectorAll('article')).toHaveLength(1);
+      expect(resposta?.querySelectorAll('article')).toHaveLength(0);
+      expect(textoDe(f)).not.toContain('documento encontrado');
     });
 
     it('o texto da resposta e o trecho citado nunca são interpretados como HTML', async () => {
@@ -402,27 +493,27 @@ describe('tela AI Know (busca na base de conhecimento)', () => {
       expect(textoDe(f)).not.toContain('Nada encontrado para');
     });
 
-    it('IA desligada: avisa com calma e a busca continua normal', async () => {
+    it('IA desligada: avisa com calma, sem alerta e sem "Nada encontrado"', async () => {
       preparar();
       const f = await abrir();
       await buscarPor(f, 'AI Know, lote');
       expect(raiz(f).querySelector('.ia')).toBeNull();
       expect(textoDe(f)).toContain('A resposta escrita da AI Know ainda não foi ativada.');
-      expect(textoDe(f)).toContain('1 documento encontrado.');
+      expect(textoDe(f)).not.toContain('Nada encontrado');
       expect(raiz(f).querySelector('.resposta [role="alert"]')).toBeNull();
     });
 
-    it('erro da IA aparece como alerta e a busca continua mostrando os documentos', async () => {
+    it('erro da IA aparece como alerta, sem "Nada encontrado" (a busca de documentos não rodou)', async () => {
       preparar([RESULTADO], { tipo: 'erro', mensagem: 'A AI Know não conseguiu responder agora.' });
       const f = await abrir();
       await buscarPor(f, 'AI Know, lote');
       expect(raiz(f).querySelector('[role="alert"]')?.textContent).toContain(
         'não conseguiu responder agora',
       );
-      expect(textoDe(f)).toContain('1 documento encontrado.');
+      expect(textoDe(f)).not.toContain('Nada encontrado');
     });
 
-    it('enquanto a IA lê, aparece o aviso, a busca não espera e o botão fica travado', async () => {
+    it('enquanto a IA lê, aparece o aviso e o botão fica travado', async () => {
       const { perguntarIa } = preparar([RESULTADO], IA_RESPONDEU);
       let liberar: (r: RespostaDaIa) => void = () => undefined;
       perguntarIa.mockReturnValueOnce(new Promise((resolve) => (liberar = resolve)));
@@ -436,7 +527,6 @@ describe('tela AI Know (busca na base de conhecimento)', () => {
       await new Promise((r) => setTimeout(r, 0));
       f.detectChanges();
       expect(textoDe(f)).toContain('A AI Know está lendo os documentos…');
-      expect(textoDe(f)).toContain('1 documento encontrado.');
       expect(raiz(f).querySelector('button.enviar')?.hasAttribute('disabled')).toBe(true);
       liberar(IA_RESPONDEU);
       await esperar(f);
@@ -444,23 +534,10 @@ describe('tela AI Know (busca na base de conhecimento)', () => {
       expect(raiz(f).querySelector('button.enviar')?.hasAttribute('disabled')).toBe(false);
     });
 
-    it('sem documentos achados, não diz "Nada encontrado" enquanto a IA ainda está lendo', async () => {
-      const { perguntarIa } = preparar([], IA_RESPONDEU);
-      let liberar: (r: RespostaDaIa) => void = () => undefined;
-      perguntarIa.mockReturnValueOnce(new Promise((resolve) => (liberar = resolve)));
+    it('sem o nome e sem documentos achados, diz "Nada encontrado" com o que foi buscado', async () => {
+      preparar([], IA_RESPONDEU);
       const f = await abrir();
-      const el = campo(f);
-      el.value = 'AI Know, xyzabc';
-      el.dispatchEvent(new Event('input', { bubbles: true }));
-      raiz(f)
-        .querySelector('form')
-        ?.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
-      await new Promise((r) => setTimeout(r, 0));
-      f.detectChanges();
-      expect(textoDe(f)).toContain('A AI Know está lendo os documentos…');
-      expect(textoDe(f)).not.toContain('Nada encontrado');
-      liberar({ tipo: 'erro', mensagem: 'A AI Know não conseguiu responder agora.' });
-      await esperar(f);
+      await buscarPor(f, 'xyzabc');
       expect(textoDe(f).replace(/\s+/g, ' ')).toContain('Nada encontrado para “xyzabc”.');
     });
 

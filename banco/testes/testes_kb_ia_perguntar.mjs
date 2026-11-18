@@ -160,4 +160,10 @@ export async function rodar({ db, registrar, como, tenta, dono, A, B, X, eA, eB 
   await como(C_SEM_KB);
   registrar('perfil sem a função dos documentos não vê nada', (await q(`select 1 from ilab.kb_ia_interacoes`)).length === 0);
   registrar('a tabela tem RLS ligada', (await qd(`select relrowsecurity r from pg_class where oid = 'ilab.kb_ia_interacoes'::regclass`))[0].r === true);
+
+  console.log('  migração 24: as regras de acesso calculam a permissão uma vez por consulta (e não por linha)');
+  const rapidas = await qd(`select tablename, policyname, qual from pg_policies
+    where schemaname = 'ilab' and tablename like 'kb\_%' and cmd = 'SELECT' and qual ~ 'ilab_interno\.(pode|empresa_atual)'`);
+  const lentas = rapidas.filter((p) => !/SELECT ilab_interno\.(pode|empresa_atual)\(/i.test(p.qual) || /(?<!SELECT )ilab_interno\.(pode|empresa_atual)\(/.test(p.qual));
+  registrar(`as ${rapidas.length} regras de acesso da base de conhecimento chamam pode()/empresa_atual() dentro de (select ...)`, rapidas.length >= 9 && lentas.length === 0, lentas.map((p) => `${p.tablename}.${p.policyname}`).join(', '));
 }
