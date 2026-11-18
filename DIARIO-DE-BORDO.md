@@ -2,6 +2,11 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-18 · Claude · Correção de escopo: o iLabs é completo (nove módulos)
+
+- **Responsável:** "o nosso sistema será completo... remodelado e completo"; não é versão igual à do IVB. Gravado em `docs/decisoes.md`; aviso no topo de `docs/roadmap/roadmap-de-telas.md`.
+- **Efeito:** o roadmap de 18/11 (cinco módulos) está **incompleto**. Falta classificar Produção (~76 linhas de inventário), Comercial (~39), Rastreabilidade (~32) e OPE (~31) e reabrir os itens "adiar". **Próximo:** refazer o roadmap com os nove módulos.
+
 ## 2026-11-18 · Claude · Estudo do roadmap de telas (rascunho para validação; nada construído)
 
 - **Pedido do responsável:** avaliar todos os repositórios do LabMedSys/iLabPharma e definir "as telas certas no momento certo" (base Principal, depois Estoque, CQ etc.).
