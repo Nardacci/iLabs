@@ -168,5 +168,10 @@ export const rotasInternas: Routes = [
     },
     loadComponent: () => import('./compartilhado/cadastro/cadastro').then((m) => m.Cadastro),
   },
+  {
+    path: 'estudo/cadastros-globais',
+    data: dados({ titulo: 'Avaliação: cadastros globais', menu: { grupo: 'Estudo do roadmap' } }),
+    loadComponent: () => import('./estudo/cadastros-globais').then((m) => m.EstudoCadastrosGlobais),
+  },
   // <novas-telas> (o gerador `npm run nova-tela` acrescenta acima desta linha)
 ];

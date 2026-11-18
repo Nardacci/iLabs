@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-18 · Claude · Tela de avaliação dos cadastros globais, com cartão na página inicial
+
+- **Pedido do responsável:** "um card no sistema depois do login", chamando a tela de avaliação.
+- **Feito (app):** cartão "Estudo do roadmap" no Início (abre `/estudo/cadastros-globais`) e a tela `app/src/app/estudo/`: lista dos 50 cadastros com filtros, ficha por cadastro (decisão: concordo / com ajuste / discutir, e comentário), as 6 perguntas em aberto, andamento e "Resumo para colar no chat".
+- **Dados:** gerados da planilha `docs/roadmap/cadastros-globais.csv` por `node scripts/estudo-cadastros.mjs` (a planilha continua sendo a fonte; refazer o comando se ela mudar).
+- **Limites (de propósito):** não grava no banco; as respostas ficam só no navegador de quem avalia e saem pelo resumo, que vai ao chat e então ao git. A tela não tem função de permissão: qualquer pessoa logada a vê (não há regra de negócio nela). Não aparece no menu lateral, só pelo cartão e pela busca de telas.
+- **Conferido:** 294 testes, lint e build passam. **Não conferido:** a tela vista no navegador, logada (precisa do ambiente com login).
+- **Retirar depois:** quando o estudo terminar, remover o cartão, a rota e a pasta `estudo/`.
+
 ## 2026-11-18 · Claude · Passo 1 do estudo: cadastros globais (rascunho para validação)
 
 - **Método do responsável:** 1) cadastros globais para o Principal, 2) interdependências, 3) fluxos e informações, 4) só então telas e ondas. Este é o passo 1.

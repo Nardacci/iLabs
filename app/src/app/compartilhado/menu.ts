@@ -53,6 +53,8 @@ const ESTRUTURA: Estrutura[] = [
   { grupo: 'Configuração da Plataforma', icone: 'construtor' },
   // A segurança da própria conta abre pelo menu da pessoa (avatar), não pelo menu lateral.
   { grupo: 'Minha conta', icone: 'conta', lateral: false },
+  // Ferramenta de avaliação do estudo do roadmap: abre pelo cartão da página inicial, não pelo menu lateral.
+  { grupo: 'Estudo do roadmap', icone: 'cadastros', lateral: false },
 ];
 
 /** O menu é GERADO das rotas: criar a rota com `data.menu` já cria o item. `pode` é o resultado de minhas_permissoes. */

@@ -11,7 +11,11 @@ describe('menu por permissão e guarda de rota (mesmo resultado)', () => {
 
   it('sem nenhuma permissão só aparecem as telas livres (início e minha segurança)', () => {
     expect(itensVisiveis(() => false)).toEqual([]);
-    expect(itensVisiveis((f) => f === undefined)).toEqual(['/inicio', '/seguranca']);
+    expect(itensVisiveis((f) => f === undefined)).toEqual([
+      '/inicio',
+      '/seguranca',
+      '/estudo/cadastros-globais',
+    ]);
   });
 
   it('o menu segue a ordem do produto: Início direto e os grupos sem tela como "em breve"', () => {
