@@ -6,5 +6,6 @@
 | `seguranca-e-acesso.md` | Desenho de login, senha, cadastro de empresa, usuários, perfis e assinatura eletrônica |
 | `referencia-korbuild-cadastro.md` | Como o KORbuild Finances cadastra (autocadastro, e-mail, passo a passo, teste) e como o iLabs adapta |
 | `requisitos-do-legado.md` | Onde estão os requisitos que nascem dos achados do legado (ponteiros para o repositório privado) |
+| `roadmap/` | Roadmap de telas: ondas de construção e a planilha das 248 telas do legado (proposta em validação) |
 | `../app/README.md` | A aplicação Angular: como rodar, comandos, organização, quanto custa uma tela nova |
 | `../supabase/functions/README.md` | Funções de servidor (login e senha alterada) e o roteiro para publicar |

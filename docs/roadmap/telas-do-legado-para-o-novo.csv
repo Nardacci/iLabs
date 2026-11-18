@@ -1,0 +1,249 @@
+﻿Módulo;Grupo no legado;Tela do legado;Classe;Onda;O que vira no iLabs;Base (edital, norma ou decisão)
+Principal;Acesso ao sistema;Login;F;0;Entrar (com bloqueio, segundo fator e sessão);
+Principal;Acesso ao sistema;Troca de senha;F;0;Minha segurança;
+Principal;Acesso ao sistema;Início e menu;F;0;Início e menu por permissão;
+Principal;Acesso ao sistema;Sair;F;0;Menu da pessoa (encerra a sessão);
+Principal;Acesso ao sistema;Sessão expirada e acesso negado;F;0;Aviso de inatividade conferido pelo servidor;
+Principal;Acesso ao sistema;Notificações do usuário;C;1;Central de Notificações (sino);Avisos de vencimento: reanálise, documento, treinamento
+Principal;Acesso ao sistema;Visualização de relatórios;FU;7;Impressão e exportação padrão das listas (já existe nos Profissionais);
+Principal;Administração;Profissional;F;0;Profissionais (ficha completa);
+Principal;Administração;Conta usuário;F;0;Contas de usuário;
+Principal;Administração;Perfil;F;0;Perfis e permissões;
+Principal;Administração;Configuração;C;1;Configuração da Plataforma (parâmetros por empresa);Parâmetros que hoje ficam no código
+Principal;Administração;Microservices;E;-;Não existe no novo (era arquitetura do legado);
+Principal;Administração;Grupo de usuários;F;0;Grupos de usuários;
+Principal;Administração;Funções profissionais;F;0;Funções profissionais;
+Principal;Administração;Notificações padrão;FU;1;Central de Notificações (regras de aviso);
+Principal;Administração;Configurar notificação;FU;1;Central de Notificações (regras de aviso);
+Principal;Administração;Notificações do sistema;FU;1;Central de Notificações (histórico de avisos);
+Principal;Administração;Tipo de notificação;FU;1;Central de Notificações (tipos);
+Principal;Cadastros e tabelas de apoio;Ambientes;C;6;Ambientes controlados (CQ: água e ambiente);Só quando o CQ precisar de coleta de ambiente
+Principal;Cadastros e tabelas de apoio;Equipamentos;C;6;Equipamentos (calibração e qualificação);Edital 2.1 (registro do teste)
+Principal;Cadastros e tabelas de apoio;Pessoa jurídica;C;1;Pessoas jurídicas com papéis (fornecedor, fabricante, transportadora, cliente);Tabela já existe no banco
+Principal;Cadastros e tabelas de apoio;Categoria de equipamento;CS;6;Categoria de equipamento;
+Principal;Cadastros e tabelas de apoio;Centro de custo;F;0;Centros de custo;
+Principal;Cadastros e tabelas de apoio;Conta contábil;A;-;Contas (financeiro): não é BPF;Decidido em 06/11: juntar num cadastro com tipo, quando houver financeiro
+Principal;Cadastros e tabelas de apoio;Conta gerencial;A;-;Contas (financeiro): não é BPF;
+Principal;Cadastros e tabelas de apoio;Instrumentos;C;6;Instrumentos de medição (calibração);
+Principal;Cadastros e tabelas de apoio;Estrutura funcional;F;0;Estrutura organizacional;
+Principal;Cadastros e tabelas de apoio;Local físico;FU;1;Almoxarifados e endereços (estrutura física);
+Principal;Cadastros e tabelas de apoio;Pontos de água;C;6;Pontos de água (CQ: água);Só se o CQ do IVB fizer controle de água
+Principal;Cadastros e tabelas de apoio;Utensílios;A;-;Depende da Produção (limpeza e preparação);
+Principal;Cadastros e tabelas de apoio;Utilidades;A;-;Depende da Produção (utilidades da fábrica);
+Principal;Cadastros e tabelas de apoio;Grau de contaminação;CS;6;Grau de contaminação das áreas;
+Estoque;Estoque: Cadastros (28);Grupo do Item;FU;1;Classificação do material (árvore única: grupo, subgrupo, classe);
+Estoque;Estoque: Cadastros (28);Subgrupo do Item;FU;1;Classificação do material (árvore única);
+Estoque;Estoque: Cadastros (28);Classe do Item;FU;1;Classificação do material (árvore única);
+Estoque;Estoque: Cadastros (28);Classificação do Item;FU;1;Classificação do material (árvore única);
+Estoque;Estoque: Cadastros (28);Unidade de Medida;F;0;Unidades de medida (um só cadastro para todos os módulos);
+Estoque;Estoque: Cadastros (28);Conversão de Unidade;CS;1;Conversão de unidades;
+Estoque;Estoque: Cadastros (28);Estoque Rua;FU;1;Almoxarifados e endereços (árvore: almoxarifado, rua, coluna, andar);
+Estoque;Estoque: Cadastros (28);Estoque Coluna;FU;1;Almoxarifados e endereços (árvore);
+Estoque;Estoque: Cadastros (28);Estoque Andar;FU;1;Almoxarifados e endereços (árvore);
+Estoque;Estoque: Cadastros (28);NCM;CS;1;NCM (só se o recebimento por nota fiscal exigir);Fiscal: confirmar
+Estoque;Estoque: Cadastros (28);Local de Armazenagem;FU;1;Almoxarifados e endereços (árvore);A sigla do local entra no número do lote (reunião 12/11)
+Estoque;Estoque: Cadastros (28);Centro de Custo;F;0;Centros de custo (um só);
+Estoque;Estoque: Cadastros (28);Natureza da Operação;P;1;Fiscal: confirmar se o recebimento por nota fiscal faz parte do IVB;
+Estoque;Estoque: Cadastros (28);Item;C;1;Materiais (insumo, embalagem, produto): lote, validade, quarentena, reanálise, controlado;"Tabela já existe no banco; edital 3.1"
+Estoque;Estoque: Cadastros (28);Substância Controlada;P;1;Portaria 344: confirmar se o IVB trabalha com controlados;O Item tem a marca de controlado
+Estoque;Estoque: Cadastros (28);Conta Financeira;A;-;Contas (financeiro);
+Estoque;Estoque: Cadastros (28);Conversão Fornecedor;FU;1;Apresentação do material por fornecedor (dentro da qualificação);
+Estoque;Estoque: Cadastros (28);Grupo Usuário - Almoxarifado;FU;1;Grupos de usuários (escopo por almoxarifado, regra no banco);RN-PRI-ADM06-002
+Estoque;Estoque: Cadastros (28);Almoxarifado;FU;1;Almoxarifados e endereços (árvore);
+Estoque;Estoque: Cadastros (28);Classificação de Reanálise;CS;3;Classificação de reanálise (prazo de reteste por material);Edital 3.1 (visível no cadastro do item)
+Estoque;Estoque: Cadastros (28);SJB;P;1;Sigla do local no número do lote: entender o que é antes de refazer;Aparece na regra do NEB e do lote
+Estoque;Estoque: Cadastros (28);Tipo de Referência;CS;2;Tipo de referência da movimentação;
+Estoque;Estoque: Cadastros (28);Motivo da Movimentação;CS;2;Motivos de movimentação;
+Estoque;Estoque: Cadastros (28);Parâmetros do Estoque;C;1;Configuração da Plataforma (parâmetros do Estoque);
+Estoque;Estoque: Cadastros (28);Condição de Armazenagem;CS;1;Condições de armazenagem (temperatura, umidade, luz);
+Estoque;Estoque: Cadastros (28);Nível de Segurança;P;1;Entender o uso antes de refazer;
+Estoque;Estoque: Cadastros (28);Conta Corrente;A;-;Contas (financeiro);
+Estoque;Estoque: Cadastros (28);Tipo de Movimentação;CS;2;Tipos de movimentação;
+Estoque;Estoque: operação (30);Checklist de Inspeção Veicular;C;2;Recebimento: inspeção do veículo e da entrega, obrigatória;"Edital 3.4; art. 156 e 183"
+Estoque;Estoque: operação (30);Recebimento de Material;C;2;Recebimento (entrada, conferência da nota, lote e validade);"Edital 3.2, 3.3; recusa lote vencido e fornecedor não qualificado"
+Estoque;Estoque: operação (30);Conferência de Recebimento;FU;2;Recebimento (conferência e autorização por outra pessoa);Quem cadastra não autoriza
+Estoque;Estoque: operação (30);Endereçamento de Material;FU;2;Recebimento (endereçamento: grava tudo ou nada, abre a análise);Falha mais grave do legado (DV-EST-016)
+Estoque;Estoque: operação (30);Entrada de Material - Outras;C;2;Entrada avulsa (sem nota);Possível caminho do produto acabado sem Produção: perguntar
+Estoque;Estoque: operação (30);Movimentação de Quarentena;C;2;Situação do lote (quarentena, em análise, aprovado, reprovado, retido);"Trava 1; art. 157"
+Estoque;Estoque: operação (30);Controle da Qualidade;E;2;Não existe no novo: o laudo muda a situação do lote na hora;"Trava 2 (elimina o botão ""Atualizar"")"
+Estoque;Estoque: operação (30);Disponibilidade de Estoque;FU;2;Consulta de disponibilidade (por item, lote e local, uma só tela);
+Estoque;Estoque: operação (30);Disponibilidade do Lote;FU;2;Consulta de disponibilidade (uma só tela);
+Estoque;Estoque: operação (30);Disponibilidade por Local;FU;2;Consulta de disponibilidade (uma só tela);
+Estoque;Estoque: operação (30);Consulta Endereço Item;FU;2;Consulta de disponibilidade (uma só tela);
+Estoque;Estoque: operação (30);Endereço do Estoque;FU;1;Almoxarifados e endereços;
+Estoque;Estoque: operação (30);Histórico do Lote;C;2;Histórico do lote (situação, análise, laudo, movimentos, quem e quando);Edital 1.1
+Estoque;Estoque: operação (30);Avaliação do Fornecedor;C;2;"Qualificação de fornecedor (mora na GQ; o recebimento consulta)";"Decidido em 06/11: o recebimento bloqueia; art. 8º VI"
+Estoque;Estoque: operação (30);Solicitação de Material (Consumo);C;3;Solicitação de material;
+Estoque;Estoque: operação (30);Aprovação de Solicitação;FU;3;Solicitação de material (aprovação por outra pessoa);
+Estoque;Estoque: operação (30);Atendimento de Solicitação;C;3;Atendimento e separação (lote que vence primeiro, FEFO);
+Estoque;Estoque: operação (30);Separação de Material;FU;3;Atendimento e separação;
+Estoque;Estoque: operação (30);Saída de Material;C;3;Saída de material (lote em quarentena não aparece);Reunião 12/11
+Estoque;Estoque: operação (30);Movimentação de Material;C;3;Movimentação interna (destino completo, saldo conferido);Edital 3.2
+Estoque;Estoque: operação (30);Devolução;C;3;Devolução;
+Estoque;Estoque: operação (30);Remessa de Material;C;3;Remessa e expedição (só de lote aprovado);"Bruno monta o fluxo; origem dos dados de recolhimento"
+Estoque;Estoque: operação (30);Agenda de Reanálise;C;3;Agenda de reanálise com prazo e aviso;"Edital 3.3; art. 189"
+Estoque;Estoque: operação (30);Reanálise - Avulsa;FU;3;Agenda de reanálise (reanálise avulsa como ação);
+Estoque;Estoque: operação (30);Revalidação de Lote;C;3;Revalidação do lote (assinada);
+Estoque;Estoque: operação (30);Solicitação de Material (Produção);A;-;Depende da Produção;
+Estoque;Estoque: operação (30);Entrada de Material - Produção;A;-;Depende da Produção;
+Estoque;Estoque: operação (30);Entrada de Produção;P;-;Produto acabado: como entra sem Produção? (pergunta ao responsável);"Edital 2.3; trava: só de ordem de produção"
+Estoque;Estoque: operação (30);Devolução da Produção;A;-;Depende da Produção;
+Estoque;Estoque: operação (30);Central de Pesagem;P;-;"Depende da Produção e do protocolo das balanças (edital 3.5, ""a definir"")";
+Estoque;Estoque: Inventário (4);Inventário;C;7;"Inventário rotativo (quem conta não ajusta; justificativa e ajuste por outra pessoa)";
+Estoque;Estoque: Inventário (4);Inventário - Contagem;FU;7;Inventário rotativo (contagem, justificativa e apuração em etapas da mesma tela);
+Estoque;Estoque: Inventário (4);Inventário - Auditoria/justificativa;FU;7;Inventário rotativo (contagem, justificativa e apuração em etapas da mesma tela);
+Estoque;Estoque: Inventário (4);Inventário - Apuração;FU;7;Inventário rotativo (contagem, justificativa e apuração em etapas da mesma tela);
+Estoque;Estoque: Gestão analítica (3);Análise de Estoque;C;7;Análise de estoque (consulta);
+Estoque;Estoque: Gestão analítica (3);Curva ABC;A;-;Gestão de compras: confirmar se o IVB usa;
+Estoque;Estoque: Gestão analítica (3);Pedido de Compra;P;-;Compras: confirmar se entra no IVB (o edital não cita);
+Estoque;Estoque: Kits (6);Cadastro de Kits;P;-;"Kits: o edital não cita; confirmar se o IVB usa";
+Estoque;Estoque: Kits (6);Solicitação de Kits;P;-;"Kits: o edital não cita; confirmar se o IVB usa";
+Estoque;Estoque: Kits (6);Controle de Kits;P;-;"Kits: o edital não cita; confirmar se o IVB usa";
+Estoque;Estoque: Kits (6);Parâmetros de Configuração (Kit);P;-;"Kits: o edital não cita; confirmar se o IVB usa";
+Estoque;Estoque: Kits (6);Planejamento de Kits;P;-;"Kits: o edital não cita; confirmar se o IVB usa";
+Estoque;Estoque: Kits (6);Análise do Planejamento de Kits;P;-;"Kits: o edital não cita; confirmar se o IVB usa";
+Estoque;Estoque: Regulatório = almoxarifado do CQ (3);Entrada de Material;C;2;Amostras de retenção, referência e estabilidade (entrada);"Art. 14 VIII; separadas na amostragem do CQ"
+Estoque;Estoque: Regulatório = almoxarifado do CQ (3);Movimentações;FU;2;Amostras de retenção (movimentação, com prazo mínimo de guarda);Trava de saída antes do prazo
+Estoque;Estoque: Regulatório = almoxarifado do CQ (3);Consulta Disponibilidade;FU;2;Amostras de retenção (consulta);
+Estoque;Estoque: Relatórios (25);Insumos Reprovados (RM36);FU;3;Relatório da qualidade do estoque (quarentena, reprovado, reanálise);
+Estoque;Estoque: Relatórios (25);Quarentena de Produto Acabado (RM18);FU;3;Relatório da qualidade do estoque (quarentena, reprovado, reanálise);
+Estoque;Estoque: Relatórios (25);Relatório de Endereços (RM24);FU;7;Relatório da situação do estoque (um só, com filtros);
+Estoque;Estoque: Relatórios (25);Demonstrativo de Movimentação de Material (RC07);FU;7;Relatório de movimentação (um só, com filtros);
+Estoque;Estoque: Relatórios (25);Material em Quarentena (RM17);FU;3;Relatório da qualidade do estoque (quarentena, reprovado, reanálise);
+Estoque;Estoque: Relatórios (25);Material Reservado (RM10);FU;7;Relatório da situação do estoque (um só, com filtros);
+Estoque;Estoque: Relatórios (25);Relatório de NMM (RC03);FU;7;Relatório de movimentação (um só, com filtros);
+Estoque;Estoque: Relatórios (25);Relatório de Produtos Estocados(rc04);FU;7;Relatório da situação do estoque (um só, com filtros);
+Estoque;Estoque: Relatórios (25);Relatório de Movimentação de Material (RC08);FU;7;Relatório de movimentação (um só, com filtros);
+Estoque;Estoque: Relatórios (25);Relação de Lotes - Reanálise;FU;3;Relatório da qualidade do estoque (quarentena, reprovado, reanálise);
+Estoque;Estoque: Relatórios (25);Mapa de Movimentação de Material;FU;7;Relatório de movimentação (um só, com filtros);
+Estoque;Estoque: Relatórios (25);Inventário do Mês;FU;7;Relatório de consumo e inventário;
+Estoque;Estoque: Relatórios (25);Consumo de Material;FU;7;Relatório de consumo e inventário;
+Estoque;Estoque: Relatórios (25);Agenda de Reanálise (relatório);FU;3;Relatório da qualidade do estoque (quarentena, reprovado, reanálise);
+Estoque;Estoque: Relatórios (25);Entrada de Material (relatório);FU;7;Relatório de movimentação (um só, com filtros);
+Estoque;Estoque: Relatórios (25);Saída de Material (Remessa) (relatório);FU;7;Relatório de movimentação (um só, com filtros);
+Estoque;Estoque: Relatórios (25);Demonstrativo Financeiro de Movimentação (RC07);A;-;Financeiro: não é BPF;
+Estoque;Estoque: Relatórios (25);Movimentação Mensal de Vendas de Medicamentos (RM03);P;-;Relatório mensal: confirmar a exigência regulatória e se depende da venda;
+Estoque;Estoque: Relatórios (25);Movimentação Mensal de Insumos (RM14);P;-;Relatório mensal: confirmar a exigência regulatória;
+Estoque;Estoque: Relatórios (25);Aquisição de Material;P;-;Compras: confirmar se entra no IVB;
+Estoque;Estoque: Relatórios (25);Relatório - Listagem de Lotes (Kits);P;-;Kits: junto com a decisão dos Kits;
+Estoque;Estoque: Relatórios (25);Reposição de Itens a Vencer (Kit);P;-;Kits: junto com a decisão dos Kits;
+Estoque;Estoque: Relatórios (25);Planejamento de Kits (relatório);P;-;Kits: junto com a decisão dos Kits;
+Estoque;Estoque: Relatórios (25);Análise de Componentes (Kit);P;-;Kits: junto com a decisão dos Kits;
+Estoque;Estoque: Relatórios (25);Reposição de Componentes do Kit;P;-;Kits: junto com a decisão dos Kits;
+Estoque;Estoque: fora do menu;Entradas por nota (recebimentoNF e itens);FU;2;Recebimento (conferência da nota);
+Estoque;Estoque: fora do menu;Histórico do item, etiquetas e relatórios de impressão;FU;2;Etiquetas (identificação e quarentena) e histórico do lote;
+Estoque;Estoque: fora do menu;Liberação pelo CQ (relatório);E;-;"Vazia no legado; a liberação é o laudo mudando a situação";
+Estoque;Estoque: fora do menu;Cópias de telas do Principal (usuário, perfil, local, pessoa jurídica…);E;-;O Principal é o único dono desses cadastros;
+Estoque;Estoque: fora do menu;Banco;A;-;Contas (financeiro);
+Estoque;Estoque: fora do menu;Gerador de telas e página de teste de notificação;E;-;Ferramentas internas do legado;
+CQ;CQ: Solicitação de Análise (4);Solicitação de Análise;C;2;Solicitação de análise (nasce do recebimento, sem digitar);Edital 2.1
+CQ;CQ: Solicitação de Análise (4);Priorização de Solicitação Análise;FU;2;Solicitação de análise (prioridade);
+CQ;CQ: Solicitação de Análise (4);Programação de Solicitação de Análise (água e ambiente);C;6;Programação de coletas de água e ambiente;
+CQ;CQ: Solicitação de Análise (4);Programação de Amostragem;C;2;Programação de amostragem (total vem das regras, campo travado);"Reunião 12/11; função de amostrador"
+CQ;CQ: Amostragem (5);Verificação de Amostragens (checklist);C;2;Amostragem (checklist de verificação);
+CQ;CQ: Amostragem (5);Regra Amostragem;C;2;Regras de amostragem por material (especificação);Precisa existir antes da primeira análise
+CQ;CQ: Amostragem (5);Amostragens Pendentes;C;2;Amostragens pendentes (uma tela, com visão de administrador);
+CQ;CQ: Amostragem (5);Consultar Amostragem (registro);FU;2;Amostragem (consulta do registro);
+CQ;CQ: Amostragem (5);Amostragens Pendentes Visão Administrador;FU;2;Amostragens pendentes (a visão é só uma permissão);
+CQ;CQ: Análise e Laudo (6);Regra de Análise;C;2;Regras de análise por material (especificação e métodos);Edital 2.1
+CQ;CQ: Análise e Laudo (6);Programação de Análise;C;2;Programação e registro da análise;
+CQ;CQ: Análise e Laudo (6);Consultar Análise Programada;FU;2;Análises programadas (uma tela, com visão de administrador);
+CQ;CQ: Análise e Laudo (6);Consultar Análise Programada Visão Administrador;FU;2;Análises programadas (a visão é só uma permissão);
+CQ;CQ: Análise e Laudo (6);Emissão Laudo Final;C;2;Laudo: aprovador diferente do analista, assinatura eletrônica, muda a situação na hora;"Edital 1.3; trava 2; art. 189"
+CQ;CQ: Análise e Laudo (6);Gerar Etiqueta;C;2;Etiquetas (aprovado, reprovado, quarentena);Reunião 12/11: a etiqueta sai do CQ
+CQ;CQ: Tabelas de apoio e regulatório (5);Unidade de Medida;F;0;Unidades de medida (um só cadastro);
+CQ;CQ: Tabelas de apoio e regulatório (5);Motivos;CS;2;Motivos do CQ;
+CQ;CQ: Tabelas de apoio e regulatório (5);Regra Estabilidade;C;6;Programa de estabilidade (regra);Art. 271 a 290
+CQ;CQ: Tabelas de apoio e regulatório (5);Acompanhamento Estabilidade;C;6;Programa de estabilidade (acompanhamento);
+CQ;CQ: Tabelas de apoio e regulatório (5);Final de Estabilidade;FU;6;Programa de estabilidade (conclusão);
+CQ;CQ: fora do menu (5);Consultar Coletas Pendentes de Programação;C;6;Coletas pendentes (água e ambiente);
+CQ;CQ: fora do menu (5);Verificação de Amostragem (segunda versão);E;-;Duplicata da verificação de amostragens;
+CQ;CQ: fora do menu (5);Avaliação Fornecedores (CQ);FU;2;Qualificação de fornecedor (um só cadastro, na GQ);
+CQ;CQ: fora do menu (5);Avaliação de Desempenho da Qualidade dos Fornecedores;FU;5;Qualificação de fornecedor (desempenho periódico);
+CQ;CQ: fora do menu (5);Gestão de Avaliação;FU;5;Qualificação de fornecedor (gestão);
+GQ;GQ: Controle de Desvios (14);Relatório de Desvios;C;5;Desvio: registro e triagem (cita o lote: retém o lote);"Trava 3; art. 8º IX, XIV"
+GQ;GQ: Controle de Desvios (14);Registro Ação Corretiva Imediata;FU;5;Desvio: registro e triagem;
+GQ;GQ: Controle de Desvios (14);Pré Avaliação Relatório Desvios;C;5;Desvio: classificação e pré-avaliação;
+GQ;GQ: Controle de Desvios (14);Avaliação Área;FU;5;Desvio: avaliação das áreas;
+GQ;GQ: Controle de Desvios (14);Avaliação Relatório Desvios;C;5;Desvio: investigação e conclusão (causa raiz);
+GQ;GQ: Controle de Desvios (14);Relatório de CAPA;C;5;CAPA: plano de ação (corretiva e preventiva);
+GQ;GQ: Controle de Desvios (14);Plano de Ação Corretiva;FU;5;CAPA: plano de ação;
+GQ;GQ: Controle de Desvios (14);Execução do Plano de Ação Corretiva;C;5;CAPA: execução e monitoramento;
+GQ;GQ: Controle de Desvios (14);Monitoramento do Plano de Ação Corretiva;FU;5;CAPA: execução e monitoramento;
+GQ;GQ: Controle de Desvios (14);Plano de Ação Preventiva;FU;5;CAPA: plano de ação;
+GQ;GQ: Controle de Desvios (14);Execução Plano de Ação Preventiva;FU;5;CAPA: execução e monitoramento;
+GQ;GQ: Controle de Desvios (14);Monitoramento do Plano de Ação Preventiva;FU;5;CAPA: execução e monitoramento;
+GQ;GQ: Controle de Desvios (14);Acompanhamento RD (relatório);FU;7;Relatório de desvios e CAPA (um só);
+GQ;GQ: Controle de Desvios (14);Controle de Emissão de RNC (relatório);FU;7;Relatório de desvios e CAPA (um só);
+GQ;GQ: Controle de Mudanças (8);Solicitação de Mudanças;C;5;Mudança: solicitação;Art. 8º XII e XIII
+GQ;GQ: Controle de Mudanças (8);Pré-Avaliação de Mudanças;FU;5;Mudança: avaliação pelas áreas;
+GQ;GQ: Controle de Mudanças (8);Avaliação de Mudanças;C;5;Mudança: avaliação e parecer das áreas;
+GQ;GQ: Controle de Mudanças (8);Liberação Avaliação de Mudanças;FU;5;Mudança: aprovação (assinada);
+GQ;GQ: Controle de Mudanças (8);Plano de Ação;C;5;Mudança: plano e execução;
+GQ;GQ: Controle de Mudanças (8);Execução Plano de Ação;FU;5;Mudança: plano e execução;
+GQ;GQ: Controle de Mudanças (8);Liberação Plano de Ação (Finalização);FU;5;Mudança: encerramento e verificação de eficácia;
+GQ;GQ: Controle de Mudanças (8);Controle Mudança Produto;A;-;Depende de produto e Produção;
+GQ;GQ: Autoinspeção e Auditoria (7);Cadastro Tipo Qualificação;CS;5;Tipos de auditoria;
+GQ;GQ: Autoinspeção e Auditoria (7);Cadastro de Roteiro;C;5;Roteiros de autoinspeção;
+GQ;GQ: Autoinspeção e Auditoria (7);Cadastro Autoinspeção e Auditoria;FU;5;Programa de autoinspeção;
+GQ;GQ: Autoinspeção e Auditoria (7);Programação Autoinspeção e Auditoria;C;5;Autoinspeção: programação;
+GQ;GQ: Autoinspeção e Auditoria (7);Registro Autoinspeção e Auditoria;C;5;Autoinspeção: registro (não conformidade vira desvio);
+GQ;GQ: Autoinspeção e Auditoria (7);Avaliação Autoinspeção e Auditoria;FU;5;Autoinspeção: avaliação;
+GQ;GQ: Autoinspeção e Auditoria (7);Planejamento de Autoinspeção e Auditorias (relatório);FU;7;Relatório de autoinspeção;
+GQ;GQ: Treinamento Técnico (8);Tipo de Treinamento;CS;5;Tipos de treinamento;
+GQ;GQ: Treinamento Técnico (8);Motivo de Treinamento;CS;5;Motivos de treinamento;
+GQ;GQ: Treinamento Técnico (8);Cadastro de Treinamento;C;5;Treinamento: cadastro (ligado ao documento);Art. 39 a 46
+GQ;GQ: Treinamento Técnico (8);Solicitação de Treinamento;FU;5;Treinamento: solicitação e programação;
+GQ;GQ: Treinamento Técnico (8);Programação de Treinamento;C;5;Treinamento: programação;
+GQ;GQ: Treinamento Técnico (8);Matriz de Treinamento;C;5;Matriz de treinamento (quem precisa de quê);
+GQ;GQ: Treinamento Técnico (8);Conclusão do Treinamento;C;5;Treinamento: conclusão e avaliação (assinada);
+GQ;GQ: Treinamento Técnico (8);Acompanhamento dos Treinamentos;FU;5;Treinamento: acompanhamento e vencimentos;
+GQ;GQ: Assuntos Regulatórios (7);Processo Regulatório;P;5;Registro de produto na ANVISA: só se houver produto no IVB (a trava exige produção);
+GQ;GQ: Assuntos Regulatórios (7);Programação;P;5;Registro de produto na ANVISA: só se houver produto no IVB (a trava exige produção);
+GQ;GQ: Assuntos Regulatórios (7);Monitoramento;P;5;Registro de produto na ANVISA: só se houver produto no IVB (a trava exige produção);
+GQ;GQ: Assuntos Regulatórios (7);Check-list;P;5;Registro de produto na ANVISA: só se houver produto no IVB (a trava exige produção);
+GQ;GQ: Assuntos Regulatórios (7);Solicitação de Registro;P;5;Registro de produto na ANVISA: só se houver produto no IVB (a trava exige produção);
+GQ;GQ: Assuntos Regulatórios (7);Controle de Produtos Enviados para Registro Anvisa;P;5;Registro de produto na ANVISA: só se houver produto no IVB (a trava exige produção);
+GQ;GQ: Assuntos Regulatórios (7);Exigências da ANVISA;P;5;Registro de produto na ANVISA: só se houver produto no IVB (a trava exige produção);
+GQ;GQ: Configuração (1);Grupo Perfil;E;-;Segunda camada de acesso: o Principal é o único dono dos perfis;
+GQ;GQ: protótipos (22);Programação Controle de Validações;C;6;Validações e qualificações (programação);Art. 148
+GQ;GQ: protótipos (22);Registro Controle de Validações;FU;6;Validações e qualificações (registro);
+GQ;GQ: protótipos (22);Fase de Validação;CS;6;Fases de validação;
+GQ;GQ: protótipos (22);Tipo de Objeto de Validação;CS;6;Tipos de objeto de validação;
+GQ;GQ: protótipos (22);Controle de Qualificação;FU;6;Validações e qualificações;
+GQ;GQ: protótipos (22);Controle de Calibração;C;6;Calibração (equipamentos e instrumentos);Art. 148 I e II
+GQ;GQ: protótipos (22);Linhas de Produção;A;-;Depende da Produção;
+GQ;GQ: protótipos (22);Método Analítico;C;6;Métodos analíticos validados;"Art. 253, 255, 260 a 264; edital 2.1"
+GQ;GQ: protótipos (22);Prazos de Validade;P;-;Entender o uso antes de refazer;
+GQ;GQ: protótipos (22);Avaliação Fornecedores (GQ);FU;2;Qualificação de fornecedor (um só cadastro);
+GQ;GQ: protótipos (22);Avaliação Desempenho Qualidade Fornecedor (GQ);FU;5;Qualificação de fornecedor (desempenho);
+GQ;GQ: protótipos (22);Gestão de Avaliação (GQ);FU;5;Qualificação de fornecedor;
+GQ;GQ: protótipos (22);Programação RRPP (primeira versão);P;6;Revisão periódica da qualidade do produto (art. 15 a 19): só se houver produto no IVB;
+GQ;GQ: protótipos (22);Programação RRPP (segunda versão);P;6;Revisão periódica da qualidade do produto (art. 15 a 19): só se houver produto no IVB;
+GQ;GQ: protótipos (22);Registro RRPP (primeira versão);P;6;Revisão periódica da qualidade do produto (art. 15 a 19): só se houver produto no IVB;
+GQ;GQ: protótipos (22);Registro RRPP (segunda versão);P;6;Revisão periódica da qualidade do produto (art. 15 a 19): só se houver produto no IVB;
+GQ;GQ: protótipos (22);Produtos Enviados para Registro ANVISA;E;-;Versão antiga;
+GQ;GQ: protótipos (22);Solicitação de Registro (antiga);E;-;Versão antiga;
+GQ;GQ: protótipos (22);Check-List (antigo);E;-;Versão antiga;
+GQ;GQ: protótipos (22);Petição de Notificação de Produção de Lote Piloto;A;-;Depende de produto e Produção;
+GQ;GQ: protótipos (22);Histórico - HMP;P;-;Entender o uso antes de refazer;
+GQ;GQ: protótipos (22);Página em branco esquecida;E;-;Sem função;
+GQ;GQ: construir do zero (não existe no legado);Reclamação de cliente;C;5;Reclamação (registro, investigação e retenção de lotes);"Arts. 319 a 360; o legado não tem"
+GQ;GQ: construir do zero (não existe no legado);Recolhimento;C;5;Recolhimento (lotes recolhidos, para quem foram: Remessas do Estoque);"Arts. 343 a 347; trava 11"
+Documentos;Documentos: ciclo (8);Documento;C;4;Documento: elaboração (modelo, código, tipo);"Arts. 117 e 119; edital 1.1"
+Documentos;Documentos: ciclo (8);Revisão Documento;C;4;Documento: revisão por outra pessoa;
+Documentos;Documentos: ciclo (8);Pré-Aprovação Documento;FU;4;Documento: revisão e aprovação em etapas (fluxo único);
+Documentos;Documentos: ciclo (8);Aprovação Documento;C;4;Documento: aprovação com assinatura eletrônica;Edital 1.3
+Documentos;Documentos: ciclo (8);Aprovação de Documentos (Documento Aprovação);FU;4;Documento: aprovação (duplicada no legado);
+Documentos;Documentos: ciclo (8);Vigência de Documento;C;4;Documento: vigência (data de efetividade, só depois do treinamento quando exigido);
+Documentos;Documentos: ciclo (8);Vigência de Documentos (Documento Aprovação);FU;4;Documento: vigência (duplicada no legado);
+Documentos;Documentos: ciclo (8);Nova Revisão de Documento;FU;4;Documento: nova revisão (ação do documento vigente);
+Documentos;Documentos: retirada e consulta (2);Obsolescência de Documento;C;4;Documento: retirada do obsoleto;Art. 121
+Documentos;Documentos: retirada e consulta (2);Visualizar Documento;C;4;Documento: consulta (só a versão vigente);
+Documentos;Documentos: cópias (1);Controle de Cópias;C;4;Cópias controladas (emissão, recolhimento);Art. 121
+Documentos;Documentos: externo e legado (2);Documento Externo;C;4;Documentos externos (normas, manuais de fornecedor);
+Documentos;Documentos: externo e legado (2);Documento Legado;P;4;Importar documentos antigos: depende de haver dados antigos a trazer;
+Documentos;Documentos: tabelas de apoio (1);Tipo de Documento;CS;4;Tipos de documento;
+Documentos;Documentos: arquivos e modelos, fora do menu (3);Cadastro de Arquivos;E;-;Detalhe técnico do legado;
+Documentos;Documentos: arquivos e modelos, fora do menu (3);Arquivos;E;-;Detalhe técnico do legado;
+Documentos;Documentos: arquivos e modelos, fora do menu (3);Modelos;C;4;Modelos de documento;

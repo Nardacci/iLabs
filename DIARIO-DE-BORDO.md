@@ -2,6 +2,14 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-18 · Claude · Estudo do roadmap de telas (rascunho para validação; nada construído)
+
+- **Pedido do responsável:** avaliar todos os repositórios do LabMedSys/iLabPharma e definir "as telas certas no momento certo" (base Principal, depois Estoque, CQ etc.).
+- **Entregue:** `docs/roadmap/roadmap-de-telas.md` (ondas 0 a 7, critérios, travas, mapa do edital do IVB, o que não construir, 13 decisões em aberto com a onda em que cada uma é necessária, riscos) e `docs/roadmap/telas-do-legado-para-o-novo.csv` (as 248 telas dos cinco módulos do IVB, cada uma com classe, onda e o que vira no iLabs).
+- **Conclusões principais:** são ~84 telas novas (não 248); o lote com situação única e a assinatura eletrônica vêm antes das telas de Estoque e CQ; Estoque e CQ são uma fatia só (recebimento até o laudo); a GQ se constrói pelas travas; reclamação e recolhimento não existem no legado e entram como construção nova.
+- **Limites:** a classificação das telas é proposta minha, feita pelos inventários, fluxos, integrações e diagnóstico (não li cada tela); sem estimativa de datas. Fora do escopo do IVB: Produção, OPE, Comercial, Rastreabilidade.
+- **Próximo:** o responsável valida e responde D1, D6, D11, D12 e D13; depois, plano detalhado da Onda 1 e desenho do modelo "situação única do lote".
+
 ## 2026-11-18 · Claude · Migração 23 (exportar e imprimir Profissionais) APLICADA no Supabase
 
 - **Autorização do responsável** ("pode aplicar", 18/11/2026), depois dos testes. Registro e conferência: `banco/execucao/2026-11-18-migracao-23/resultado.md`.
