@@ -45,9 +45,9 @@ describe('tela principal (Início)', () => {
     expect(await violacoesDeAcessibilidade(f)).toEqual([]);
   });
 
-  it('tem o cartão que abre a avaliação dos cadastros globais, para qualquer pessoa logada', () => {
+  it('tem o cartão que abre a estudo do roadmap, para qualquer pessoa logada', () => {
     const f = abrir([]);
     const link = (f.nativeElement as HTMLElement).querySelector<HTMLAnchorElement>('a.estudo-card');
-    expect(link?.getAttribute('href')).toBe('/estudo/cadastros-globais');
+    expect(link?.getAttribute('href')).toBe('/estudo/roadmap');
   });
 });

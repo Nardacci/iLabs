@@ -2,6 +2,13 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-19 · Claude · Página "Estudo do roadmap" no sistema (substitui a tela de avaliação)
+
+- **Pedido do responsável:** atualizar o site para ver como está ficando a página (e "não quero um questionário").
+- **Feito (app):** a tela de avaliação em tabela foi **retirada**; o cartão do Início agora abre `/estudo/roadmap`, uma página de **leitura** com 4 abas (cadastros repetidos, ordem de cadastro, fluxo de recebimento e quarentena, todos os fluxos). O texto é gerado dos documentos `docs/roadmap/*.md` por `node scripts/estudo-paginas.mjs` (refazer o comando quando um documento mudar; o diagrama mermaid só aparece no arquivo do repositório). Nova dependência de desenvolvimento: `marked`.
+- **Conferido:** 293 testes, lint, formato, build e ponta a ponta (com axe e contraste) passam; capturas de tela olhadas (Início e duas abas).
+- **Retirar depois:** quando o estudo terminar, remover cartão, rota, pasta `estudo/` e o script.
+
 ## 2026-11-19 · Claude · Passo 3 iniciado: fluxo 1 (recebimento até a liberação da quarentena) e inventário dos 34 fluxos
 
 - **Entregue:** `docs/roadmap/fluxo-01-recebimento-quarentena.md` (11 etapas: quem, o que exige antes, o que entra, o que o banco garante, falha do legado; o que o fluxo exige de cada cadastro global; checklist de implantação do primeiro recebimento; pontos a validar) e `docs/roadmap/fluxos-do-legado.md` (34 fluxos em 17 posições de ordem).

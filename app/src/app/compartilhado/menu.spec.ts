@@ -14,7 +14,7 @@ describe('menu por permissão e guarda de rota (mesmo resultado)', () => {
     expect(itensVisiveis((f) => f === undefined)).toEqual([
       '/inicio',
       '/seguranca',
-      '/estudo/cadastros-globais',
+      '/estudo/roadmap',
     ]);
   });
 
