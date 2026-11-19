@@ -96,12 +96,12 @@ Estoque;Estoque: Inventário (4);Inventário - Apuração;FU;7;Inventário rotat
 Estoque;Estoque: Gestão analítica (3);Análise de Estoque;C;7;Análise de estoque (consulta);
 Estoque;Estoque: Gestão analítica (3);Curva ABC;A;-;Gestão de compras: confirmar se o IVB usa;
 Estoque;Estoque: Gestão analítica (3);Pedido de Compra;P;-;Compras: confirmar se entra no IVB (o edital não cita);
-Estoque;Estoque: Kits (6);Cadastro de Kits;P;-;"Kits: o edital não cita; confirmar se o IVB usa";
-Estoque;Estoque: Kits (6);Solicitação de Kits;P;-;"Kits: o edital não cita; confirmar se o IVB usa";
-Estoque;Estoque: Kits (6);Controle de Kits;P;-;"Kits: o edital não cita; confirmar se o IVB usa";
-Estoque;Estoque: Kits (6);Parâmetros de Configuração (Kit);P;-;"Kits: o edital não cita; confirmar se o IVB usa";
-Estoque;Estoque: Kits (6);Planejamento de Kits;P;-;"Kits: o edital não cita; confirmar se o IVB usa";
-Estoque;Estoque: Kits (6);Análise do Planejamento de Kits;P;-;"Kits: o edital não cita; confirmar se o IVB usa";
+Estoque;Estoque: Kits (6);Cadastro de Kits;E;-;Removido: Kits não existe mais (decisão do responsável, 19/11/2026);
+Estoque;Estoque: Kits (6);Solicitação de Kits;E;-;Removido: Kits não existe mais (decisão do responsável, 19/11/2026);
+Estoque;Estoque: Kits (6);Controle de Kits;E;-;Removido: Kits não existe mais (decisão do responsável, 19/11/2026);
+Estoque;Estoque: Kits (6);Parâmetros de Configuração (Kit);E;-;Removido: Kits não existe mais (decisão do responsável, 19/11/2026);
+Estoque;Estoque: Kits (6);Planejamento de Kits;E;-;Removido: Kits não existe mais (decisão do responsável, 19/11/2026);
+Estoque;Estoque: Kits (6);Análise do Planejamento de Kits;E;-;Removido: Kits não existe mais (decisão do responsável, 19/11/2026);
 Estoque;Estoque: Regulatório = almoxarifado do CQ (3);Entrada de Material;C;2;Amostras de retenção, referência e estabilidade (entrada);"Art. 14 VIII; separadas na amostragem do CQ"
 Estoque;Estoque: Regulatório = almoxarifado do CQ (3);Movimentações;FU;2;Amostras de retenção (movimentação, com prazo mínimo de guarda);Trava de saída antes do prazo
 Estoque;Estoque: Regulatório = almoxarifado do CQ (3);Consulta Disponibilidade;FU;2;Amostras de retenção (consulta);
@@ -125,11 +125,11 @@ Estoque;Estoque: Relatórios (25);Demonstrativo Financeiro de Movimentação (RC
 Estoque;Estoque: Relatórios (25);Movimentação Mensal de Vendas de Medicamentos (RM03);P;-;Relatório mensal: confirmar a exigência regulatória e se depende da venda;
 Estoque;Estoque: Relatórios (25);Movimentação Mensal de Insumos (RM14);P;-;Relatório mensal: confirmar a exigência regulatória;
 Estoque;Estoque: Relatórios (25);Aquisição de Material;P;-;Compras: confirmar se entra no IVB;
-Estoque;Estoque: Relatórios (25);Relatório - Listagem de Lotes (Kits);P;-;Kits: junto com a decisão dos Kits;
-Estoque;Estoque: Relatórios (25);Reposição de Itens a Vencer (Kit);P;-;Kits: junto com a decisão dos Kits;
-Estoque;Estoque: Relatórios (25);Planejamento de Kits (relatório);P;-;Kits: junto com a decisão dos Kits;
-Estoque;Estoque: Relatórios (25);Análise de Componentes (Kit);P;-;Kits: junto com a decisão dos Kits;
-Estoque;Estoque: Relatórios (25);Reposição de Componentes do Kit;P;-;Kits: junto com a decisão dos Kits;
+Estoque;Estoque: Relatórios (25);Relatório - Listagem de Lotes (Kits);E;-;Removido: Kits não existe mais (decisão do responsável, 19/11/2026);
+Estoque;Estoque: Relatórios (25);Reposição de Itens a Vencer (Kit);E;-;Removido: Kits não existe mais (decisão do responsável, 19/11/2026);
+Estoque;Estoque: Relatórios (25);Planejamento de Kits (relatório);E;-;Removido: Kits não existe mais (decisão do responsável, 19/11/2026);
+Estoque;Estoque: Relatórios (25);Análise de Componentes (Kit);E;-;Removido: Kits não existe mais (decisão do responsável, 19/11/2026);
+Estoque;Estoque: Relatórios (25);Reposição de Componentes do Kit;E;-;Removido: Kits não existe mais (decisão do responsável, 19/11/2026);
 Estoque;Estoque: fora do menu;Entradas por nota (recebimentoNF e itens);FU;2;Recebimento (conferência da nota);
 Estoque;Estoque: fora do menu;Histórico do item, etiquetas e relatórios de impressão;FU;2;Etiquetas (identificação e quarentena) e histórico do lote;
 Estoque;Estoque: fora do menu;Liberação pelo CQ (relatório);E;-;"Vazia no legado; a liberação é o laudo mudando a situação";

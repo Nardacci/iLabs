@@ -2,6 +2,14 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-19 · Claude · Kits removido e aba "Roteiro de implantação"
+
+- **Responsável:** "vamos remover o item Kits, não existe mais" e "faltou uma aba: o roteiro para implantação do sistema; essa aba é fundamental".
+- **Kits:** retirado dos fluxos (33 em vez de 34), da planilha de telas (11 linhas viraram "eliminar") e registrado em `docs/decisoes.md`.
+- **Roteiro:** `docs/roadmap/roteiro-de-implantacao.md` (versão 1): 11 etapas (preparar, acesso e pessoas, a empresa, listas de apoio, parceiros, estrutura física e equipamentos, materiais, qualidade do material, carga inicial, ensaio ponta a ponta, treinar e liberar), checklist do primeiro recebimento, quem decide, o que não pode ser pulado, pontos em aberto. Cobre hoje só o caminho do material; as outras áreas entram conforme as fichas de fluxo. Virou a **primeira aba** da página `/estudo/roadmap`.
+- **Conferido:** 293 testes, lint, formato, build e ponta a ponta; captura de tela da aba olhada.
+- **Em aberto no roteiro:** carga inicial de saldo, fiscal na implantação, aprovação prévia, pacote de validação.
+
 ## 2026-11-19 · Claude · Página "Estudo do roadmap" no sistema (substitui a tela de avaliação)
 
 - **Pedido do responsável:** atualizar o site para ver como está ficando a página (e "não quero um questionário").

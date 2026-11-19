@@ -54,7 +54,7 @@
 ## 6. Limites
 - A planilha classifica **conceitos**, não telas. Cada linha pode virar uma ou várias telas.
 - O OPE não tem tabelas próprias (gera arquivos XML) e a Rastreabilidade só tem eventos: os dois aparecem pouco aqui por isso.
-- Registros de operação (kits, inventário, remessa, ordem de produção) não entram: são movimentos, e entram no passo 3 (fluxos).
+- Registros de operação (inventário, remessa, ordem de produção) não entram: são movimentos, e entram no passo 3 (fluxos).
 
 ## 7. Próximo passo
 Passo 2: para cada um destes 50 cadastros, de quais outros ele depende (exemplo: Ponto de água → Ambiente → Estrutura organizacional), e a ordem de construção que sai disso.
