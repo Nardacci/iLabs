@@ -1,0 +1,18 @@
+flowchart TD
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  L{"Laudo assinado"}:::trava
+  L -- aprovado --> A1["Movimentação<br/>só para local comum"]:::trava --> D(["Lote disponível"]):::fim
+  L -- reprovado, com motivo --> R1["Movimentação<br/>só para o refugo"]:::trava --> R2(["Lote bloqueado<br/>sai de separação e remessa"]):::bloqueio
+  R2 --> R3["Destino final assinado<br/>devolução ou destruição"]:::trava
+  D --> E1{"Data de reanálise<br/>chegando"}:::trava
+  E1 -- aviso antes de vencer --> E2["Agendar a reanálise<br/>abre a análise no CQ"]:::passo --> E3["Lote sai do disponível<br/>até o laudo"]:::trava
+  E3 -- aprovado, nova data --> D
+  E3 -- reprovado --> R1
+  E1 -- vencida e não feita --> B(["Bloqueio automático"]):::bloqueio
+  D --> V{"Validade<br/>chegando"}:::trava
+  V -- vencida --> V1(["Sai do disponível<br/>na hora"]):::bloqueio --> V2["Pedido de revalidação<br/>abre a análise no CQ"]:::passo
+  V2 -- aprovado, nova validade --> D
+  V2 -- reprovado --> R1

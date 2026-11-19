@@ -1,5 +1,9 @@
 # Passo 3, fluxo 3: as regras do laboratório, a análise e o laudo
 
+![Fluxo: Passo 3, fluxo 3: as regras do laboratório, a análise e o laudo](diagramas/fluxo-03-regras-analise-e-laudo.png)
+
+*Como ler: **laranja** = o sistema confere (trava); **vermelho** = bloqueio; **verde** = resultado. Clique na imagem para ampliar.*
+
 **Análise de 19/11/2026. Rascunho para validação do responsável.** Terceira ficha do passo 3. Ela abre a caixa-preta das etapas 8 a 10 do [fluxo 1](fluxo-01-recebimento-quarentena.md) (amostragem, análise e laudo) e das **regras** que o laboratório precisa ter cadastradas antes.
 
 **Fontes (todas no repositório do legado):** os fluxos do Controle da Qualidade feitos pelo código (`4.controle_qualidade/fluxos/regras-amostragem-analise.md` e `solicitacao-analise-laudo.md`) e os defeitos confirmados nas telas (`DV-CQ-002` a `009`, `029` a `033`, `038`, `043`, `052`, `010`). **O que não fiz:** não li as telas uma a uma; o que está como "legado" vem desses documentos.

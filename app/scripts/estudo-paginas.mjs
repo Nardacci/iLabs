@@ -1,6 +1,6 @@
 // Gera app/src/app/estudo/paginas.gerado.ts a partir dos documentos de docs/roadmap/*.md (os documentos são a fonte).
 // Uso: node scripts/estudo-paginas.mjs   (refazer sempre que um desses documentos mudar)
-import { readFileSync, writeFileSync } from 'node:fs';
+import { copyFileSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { marked } from 'marked';
 
@@ -24,8 +24,21 @@ const PAGINAS = [
     titulo: '5 · Fluxo: regras, análise e laudo',
     arquivo: 'fluxo-03-regras-analise-e-laudo.md',
   },
+  {
+    id: 'fluxo4',
+    titulo: '6 · Fluxo: reprovado, reanálise e revalidação',
+    arquivo: 'fluxo-04-reprovado-reanalise-revalidacao.md',
+  },
   { id: 'fluxos', titulo: 'Todos os fluxos', arquivo: 'fluxos-do-legado.md' },
 ];
+
+// As imagens dos fluxos (docs/roadmap/diagramas/*.png) vão para app/public/estudo/ e a página as usa pelo endereço relativo.
+mkdirSync(`${raiz}/public/estudo`, { recursive: true });
+for (const f of readdirSync(`${raiz}/../docs/roadmap/diagramas`).filter((n) =>
+  n.endsWith('.png'),
+)) {
+  copyFileSync(`${raiz}/../docs/roadmap/diagramas/${f}`, `${raiz}/public/estudo/${f}`);
+}
 
 function html(arquivo) {
   let md = readFileSync(`${raiz}/../docs/roadmap/${arquivo}`, 'utf8');
@@ -37,6 +50,11 @@ function html(arquivo) {
   let saida = marked.parse(md, { gfm: true, async: false });
   // links para outros arquivos não funcionam dentro do sistema: ficam como texto
   saida = saida.replace(/<a href="[^"]*\.(?:md|csv)[^"]*">([\s\S]*?)<\/a>/g, '<span>$1</span>');
+  // imagens: endereço relativo ao site; clicar abre a imagem inteira
+  saida = saida.replace(
+    /<img src="diagramas\/([^"]+)"([^>]*)>/g,
+    '<a href="estudo/$1" target="_blank" rel="noopener"><img src="estudo/$1"$2></a>',
+  );
   // o título principal vira o título da página (fica fora do texto)
   return saida.replace(/<h1[^>]*>[\s\S]*?<\/h1>/, '');
 }

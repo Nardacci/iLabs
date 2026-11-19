@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  signal,
+  ViewEncapsulation,
+} from '@angular/core';
 import { PAGINAS_DO_ESTUDO } from './paginas.gerado';
 
 /**
@@ -9,6 +15,8 @@ import { PAGINAS_DO_ESTUDO } from './paginas.gerado';
 @Component({
   selector: 'il-estudo-roadmap',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  // O texto vem de HTML gerado (innerHTML): sem isolamento de estilo, para que as regras de `.estudo-texto` o alcancem.
+  encapsulation: ViewEncapsulation.None,
   template: `
     <div class="barra">
       <h1>Estudo do roadmap</h1>
@@ -81,6 +89,14 @@ import { PAGINAS_DO_ESTUDO } from './paginas.gerado';
       padding: 0.5rem 1rem;
       border-left: 4px solid var(--accent);
       background: var(--accent-soft);
+    }
+    .estudo-texto img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      margin-block: 0.5rem;
+      border: 1px solid var(--line);
+      border-radius: 8px;
     }
     .estudo-texto code {
       font-family: var(--font-mono);
