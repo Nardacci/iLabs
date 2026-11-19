@@ -1,6 +1,6 @@
 # Roteiro de implantação do sistema
 
-**Versão 1.9, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
+**Versão 1.10, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
 
 **Para que serve:** responder, para qualquer cliente que vá implantar o iLabs, **"o que fazer, em que ordem, quem faz e quando está pronto"**. A ordem vem das dependências entre cadastros ([passo 2](ordem-de-cadastro.md)) e das informações que cada fluxo exige ([passo 3](fluxo-01-recebimento-quarentena.md)): **não se cadastra o Item sem antes ter o que o Item usa; não se recebe material sem fornecedor qualificado, local de quarentena e regra de análise.**
 
@@ -96,6 +96,13 @@ Sem qualquer um destes, o fluxo trava em alguma etapa.
 3. **Almoxarifado ativo e do grupo** (etapa 1): sem isso, a remessa oferece o que não deveria.
 4. **No ensaio ponta a ponta (etapa 9):** acrescentar **uma remessa até a liberação**, **uma tentativa de lote vencido** (recusada) e **um estorno assinado**.
 
+### Detalhe das etapas 1, 6 e 9: conferir o saldo (inventário)
+(Vem do [fluxo 10](fluxo-10-inventario.md).)
+1. **Três funções separadas** (etapa 1): quem conta, quem justifica e quem apura o inventário não podem ser a mesma pessoa.
+2. **Grupo, subgrupo e custo do material** (etapa 6): usados para escolher o que contar e para o relatório de valor.
+3. **Limite de divergência** (parâmetro do Estoque): a partir de quanto o ajuste exige aprovação da Qualidade.
+4. **No ensaio ponta a ponta (etapa 9):** acrescentar **um inventário com divergência até a apuração**, **uma tentativa de a mesma pessoa contar e apurar** (recusada) e **um estorno de ajuste**.
+
 ## 3. Quem decide o quê
 | Decisão | Quem |
 |---|---|
@@ -128,7 +135,8 @@ O roteiro cresce conforme analisamos os fluxos (ordem em [Todos os fluxos](fluxo
 - **Almoxarifado do Controle da Qualidade**: **feito** (ficha 7); detalha as etapas 5, 6 e 9.
 - **Devolução e entradas**: **feito** (ficha 8); detalha as etapas 6, 7 e 9.
 - **Remessa e expedição**: **feito** (ficha 9); detalha as etapas 1, 3, 5 e 9.
-- **Inventário** acrescenta as etapas de uso do material.
+- **Inventário**: **feito** (ficha 10); detalha as etapas 1, 6 e 9.
+- **Com isso, os dez fluxos do Estoque estão feitos.** Faltam os fluxos de água e ambiente e de estabilidade (Controle da Qualidade).
 - **Documentos, Garantia da Qualidade, Produção, Comercial, Rastreabilidade e OPE** acrescentam as etapas das outras áreas.
 
 Cada ficha atualiza este roteiro: a etapa correspondente ganha o detalhe e a ordem é revista se uma dependência nova aparecer.
