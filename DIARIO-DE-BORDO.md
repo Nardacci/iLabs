@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-19 · Claude · Passo 3 iniciado: fluxo 1 (recebimento até a liberação da quarentena) e inventário dos 34 fluxos
+
+- **Entregue:** `docs/roadmap/fluxo-01-recebimento-quarentena.md` (11 etapas: quem, o que exige antes, o que entra, o que o banco garante, falha do legado; o que o fluxo exige de cada cadastro global; checklist de implantação do primeiro recebimento; pontos a validar) e `docs/roadmap/fluxos-do-legado.md` (34 fluxos em 17 posições de ordem).
+- **Fontes:** fluxos da equipe (Recebimento de materiais e Estoque quarentena), conferência pelo código e achados `DV-EST-001` a `DV-EST-009` do legado. As telas não foram lidas.
+- **Principais falhas do legado que o fluxo expõe:** validade em branco virava 31/12/2099 e vencida era aceita; fornecedor não qualificado não era conferido; conferência e autorização aceitavam qualquer login; checklist reprovado podia ser usado; laudo sem conferir função de revisor; destinos da quarentena protegidos só pela tela; nota marcada como conferida por gatilho desligado.
+- **Efeito nos passos 1 e 2:** qualificação de fornecedor e regras de amostragem/análise precisam existir antes do primeiro recebimento; a balança (equipamento) entra na ordem; campos do Material que o legado deixava opcionais (quarentena, lote, validade, análises) viram obrigatórios.
+- **Pontos a validar com a área:** ordem de conferência e autorização; quando exigir aprovação prévia; divergência de quantidade; função de revisor e pessoa designada; calibração da balança; fiscal na entrada.
+- **Próximo:** ficha 2 (compras e avaliação do fornecedor) e ficha 3 (regras e laudo do CQ), uma por vez.
+
 ## 2026-11-19 · Claude · Passo 2: dependências entre cadastros e ordem de cadastro (rascunho para validação)
 
 - **Entregue:** `docs/roadmap/ordem-de-cadastro.md` e `ordem-de-cadastro.csv` (51 cadastros: os 50 do passo 1 mais o Produto, separado do Item). Script reprodutível em `docs/roadmap/ferramentas/dependencias.py` (lê o repositório do legado; gera `dependencias.json`).
