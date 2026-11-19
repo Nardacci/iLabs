@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-19 · Claude · Passo 3, fluxo 5: guardar e movimentar o material dentro do estoque
+
+- **Entregue:** `docs/roadmap/fluxo-05-movimentacao-interna.md` com a imagem do fluxo no alto (`docs/roadmap/diagramas/fluxo-05-movimentacao-interna.*`), 8 etapas, o que o fluxo exige de cada cadastro e pontos a validar. Nova aba "7 · Fluxo: movimentação interna". **Roteiro de implantação 1.4**: detalhe das etapas 1, 5, 6 e 9.
+- **Fontes:** fluxo de Movimentação interna do legado (feito pelo código) e testes de tela do Estoque (CT-EST-030 a 045; DV-EST-016, 017, 018, 033, 034, 042, 044).
+- **Achados do legado:** o endereçamento dizia "finalizado com sucesso" sem gravar (DV-EST-016, Alta), o que bloqueou os casos de endereçamento; mover lote aprovado da quarentena gravava a saída e não a entrada, fazendo o saldo sumir (DV-EST-044, Alta); a trava de quarentena foi desligada no código (só a lista da tela protegia); duas abas salvaram a mesma origem ao mesmo tempo, sem bloqueio; o usuário de outro grupo via todos os almoxarifados na Solicitação de Material; o histórico do lote não mostrava usuário, hora, análise nem laudo; a exclusão de endereço não pedia justificativa.
+- **Proposta no iLabs:** a movimentação é um registro imutável, o saldo é sempre a soma delas, a saída e a entrada são uma só transação, o destino é conferido no servidor (cabe, mesmo material, tipo de local, almoxarifado do grupo), movimentações simultâneas são serializadas e o engano se corrige por estorno assinado.
+- **A validar com a área:** um endereço guarda um só material; capacidade bloqueia ou avisa; estorno (quem, quando); lote em reanálise ou bloqueado; item controlado exige assinatura e segunda pessoa; transferência entre almoxarifados; endereço congelado durante inventário.
+- **Próximo:** ficha 6 (solicitação, separação e atendimento à produção) ou outra ordem que o responsável preferir.
+
 ## 2026-11-19 · Claude · Passo 3, fluxo 4 (reprovado, reanálise e revalidação) e imagem do fluxo no alto de cada página
 
 - **Sugestão do responsável:** em cada página de fluxo, primeiro a imagem do fluxo e o texto logo abaixo.

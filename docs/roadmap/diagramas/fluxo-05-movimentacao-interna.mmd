@@ -1,0 +1,22 @@
+flowchart TB
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  subgraph E["1 · Preparar o endereço (Estoque)"]
+    direction LR
+    A1["Cadastrar o endereço<br/>rua, coluna, andar, capacidade"]:::passo --> A2["Endereçar o lote<br/>quantidade ≤ pendente<br/>grava tudo ou nada"]:::trava
+  end
+  subgraph M["2 · Movimentar entre endereços (Estoque)"]
+    direction LR
+    B1["Escolher lote, origem,<br/>quantidade e destino"]:::passo --> B2{"A origem<br/>tem saldo?"}:::trava
+    B2 -- sim --> B3{"O destino serve? Cabe,<br/>mesmo material, tipo de local<br/>compatível, almoxarifado do grupo"}:::trava
+    B2 -- não --> X1(["Recusado"]):::bloqueio
+    B3 -- sim --> B4["Justificativa e confirmação<br/>de quem tem a função"]:::trava --> B5["Uma só transação:<br/>sai da origem e entra no destino"]:::trava
+    B3 -- não --> X2(["Recusado,<br/>com o motivo"]):::bloqueio
+  end
+  subgraph R["3 · Depois da movimentação"]
+    direction LR
+    C1(["Saldo = soma das movimentações"]):::fim --> C2["Histórico: quem, quando,<br/>de onde para onde e por quê"]:::passo --> C3["Engano? Estorno assinado,<br/>nunca edição"]:::trava
+  end
+  E --> M --> R

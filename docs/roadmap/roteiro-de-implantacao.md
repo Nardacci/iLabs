@@ -1,6 +1,6 @@
 # Roteiro de implantação do sistema
 
-**Versão 1.3, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
+**Versão 1.4, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
 
 **Para que serve:** responder, para qualquer cliente que vá implantar o iLabs, **"o que fazer, em que ordem, quem faz e quando está pronto"**. A ordem vem das dependências entre cadastros ([passo 2](ordem-de-cadastro.md)) e das informações que cada fluxo exige ([passo 3](fluxo-01-recebimento-quarentena.md)): **não se cadastra o Item sem antes ter o que o Item usa; não se recebe material sem fornecedor qualificado, local de quarentena e regra de análise.**
 
@@ -59,6 +59,14 @@ Sem qualquer um destes, o fluxo trava em alguma etapa.
 3. **Funções:** quem move reprovado, quem registra o **destino final** e quem aprova a **revalidação**.
 4. **No ensaio ponta a ponta (etapa 9):** acrescentar **uma reprovação até o destino final**, **uma reanálise** (com aviso antes de vencer) e **um lote vencido** que não pode entrar nem sair por nenhuma porta.
 
+### Detalhe das etapas 1, 5, 6 e 9: guardar e movimentar o material
+(Vem do [fluxo 5](fluxo-05-movimentacao-interna.md).)
+1. **Acesso por almoxarifado** (etapa 1): definir quais **grupos de usuários** enxergam e movem cada almoxarifado; sem isso, ninguém vê nem move material.
+2. **Endereços com capacidade** (etapa 5): cada endereço (rua, coluna, andar) recebe altura, largura, profundidade e peso máximo; o **tipo do local** (comum, quarentena, refugo) decide quais materiais ele aceita.
+3. **Dados físicos do material** (etapa 6): dimensões, peso, se fraciona, se é refrigerado, se controla umidade, se é controlado. Sem eles, o sistema não consegue conferir se o material cabe e se o destino serve.
+4. **Tipo de movimentação** (lista de apoio) cadastrado antes da primeira movimentação.
+5. **No ensaio ponta a ponta (etapa 9):** acrescentar **uma transferência parcial entre endereços**, **uma tentativa de destino incompatível** (recusada), **uma movimentação ao mesmo tempo** por duas pessoas e **um estorno assinado**.
+
 ## 3. Quem decide o quê
 | Decisão | Quem |
 |---|---|
@@ -86,7 +94,8 @@ O roteiro cresce conforme analisamos os fluxos (ordem em [Todos os fluxos](fluxo
 - **Compras e avaliação do fornecedor**: **feito** (ficha 2); detalha a etapa 7 (qualificação).
 - **Regras de amostragem e análise, solicitação, análise e laudo**: **feito** (ficha 3); detalha as etapas 7 e 9.
 - **Reprovado, reanálise e revalidação**: **feito** (ficha 4); detalha as etapas 5, 6 e 9.
-- **Movimentação interna, solicitação e atendimento à produção, devolução, remessa e inventário** acrescentam as etapas de uso do material.
+- **Movimentação interna**: **feito** (ficha 5); detalha as etapas 1, 5, 6 e 9.
+- **Solicitação e atendimento à produção, devolução, remessa e inventário** acrescentam as etapas de uso do material.
 - **Documentos, Garantia da Qualidade, Produção, Comercial, Rastreabilidade e OPE** acrescentam as etapas das outras áreas.
 
 Cada ficha atualiza este roteiro: a etapa correspondente ganha o detalhe e a ordem é revista se uma dependência nova aparecer.

@@ -29,6 +29,11 @@ const PAGINAS = [
     titulo: '6 · Fluxo: reprovado, reanálise e revalidação',
     arquivo: 'fluxo-04-reprovado-reanalise-revalidacao.md',
   },
+  {
+    id: 'fluxo5',
+    titulo: '7 · Fluxo: movimentação interna',
+    arquivo: 'fluxo-05-movimentacao-interna.md',
+  },
   { id: 'fluxos', titulo: 'Todos os fluxos', arquivo: 'fluxos-do-legado.md' },
 ];
 
