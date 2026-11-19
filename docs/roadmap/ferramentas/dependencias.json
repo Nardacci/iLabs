@@ -1,0 +1,1061 @@
+{
+ "conceitos": [
+  {
+   "id": 1,
+   "nome": "Profissional (usuário)",
+   "destino": "Principal",
+   "noIlabs": "Feito",
+   "tabelas": 1,
+   "nivel": 0,
+   "nivelComOpcionais": 1,
+   "obrigatorias": [],
+   "opcionais": [
+    7,
+    9
+   ],
+   "origem": {
+    "9": [
+     "SIS_USUARIO.ID_BAIRRO",
+     "SIS_USUARIO.ID_MUNICIPIO",
+     "SIS_USUARIO.ID_NATURALIDADE",
+     "SIS_USUARIO.ID_PAIS"
+    ],
+    "7": [
+     "SIS_USUARIO.ID_TIPO_FUNCIONARIO"
+    ]
+   },
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 2,
+   "nome": "Função profissional (cargo)",
+   "destino": "Principal",
+   "noIlabs": "Feito",
+   "tabelas": 4,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 3,
+   "nome": "Grupo de usuários",
+   "destino": "Principal",
+   "noIlabs": "Feito",
+   "tabelas": 4,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 4,
+   "nome": "Perfil e funções do sistema (permissões)",
+   "destino": "Principal",
+   "noIlabs": "Feito",
+   "tabelas": 5,
+   "nivel": 0,
+   "nivelComOpcionais": 1,
+   "obrigatorias": [],
+   "opcionais": [
+    6
+   ],
+   "origem": {
+    "6": [
+     "SIS_PERFIL_LOCAL.ID_LOCAL"
+    ]
+   },
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 5,
+   "nome": "Conta de usuário e vínculo perfil",
+   "destino": "Principal",
+   "noIlabs": "Feito",
+   "tabelas": 2,
+   "nivel": 0,
+   "nivelComOpcionais": 2,
+   "obrigatorias": [],
+   "opcionais": [
+    4
+   ],
+   "origem": {
+    "4": [
+     "SIS_USUARIO_PERFIL.ID_PERFIL"
+    ]
+   },
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 6,
+   "nome": "Estrutura organizacional (setores/locais funcionais)",
+   "destino": "Principal",
+   "noIlabs": "Feito",
+   "tabelas": 2,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 7,
+   "nome": "Ocupação e tipo de funcionário",
+   "destino": "Principal",
+   "noIlabs": "Feito",
+   "tabelas": 3,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 8,
+   "nome": "Registro de acessos / atividade",
+   "destino": "Principal",
+   "noIlabs": "Feito",
+   "tabelas": 2,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 9,
+   "nome": "País, UF, Município, Bairro, Logradouro, Tipo de logradouro, Faixa de CEP",
+   "destino": "Principal",
+   "noIlabs": "Feito (Município IBGE e CEP por API)",
+   "tabelas": 7,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 10,
+   "nome": "Endereço (de pessoa jurídica ou cliente)",
+   "destino": "Principal",
+   "noIlabs": "Parte (na ficha do Profissional)",
+   "tabelas": 2,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 11,
+   "nome": "Estado civil, Escolaridade, Profissão, Religião, Órgão emissor, Operadora de telefonia",
+   "destino": "Principal",
+   "noIlabs": "Feito (listas na ficha)",
+   "tabelas": 6,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 12,
+   "nome": "Pessoa jurídica (fornecedor, fabricante, transportadora, cliente, laboratório)",
+   "destino": "Principal",
+   "noIlabs": "Tabela sem tela",
+   "tabelas": 8,
+   "nivel": 0,
+   "nivelComOpcionais": 1,
+   "obrigatorias": [],
+   "opcionais": [
+    9,
+    11
+   ],
+   "origem": {
+    "9": [
+     "GBL_PJ.ID_BAIRRO_LOGRADOURO",
+     "GBL_PJ.ID_MUNICIPIO_LOGRADOURO",
+     "GBL_PJ.ID_PAIS_LOGRADOURO"
+    ],
+    "11": [
+     "GBL_PJ.ID_OPERADORA"
+    ]
+   },
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 13,
+   "nome": "Qualificação de fornecedor (por material)",
+   "destino": "Módulo: Garantia da Qualidade (mínima antes do Estoque)",
+   "noIlabs": "Não existe",
+   "tabelas": 3,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 14,
+   "nome": "Empresa / filial (a organização dona do sistema)",
+   "destino": "Principal",
+   "noIlabs": "Parte (empresa_id em tudo)",
+   "tabelas": 2,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 15,
+   "nome": "Contato de pessoa jurídica",
+   "destino": "Principal",
+   "noIlabs": "Não existe",
+   "tabelas": 2,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 16,
+   "nome": "Almoxarifado / armazém e endereços (rua, coluna, andar, endereço, tipo de endereço)",
+   "destino": "Principal",
+   "noIlabs": "Tabela sem tela",
+   "tabelas": 10,
+   "nivel": 1,
+   "nivelComOpcionais": 1,
+   "obrigatorias": [
+    17
+   ],
+   "opcionais": [],
+   "origem": {
+    "17": [
+     "STQ_ENDERECO.ID_TIPO_ARMAZENAGEM"
+    ]
+   },
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 17,
+   "nome": "Condição de armazenagem e tipo de armazenagem",
+   "destino": "Principal",
+   "noIlabs": "Não existe",
+   "tabelas": 4,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 18,
+   "nome": "Local físico",
+   "destino": "Principal",
+   "noIlabs": "Não existe",
+   "tabelas": 2,
+   "nivel": 1,
+   "nivelComOpcionais": 1,
+   "obrigatorias": [
+    38
+   ],
+   "opcionais": [
+    39
+   ],
+   "origem": {
+    "38": [
+     "LOCAL_FISICO.ID_CONTA_GERENCIAL"
+    ],
+    "39": [
+     "LOCAL_FISICO.ID_CENTRO_CUSTO"
+    ]
+   },
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 19,
+   "nome": "Ambiente (sala/área) e grau de contaminação",
+   "destino": "Principal",
+   "noIlabs": "Não existe",
+   "tabelas": 2,
+   "nivel": 0,
+   "nivelComOpcionais": 1,
+   "obrigatorias": [],
+   "opcionais": [
+    6
+   ],
+   "origem": {
+    "6": [
+     "AMBIENTE.ID_ESTRUTURA_FUNCIONAL"
+    ]
+   },
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 20,
+   "nome": "Ponto de água e tipo de água",
+   "destino": "Principal",
+   "noIlabs": "Não existe",
+   "tabelas": 2,
+   "nivel": 0,
+   "nivelComOpcionais": 2,
+   "obrigatorias": [],
+   "opcionais": [
+    19
+   ],
+   "origem": {
+    "19": [
+     "PONTOS_AGUA.ID_AMBIENTE"
+    ]
+   },
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 21,
+   "nome": "Equipamento (e categoria, tipo de manutenção)",
+   "destino": "Principal",
+   "noIlabs": "Não existe",
+   "tabelas": 7,
+   "nivel": 0,
+   "nivelComOpcionais": 2,
+   "obrigatorias": [],
+   "opcionais": [
+    6,
+    12,
+    19
+   ],
+   "origem": {
+    "12": [
+     "EQUIPAMENTO.ID_FABRICANTE",
+     "EQUIPAMENTO.ID_FORNECEDOR"
+    ],
+    "6": [
+     "EQUIPAMENTO.ID_ESTRUTURA_FUNCIONAL"
+    ],
+    "19": [
+     "EQUIPAMENTO_AMBIENTE.ID_AMBIENTE"
+    ]
+   },
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 22,
+   "nome": "Instrumento",
+   "destino": "Principal",
+   "noIlabs": "Não existe",
+   "tabelas": 2,
+   "nivel": 0,
+   "nivelComOpcionais": 2,
+   "obrigatorias": [],
+   "opcionais": [
+    6,
+    12,
+    19
+   ],
+   "origem": {
+    "12": [
+     "INSTRUMENTO.ID_FABRICANTE",
+     "INSTRUMENTO.ID_FORNECEDOR"
+    ],
+    "6": [
+     "INSTRUMENTO.ID_ESTRUTURA_FUNCIONAL"
+    ],
+    "19": [
+     "INSTRUMENTO_AMBIENTE.ID_AMBIENTE"
+    ]
+   },
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 23,
+   "nome": "Utensílio e utilidade",
+   "destino": "Principal",
+   "noIlabs": "Não existe",
+   "tabelas": 3,
+   "nivel": 0,
+   "nivelComOpcionais": 2,
+   "obrigatorias": [],
+   "opcionais": [
+    6,
+    12,
+    19
+   ],
+   "origem": {
+    "19": [
+     "UTILIDADE_AMBIENTE.ID_AMBIENTE"
+    ],
+    "12": [
+     "UTENSILIO.ID_FABRICANTE",
+     "UTENSILIO.ID_FORNECEDOR",
+     "UTILIDADE.ID_FABRICANTE",
+     "UTILIDADE.ID_FORNECEDOR"
+    ],
+    "6": [
+     "UTENSILIO.ID_ESTRUTURA_FUNCIONAL",
+     "UTILIDADE.ID_ESTRUTURA_FUNCIONAL"
+    ]
+   },
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 24,
+   "nome": "Item / material (matéria-prima, embalagem, produto acabado)",
+   "destino": "Principal",
+   "noIlabs": "Tabela sem tela",
+   "tabelas": 7,
+   "nivel": 1,
+   "nivelComOpcionais": 2,
+   "obrigatorias": [
+    26
+   ],
+   "opcionais": [
+    12,
+    16,
+    17,
+    25,
+    28,
+    36,
+    38
+   ],
+   "origem": {
+    "26": [
+     "INSUMO_PRINCIPAL.ID_MEDIDA",
+     "ITEM.ID_UNIDADE"
+    ],
+    "25": [
+     "ITEM.ID_CLASSE_ITEM",
+     "ITEM.ID_CLASSIFICACAO_ITEM",
+     "ITEM.ID_ITEM_SUBGRUPO",
+     "ITEM.ID_TIPO_ITEM"
+    ],
+    "12": [
+     "ITEM.ID_CLIENTE"
+    ],
+    "36": [
+     "ITEM.ID_NCM"
+    ],
+    "16": [
+     "ITEM.ID_ALMOXARIFADO_PADRAO",
+     "ITEM.ID_LOCAL",
+     "ITEM.ID_RUA"
+    ],
+    "17": [
+     "ITEM.ID_CONDICAO_ARMAZENAGEM",
+     "ITEM.ID_NIVEL_SEGURANCA",
+     "ITEM.ID_SJB",
+     "ITEM.ID_TIPO_ARMAZENAGEM"
+    ],
+    "28": [
+     "ITEM.ID_TIPO_SUBSTANCIA"
+    ],
+    "38": [
+     "ITEM.ID_CONTA_CORRENTE",
+     "ITEM.ID_CONTA_FINANCEIRA"
+    ]
+   },
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 25,
+   "nome": "Classificação do material (grupo, subgrupo, classe, classificação, tipo de item)",
+   "destino": "Principal",
+   "noIlabs": "Não existe",
+   "tabelas": 5,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 26,
+   "nome": "Unidade de medida e conversão",
+   "destino": "Principal",
+   "noIlabs": "Feito (unidade); conversão não",
+   "tabelas": 4,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 27,
+   "nome": "Denominação Comum Brasileira (DCB) e tipo",
+   "destino": "Principal",
+   "noIlabs": "Não existe",
+   "tabelas": 4,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 28,
+   "nome": "Substância controlada e Portaria 344",
+   "destino": "Principal",
+   "noIlabs": "Não existe",
+   "tabelas": 5,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 29,
+   "nome": "Forma farmacêutica, forma física, via de administração, classe terapêutica",
+   "destino": "Principal",
+   "noIlabs": "Não existe",
+   "tabelas": 6,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 30,
+   "nome": "Apresentação, embalagem, acondicionamento, concentração",
+   "destino": "Principal",
+   "noIlabs": "Não existe",
+   "tabelas": 8,
+   "nivel": 1,
+   "nivelComOpcionais": 1,
+   "obrigatorias": [
+    26
+   ],
+   "opcionais": [],
+   "origem": {
+    "26": [
+     "APRESENTACAO_PRODUTO.ID_UNIDADE"
+    ]
+   },
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 31,
+   "nome": "Conservação e cuidados de conservação",
+   "destino": "Principal",
+   "noIlabs": "Não existe",
+   "tabelas": 3,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 32,
+   "nome": "Destinação do produto e categoria do produto",
+   "destino": "Principal",
+   "noIlabs": "Não existe",
+   "tabelas": 3,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 33,
+   "nome": "Fórmula, ficha técnica e etapas de produção (mestre)",
+   "destino": "Módulo: Produção",
+   "noIlabs": "Não existe",
+   "tabelas": 8,
+   "nivel": 2,
+   "nivelComOpcionais": 3,
+   "obrigatorias": [
+    24,
+    26,
+    51
+   ],
+   "opcionais": [
+    29
+   ],
+   "origem": {
+    "24": [
+     "ITENS_FORMULA.ID_INSUMO_PRINCIPAL",
+     "ITENS_REVESTIMENTO.ID_INSUMO_PRINCIPAL"
+    ],
+    "26": [
+     "ITENS_FORMULA.ID_MEDIDA",
+     "ITENS_REVESTIMENTO.ID_MEDIDA"
+    ],
+    "29": [
+     "ITENS_FORMULA.ID_TIPO_EXCIPIENTE"
+    ],
+    "51": [
+     "FORMULA_PRODUTO.ID_PRODUTO",
+     "ITENS_REVESTIMENTO.ID_PRODUTO"
+    ]
+   },
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 34,
+   "nome": "Numeração de lote (formato e padrão)",
+   "destino": "Principal",
+   "noIlabs": "Não existe",
+   "tabelas": 5,
+   "nivel": 2,
+   "nivelComOpcionais": 3,
+   "obrigatorias": [
+    29,
+    51
+   ],
+   "opcionais": [],
+   "origem": {
+    "51": [
+     "LOTES_PADRAO.ID_PRODUTO"
+    ],
+    "29": [
+     "LOTES_PADRAO.ID_FORMA_FISICA"
+    ]
+   },
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 35,
+   "nome": "Registro do produto na ANVISA e situação",
+   "destino": "Principal",
+   "noIlabs": "Não existe",
+   "tabelas": 7,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 36,
+   "nome": "Dados fiscais (NCM, TIPI, CFOP, CST ICMS/IPI/PIS/COFINS, origem)",
+   "destino": "Principal",
+   "noIlabs": "Não existe",
+   "tabelas": 8,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 37,
+   "nome": "Documento fiscal, de frete e de pagamento (tipos e situações)",
+   "destino": "Principal",
+   "noIlabs": "Não existe",
+   "tabelas": 5,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 38,
+   "nome": "Conta contábil, gerencial, financeira, conta corrente, banco, moeda",
+   "destino": "Principal",
+   "noIlabs": "Não existe",
+   "tabelas": 6,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 39,
+   "nome": "Centro de custo",
+   "destino": "Principal",
+   "noIlabs": "Feito",
+   "tabelas": 3,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 40,
+   "nome": "Especificação",
+   "destino": "Principal",
+   "noIlabs": "Não existe",
+   "tabelas": 4,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 41,
+   "nome": "Tipos e situações de análise do CQ",
+   "destino": "Módulo: Controle da Qualidade",
+   "noIlabs": "Não existe",
+   "tabelas": 13,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 42,
+   "nome": "Regras de amostragem, de análise e de estabilidade",
+   "destino": "Módulo: Controle da Qualidade",
+   "noIlabs": "Não existe",
+   "tabelas": 4,
+   "nivel": 1,
+   "nivelComOpcionais": 1,
+   "obrigatorias": [
+    41
+   ],
+   "opcionais": [
+    26
+   ],
+   "origem": {
+    "41": [
+     "REGRA_AMOSTRAGEM.ID_TIPO_ANALISE",
+     "REGRA_ANALISE.ID_TIPO_ANALISE",
+     "REGRA_ANALISE.ID_TIPO_REGRA_ANALISE",
+     "REGRA_ESTABILIDADE.ID_TIPO_ANALISE",
+     "REGRA_ESTABILIDADE.ID_TIPO_ITEM_ANALISE"
+    ],
+    "26": [
+     "ITEM_REGRA_AMOSTRAGEM.ID_UNIDADE_MEDIDA",
+     "REGRA_ANALISE.ID_UNIDADE_MEDIDA"
+    ]
+   },
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 43,
+   "nome": "Perguntas e respostas (checklists, qualificação, auditoria, portaria)",
+   "destino": "Plataforma (motor de formulários)",
+   "noIlabs": "Não existe",
+   "tabelas": 8,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 44,
+   "nome": "Treinamento: tipo, motivo, instrutor, avaliação",
+   "destino": "Módulo: Garantia da Qualidade",
+   "noIlabs": "Não existe",
+   "tabelas": 5,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 45,
+   "nome": "Tipo de documento, situação, tipo de cópia",
+   "destino": "Módulo: Controle de Documentos",
+   "noIlabs": "Não existe",
+   "tabelas": 3,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 46,
+   "nome": "Anexo (arquivo)",
+   "destino": "Plataforma (todos)",
+   "noIlabs": "Parte (kb_documentos)",
+   "tabelas": 4,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 47,
+   "nome": "Histórico de alterações (log)",
+   "destino": "Plataforma (todos)",
+   "noIlabs": "Feito",
+   "tabelas": 10,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 48,
+   "nome": "Notificações, alertas e eventos",
+   "destino": "Plataforma (todos)",
+   "noIlabs": "Não existe",
+   "tabelas": 17,
+   "nivel": 1,
+   "nivelComOpcionais": 2,
+   "obrigatorias": [
+    4
+   ],
+   "opcionais": [],
+   "origem": {
+    "4": [
+     "GST_EVENTO_FUNCAO.ID_FUNCAO",
+     "GST_TIPO_EVENTO.ID_MODULO",
+     "NOTIFICACAO_PADRAO.ID_MODULO"
+    ]
+   },
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 49,
+   "nome": "Configuração, constantes e controle de código",
+   "destino": "Plataforma (todos)",
+   "noIlabs": "Não existe",
+   "tabelas": 7,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 50,
+   "nome": "Periodicidade e prioridade",
+   "destino": "Principal",
+   "noIlabs": "Não existe",
+   "tabelas": 2,
+   "nivel": 0,
+   "nivelComOpcionais": 0,
+   "obrigatorias": [],
+   "opcionais": [],
+   "origem": {},
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  },
+  {
+   "id": 51,
+   "nome": "Produto (complemento do material, vem da Produção)",
+   "destino": "Principal (complemento do Item)",
+   "noIlabs": "Não existe",
+   "tabelas": 2,
+   "nivel": 1,
+   "nivelComOpcionais": 2,
+   "obrigatorias": [
+    29
+   ],
+   "opcionais": [
+    30,
+    31,
+    32
+   ],
+   "origem": {
+    "29": [
+     "PRODUTO.ID_CLASSE_TERAPEUTICA",
+     "PRODUTO.ID_FORMA_FISICA",
+     "PRODUTO.ID_VIA_ADMINISTRACAO"
+    ],
+    "32": [
+     "PRODUTO.ID_PRODUTO_CATEGORIA",
+     "PRODUTO.ID_RESTRICAO_PRODUTO"
+    ],
+    "31": [
+     "PRODUTO.ID_CONSERVACAO_PRODUTO"
+    ],
+    "30": [
+     "PRODUTO.ID_ACONDICIONAMENTO",
+     "PRODUTO.ID_EMBALAGEM_APRESENTACAO"
+    ]
+   },
+   "noCicloObrigatorio": [],
+   "noCicloComOpcionais": []
+  }
+ ],
+ "ignoradas": [
+  {
+   "tabela": "ANEXO",
+   "motivo": "anexo é serviço comum: não depende de nenhum cadastro de negócio",
+   "efeitos": [
+    "Anexo (arquivo) → Fórmula, ficha técnica e etapas de produção (mestre)",
+    "Anexo (arquivo) → Tipo de documento, situação, tipo de cópia"
+   ]
+  },
+  {
+   "tabela": "APRESENTACAO_FORN",
+   "motivo": "apresentação do item por fornecedor: ligação feita depois",
+   "efeitos": [
+    "Apresentação, embalagem, acondicionamento, concentração → Item / material (matéria-prima, embalagem, produto acabado)"
+   ]
+  },
+  {
+   "tabela": "CENTRO_CUSTO_ITEM",
+   "motivo": "liga centro de custo a item: ligação feita depois dos dois",
+   "efeitos": [
+    "Centro de custo → Item / material (matéria-prima, embalagem, produto acabado)",
+    "Centro de custo → Periodicidade e prioridade"
+   ]
+  },
+  {
+   "tabela": "CUIDADOS_CONSERVACAO_PRODUTO",
+   "motivo": "texto de conservação do produto: detalhe do produto",
+   "efeitos": [
+    "Conservação e cuidados de conservação → Produto (complemento do material, vem da Produção)"
+   ]
+  },
+  {
+   "tabela": "GRUPO_USUARIO_ALMOXARIFADO",
+   "motivo": "acesso do grupo ao almoxarifado: ligação feita depois dos dois",
+   "efeitos": [
+    "Grupo de usuários → Almoxarifado / armazém e endereços (rua, coluna, andar, endereço, tipo de endereço)"
+   ]
+  },
+  {
+   "tabela": "ITEM_ALMOXARIFADO",
+   "motivo": "liga item a almoxarifado: ligação feita depois dos dois",
+   "efeitos": [
+    "Item / material (matéria-prima, embalagem, produto acabado) → Almoxarifado / armazém e endereços (rua, coluna, andar, endereço, tipo de endereço)"
+   ]
+  },
+  {
+   "tabela": "ITEM_LOCAL",
+   "motivo": "liga item a local: ligação feita depois dos dois",
+   "efeitos": [
+    "Almoxarifado / armazém e endereços (rua, coluna, andar, endereço, tipo de endereço) → Item / material (matéria-prima, embalagem, produto acabado)",
+    "Item / material (matéria-prima, embalagem, produto acabado) → Almoxarifado / armazém e endereços (rua, coluna, andar, endereço, tipo de endereço)"
+   ]
+  },
+  {
+   "tabela": "PORTARIA_PERG_RESP",
+   "motivo": "perguntas da Portaria 344: ligação do checklist, feita depois",
+   "efeitos": [
+    "Perguntas e respostas (checklists, qualificação, auditoria, portaria) → Substância controlada e Portaria 344",
+    "Substância controlada e Portaria 344 → Perguntas e respostas (checklists, qualificação, auditoria, portaria)"
+   ]
+  },
+  {
+   "tabela": "SIS_ATIVIDADE_USUARIO",
+   "motivo": "registro automático de atividade",
+   "efeitos": [
+    "Registro de acessos / atividade → Função profissional (cargo)"
+   ]
+  },
+  {
+   "tabela": "SIS_LOCAL_RESPONSAVEL",
+   "motivo": "responsável pelo setor: preenchido depois que o profissional existe (o profissional é que depende do setor)",
+   "efeitos": [
+    "Estrutura organizacional (setores/locais funcionais) → Profissional (usuário)"
+   ]
+  },
+  {
+   "tabela": "STQ_ENDERECO",
+   "motivo": "endereço reservado a um item: ligação feita depois do Item",
+   "efeitos": [
+    "Almoxarifado / armazém e endereços (rua, coluna, andar, endereço, tipo de endereço) → Item / material (matéria-prima, embalagem, produto acabado)"
+   ]
+  },
+  {
+   "tabela": "STQ_LOCAL",
+   "motivo": "idem",
+   "efeitos": [
+    "Almoxarifado / armazém e endereços (rua, coluna, andar, endereço, tipo de endereço) → Classificação do material (grupo, subgrupo, classe, classificação, tipo de item)",
+    "Almoxarifado / armazém e endereços (rua, coluna, andar, endereço, tipo de endereço) → Item / material (matéria-prima, embalagem, produto acabado)",
+    "Almoxarifado / armazém e endereços (rua, coluna, andar, endereço, tipo de endereço) → Pessoa jurídica (fornecedor, fabricante, transportadora, cliente, laboratório)"
+   ]
+  },
+  {
+   "tabela": "STQ_LOCAL",
+   "motivo": "o local de armazenagem apontava para grupo, subgrupo e item: no iLabs vira ligação \"o que pode ser guardado aqui\", opcional, feita depois do Item",
+   "efeitos": [
+    "Almoxarifado / armazém e endereços (rua, coluna, andar, endereço, tipo de endereço) → Classificação do material (grupo, subgrupo, classe, classificação, tipo de item)"
+   ]
+  }
+ ]
+}

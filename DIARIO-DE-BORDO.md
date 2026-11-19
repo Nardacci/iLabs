@@ -2,6 +2,40 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-19 · Claude · Página "Estudo do roadmap" no sistema (substitui a tela de avaliação)
+
+- **Pedido do responsável:** atualizar o site para ver como está ficando a página (e "não quero um questionário").
+- **Feito (app):** a tela de avaliação em tabela foi **retirada**; o cartão do Início agora abre `/estudo/roadmap`, uma página de **leitura** com 4 abas (cadastros repetidos, ordem de cadastro, fluxo de recebimento e quarentena, todos os fluxos). O texto é gerado dos documentos `docs/roadmap/*.md` por `node scripts/estudo-paginas.mjs` (refazer o comando quando um documento mudar; o diagrama mermaid só aparece no arquivo do repositório). Nova dependência de desenvolvimento: `marked`.
+- **Conferido:** 293 testes, lint, formato, build e ponta a ponta (com axe e contraste) passam; capturas de tela olhadas (Início e duas abas).
+- **Retirar depois:** quando o estudo terminar, remover cartão, rota, pasta `estudo/` e o script.
+
+## 2026-11-19 · Claude · Passo 3 iniciado: fluxo 1 (recebimento até a liberação da quarentena) e inventário dos 34 fluxos
+
+- **Entregue:** `docs/roadmap/fluxo-01-recebimento-quarentena.md` (11 etapas: quem, o que exige antes, o que entra, o que o banco garante, falha do legado; o que o fluxo exige de cada cadastro global; checklist de implantação do primeiro recebimento; pontos a validar) e `docs/roadmap/fluxos-do-legado.md` (34 fluxos em 17 posições de ordem).
+- **Fontes:** fluxos da equipe (Recebimento de materiais e Estoque quarentena), conferência pelo código e achados `DV-EST-001` a `DV-EST-009` do legado. As telas não foram lidas.
+- **Principais falhas do legado que o fluxo expõe:** validade em branco virava 31/12/2099 e vencida era aceita; fornecedor não qualificado não era conferido; conferência e autorização aceitavam qualquer login; checklist reprovado podia ser usado; laudo sem conferir função de revisor; destinos da quarentena protegidos só pela tela; nota marcada como conferida por gatilho desligado.
+- **Efeito nos passos 1 e 2:** qualificação de fornecedor e regras de amostragem/análise precisam existir antes do primeiro recebimento; a balança (equipamento) entra na ordem; campos do Material que o legado deixava opcionais (quarentena, lote, validade, análises) viram obrigatórios.
+- **Pontos a validar com a área:** ordem de conferência e autorização; quando exigir aprovação prévia; divergência de quantidade; função de revisor e pessoa designada; calibração da balança; fiscal na entrada.
+- **Próximo:** ficha 2 (compras e avaliação do fornecedor) e ficha 3 (regras e laudo do CQ), uma por vez.
+
+## 2026-11-19 · Claude · Passo 2: dependências entre cadastros e ordem de cadastro (rascunho para validação)
+
+- **Entregue:** `docs/roadmap/ordem-de-cadastro.md` e `ordem-de-cadastro.csv` (51 cadastros: os 50 do passo 1 mais o Produto, separado do Item). Script reprodutível em `docs/roadmap/ferramentas/dependencias.py` (lê o repositório do legado; gera `dependencias.json`).
+- **Método:** ligações entre tabelas do legado (FOREIGN KEY e campos ID_), separando **exigida** (campo NOT NULL) de **opcional** (aceita vazio), e níveis calculados com as duas.
+- **Resultado:** 4 fases (0 a 3). Fase 0 = base e listas (33 cadastros; 10 feitos, 3 em parte, **20 faltam**, todos listas simples). Fase 1: pessoa jurídica, almoxarifado em árvore, ambiente, apresentação, regras do CQ. Fase 2: Item, Produto, equipamentos, ponto de água. Fase 3: fórmula e numeração de lote. Sem ciclos.
+- **Achado:** o banco do legado só exige unidade de medida no Item; o resto é opcional. O iLabs deve exigir mais (decisão no passo 3).
+- **Limites:** só dependência de dados; a tela não foi lida (a obrigatoriedade pode ter sido na tela); dependências de fluxo ficam para o passo 3.
+- **Próximo:** passo 3 (fluxos e informações de cada fluxo), começando pelo recebimento de matéria-prima até a quarentena.
+
+## 2026-11-19 · Claude · Passo 1 refeito: cadastros repetidos e o que é pertinente para o Principal
+
+- **Responsável:** "não quero um questionário"; o passo 1 é identificar os cadastros repetidos e se é pertinente trazê-los ao Principal, porque numa implantação (mesmo só com os 5 módulos do IVB) não se cadastra o Item sem os cadastros de que ele depende.
+- **Entregue:** `docs/roadmap/cadastros-repetidos.md` (análise pronta, sem perguntas): 15 cadastros repetidos de verdade (12 vão para o Principal, 3 viram serviço comum), 7 que parecem repetidos mas não são, o que fica no módulo, e a ordem de cadastro do Item como exemplo (provada pelas ligações das tabelas).
+- **Descobertas:** Produto (Produção) já aponta para o Item (Estoque); há círculo Item ↔ Local no Estoque; a qualificação de fornecedor do legado está presa à nota fiscal, não ao material.
+- **Correção de erro meu:** o estudo de 18/11 tratava "tipo de água" do CQ como cópia; pelos campos parece outra coisa (a confirmar).
+- **A tela de avaliação no Início está obsoleta** (publicada no PR #49, em formato de tabela). Uma versão "uma pergunta por vez" foi feita só localmente e **descartada**. Sugestão: retirar cartão, rota e pasta `estudo/` na próxima publicação (aguarda ok).
+- **Próximo:** passo 2, a ordem de cadastro de todos os cadastros nos nove módulos.
+
 ## 2026-11-18 · Claude · Tela de avaliação dos cadastros globais, com cartão na página inicial
 
 - **Pedido do responsável:** "um card no sistema depois do login", chamando a tela de avaliação.

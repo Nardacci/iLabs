@@ -32,16 +32,16 @@ import { Icone } from '../compartilhado/ui/icone';
     }
     <section class="estudo" aria-labelledby="estudo-t">
       <h2 id="estudo-t">Estudo do roadmap</h2>
-      <a class="estudo-card" routerLink="/estudo/cadastros-globais">
+      <a class="estudo-card" routerLink="/estudo/roadmap">
         <span class="modulo-ico"><il-icone nome="cadastros" /></span>
         <span class="estudo-texto">
-          <strong>Avaliar os cadastros globais</strong>
+          <strong>Ler o estudo do roadmap</strong>
           <span>
-            Passo 1 do roadmap: quais dos cadastros do legado vão para o Principal. Abra, avalie e
-            comente.
+            Cadastros repetidos, ordem de cadastro e o primeiro fluxo (recebimento e quarentena).
+            Rascunho para validação.
           </span>
         </span>
-        <span class="entrar-modulo">Avaliar →</span>
+        <span class="entrar-modulo">Ler →</span>
       </a>
     </section>
     <section aria-labelledby="modulos-t">

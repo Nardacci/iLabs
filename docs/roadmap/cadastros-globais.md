@@ -1,5 +1,7 @@
 # Passo 1: cadastros globais (o que vai para o Principal)
 
+> **Superado em 19/11/2026 por [`cadastros-repetidos.md`](cadastros-repetidos.md)**, que separa cópia de verdade de nome parecido e dá a conclusão de cada cadastro. Este arquivo fica como inventário de partida.
+
 **Estudo de 18/11/2026. Rascunho para validação do responsável.** Planilha: [`cadastros-globais.csv`](cadastros-globais.csv) (50 cadastros, separador ponto e vírgula).
 
 ## 1. Como foi feito
