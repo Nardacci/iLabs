@@ -1,0 +1,29 @@
+flowchart TB
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  subgraph P["1 · Preparação"]
+    direction LR
+    A["Preparar a estrutura<br/>almoxarifado, locais, grupos"]:::passo --> B["Cadastrar o material<br/>com controles de quarentena e análise"]:::passo
+  end
+  subgraph R1["2 · Antes de receber (Estoque)"]
+    direction LR
+    C["Inspeção do veículo<br/>checklist respondido"]:::passo --> D{"Aprovada?"}:::trava
+    D -- sim --> E["Registrar o recebimento<br/>nota, itens e lotes com validade"]:::passo
+    E --> F{"Fornecedor qualificado<br/>para o material?"}:::trava
+    D -- não --> X1(["Recebimento<br/>não começa"]):::bloqueio
+    F -- não --> X2(["Recusado, ou exceção<br/>assinada da Qualidade"]):::bloqueio
+  end
+  subgraph R2["3 · Receber (Estoque)"]
+    direction LR
+    G["Conferência assinada<br/>quem confere ≠ quem cadastrou"]:::trava --> H["Autorização por outra pessoa<br/>com a função"]:::trava --> I["Endereçar em local de quarentena<br/>abre a solicitação de análise"]:::trava
+  end
+  subgraph Q["4 · Quarentena (Estoque e Controle da Qualidade)"]
+    direction LR
+    J["Amostragem e pesagem<br/>baixa o saldo do lote"]:::passo --> K["Análise e resultados<br/>regra aprovada, equipamento registrado"]:::passo
+    K --> L{"Laudo assinado<br/>pelo revisor"}:::trava
+    L -- aprovado --> M["Etiqueta de aprovado<br/>lote vai a local comum"]:::passo --> O(["Lote disponível"]):::fim
+    L -- reprovado --> N(["Lote bloqueado<br/>só para o refugo"]):::bloqueio
+  end
+  P --> R1 --> R2 --> Q

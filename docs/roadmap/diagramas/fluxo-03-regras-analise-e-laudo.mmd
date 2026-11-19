@@ -1,0 +1,23 @@
+flowchart TB
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  subgraph SA["A · As regras, antes de qualquer lote (Controle da Qualidade)"]
+    direction LR
+    A1["Checklist de verificação<br/>da amostragem"]:::passo --> A2["Regra de amostragem<br/>quantidade, método, plano, recipiente"]:::passo --> A3["Regra de análise<br/>ensaios, especificação, limites"]:::passo --> A4{"Aprovar a versão<br/>assinatura do chefe do CQ"}:::trava
+  end
+  subgraph SB["B · Coleta da amostra"]
+    direction LR
+    B1a["Solicitação de análise<br/>nasce do recebimento"]:::passo --> B2["Programar a amostragem<br/>responsável e data"]:::passo --> B3["Registrar a amostragem<br/>amostrador ≠ verificador<br/>baixa o saldo"]:::trava --> B4["Programar a análise<br/>analista com a função<br/>e treinado no método"]:::trava
+  end
+  subgraph SC["C · Resultado e laudo"]
+    B5{"Resultado<br/>dentro do limite?"}:::trava -- fora --> I["Investigação aberta<br/>observação obrigatória"]:::bloqueio
+    B5 -- dentro --> B6{"Laudo: decisão obrigatória<br/>assinatura de quem não analisou"}:::trava
+    I --> B6
+    B6 -- aprovado --> B7["Etiqueta de aprovado"]:::passo
+    B6 -- reprovado, com motivo --> B9["Etiqueta de reprovado"]:::passo
+    B7 --> B8(["O lote muda de situação<br/>na hora, no banco"]):::fim
+    B9 --> B8
+  end
+  SA --> SB --> SC

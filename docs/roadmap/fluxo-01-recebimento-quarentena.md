@@ -1,5 +1,9 @@
 # Passo 3, fluxo 1: receber a matéria-prima, colocá-la em quarentena e liberá-la
 
+![Fluxo: Passo 3, fluxo 1: receber a matéria-prima, colocá-la em quarentena e liberá-la](diagramas/fluxo-01-recebimento-quarentena.png)
+
+*Como ler: **laranja** = o sistema confere (trava); **vermelho** = bloqueio; **verde** = resultado. Clique na imagem para ampliar.*
+
 **Análise de 19/11/2026. Rascunho para validação do responsável.** É o seu exemplo: "para receber uma matéria-prima, que vai para quarentena, quais informações precisamos ter?". Continua os passos 1 e 2 ([`cadastros-repetidos.md`](cadastros-repetidos.md), [`ordem-de-cadastro.md`](ordem-de-cadastro.md)).
 
 **Fontes (todas no repositório do legado):** os dois fluxos escritos pela equipe (Recebimento de materiais e Estoque quarentena), a conferência pelo código (`3.estoque/fluxos/recebimento-quarentena-conferencia.md`) e os resultados dos testes de tela (achados `DV-EST-001` a `DV-EST-009`). **O que não fiz:** não li as telas uma a uma; o que está como "legado" vem desses documentos.

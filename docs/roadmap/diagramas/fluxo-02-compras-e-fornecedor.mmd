@@ -1,0 +1,22 @@
+flowchart TB
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  subgraph SA["A · Qualificar o fornecedor (Garantia da Qualidade)"]
+    direction LR
+    A1["Cadastrar o fornecedor<br/>pessoa jurídica com o papel"]:::passo --> A2["Avaliar para cada material<br/>questionário, documentos,<br/>amostra ou auditoria"]:::passo --> A3{"Decisão assinada<br/>com validade"}:::trava
+    A3 -- qualificado --> Q(["Qualificado<br/>para o material"]):::fim
+    A3 -- condicional --> C(["Condicional, com<br/>restrição registrada"]):::trava
+    A3 -- desqualificado --> D(["Desqualificado"]):::bloqueio
+  end
+  subgraph SU["Depois de qualificado"]
+    direction LR
+    U1(["O recebimento só aceita<br/>fornecedor qualificado"]):::trava ~~~ U2(["O pedido só vai a<br/>fornecedor qualificado"]):::trava ~~~ U3["Avaliar o desempenho<br/>a cada entrega"]:::passo
+    U3 --> U4{"Validade perto de vencer<br/>ou desempenho ruim?"}:::trava -- sim --> U5["Requalificar<br/>nova avaliação"]:::passo
+  end
+  subgraph SB["B · Comprar (Compras e Estoque)"]
+    direction LR
+    B1["Analisar a necessidade<br/>curva ABC e análise do estoque"]:::passo --> B2["Gerar o pedido<br/>escolhe fornecedor qualificado"]:::trava --> B3["Montar o pedido<br/>itens, quantidade, custo"]:::passo --> B4["O recebimento baixa o pedido<br/>por lote e quantidade"]:::passo
+  end
+  SA --> SU --> SB

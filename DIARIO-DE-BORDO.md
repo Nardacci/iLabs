@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-19 · Claude · Passo 3, fluxo 4 (reprovado, reanálise e revalidação) e imagem do fluxo no alto de cada página
+
+- **Sugestão do responsável:** em cada página de fluxo, primeiro a imagem do fluxo e o texto logo abaixo.
+- **Feito:** imagens (PNG) dos fluxos 1 a 4, feitas de fontes Mermaid em `docs/roadmap/diagramas/*.mmd` e renderizadas por `docs/roadmap/ferramentas/renderizar-diagramas.mjs` (instruções no cabeçalho do script; nada entra no projeto do app). Laranja = o sistema confere (trava); vermelho = bloqueio; verde = resultado. O script `estudo-paginas.mjs` copia as imagens para `app/public/estudo/`; clicar na imagem abre inteira. Também corrigi o estilo da página (tabelas e imagens): o texto vem de HTML gerado e o estilo isolado do componente não o alcançava.
+- **Ficha 4:** `docs/roadmap/fluxo-04-reprovado-reanalise-revalidacao.md` (9 etapas; o que o fluxo exige de cada cadastro; pontos a validar). Nova aba "6 · Fluxo: reprovado, reanálise e revalidação". **Roteiro de implantação 1.3**: detalhe das etapas 5, 6 e 9.
+- **Achados do legado:** o destino do reprovado era garantido só pela lista da tela (recusa do servidor não testada); o relatório de reprovados (RM36) veio vazio com lote reprovado; o cadastro do Item não tinha o campo de classificação de reanálise, então a agenda ficou vazia; a regra que tirava do disponível o lote com reanálise vencida estava desligada (leitura do código; teste bloqueado); a reanálise e a revalidação não pediam justificativa; lote vencido era aceito na entrada; não existe destino final do reprovado (devolução ou destruição).
+- **Conferido:** 293 testes, lint, formato, build e ponta a ponta; capturas de tela da página com a imagem.
+- **A validar com a área:** destino final do reprovado; prazo e regra da reanálise; revalidação; lote de produção reprovado; bloqueio inteiro na reanálise de lote em uso; quarentena na movimentação comum.
+
 ## 2026-11-19 · Claude · Passo 3, fluxo 3: as regras do laboratório, a análise e o laudo
 
 - **Entregue:** `docs/roadmap/fluxo-03-regras-analise-e-laudo.md` (Parte A: 5 etapas das regras de amostragem e de análise, com **versão aprovada**; Parte B: 8 etapas do dia a dia, da solicitação ao aviso ao Estoque; o que o fluxo exige de cada cadastro; pontos a validar). Nova aba "5 · Fluxo: regras, análise e laudo". **Roteiro de implantação 1.2**: detalhe das etapas 7 e 9.
