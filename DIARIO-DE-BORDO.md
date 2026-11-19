@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-19 · Claude · Funções do profissional: o que cada uma faz no código do legado
+
+- **Pedido do responsável:** a função cadastrada no profissional determina a execução de tarefas; buscar no código-fonte o que cada função faz, onde faz e o que isso representa.
+- **Entregue:** `docs/roadmap/funcoes-do-profissional.md` e aba **"Funções do profissional"** na página do estudo. Cobre: o catálogo de 35 funções semeado no banco (numeradas pela ordem de inserção; confere com os números 19, 28, 29 e 34 usados no código); os **22 usos na Produção** (tela de Configuração de Sistema liga função a tipo: executor, chefe, revisor, autorizar início, cancelar solicitação, aprovar lote padrão); os **números fixos do CQ** (34 amostrador, 39 e 41 analistas, 48 chefe de subdivisão, 71 estabilidade); notificações, treinamento por função e auditor; e o **Nível 1, 2 e 3 do Grupo Perfil da GQ**, que é outro sistema de poder.
+- **Achados:** o legado consulta a função de quatro jeitos sem padrão; a conferência fica na tela, não na gravação; números fixos no código dependem de cada banco (o 39 aparece como analista físico-químico no CQ e como AUDITOR no teste da GQ, a confirmar); a função "Revisor de Garantia de Qualidade" (19) autoriza aprovar lote padrão e **não** a pré-avaliação de mudança, que é do Nível 2 designado revisor na solicitação; função sem escopo, validade, treinamento nem histórico.
+- **Proposta:** catálogo único de funções com **capacidades nomeadas**, concessão com área, validade e histórico, conferência no banco em toda gravação, separação de funções e Níveis da GQ absorvidos por funções. O exemplo do responsável (Revisor de GQ pré-avalia mudança) é o modelo do iLabs.
+- **A validar:** nomes reais das funções 39 e 41 no banco do cliente; capacidades de cada função; destino dos Níveis 1, 2 e 3; função em mais de uma área; funções que exigem treinamento.
+- **Roteiro de implantação 1.5:** a etapa 1 passa a incluir a concessão de funções com área e validade.
+
 ## 2026-11-19 · Claude · Coluna "Onde no sistema (legado)" nas fichas de fluxo
 
 - **Pedido do responsável:** incluir o nome do módulo e da tela, porque nem todo leitor conhece o menu (exemplo: Controle da Qualidade › Solicitação de Análise › Solicitação de Análise).

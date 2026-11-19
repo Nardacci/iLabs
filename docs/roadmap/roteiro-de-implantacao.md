@@ -1,6 +1,6 @@
 # Roteiro de implantação do sistema
 
-**Versão 1.4, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
+**Versão 1.5, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
 
 **Para que serve:** responder, para qualquer cliente que vá implantar o iLabs, **"o que fazer, em que ordem, quem faz e quando está pronto"**. A ordem vem das dependências entre cadastros ([passo 2](ordem-de-cadastro.md)) e das informações que cada fluxo exige ([passo 3](fluxo-01-recebimento-quarentena.md)): **não se cadastra o Item sem antes ter o que o Item usa; não se recebe material sem fornecedor qualificado, local de quarentena e regra de análise.**
 
@@ -11,7 +11,7 @@
 | Etapa | O que fazer | Quem | Pronto quando | No iLabs hoje |
 |---|---|---|---|---|
 | **0. Preparar** | Definir o escopo (módulos), os responsáveis de cada área, o plano de validação do sistema (Guia 33/2020) e o ambiente | Diretoria, Qualidade, TI | Plano aprovado; responsáveis nomeados; ambiente de homologação separado | Documentação do legado; plano a escrever |
-| **1. Acesso e pessoas** | Perfis e permissões · funções profissionais (cargos) · grupos de usuários · profissionais · contas de usuário · assinatura eletrônica | Administrador do sistema, RH | Cada pessoa entra com o perfil certo; **as funções do fluxo existem** (conferente, autorizador, amostrador, analista, revisor da Qualidade) | **Pronto** |
+| **1. Acesso e pessoas** | Perfis e permissões · **funções profissionais com as capacidades de cada uma** ([funções do profissional](funcoes-do-profissional.md)) · grupos de usuários · profissionais, com a **função, a área e a validade** de cada um · contas de usuário · assinatura eletrônica | Administrador do sistema, RH | Cada pessoa entra com o perfil certo; **as funções do fluxo existem** (conferente, autorizador, amostrador, analista, revisor da Qualidade) | **Pronto** |
 | **2. A empresa** | Dados da empresa e parâmetros · estrutura organizacional (setores) · centros de custo | Administrador, Financeiro | Setores e centros de custo cadastrados | Pronto em parte (empresa e parâmetros a completar) |
 | **3. Listas de apoio** | As **20 listas** da fase 0: classificação do material (grupo, subgrupo, classe) · condição e tipo de armazenagem · DCB · substância controlada · forma, via e classe terapêutica · conservação · destinação e categoria · especificação · dados fiscais (NCM, CFOP, CST) · documentos fiscais, de frete e de pagamento · contas contábeis e financeiras · tipos e situações de análise do CQ · tipos de treinamento · tipos de documento da qualidade · registro do produto (tabelas de apoio) · modelo de qualificação de fornecedor · contato de empresa · checklist · configuração · periodicidade e prioridade | Cada área responsável pela sua lista | Todas as listas preenchidas e revisadas pela área | **A construir** (20 telas simples) |
 | **4. Parceiros** | **Pessoa jurídica** com os papéis de fornecedor, fabricante, transportadora e cliente, com endereço | Compras, Qualidade | Todo fornecedor e fabricante que vai entregar material está cadastrado | Tabela existe; tela a construir |

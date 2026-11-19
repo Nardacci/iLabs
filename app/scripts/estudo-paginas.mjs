@@ -7,6 +7,7 @@ import { marked } from 'marked';
 const raiz = fileURLToPath(new URL('..', import.meta.url));
 const PAGINAS = [
   { id: 'implantacao', titulo: 'Roteiro de implantação', arquivo: 'roteiro-de-implantacao.md' },
+  { id: 'funcoes', titulo: 'Funções do profissional', arquivo: 'funcoes-do-profissional.md' },
   { id: 'repetidos', titulo: '1 · Cadastros repetidos', arquivo: 'cadastros-repetidos.md' },
   { id: 'ordem', titulo: '2 · Ordem de cadastro', arquivo: 'ordem-de-cadastro.md' },
   {
