@@ -13,7 +13,7 @@ A ordem segue o que cada fluxo **exige** dos anteriores (o mesmo raciocínio do 
 | **4** | **Reprovado, reanálise e revalidação** | Estoque | **Feito.** O que acontece quando o laudo reprova ou o lote vence |
 | **5** | **Movimentação interna** | Estoque | **Feito.** Usa a estrutura e o lote aprovado |
 | **6** | **Solicitação, separação e atendimento à produção** | Estoque | **Feito.** Primeiro consumo do lote aprovado |
-| 7 | Almoxarifado do Controle da Qualidade | Estoque | Amostras de retenção, referência e estabilidade |
+| **7** | **Almoxarifado do Controle da Qualidade** | Estoque | **Feito.** Amostras de retenção, referência e estabilidade |
 | 8 | Devolução e entradas (produção, avulsa, produto acabado) | Estoque | Outras portas de entrada do lote |
 | 9 | Remessa e expedição | Estoque | A saída do lote |
 | 10 | Inventário | Estoque | Conferência do saldo; depende de tudo acima |

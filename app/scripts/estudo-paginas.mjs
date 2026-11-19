@@ -40,6 +40,11 @@ const PAGINAS = [
     titulo: '8 · Fluxo: pedir, separar e entregar o material',
     arquivo: 'fluxo-06-solicitacao-separacao-atendimento.md',
   },
+  {
+    id: 'fluxo7',
+    titulo: '9 · Fluxo: guardar as amostras do CQ',
+    arquivo: 'fluxo-07-almoxarifado-cq.md',
+  },
   { id: 'fluxos', titulo: 'Todos os fluxos', arquivo: 'fluxos-do-legado.md' },
 ];
 
