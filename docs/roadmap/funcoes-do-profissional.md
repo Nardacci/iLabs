@@ -97,22 +97,74 @@ Na Produção, o administrador liga **cada função do profissional a um "tipo"*
 | **Auditor** (por **nome**, não por número) | **GQ** › Autoinspeção e Auditoria (o teste de autoinspeção liga a função AUDITOR aos inspetores) | O serviço de lista de auditores traz quem tem a função de **descrição "AUDITOR"**. *A tela que o chama não foi localizada no código lido* | `Principal: dalAtividade.cs:104-115`; `GQ UsuarioService.cs:140` |
 | **Comercial** | **Comercial** | Há o método de lista por função, **sem chamada** nas telas lidas | `UsuarioService.cs:100` |
 
+**Ocupação não autoriza nada.** Conferido no código: `TBL_OCUPACAO` é a lista oficial de ocupações (código de 6 caracteres e descrição) e `SIS_OCUPACAO_USUARIO` liga a ocupação ao usuário. Só aparece na ficha do usuário (busca por texto e grade de exibição); **nenhuma tela decide acesso por ocupação**. É dado de **cadastro** (já feito no iLabs), não de poder, e por isso fica **fora** da matriz.
+
 ## 6. Garantia da Qualidade: o Nível do Grupo Perfil (não a função)
 
-A GQ **não pergunta pela função profissional** para autorizar. Ela usa o **Nível** do grupo de perfil do usuário (1, 2 ou 3) mais **designações em cada registro** (revisor, responsável). O mapa abaixo vem do código de cada tela:
+A GQ **não pergunta pela função profissional** para autorizar. Ela usa o **Nível** do grupo de perfil do usuário (1, 2 ou 3) mais **designações em cada registro** (revisor, responsável, contato) e a **situação** do registro. Esta seção é a **matriz completa, tela por tela**, lida dos 24 arquivos de regra de acesso (`HSolutions.GQ.UI/Helpers/GerenciadorAcesso*.cs`) e dos controladores.
 
-| Módulo › menu › tela | O que o Nível decide | Arquivo |
+**Como ler.** *Ver* = aparece na lista. *Editar* e *Excluir* = os botões da lista. A regra de base de todas as telas é: **quem tem um grupo de perfil pode**; cada tela só **tira** poder em cima disso. Onde diz "só em *situação X*", fora dessa situação **ninguém** edita, qualquer que seja o Nível. O enum do código prevê um **Nível 4**, mas nenhuma regra lida o usa.
+
+### 6.1 Controle de Mudanças
+
+| Módulo › menu › tela | Nível 1 | Nível 2 | Nível 3 | Travas por situação ou registro |
+|---|---|---|---|---|
+| **GQ** › Controle de Mudanças › **Solicitação de Mudança** | Vê **só as da sua área** e edita só as suas | Vê as da sua área; escolhido como **revisor** entre Nível 2 e 3 | Sempre pode | Editar ou excluir: enquanto **pendente de pré-aprovação** (Nível 2 e 3), ou o **próprio responsável**, ou a **mesma área** |
+| **GQ** › Controle de Mudanças › **Pré-avaliação de Mudança** | **Só visualiza** | Vê e edita **só as designadas a ele como revisor**, pendentes de pré-aprovação | Vê todas, **define a área de avaliação** | Nada se edita depois de aprovada ou reprovada. Na situação *pendente de definição de área*, só o Nível 3 edita |
+| **GQ** › Controle de Mudanças › **Avaliação de Mudança** | Não edita | Vê as **áreas em que é o responsável** | Define área e responsável | Bloqueia depois da liberação aprovada ou reprovada |
+| **GQ** › Controle de Mudanças › **Liberação da Solicitação** | Só visualiza | Só visualiza | **Edita** | Bloqueia em: pendente de aprovação do plano de ação ou do produto, aprovada, cancelada, reprovada |
+| **GQ** › Controle de Mudanças › **Controle de Mudança de Produto** | Não | Não | **Só ele edita** | Só em *pendente de aprovação do produto*; bloqueia aprovada, reprovada e pendentes de aprovação |
+
+### 6.2 Plano de ação da mudança
+
+| Módulo › menu › tela | Nível 1 | Nível 2 | Nível 3 | Travas |
+|---|---|---|---|---|
+| **GQ** › Plano de Ação › **Plano de Ação** | Não abre (volta à lista) | Não abre | **Só ele abre e grava**; a lista dele mostra *pendente de plano* e *pendente de liberação* | Nenhuma trava de situação ativa (as que existiam estão comentadas no código) |
+| **GQ** › Plano de Ação › **Avaliação do Plano de Ação** | **Não acessa** | Acessa | Vê o botão de decisão | Só edita em *pendente de liberação do plano de ação* |
+| **GQ** › Plano de Ação › **Liberação do Plano de Ação** | Não edita | Não edita | **Só ele abre e libera** | Bloqueia em: pendente de aprovação do produto, aprovada, reprovada, pendente de aprovação |
+
+### 6.3 Desvios e não conformidades (RNC)
+
+| Módulo › menu › tela | Nível 1 | Nível 2 | Nível 3 | Travas |
+|---|---|---|---|---|
+| **GQ** › Desvios › **Relatório de Não Conformidade** (registro) | Edita e exclui **só o que ele criou**. Ao criar, o campo de responsável imediato **não** vem preenchido | Edita e exclui o que criou, ou o de **usuário da mesma área** | Edita e exclui qualquer um | Só em *pendente de ação corretiva imediata*. **Imprimir** só depois que o número da RNC existe |
+| **GQ** › Desvios › **Ação Corretiva Imediata** | Não | Só da **sua área** | Sim | Só em *pendente de ação corretiva imediata* |
+| **GQ** › Desvios › **Pré-avaliação da RNC** (lista) | Não edita (se já há pré-avaliação) | Só se a **área responsável é a dele** | Sim | Se **ainda não há** pré-avaliação, **qualquer** nível pode abrir |
+| **GQ** › Desvios › **Pré-avaliação da RNC** (edição) | Conforme a regra acima | Idem | Idem | **Nada se edita** depois de aprovada ou reprovada |
+| **GQ** › Desvios › **Avaliação por Área** (relatório de desvio) | **Não é listado nem edita** | Só as áreas em que ele está envolvido | Idem | — |
+| **GQ** › Desvios › **Avaliação do Relatório de Desvio** e **CAPA** | Sim (base) | Sim (base) | Sim (base) | Edita só em *pendente de avaliação do relatório de desvio* ou em *pendente de especificação do registro CAPA* (veja o defeito de nomes trocados em 6.6) |
+
+### 6.4 Planos de ação corretiva e preventiva
+
+| Módulo › menu › tela | Nível 1 | Nível 2 | Nível 3 | Travas |
+|---|---|---|---|---|
+| **GQ** › Desvios › **Plano de Ação Corretiva** e **Plano de Ação Preventiva** | Não abre | Não abre | **Só ele abre e grava** | O auxiliar de acesso não impõe trava de situação |
+| **GQ** › Desvios › **Avaliação do Plano de Ação Corretiva** | **Não acessa** | Acessa | Acessa | Só em *pendente de monitoramento do plano corretivo*. **Quem é responsável por uma ação do plano, da sua área, não avalia** |
+| **GQ** › Desvios › **Avaliação do Plano de Ação Preventiva** | **Não acessa** | Acessa | Acessa | Só em *pendente de monitoramento do plano preventivo*. Quem não é o responsável e não tem nível alto não vê o item |
+| **GQ** › Desvios › **Liberação do Plano Corretivo** e **Preventivo** | Não | Não | **Só ele abre e libera** | Só em *pendente de monitoramento* do respectivo plano |
+
+### 6.5 Autoinspeção e auditoria, e treinamento
+
+| Módulo › menu › tela | O que decide | Fonte |
 |---|---|---|
-| **GQ** › Controle de Mudanças › **Solicitação de Mudança** | Nível 1 e 2 veem só as da **sua área**; o Nível 1, só as **suas**. O **revisor** é **escolhido na própria solicitação**, entre usuários de Nível 2 ou 3 | `SolicitacaoMudancaController.cs:77,114,476` |
-| **GQ** › Controle de Mudanças › **Pré-avaliação de Mudança** | **Nível 2** vê só as pendentes de pré-aprovação em que ele é o **revisor designado**; **Nível 3** vê todas | `PreAvaliacaoMudancaController.cs:67-73` |
-| **GQ** › Controle de Mudanças › **Avaliação de Mudança** | Nível 2 vê as áreas em que é o responsável; **Nível 3 define área e responsável** | `AvaliacaoMudancaController.cs:108-117` |
-| **GQ** › Controle de Mudanças › **Controle de Mudança de Produto** | Só **Nível 3** | `ControleMudancaProdutoController.cs:60` |
-| **GQ** › Controle de Desvios › **Plano de Ação** (geral, corretiva e preventiva) e **Liberação do Plano de Ação** | Só **Nível 3** abre e grava; os demais voltam à lista | `PlanoAcaoController.cs:143`; `PlanoAcaoCorretivaRNCController.cs:129,395`; `PlanoAcaoPreventivaRNCController.cs:100,352`; `LiberacaoPlanoAcao*Controller.cs` |
-| **GQ** › Controle de Desvios › **Avaliação do Plano de Ação** (geral, corretiva e preventiva) | **Nível 1 não acessa**; quem não é o responsável e não tem nível alto não vê o item | `AvaliacaoPlanoAcaoController.cs:170,228,286`; `AvaliacaoPlanoAcao*RNCController.cs` |
-| **GQ** › Controle de Desvios › **Avaliação por Área** | **Nível 1** não é incluído na lista de áreas | `AvaliacaoAreaRDController.cs:120` |
-| **GQ** › Autoinspeção e Auditoria › **Programação** | **Inspetores e auditores** vêm da lista de usuários de **Nível 2 ou 3** | `ProgramacaoAutoInspecaoAuditoriaQualidadeController.cs:61,88` |
+| **GQ** › Autoinspeção e Auditoria › **Programação** | **Responsáveis e contatos do departamento ou setor** vêm da lista de usuários de **nível acima do 1** (Nível 2 e 3) | `ProgramacaoAutoInspecaoAuditoriaQualidadeController.cs:61,88`; `ProgramacaoAuditoriaInspecaoEditarModel.cs:168-171` |
+| **GQ** › Autoinspeção e Auditoria › **Registro de Resultado** | **O Nível não conta** (a regra por Nível está comentada). Edita **só quem foi designado como contato** do departamento ou setor, com a programação **em curso**. O **responsável** designado **não** edita | `GerenciadorAcessoTelaRegistroResultadoIndex.cs` |
+| **GQ** › Autoinspeção e Auditoria › **Autoinspeção e Auditoria** (lista) | Só a regra de base (quem tem grupo) | `GerenciadorAcessoTelaAutoInspecaoAuditoriaIndex.cs` |
+| **GQ** › Treinamento › **Acompanhamento** e **Conclusão** | **Não usa o Nível.** Pergunta ao **Principal** quais **permissões de função de menu** o usuário tem (`GetPermissoesNivel3`) | `AcompanhamentoTreinamentoController.cs:717`; `ConclusaoTreinamentoController.cs:742` |
 
-**O que isto representa:** **Nível 1** = quem registra e vê o que é seu; **Nível 2** = quem responde por uma área ou foi **designado** num registro; **Nível 3** = quem **abre, libera e aprova**. É um **segundo sistema de poder**, **paralelo** ao da função profissional e ao perfil do Principal (que o inventário já apontou como "segunda camada de acesso").
+### 6.6 O que esta matriz representa, e o que ela revela
+
+**Leitura de negócio.** **Nível 1** = quem **registra** e vê o que é seu; **Nível 2** = quem **responde por uma área** ou foi **designado** num registro (revisor, contato, responsável); **Nível 3** = quem **abre, libera e aprova** (planos de ação, liberação, controle de produto, definição de área). É um **segundo sistema de poder**, **paralelo** à função profissional e ao perfil do Principal (a "terceira camada" de acesso).
+
+**O que o código revela de problema (para o iLabs corrigir):**
+1. **A conferência fica na tela e no controlador**, não na gravação. O helper decide se o botão aparece; o controlador redireciona. Nada indica que o servidor recuse uma gravação forçada. Contraria a regra do iLabs: toda regra é conferida **em toda gravação**, no banco.
+2. **Nome da classe trocado:** o arquivo `GerenciadorAcessoTelaAvaliacaoRNCIndex.cs` contém a classe `...RelatorioCapaIndex`, e o `...RelatorioCapaIndex.cs` contém a classe `...AvaliacaoRNCIndex`. Uma tela pode estar usando a regra da outra: **a confirmar no teste**.
+3. **Regras comentadas:** o Plano de Ação (geral e preventivo) tem as travas por situação **desligadas**; o Registro de Resultado tem a regra por Nível **desligada**.
+4. **O Nível 3 pode quase tudo:** nada na leitura impede que quem registra um desvio, quem avalia e quem libera seja a mesma pessoa de Nível 3, ou seja, não há **segregação de funções** (inferência do código; a confirmar no teste).
+5. **Só há uma exceção a isso:** quem é responsável por uma ação do plano corretivo, da sua área, **não avalia** o plano.
+6. **O Nível é do usuário, não da tela:** o mesmo usuário tem o mesmo Nível em todos os processos da GQ, sem distinguir mudança, desvio e auditoria.
+
+**No iLabs** (proposta, ligada à seção 8): cada linha desta matriz vira uma **capacidade nomeada** (por exemplo, "libera plano de ação", "avalia pré-avaliação da RNC"), concedida por **função, com área e validade**, e **conferida no banco** em cada gravação, com **segregação de funções** onde a norma pede. As travas por situação viram **transições de estado** do registro, que o banco impõe.
 
 ## 7. Resumo do que o legado mistura (e o que isso causa)
 

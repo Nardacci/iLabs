@@ -2,6 +2,13 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-19 · Claude · Matriz completa do Nível 1/2/3 da GQ, tela por tela
+
+- **Pedido do responsável:** seja o Nível 2 ou a função, o mapeamento do que cada um faz é muito importante.
+- **Entregue:** a seção 6 de `docs/roadmap/funcoes-do-profissional.md` virou a **matriz tela × Nível 1/2/3**, em cinco tabelas (mudanças, plano de ação, desvios, planos corretivo e preventivo, autoinspeção e treinamento), com as travas por situação. Fonte: os 24 arquivos `Helpers/GerenciadorAcesso*.cs` e os controladores da GQ.
+- **Achados:** a conferência fica na tela e no controlador, não na gravação; duas classes com nome trocado entre arquivos (a confirmar no teste); travas comentadas no Plano de Ação e no Registro de Resultado; não há segregação de funções para o Nível 3; o Registro de Resultado não usa o Nível (só o contato designado edita); o Treinamento usa permissão de função de menu do Principal.
+- **Falta:** a terceira camada, o **perfil do Principal** (incluir, alterar, excluir por tela), para reunir na mesma aba.
+
 ## 2026-11-19 · Claude · Funções do profissional: o que cada uma faz no código do legado
 
 - **Pedido do responsável:** a função cadastrada no profissional determina a execução de tarefas; buscar no código-fonte o que cada função faz, onde faz e o que isso representa.
