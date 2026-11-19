@@ -1,0 +1,23 @@
+flowchart TB
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  subgraph A["1 · Abrir e travar"]
+    direction LR
+    A1["Abrir o inventário<br/>almoxarifado, local,<br/>grupo e subgrupo"]:::passo --> A2{"Há recebimento ou<br/>pedido pendente?"}:::trava
+    A2 -- sim --> X1(["Recusado"]):::bloqueio
+    A2 -- não --> A3["Trava os endereços<br/>o saldo sai do disponível"]:::trava
+  end
+  subgraph C["2 · Contar e justificar"]
+    direction LR
+    B1["Contagem por endereço e item<br/>feita por quem não apura"]:::trava --> B2{"Igual ao saldo<br/>do sistema?"}:::trava
+    B2 -- sim --> B5(["Sem divergência"]):::fim
+    B2 -- não --> B3["Nova contagem<br/>até a terceira, por outra pessoa"]:::trava --> B4["Justificativa obrigatória<br/>da divergência, assinada"]:::trava
+  end
+  subgraph P["3 · Apurar e ajustar"]
+    direction LR
+    C1{"Contagem finalizada<br/>e divergência justificada?"}:::trava -- não --> X2(["Recusado"]):::bloqueio
+    C1 -- sim --> C2["Aprovação de quem<br/>não contou nem justificou"]:::trava --> C3["Uma só transação:<br/>ajusta o saldo, libera os endereços,<br/>grava quem, quando e por quê"]:::trava --> C4(["Relatório de apuração<br/>e histórico do lote"]):::fim
+  end
+  A --> C --> P

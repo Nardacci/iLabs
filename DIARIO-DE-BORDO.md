@@ -2,6 +2,14 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-19 · Claude · Ficha 10 do passo 3: inventário (fecha o Estoque)
+
+- **Pedido do responsável:** continuar com a próxima ficha.
+- **Entregue:** `docs/roadmap/fluxo-10-inventario.md` (imagem no alto, coluna "Onde no sistema (legado)", 6 etapas: abrir, contar, justificar, apurar, reabrir ou cancelar, relatar); aba "12 · Fluxo"; roteiro **1.10**; lista de fluxos marca o 10 como feito. **Os dez fluxos do Estoque estão feitos.**
+- **Achados do legado citados:** a mesma pessoa conta, justifica e apura (`DV-EST-049`); reabrir, cancelar e apurar sem motivo nem log (`DV-EST-050`, `136`); histórico do lote sem usuário nem justificativa (`DV-EST-034`); justificativa cortada em 100 caracteres e coluna do log vazia (`DV-EST-137`); relatório do mês deixa de fora item sem custo (`DV-EST-130`).
+- **A validar:** segregação em três pessoas; contagem cega; limite de divergência para aprovação da Qualidade; frequência; carga inicial de saldo.
+- **Próxima etapa:** fluxos do **Controle da Qualidade** (água e ambiente, estabilidade, ver `fluxos-do-legado.md`, 11 em diante).
+
 ## 2026-11-19 · Claude · Ficha 9 do passo 3: remessa e expedição
 
 - **Pedido do responsável:** continuar com a próxima ficha.
