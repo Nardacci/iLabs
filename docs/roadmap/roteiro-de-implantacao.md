@@ -1,6 +1,6 @@
 # Roteiro de implantação do sistema
 
-**Versão 1.8, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
+**Versão 1.9, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
 
 **Para que serve:** responder, para qualquer cliente que vá implantar o iLabs, **"o que fazer, em que ordem, quem faz e quando está pronto"**. A ordem vem das dependências entre cadastros ([passo 2](ordem-de-cadastro.md)) e das informações que cada fluxo exige ([passo 3](fluxo-01-recebimento-quarentena.md)): **não se cadastra o Item sem antes ter o que o Item usa; não se recebe material sem fornecedor qualificado, local de quarentena e regra de análise.**
 
@@ -89,6 +89,13 @@ Sem qualquer um destes, o fluxo trava em alguma etapa.
 3. **Produto acabado** (etapa 7): o lote **nasce da ordem de produção**; por isso o módulo **Produção** precisa estar pronto antes da primeira entrada (ainda por analisar).
 4. **No ensaio ponta a ponta (etapa 9):** acrescentar **uma entrada de produto acabado**, **uma devolução de material** e **uma tentativa de lote inventado** (recusada).
 
+### Detalhe das etapas 3, 5 e 9: a saída do lote para fora (remessa)
+(Vem do [fluxo 9](fluxo-09-remessa-e-expedicao.md).)
+1. **Destino e transportadora** (etapa 3): cadastrados como pessoa jurídica antes da primeira remessa.
+2. **Motivo da remessa e tipo de remessa** (etapa 5): lista de motivos e o parâmetro do Estoque, ambos com histórico de quem mudou.
+3. **Almoxarifado ativo e do grupo** (etapa 1): sem isso, a remessa oferece o que não deveria.
+4. **No ensaio ponta a ponta (etapa 9):** acrescentar **uma remessa até a liberação**, **uma tentativa de lote vencido** (recusada) e **um estorno assinado**.
+
 ## 3. Quem decide o quê
 | Decisão | Quem |
 |---|---|
@@ -120,7 +127,8 @@ O roteiro cresce conforme analisamos os fluxos (ordem em [Todos os fluxos](fluxo
 - **Solicitação, separação e atendimento**: **feito** (ficha 6); detalha as etapas 1, 5, 6 e 9.
 - **Almoxarifado do Controle da Qualidade**: **feito** (ficha 7); detalha as etapas 5, 6 e 9.
 - **Devolução e entradas**: **feito** (ficha 8); detalha as etapas 6, 7 e 9.
-- **Remessa e inventário** acrescentam as etapas de uso do material.
+- **Remessa e expedição**: **feito** (ficha 9); detalha as etapas 1, 3, 5 e 9.
+- **Inventário** acrescenta as etapas de uso do material.
 - **Documentos, Garantia da Qualidade, Produção, Comercial, Rastreabilidade e OPE** acrescentam as etapas das outras áreas.
 
 Cada ficha atualiza este roteiro: a etapa correspondente ganha o detalhe e a ordem é revista se uma dependência nova aparecer.

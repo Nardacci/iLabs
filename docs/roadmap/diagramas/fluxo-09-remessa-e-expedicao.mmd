@@ -1,0 +1,22 @@
+flowchart TB
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  subgraph M["1 · Montar a remessa"]
+    direction LR
+    A1["Cabeçalho<br/>almoxarifado do grupo, origem,<br/>motivo, destino e transportadora"]:::trava --> A2["Escolher lote e quantidade"]:::passo --> A3{"Lote disponível,<br/>na validade, fora de bloqueio<br/>e reanálise?"}:::trava
+    A3 -- não --> X1(["Não aparece<br/>nem entra"]):::bloqueio
+    A3 -- sim --> A4{"Quantidade ≤ saldo<br/>e lote ainda não está<br/>na remessa?"}:::trava
+    A4 -- não --> X2(["Recusado"]):::bloqueio
+    A4 -- sim --> A5(["Remessa aberta"]):::passo
+  end
+  subgraph L["2 · Liberar o embarque"]
+    direction LR
+    B1["Justificativa e assinatura<br/>de quem tem a função"]:::trava --> B2["Uma só transação:<br/>baixa o saldo, grava a data<br/>de liberação e o destino"]:::trava --> B3(["Remessa liberada<br/>não se edita, só se estorna"]):::fim
+  end
+  subgraph R["3 · Depois da saída"]
+    direction LR
+    C1["Histórico do lote<br/>remessa, destino, usuário, hora"]:::passo --> C2["Rastreabilidade<br/>a remessa chega ao envio<br/>de dados à ANVISA"]:::trava --> C3(["Relatório de saída<br/>por remessa"]):::fim
+  end
+  M --> L --> R

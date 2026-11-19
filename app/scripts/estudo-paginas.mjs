@@ -50,6 +50,11 @@ const PAGINAS = [
     titulo: '10 · Fluxo: devolução e entradas',
     arquivo: 'fluxo-08-devolucao-e-entradas.md',
   },
+  {
+    id: 'fluxo9',
+    titulo: '11 · Fluxo: remessa e expedição',
+    arquivo: 'fluxo-09-remessa-e-expedicao.md',
+  },
   { id: 'fluxos', titulo: 'Todos os fluxos', arquivo: 'fluxos-do-legado.md' },
 ];
 

@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-19 · Claude · Ficha 9 do passo 3: remessa e expedição
+
+- **Pedido do responsável:** continuar com a próxima ficha.
+- **Entregue:** `docs/roadmap/fluxo-09-remessa-e-expedicao.md` (imagem no alto, coluna "Onde no sistema (legado)", 7 etapas: cabeçalho, lotes, guia, nota fiscal, liberar, Rastreabilidade, consultar); aba "11 · Fluxo"; roteiro **1.9**; lista de fluxos marca o 9 como feito.
+- **Achados do legado citados:** Finalizar com erro em dois testes (`DV-EST-046`) e remessa de kit sem origem (`DV-EST-058`); almoxarifado inativo oferecido (`DV-EST-078`); remessa não chega à Rastreabilidade (`DV-EST-072`, a validar); histórico sem remessa, destino e usuário (`DV-EST-073`, `034`); parâmetro sobrescrito (`DV-EST-100`).
+- **Não testado:** guia (GMM) e saída por nota fiscal (a tela não tem os campos); lote vencido isolado.
+- **A validar:** sigla GMM; remessa ligada à Rastreabilidade; estorno; exceção para devolução ao fornecedor de lote vencido.
+- **Próxima ficha:** 10, inventário.
+
 ## 2026-11-19 · Claude · Ficha 8 do passo 3: devolução e entradas
 
 - **Pedido do responsável:** seguir com a próxima ficha.
