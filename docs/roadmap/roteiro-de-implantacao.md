@@ -1,6 +1,6 @@
 # Roteiro de implantação do sistema
 
-**Versão 1.1, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
+**Versão 1.2, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
 
 **Para que serve:** responder, para qualquer cliente que vá implantar o iLabs, **"o que fazer, em que ordem, quem faz e quando está pronto"**. A ordem vem das dependências entre cadastros ([passo 2](ordem-de-cadastro.md)) e das informações que cada fluxo exige ([passo 3](fluxo-01-recebimento-quarentena.md)): **não se cadastra o Item sem antes ter o que o Item usa; não se recebe material sem fornecedor qualificado, local de quarentena e regra de análise.**
 
@@ -44,6 +44,14 @@ Sem qualquer um destes, o fluxo trava em alguma etapa.
 4. **Fornecedores que já entregam hoje:** registrar uma **qualificação inicial**, com a documentação disponível e a data da decisão da Qualidade; ela vence e entra no ciclo de requalificação.
 5. **Conferir:** nenhum material de quarentena tem fornecedor sem qualificação em vigor. **É isso que libera o primeiro recebimento.**
 
+### Detalhe das etapas 7 e 9: as regras do laboratório e o laudo
+(Vem do [fluxo 3](fluxo-03-regras-analise-e-laudo.md).)
+1. **Cadastrar os padrões de referência** (com lote e validade) e o **checklist de verificação da amostragem**.
+2. **Para cada material:** cadastrar a **regra de amostragem** (quantidade, tolerância, método, plano, recipiente, precauções) e a **regra de análise** (ensaios, especificação, limites, método).
+3. **Aprovar a versão** de cada regra, com assinatura do chefe do Controle da Qualidade. **Sem regra aprovada, o material de quarentena não gera análise.**
+4. **Funções do laboratório:** amostrador, verificador, analista físico-químico, analista microbiológico e chefe do CQ, cada um **treinado no método**.
+5. **No ensaio ponta a ponta (etapa 9):** incluir **um resultado dentro do limite e um fora**, para ver a investigação; **uma aprovação e uma reprovação com motivo**; e conferir que o **lote muda de situação na hora** do laudo.
+
 ## 3. Quem decide o quê
 | Decisão | Quem |
 |---|---|
@@ -69,7 +77,7 @@ Sem qualquer um destes, o fluxo trava em alguma etapa.
 ## 6. O que vem a seguir neste roteiro
 O roteiro cresce conforme analisamos os fluxos (ordem em [Todos os fluxos](fluxos-do-legado.md)):
 - **Compras e avaliação do fornecedor**: **feito** (ficha 2); detalha a etapa 7 (qualificação).
-- **Regras de amostragem e análise, solicitação, análise e laudo** detalham as etapas 7 e 9.
+- **Regras de amostragem e análise, solicitação, análise e laudo**: **feito** (ficha 3); detalha as etapas 7 e 9.
 - **Movimentação interna, solicitação e atendimento à produção, devolução, remessa e inventário** acrescentam as etapas de uso do material.
 - **Documentos, Garantia da Qualidade, Produção, Comercial, Rastreabilidade e OPE** acrescentam as etapas das outras áreas.
 
