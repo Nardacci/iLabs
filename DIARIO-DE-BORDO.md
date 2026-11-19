@@ -2,6 +2,13 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-19 · Claude · Coluna "Onde no sistema (legado)" nas fichas de fluxo
+
+- **Pedido do responsável:** incluir o nome do módulo e da tela, porque nem todo leitor conhece o menu (exemplo: Controle da Qualidade › Solicitação de Análise › Solicitação de Análise).
+- **Feito:** nas fichas dos fluxos 1 a 5, cada etapa ganhou a coluna **Onde no sistema (legado)**, no formato **Módulo › Menu › Tela**. Onde a etapa não tem tela no legado, diz "Não existe no legado (tela nova)" ou "Automático, sem tela". Os nomes vêm dos inventários de telas do legado (menus do Estoque, do CQ, do Principal e da GQ).
+- **Limite:** são os nomes do legado. Os menus e telas do iLabs ainda não estão desenhados; quando forem, a coluna ganha o nome novo.
+- **Regra para as próximas fichas:** toda tabela de etapas já nasce com essa coluna.
+
 ## 2026-11-19 · Claude · Passo 3, fluxo 5: guardar e movimentar o material dentro do estoque
 
 - **Entregue:** `docs/roadmap/fluxo-05-movimentacao-interna.md` com a imagem do fluxo no alto (`docs/roadmap/diagramas/fluxo-05-movimentacao-interna.*`), 8 etapas, o que o fluxo exige de cada cadastro e pontos a validar. Nova aba "7 · Fluxo: movimentação interna". **Roteiro de implantação 1.4**: detalhe das etapas 1, 5, 6 e 9.

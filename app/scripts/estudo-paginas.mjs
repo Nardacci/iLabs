@@ -55,6 +55,13 @@ function html(arquivo) {
   let saida = marked.parse(md, { gfm: true, async: false });
   // links para outros arquivos não funcionam dentro do sistema: ficam como texto
   saida = saida.replace(/<a href="[^"]*\.(?:md|csv)[^"]*">([\s\S]*?)<\/a>/g, '<span>$1</span>');
+  // tabelas largas rolam de lado: o contêiner precisa ser alcançável pelo teclado (acessibilidade)
+  saida = saida
+    .replaceAll(
+      '<table>',
+      '<div class="estudo-rolagem" tabindex="0" role="group" aria-label="Tabela, role de lado se for larga"><table>',
+    )
+    .replaceAll('</table>', '</table></div>');
   // imagens: endereço relativo ao site; clicar abre a imagem inteira
   saida = saida.replace(
     /<img src="diagramas\/([^"]+)"([^>]*)>/g,
