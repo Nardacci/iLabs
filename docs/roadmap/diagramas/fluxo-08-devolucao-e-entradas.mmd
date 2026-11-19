@@ -1,0 +1,26 @@
+flowchart TB
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  subgraph F["1 · Entrada do produto acabado"]
+    direction LR
+    A1["Item, lote, validade,<br/>quantidade e endereço"]:::passo --> A2{"O lote nasceu numa<br/>ordem de produção liberada?"}:::trava
+    A2 -- não --> X1(["Recusado"]):::bloqueio
+    A2 -- sim --> A3{"Validade<br/>maior que hoje?"}:::trava
+    A3 -- não --> X2(["Recusado"]):::bloqueio
+    A3 -- sim --> A4["Só destino de quarentena<br/>quando o item exige"]:::trava
+  end
+  subgraph D["2 · Devolução e entrada avulsa"]
+    direction LR
+    B1["Devolução da produção<br/>ou de outra origem"]:::passo --> B2{"O lote existe com<br/>mesmo item, validade e fabricante?"}:::trava
+    B2 -- não --> X3(["Recusado"]):::bloqueio
+    B2 -- sim --> B3{"Quantidade ≤ saída<br/>que está sendo devolvida?"}:::trava
+    B3 -- não --> X4(["Recusado"]):::bloqueio
+    B3 -- sim --> B4["Justificativa e assinatura<br/>endereço que serve"]:::trava
+  end
+  subgraph Q["3 · Depois da entrada"]
+    direction LR
+    C1["Lote em quarentena<br/>análise aberta no CQ<br/>com o tipo certo"]:::trava --> C2["Etiqueta<br/>e histórico do lote"]:::passo --> C3(["Só sai da quarentena<br/>com o laudo aprovado"]):::fim
+  end
+  F --> D --> Q

@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-19 · Claude · Ficha 8 do passo 3: devolução e entradas
+
+- **Pedido do responsável:** seguir com a próxima ficha.
+- **Entregue:** `docs/roadmap/fluxo-08-devolucao-e-entradas.md` (imagem no alto, coluna "Onde no sistema (legado)", 7 etapas: produto acabado, análise e etiqueta, sobra da produção, devolução, entrada avulsa, entrada de serviço, consulta); aba "10 · Fluxo"; roteiro **1.8** (etapas 6, 7 e 9); lista de fluxos marca o 8 como feito.
+- **Achados do legado citados:** produto acabado aceita lote inventado e vencido (`DV-EST-024`, `025`); análise abre como NORMAL (`DV-EST-026`); devolução não acha lote de item com CQ e duplica o item de entrada nos sem CQ (`DV-EST-064`, `CT-EST-093`); motivo inativo oferecido (`DV-EST-104`); histórico sem usuário nem laudo (`DV-EST-034`); lote cortado em 10 caracteres (`DV-EST-168`).
+- **Não testado:** devolução da produção e entrada de serviço (dependem da ordem de produção, que não nasceu: `DV-EST-063`, `076`).
+- **A validar:** sobra devolvida precisa de análise; produto acabado sempre de ordem de produção; custos FR170 e FR180; motivos da entrada avulsa.
+- **Próxima ficha:** 9, remessa e expedição.
+
 ## 2026-11-19 · Claude · Ficha 7 do passo 3: guardar as amostras do Controle da Qualidade
 
 - **Pedido do responsável:** seguir com a próxima ficha.

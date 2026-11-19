@@ -45,6 +45,11 @@ const PAGINAS = [
     titulo: '9 · Fluxo: guardar as amostras do CQ',
     arquivo: 'fluxo-07-almoxarifado-cq.md',
   },
+  {
+    id: 'fluxo8',
+    titulo: '10 · Fluxo: devolução e entradas',
+    arquivo: 'fluxo-08-devolucao-e-entradas.md',
+  },
   { id: 'fluxos', titulo: 'Todos os fluxos', arquivo: 'fluxos-do-legado.md' },
 ];
 
