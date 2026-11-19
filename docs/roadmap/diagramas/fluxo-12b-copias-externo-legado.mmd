@@ -1,0 +1,24 @@
+flowchart TB
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  subgraph C["1 · Cópias em papel"]
+    direction LR
+    A1["Cópia só de documento<br/>vigente"]:::trava --> A2["Controlada: número e setor<br/>Não controlada: solicitante"]:::trava --> A3["Impressão com marca d'água<br/>e registro de quem imprimiu"]:::trava --> A4{"O documento foi<br/>substituído ou obsoletado?"}:::trava
+    A4 -- sim --> A5(["Recolhimento obrigatório<br/>de cada cópia, com baixa"]):::bloqueio
+    A4 -- não --> A6(["Cópia em uso"]):::fim
+  end
+  subgraph E["2 · Documento externo"]
+    direction LR
+    B1["Cadastro com origem,<br/>emissão e validade"]:::passo --> B2{"Passou pela<br/>análise de aceitação?"}:::trava
+    B2 -- não --> X1(["Não entra em uso"]):::bloqueio
+    B2 -- sim --> B3["Vigente até a validade<br/>aviso antes de vencer"]:::trava --> B4(["Vencido sai de uso<br/>sozinho"]):::fim
+  end
+  subgraph L["3 · Documento legado (migração)"]
+    direction LR
+    C1["Documento anterior ao sistema<br/>com o original assinado anexado"]:::trava --> C2{"Quem põe em vigor<br/>tem a função e assina com senha?"}:::trava
+    C2 -- não --> X2(["Recusado"]):::bloqueio
+    C2 -- sim --> C3(["Vigente, com histórico<br/>e marca de legado"]):::fim
+  end
+  C --> E --> L

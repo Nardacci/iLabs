@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-19 · Claude · Ficha 12 do passo 3 (12a e 12b): Controle de Documentos
+
+- **Pedido do responsável:** seguir com a próxima ficha.
+- **Entregue:** `docs/roadmap/fluxo-12a-ciclo-do-documento.md` (9 etapas, com o tipo de documento) e `fluxo-12b-copias-externo-legado.md` (9 etapas: cópias, documento externo e legado), cada uma com imagem no alto e coluna "Onde no sistema (legado)"; abas "15" e "16"; roteiro **1.12**; lista de fluxos marca o 12 como feito.
+- **Achados citados:** o tipo sem aprovação põe o documento em vigor no envio (`DV-DOC-004`, `005`); a mesma pessoa pré-aprova e aprova (`DV-DOC-002`); emissão retroativa aceita (`DV-DOC-007`); sem recolhimento das cópias (`DV-DOC-018`); impressão da cópia devolve arquivo vazio (`DV-DOC-016`); externo sem análise e vencido aceito (`DV-DOC-009`, `010`); legado vira vigente sem senha (`DV-DOC-011`). A conferência de treinamento antes da vigência funcionou na tela (`CT-DOC-010`), ao contrário do que o código indicava.
+- **Não confirmado:** conferência no servidor de quem decide (nenhum teste abriu telas pelo endereço); marca d'água; telas fora do menu (Arquivos e Modelos, ciclo básico), só do código.
+- **A validar:** tipos sem aprovação; aprovador diferente do elaborador; cópia em papel e recolhimento; análise do documento externo; fim da carga do legado.
+- **Próxima ficha:** 13, Garantia da Qualidade (treinamento, desvios e CAPA, mudanças, autoinspeção, regulatórios).
+
 ## 2026-11-19 · Claude · Ficha 11 do passo 3 (11a e 11b): água e ambiente, e estabilidade, no Controle da Qualidade
 
 - **Pedido do responsável:** seguir com os fluxos do Controle da Qualidade que faltavam.

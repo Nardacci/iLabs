@@ -1,0 +1,23 @@
+flowchart TB
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  subgraph T["1 · Tipo de documento (cadastro)"]
+    direction LR
+    A1["Tipo define o caminho<br/>revisão, pré-aprovação,<br/>aprovação, vigência"]:::trava --> A2{"O caminho tem ao menos<br/>uma aprovação?"}:::trava
+    A2 -- não --> X1(["Recusado"]):::bloqueio
+    A2 -- sim --> A3["Mudança do caminho<br/>com histórico"]:::trava
+  end
+  subgraph R["2 · Incluir, revisar e aprovar"]
+    direction LR
+    B1["Incluir com anexo,<br/>setor revisor e aplicação"]:::trava --> B2["Revisão e análise crítica<br/>assinadas com senha"]:::trava --> B3{"Quem aprova é diferente<br/>de quem elaborou e pré-aprovou?"}:::trava
+    B3 -- não --> X2(["Recusado pelo banco"]):::bloqueio
+    B3 -- sim --> B4(["Aprovado e assinado"]):::passo
+  end
+  subgraph V["3 · Pôr em vigor"]
+    direction LR
+    C1{"Treinamento concluído<br/>quando o tipo exige?"}:::trava -- não --> X3(["Não entra em vigor"]):::bloqueio
+    C1 -- sim --> C2["Emissão e validade<br/>calculadas pelo sistema"]:::trava --> C3["Uma só transação:<br/>nova vigente, anterior<br/>substituída, histórico assinado"]:::trava --> C4(["Só o vigente é usado<br/>pelos outros módulos"]):::fim
+  end
+  T --> R --> V
