@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-19 · Claude · Passo 1 refeito: cadastros repetidos e o que é pertinente para o Principal
+
+- **Responsável:** "não quero um questionário"; o passo 1 é identificar os cadastros repetidos e se é pertinente trazê-los ao Principal, porque numa implantação (mesmo só com os 5 módulos do IVB) não se cadastra o Item sem os cadastros de que ele depende.
+- **Entregue:** `docs/roadmap/cadastros-repetidos.md` (análise pronta, sem perguntas): 15 cadastros repetidos de verdade (12 vão para o Principal, 3 viram serviço comum), 7 que parecem repetidos mas não são, o que fica no módulo, e a ordem de cadastro do Item como exemplo (provada pelas ligações das tabelas).
+- **Descobertas:** Produto (Produção) já aponta para o Item (Estoque); há círculo Item ↔ Local no Estoque; a qualificação de fornecedor do legado está presa à nota fiscal, não ao material.
+- **Correção de erro meu:** o estudo de 18/11 tratava "tipo de água" do CQ como cópia; pelos campos parece outra coisa (a confirmar).
+- **A tela de avaliação no Início está obsoleta** (publicada no PR #49, em formato de tabela). Uma versão "uma pergunta por vez" foi feita só localmente e **descartada**. Sugestão: retirar cartão, rota e pasta `estudo/` na próxima publicação (aguarda ok).
+- **Próximo:** passo 2, a ordem de cadastro de todos os cadastros nos nove módulos.
+
 ## 2026-11-18 · Claude · Tela de avaliação dos cadastros globais, com cartão na página inicial
 
 - **Pedido do responsável:** "um card no sistema depois do login", chamando a tela de avaliação.
