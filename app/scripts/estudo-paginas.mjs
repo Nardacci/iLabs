@@ -35,6 +35,11 @@ const PAGINAS = [
     titulo: '7 · Fluxo: movimentação interna',
     arquivo: 'fluxo-05-movimentacao-interna.md',
   },
+  {
+    id: 'fluxo6',
+    titulo: '8 · Fluxo: pedir, separar e entregar o material',
+    arquivo: 'fluxo-06-solicitacao-separacao-atendimento.md',
+  },
   { id: 'fluxos', titulo: 'Todos os fluxos', arquivo: 'fluxos-do-legado.md' },
 ];
 
