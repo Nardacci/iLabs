@@ -68,18 +68,23 @@ import { PAGINAS_DO_ESTUDO } from './paginas.gerado';
     .estudo-texto :is(h2, h3) {
       margin-block: 1.5rem 0.5rem;
     }
-    .estudo-texto table {
-      display: block;
+    .estudo-texto .estudo-rolagem {
       overflow-x: auto;
-      border-collapse: collapse;
       margin-block: 0.75rem;
+    }
+    .estudo-texto table {
+      border-collapse: collapse;
     }
     .estudo-texto :is(th, td) {
       border: 1px solid var(--line);
-      padding: 0.4rem 0.6rem;
+      padding: 0.4rem 0.55rem;
       vertical-align: top;
       text-align: left;
-      min-width: 8rem;
+      min-width: 6.5rem;
+      font-size: 0.92rem;
+    }
+    .estudo-texto :is(th, td):first-child {
+      min-width: 2.5rem;
     }
     .estudo-texto th {
       background: var(--accent-soft);
