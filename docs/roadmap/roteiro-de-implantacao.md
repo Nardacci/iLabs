@@ -1,6 +1,6 @@
 # Roteiro de implantação do sistema
 
-**Versão 1, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
+**Versão 1.1, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
 
 **Para que serve:** responder, para qualquer cliente que vá implantar o iLabs, **"o que fazer, em que ordem, quem faz e quando está pronto"**. A ordem vem das dependências entre cadastros ([passo 2](ordem-de-cadastro.md)) e das informações que cada fluxo exige ([passo 3](fluxo-01-recebimento-quarentena.md)): **não se cadastra o Item sem antes ter o que o Item usa; não se recebe material sem fornecedor qualificado, local de quarentena e regra de análise.**
 
@@ -36,6 +36,14 @@
 
 Sem qualquer um destes, o fluxo trava em alguma etapa.
 
+### Detalhe da etapa 7: qualificar o fornecedor para cada material
+(Vem do [fluxo 2](fluxo-02-compras-e-fornecedor.md).)
+1. **Definir os critérios** (Garantia da Qualidade): perguntas do questionário, **nota de corte**, **validade** da qualificação e do que ela depende (risco do material).
+2. **Cadastrar o questionário** (checklist) e as funções de **avaliador** e de **aprovador**.
+3. **Para cada fornecedor e cada material que ele vende:** avaliar (questionário, documentos, amostra ou auditoria, quando houver) e **decidir com assinatura**, com validade.
+4. **Fornecedores que já entregam hoje:** registrar uma **qualificação inicial**, com a documentação disponível e a data da decisão da Qualidade; ela vence e entra no ciclo de requalificação.
+5. **Conferir:** nenhum material de quarentena tem fornecedor sem qualificação em vigor. **É isso que libera o primeiro recebimento.**
+
 ## 3. Quem decide o quê
 | Decisão | Quem |
 |---|---|
@@ -60,7 +68,7 @@ Sem qualquer um destes, o fluxo trava em alguma etapa.
 
 ## 6. O que vem a seguir neste roteiro
 O roteiro cresce conforme analisamos os fluxos (ordem em [Todos os fluxos](fluxos-do-legado.md)):
-- **Compras e avaliação do fornecedor** detalha a etapa 7 (qualificação).
+- **Compras e avaliação do fornecedor**: **feito** (ficha 2); detalha a etapa 7 (qualificação).
 - **Regras de amostragem e análise, solicitação, análise e laudo** detalham as etapas 7 e 9.
 - **Movimentação interna, solicitação e atendimento à produção, devolução, remessa e inventário** acrescentam as etapas de uso do material.
 - **Documentos, Garantia da Qualidade, Produção, Comercial, Rastreabilidade e OPE** acrescentam as etapas das outras áreas.

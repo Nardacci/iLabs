@@ -8,7 +8,7 @@ A ordem segue o que cada fluxo **exige** dos anteriores (o mesmo raciocínio do 
 | Ordem | Fluxo | Módulo | Por que nesta posição |
 |---|---|---|---|
 | **1** | **Recebimento e quarentena** | Estoque + CQ | **Feito.** É a espinha do sistema e cria o lote |
-| 2 | Compras e avaliação do fornecedor | Estoque / GQ | O recebimento exige fornecedor qualificado |
+| **2** | **Compras e avaliação do fornecedor** | Estoque / GQ | **Feito.** O recebimento exige fornecedor qualificado |
 | 3 | Regras de amostragem e de análise · Solicitação, análise e laudo | CQ | Completam a quarentena (regras e laudo) |
 | 4 | Reprovado, reanálise e revalidação | Estoque | O que acontece quando o laudo reprova ou o lote vence |
 | 5 | Movimentação interna | Estoque | Usa a estrutura e o lote aprovado |
