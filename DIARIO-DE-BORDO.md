@@ -2,6 +2,14 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-19 · Claude · Ficha 6 do passo 3: pedir, separar e entregar o material
+
+- **Pedido do responsável:** seguir com a próxima ficha de fluxo.
+- **Entregue:** `docs/roadmap/fluxo-06-solicitacao-separacao-atendimento.md` com imagem do fluxo no alto, coluna "Onde no sistema (legado)" e a tabela de 8 etapas (pedir, aprovar, separar, pesar, atender, encerrar, saída avulsa, consultar); nova aba "8 · Fluxo" na página do estudo; roteiro de implantação **1.6** (etapas 1, 5, 6 e 9); `fluxos-do-legado.md` marca o 6 como feito.
+- **Achados do legado citados:** sem ordem de validade no atendimento (`DV-EST-048`); a mesma pessoa cria e aprova (`DV-EST-070`); atendimento e cancelamento sem justificativa (`DV-EST-045`, `061`, `165`); Central de Pesagem com erro de servidor (`DV-EST-067`); pedido de produção não testado (a ordem de produção não nasceu).
+- **A validar:** FEFO obrigatório ou recomendado; aprovação sempre ou por tipo e valor; reserva do lote; limite da diferença de pesagem; situações exatas do pedido; cancelar atendimento já entregue.
+- **Próxima ficha:** 7, almoxarifado do Controle da Qualidade.
+
 ## 2026-11-19 · Claude · Terceira camada de acesso: o Perfil do Principal
 
 - **Pedido do responsável:** seguir (reunir a camada do Perfil na matriz). Pergunta paralela: **Ocupação** entra? Resposta: não, é só cadastro, nenhuma tela decide acesso por ocupação.

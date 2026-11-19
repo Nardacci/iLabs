@@ -1,0 +1,28 @@
+flowchart TB
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  subgraph S["1 · Pedir e aprovar"]
+    direction LR
+    A1["Solicitar material<br/>tipo, prioridade, centro de custo<br/>ou cliente, itens e quantidades"]:::passo --> A2{"O almoxarifado<br/>obriga aprovação?"}:::trava
+    A2 -- sim --> A3["Aprovar ou recusar<br/>com justificativa<br/>quem aprova não é quem pediu"]:::trava
+    A2 -- não --> A4(["Pedido aberto"]):::passo
+    A3 --> A4
+  end
+  subgraph P["2 · Separar e pesar (Estoque)"]
+    direction LR
+    B1["Escolher lote e endereço<br/>só disponível, na validade,<br/>não bloqueado, não em reanálise"]:::trava --> B2{"É o lote que<br/>vence primeiro?"}:::trava
+    B2 -- sim --> B3["Pesar se o item exige<br/>balança, lacre, peso, tara"]:::trava
+    B2 -- não --> X1(["Recusado ou<br/>justificado e assinado"]):::bloqueio
+    B3 --> B4{"Peso dentro da<br/>diferença permitida?"}:::trava
+    B4 -- não --> X2(["Não finaliza"]):::bloqueio
+    B4 -- sim --> B5["Separação confirmada<br/>lote reservado ao pedido"]:::passo
+  end
+  subgraph E["3 · Entregar e encerrar"]
+    direction LR
+    C1{"Quantidade ≤<br/>solicitada?"}:::trava -- sim --> C2["Atender com justificativa<br/>e assinatura"]:::trava --> C3["Uma só transação:<br/>baixa lote e endereço,<br/>muda a situação do pedido"]:::trava
+    C1 -- não --> X3(["Recusado"]):::bloqueio
+    C3 --> C4(["Pedido encerrado<br/>aviso à Produção<br/>histórico completo"]):::fim
+  end
+  S --> P --> E

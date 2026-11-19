@@ -1,6 +1,6 @@
 # Roteiro de implantação do sistema
 
-**Versão 1.5, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
+**Versão 1.6, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
 
 **Para que serve:** responder, para qualquer cliente que vá implantar o iLabs, **"o que fazer, em que ordem, quem faz e quando está pronto"**. A ordem vem das dependências entre cadastros ([passo 2](ordem-de-cadastro.md)) e das informações que cada fluxo exige ([passo 3](fluxo-01-recebimento-quarentena.md)): **não se cadastra o Item sem antes ter o que o Item usa; não se recebe material sem fornecedor qualificado, local de quarentena e regra de análise.**
 
@@ -67,6 +67,14 @@ Sem qualquer um destes, o fluxo trava em alguma etapa.
 4. **Tipo de movimentação** (lista de apoio) cadastrado antes da primeira movimentação.
 5. **No ensaio ponta a ponta (etapa 9):** acrescentar **uma transferência parcial entre endereços**, **uma tentativa de destino incompatível** (recusada), **uma movimentação ao mesmo tempo** por duas pessoas e **um estorno assinado**.
 
+### Detalhe das etapas 1, 5, 6 e 9: pedir, separar e entregar o material
+(Vem do [fluxo 6](fluxo-06-solicitacao-separacao-atendimento.md).)
+1. **Grupo ligado ao almoxarifado** (etapa 1): é o grupo que **vê os pedidos** e **aprova**; quem pede não aprova o próprio pedido.
+2. **Almoxarifado que obriga aprovação** (etapa 5): cada almoxarifado diz se o pedido precisa de aprovação antes da separação.
+3. **Item que exige pesagem e subgrupo com a diferença permitida** (etapa 6): sem esses dados, a pesagem não consegue conferir a divergência. A **balança** é cadastrada como equipamento, com tag.
+4. **Centro de custo, cliente e lista de tipo e motivo de movimentação** cadastrados antes do primeiro pedido.
+5. **No ensaio ponta a ponta (etapa 9):** acrescentar **um pedido de consumo até a entrega**, **uma tentativa de escolher o lote que vence depois** e **uma pesagem com divergência** (não finaliza).
+
 ## 3. Quem decide o quê
 | Decisão | Quem |
 |---|---|
@@ -95,7 +103,8 @@ O roteiro cresce conforme analisamos os fluxos (ordem em [Todos os fluxos](fluxo
 - **Regras de amostragem e análise, solicitação, análise e laudo**: **feito** (ficha 3); detalha as etapas 7 e 9.
 - **Reprovado, reanálise e revalidação**: **feito** (ficha 4); detalha as etapas 5, 6 e 9.
 - **Movimentação interna**: **feito** (ficha 5); detalha as etapas 1, 5, 6 e 9.
-- **Solicitação e atendimento à produção, devolução, remessa e inventário** acrescentam as etapas de uso do material.
+- **Solicitação, separação e atendimento**: **feito** (ficha 6); detalha as etapas 1, 5, 6 e 9.
+- **Devolução, remessa e inventário** acrescentam as etapas de uso do material.
 - **Documentos, Garantia da Qualidade, Produção, Comercial, Rastreabilidade e OPE** acrescentam as etapas das outras áreas.
 
 Cada ficha atualiza este roteiro: a etapa correspondente ganha o detalhe e a ordem é revista se uma dependência nova aparecer.
