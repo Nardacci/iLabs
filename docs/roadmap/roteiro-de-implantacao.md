@@ -1,6 +1,6 @@
 # Roteiro de implantação do sistema
 
-**Versão 1.10, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
+**Versão 1.11, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
 
 **Para que serve:** responder, para qualquer cliente que vá implantar o iLabs, **"o que fazer, em que ordem, quem faz e quando está pronto"**. A ordem vem das dependências entre cadastros ([passo 2](ordem-de-cadastro.md)) e das informações que cada fluxo exige ([passo 3](fluxo-01-recebimento-quarentena.md)): **não se cadastra o Item sem antes ter o que o Item usa; não se recebe material sem fornecedor qualificado, local de quarentena e regra de análise.**
 
@@ -103,6 +103,14 @@ Sem qualquer um destes, o fluxo trava em alguma etapa.
 3. **Limite de divergência** (parâmetro do Estoque): a partir de quanto o ajuste exige aprovação da Qualidade.
 4. **No ensaio ponta a ponta (etapa 9):** acrescentar **um inventário com divergência até a apuração**, **uma tentativa de a mesma pessoa contar e apurar** (recusada) e **um estorno de ajuste**.
 
+### Detalhe das etapas 1, 5, 6, 7 e 9: água, ambiente e estabilidade (Controle da Qualidade)
+(Vem das fichas [11a](fluxo-11a-agua-e-ambiente.md) e [11b](fluxo-11b-estabilidade.md).)
+1. **Pontos de água e salas com tag, classe de limpeza e frequência de coleta** (etapa 5), e o **almoxarifado de estabilidade** com as câmaras.
+2. **Regras de análise de água e de ambiente com limites de alerta e de ação** (etapa 7), e a **regra de estabilidade com protocolo completo** (condição, métodos, critérios, lotes, tempos), aprovada antes da primeira entrada.
+3. **Produto acabado que entra em estabilidade** (etapa 6): marcado no cadastro do material.
+4. **Funções com nome**, não números fixos: amostrar, verificar, analisar, aprovar laudo e conduzir a estabilidade (etapa 1).
+5. **No ensaio ponta a ponta (etapa 9):** acrescentar **uma coleta de água até o laudo**, **um resultado acima do limite de ação** (abre desvio), **uma tentativa de usar na Produção um ponto reprovado** (bloqueada) e **um estudo de estabilidade com três tempos até a conclusão**.
+
 ## 3. Quem decide o quê
 | Decisão | Quem |
 |---|---|
@@ -136,7 +144,7 @@ O roteiro cresce conforme analisamos os fluxos (ordem em [Todos os fluxos](fluxo
 - **Devolução e entradas**: **feito** (ficha 8); detalha as etapas 6, 7 e 9.
 - **Remessa e expedição**: **feito** (ficha 9); detalha as etapas 1, 3, 5 e 9.
 - **Inventário**: **feito** (ficha 10); detalha as etapas 1, 6 e 9.
-- **Com isso, os dez fluxos do Estoque estão feitos.** Faltam os fluxos de água e ambiente e de estabilidade (Controle da Qualidade).
+- **Com isso, os dez fluxos do Estoque estão feitos**, e também **água e ambiente e estabilidade** (fichas 11a e 11b, Controle da Qualidade).
 - **Documentos, Garantia da Qualidade, Produção, Comercial, Rastreabilidade e OPE** acrescentam as etapas das outras áreas.
 
 Cada ficha atualiza este roteiro: a etapa correspondente ganha o detalhe e a ordem é revista se uma dependência nova aparecer.

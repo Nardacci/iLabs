@@ -1,0 +1,25 @@
+flowchart TB
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  subgraph R["1 · Protocolo do estudo"]
+    direction LR
+    A1["Regra de estabilidade<br/>condição, métodos, critérios,<br/>lotes e tempos em ordem"]:::trava --> A2{"Dias em ordem<br/>crescente e positivos?"}:::trava
+    A2 -- não --> X1(["Recusado"]):::bloqueio
+    A2 -- sim --> A3["Mudança com justificativa<br/>e histórico campo a campo"]:::trava
+  end
+  subgraph O["2 · Abrir e acompanhar"]
+    direction LR
+    B1["Entrada do lote no Estoque<br/>marcada para estabilidade"]:::passo --> B2{"O produto tem<br/>regra aprovada?"}:::trava
+    B2 -- não --> X2(["Recusado,<br/>com aviso ao Estoque"]):::bloqueio
+    B2 -- sim --> B3["Estudo aberto com a data prevista<br/>de cada tempo e aviso de atraso"]:::trava --> B4["Cada tempo gera sua análise<br/>na data, sozinho"]:::trava
+  end
+  subgraph F["3 · Concluir"]
+    direction LR
+    C1{"Todos os tempos<br/>com laudo liberado?"}:::trava -- não --> X3(["Não finaliza"]):::bloqueio
+    C1 -- sim --> C2{"Algum resultado<br/>fora da especificação?"}:::trava
+    C2 -- sim --> X4(["Investigação e comunicação<br/>antes de concluir"]):::bloqueio
+    C2 -- não --> C3(["Conclusão assinada<br/>e relatório final completo"]):::fim
+  end
+  R --> O --> F
