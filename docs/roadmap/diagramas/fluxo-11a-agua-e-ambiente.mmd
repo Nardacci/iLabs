@@ -1,0 +1,24 @@
+flowchart TB
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  subgraph P["1 · Programa de monitoramento"]
+    direction LR
+    A1["Ponto de água ou sala<br/>com tag, classe de limpeza<br/>e frequência"]:::trava --> A2["O sistema gera as coletas<br/>do período sozinho"]:::trava --> A3{"Tipo de análise serve<br/>à sala ou ao ponto?"}:::trava
+    A3 -- não --> X1(["Recusado"]):::bloqueio
+    A3 -- sim --> A4(["Coleta agendada<br/>sem repetir horário"]):::passo
+  end
+  subgraph C["2 · Coletar e analisar"]
+    direction LR
+    B1["Registrar a amostragem<br/>e as condições reais da sala"]:::trava --> B2["Digitar o resultado<br/>conferido contra os limites<br/>de alerta e de ação"]:::trava --> B3{"Passou do limite<br/>de ação?"}:::trava
+    B3 -- sim --> X2(["Abre desvio e investigação"]):::bloqueio
+    B3 -- não --> B4(["Laudo aprovado<br/>ou reprovado, assinado"]):::passo
+  end
+  subgraph U["3 · Proteger a produção"]
+    direction LR
+    C1["Laudo vale<br/>por um prazo"]:::trava --> C2{"A Produção pede<br/>o ponto ou a sala"}:::trava
+    C2 -- laudo válido e aprovado --> C3(["Uso autorizado"]):::fim
+    C2 -- reprovado, vencido ou sem laudo --> X3(["Uso bloqueado<br/>pelo banco"]):::bloqueio
+  end
+  P --> C --> U

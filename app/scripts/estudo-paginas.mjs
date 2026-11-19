@@ -60,6 +60,16 @@ const PAGINAS = [
     titulo: '12 · Fluxo: inventário',
     arquivo: 'fluxo-10-inventario.md',
   },
+  {
+    id: 'fluxo11a',
+    titulo: '13 · Fluxo: água e ambiente (CQ)',
+    arquivo: 'fluxo-11a-agua-e-ambiente.md',
+  },
+  {
+    id: 'fluxo11b',
+    titulo: '14 · Fluxo: estabilidade (CQ)',
+    arquivo: 'fluxo-11b-estabilidade.md',
+  },
   { id: 'fluxos', titulo: 'Todos os fluxos', arquivo: 'fluxos-do-legado.md' },
 ];
 

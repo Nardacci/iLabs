@@ -17,7 +17,7 @@ A ordem segue o que cada fluxo **exige** dos anteriores (o mesmo raciocínio do 
 | **8** | **Devolução e entradas (produção, avulsa, produto acabado)** | Estoque | **Feito.** Outras portas de entrada do lote |
 | **9** | **Remessa e expedição** | Estoque | **Feito.** A saída do lote |
 | **10** | **Inventário** | Estoque | **Feito.** Conferência do saldo; depende de tudo acima |
-| 11 | Água e ambiente · Estabilidade | CQ | Usam ambiente, ponto de água e equipamento |
+| **11** | **Água e ambiente · Estabilidade** | CQ | **Feito** (fichas 11a e 11b). Usam ambiente, ponto de água e equipamento |
 | 12 | Ciclo do documento · Controle de cópias · Documento externo · Tipos e modelos | Controle de Documentos | Base do controle de versão que a GQ usa |
 | 13 | Treinamento · Desvios e CAPA · Controle de mudanças · Autoinspeção · Assuntos regulatórios | GQ | Dependem do lote (desvio retém), do documento (mudança gera versão) e do treinamento |
 | 14 | Preparação · Produto, fórmula e ordem · Autorização de início e final · Registro de lote · Terceirização e validade | Produção | Consomem o lote aprovado e geram produto acabado |

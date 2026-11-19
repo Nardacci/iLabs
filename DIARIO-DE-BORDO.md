@@ -2,6 +2,16 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-19 · Claude · Ficha 11 do passo 3 (11a e 11b): água e ambiente, e estabilidade, no Controle da Qualidade
+
+- **Pedido do responsável:** seguir com os fluxos do Controle da Qualidade que faltavam.
+- **Entregue:** `docs/roadmap/fluxo-11a-agua-e-ambiente.md` (8 etapas) e `fluxo-11b-estabilidade.md` (8 etapas), cada uma com imagem no alto e coluna "Onde no sistema (legado)"; abas "13" e "14"; roteiro **1.11**; lista de fluxos marca o 11 como feito.
+- **Achados citados (água e ambiente):** a coleta é marcada à mão, sem frequência (`DV-CQ-023`); o resultado não grava e o laudo oferece só Aprovar (`DV-CQ-009`); a Produção decide à mão, sem consultar o laudo do CQ (leitura do código); a classe de limpeza da sala não chega ao CQ.
+- **Achados citados (estabilidade):** nenhum estudo abre porque o Estoque não cria a entrada (`DV-EST-074`, `071`); a regra aceita uma terceira regra e não guarda histórico (`DV-CQ-016`, `017`); pelo código, o estudo pode ser finalizado como aprovado com laudo reprovado.
+- **Não testado:** laudo de água, etiqueta, Produção e toda a execução da estabilidade (sem laudo nem estudo). Só vêm do código e estão marcadas.
+- **A validar:** frequência, limites de alerta e ação, validade do laudo de água, protocolo da estabilidade, cobertura de um lote por ano, resultado fora da especificação.
+- **Próxima ficha:** 12, Controle de Documentos.
+
 ## 2026-11-19 · Claude · Ficha 10 do passo 3: inventário (fecha o Estoque)
 
 - **Pedido do responsável:** continuar com a próxima ficha.
