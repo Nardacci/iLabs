@@ -21,9 +21,9 @@ describe('Estudo do roadmap (página de leitura)', () => {
   it('troca de parte ao clicar na aba', () => {
     const f = abrir();
     const abas = [...raiz(f).querySelectorAll<HTMLButtonElement>('[role="tab"]')];
-    abas[2]?.click();
+    abas[3]?.click();
     f.detectChanges();
-    expect(abas[2]?.getAttribute('aria-selected')).toBe('true');
+    expect(abas[3]?.getAttribute('aria-selected')).toBe('true');
     expect(raiz(f).querySelector('#painel-estudo')?.textContent).toContain('quarentena');
   });
 

@@ -1,6 +1,6 @@
 # Passo 3: os fluxos do legado e a ordem para analisá-los
 
-**Levantamento de 19/11/2026.** O legado tem **34 fluxos documentados** nos nove módulos (o Principal não tem fluxo próprio: ele serve aos outros). Cada um vira uma ficha como a do [fluxo 1](fluxo-01-recebimento-quarentena.md): etapas, o que cada etapa exige dos cadastros, o que o banco precisa garantir e as falhas do legado.
+**Levantamento de 19/11/2026.** O legado tem **33 fluxos documentados** nos nove módulos (o fluxo de Kits foi retirado: o item não existe mais, decisão do responsável de 19/11/2026) (o Principal não tem fluxo próprio: ele serve aos outros). Cada um vira uma ficha como a do [fluxo 1](fluxo-01-recebimento-quarentena.md): etapas, o que cada etapa exige dos cadastros, o que o banco precisa garantir e as falhas do legado.
 
 ## Ordem proposta
 A ordem segue o que cada fluxo **exige** dos anteriores (o mesmo raciocínio do passo 2).
@@ -16,7 +16,7 @@ A ordem segue o que cada fluxo **exige** dos anteriores (o mesmo raciocínio do 
 | 7 | Almoxarifado do Controle da Qualidade | Estoque | Amostras de retenção, referência e estabilidade |
 | 8 | Devolução e entradas (produção, avulsa, produto acabado) | Estoque | Outras portas de entrada do lote |
 | 9 | Remessa e expedição | Estoque | A saída do lote |
-| 10 | Inventário · Kits | Estoque | Conferência e agrupamentos; dependem de tudo acima |
+| 10 | Inventário | Estoque | Conferência do saldo; depende de tudo acima |
 | 11 | Água e ambiente · Estabilidade | CQ | Usam ambiente, ponto de água e equipamento |
 | 12 | Ciclo do documento · Controle de cópias · Documento externo · Tipos e modelos | Controle de Documentos | Base do controle de versão que a GQ usa |
 | 13 | Treinamento · Desvios e CAPA · Controle de mudanças · Autoinspeção · Assuntos regulatórios | GQ | Dependem do lote (desvio retém), do documento (mudança gera versão) e do treinamento |
