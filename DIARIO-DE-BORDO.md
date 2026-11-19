@@ -2,6 +2,12 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-19 · Claude · Terceira camada de acesso: o Perfil do Principal
+
+- **Pedido do responsável:** seguir (reunir a camada do Perfil na matriz). Pergunta paralela: **Ocupação** entra? Resposta: não, é só cadastro, nenhuma tela decide acesso por ocupação.
+- **Entregue:** seção 6.7 de `docs/roadmap/funcoes-do-profissional.md`: como o Perfil libera telas e ações, a árvore de telas do Principal, o que o teste da rodada 2 mostrou (consulta que edita, lista negada mas edição aberta, 29 telas sem controle) e o **quadro das três camadas** (Perfil, função, Nível).
+- **Falta:** o efeito do Perfil nos demais módulos (cada `02-matriz-de-permissoes.md` tem o inventário); próxima ficha de fluxo: 6, solicitação, separação e atendimento à produção.
+
 ## 2026-11-19 · Claude · Matriz completa do Nível 1/2/3 da GQ, tela por tela
 
 - **Pedido do responsável:** seja o Nível 2 ou a função, o mapeamento do que cada um faz é muito importante.
