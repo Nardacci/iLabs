@@ -15,7 +15,7 @@ A ordem segue o que cada fluxo **exige** dos anteriores (o mesmo raciocínio do 
 | **6** | **Solicitação, separação e atendimento à produção** | Estoque | **Feito.** Primeiro consumo do lote aprovado |
 | **7** | **Almoxarifado do Controle da Qualidade** | Estoque | **Feito.** Amostras de retenção, referência e estabilidade |
 | **8** | **Devolução e entradas (produção, avulsa, produto acabado)** | Estoque | **Feito.** Outras portas de entrada do lote |
-| 9 | Remessa e expedição | Estoque | A saída do lote |
+| **9** | **Remessa e expedição** | Estoque | **Feito.** A saída do lote |
 | 10 | Inventário | Estoque | Conferência do saldo; depende de tudo acima |
 | 11 | Água e ambiente · Estabilidade | CQ | Usam ambiente, ponto de água e equipamento |
 | 12 | Ciclo do documento · Controle de cópias · Documento externo · Tipos e modelos | Controle de Documentos | Base do controle de versão que a GQ usa |
