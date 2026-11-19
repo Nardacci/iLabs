@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-19 · Claude · Passo 3, fluxo 2: qualificar o fornecedor e comprar
+
+- **Entregue:** `docs/roadmap/fluxo-02-compras-e-fornecedor.md` (Parte A: qualificação do fornecedor por material, 6 etapas; Parte B: compras, 4 etapas; o que o fluxo exige de cada cadastro; pontos a validar). Nova aba "4 · Fluxo: compras e fornecedor" na página do estudo. O **roteiro de implantação** (versão 1.1) ganhou o detalhe da etapa 7 (qualificar o fornecedor para cada material).
+- **Fontes:** fluxo de Compras e avaliação do fornecedor, resultados dos testes do Estoque (CT-EST-160 a 168, DV-EST-019 a 023, 077 e 016), conformidade da GQ e modelo ideal (trava 5).
+- **Achados:** no legado não existia situação do fornecedor; a coluna "Qualificado" mostrava SIM para quem tivesse sido avaliado; o recebimento nunca consultou a avaliação; a avaliação gravada não podia ser alterada nem tinha histórico; não existe auditoria de fornecedor; em compras, a Curva ABC aceitou período futuro, a regra de 12 meses estava comentada no código, e ninguém conseguiu finalizar nem baixar um pedido (árvore de funções sem Pedido de Compra; endereçamento não gravava).
+- **Correção durante a análise:** uma primeira redação dizia que a Curva ABC "funcionou"; conferi o resultado dos testes e corrigi.
+- **A validar com a área:** bloquear sempre ou permitir exceção assinada; qualificação por fornecedor + material ou por fabricante; critérios, nota de corte e validade; auditoria de fornecedor; **se Compras permanece no sistema**; mudança de fabricante exige requalificação; quem aprova.
+- **Próximo:** ficha 3 (regras de amostragem e análise, solicitação, análise e laudo, do CQ).
+
 ## 2026-11-19 · Claude · Kits removido e aba "Roteiro de implantação"
 
 - **Responsável:** "vamos remover o item Kits, não existe mais" e "faltou uma aba: o roteiro para implantação do sistema; essa aba é fundamental".

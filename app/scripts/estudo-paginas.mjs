@@ -14,6 +14,11 @@ const PAGINAS = [
     titulo: '3 · Fluxo: recebimento e quarentena',
     arquivo: 'fluxo-01-recebimento-quarentena.md',
   },
+  {
+    id: 'fluxo2',
+    titulo: '4 · Fluxo: compras e fornecedor',
+    arquivo: 'fluxo-02-compras-e-fornecedor.md',
+  },
   { id: 'fluxos', titulo: 'Todos os fluxos', arquivo: 'fluxos-do-legado.md' },
 ];
 
