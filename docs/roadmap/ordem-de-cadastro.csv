@@ -1,0 +1,52 @@
+﻿Nível (com opcionais);Cadastro;Destino proposto;No iLabs hoje;O banco do legado EXIGE antes;O legado deixa OPCIONAL (mas o negócio costuma precisar);Usado por
+0;Função profissional (cargo);Principal;Feito;;;
+0;Grupo de usuários;Principal;Feito;;;
+0;Estrutura organizacional (setores/locais funcionais);Principal;Feito;;;"Perfil e funções do sistema (permissões); Ambiente (sala/área) e grau de contaminação; Equipamento (e categoria, tipo de manutenção); Instrumento; Utensílio e utilidade"
+0;Ocupação e tipo de funcionário;Principal;Feito;;;Profissional (usuário)
+0;Registro de acessos / atividade;Principal;Feito;;;
+0;País, UF, Município, Bairro, Logradouro, Tipo de logradouro, Faixa de CEP;Principal;Feito (Município IBGE e CEP por API);;;"Profissional (usuário); Pessoa jurídica (fornecedor, fabricante, transportadora, cliente, laboratório)"
+0;Endereço (de pessoa jurídica ou cliente);Principal;Parte (na ficha do Profissional);;;
+0;Estado civil, Escolaridade, Profissão, Religião, Órgão emissor, Operadora de telefonia;Principal;Feito (listas na ficha);;;Pessoa jurídica (fornecedor, fabricante, transportadora, cliente, laboratório)
+0;Qualificação de fornecedor (por material);Módulo: Garantia da Qualidade (mínima antes do Estoque);Não existe;;;
+0;Empresa / filial (a organização dona do sistema);Principal;Parte (empresa_id em tudo);;;
+0;Contato de pessoa jurídica;Principal;Não existe;;;
+0;Condição de armazenagem e tipo de armazenagem;Principal;Não existe;;;"Almoxarifado / armazém e endereços (rua, coluna, andar, endereço, tipo de endereço); Item / material (matéria-prima, embalagem, produto acabado)"
+0;Classificação do material (grupo, subgrupo, classe, classificação, tipo de item);Principal;Não existe;;;Item / material (matéria-prima, embalagem, produto acabado)
+0;Unidade de medida e conversão;Principal;"Feito (unidade); conversão não";;;"Item / material (matéria-prima, embalagem, produto acabado); Apresentação, embalagem, acondicionamento, concentração; Fórmula, ficha técnica e etapas de produção (mestre); Regras de amostragem, de análise e de estabilidade"
+0;Denominação Comum Brasileira (DCB) e tipo;Principal;Não existe;;;
+0;Substância controlada e Portaria 344;Principal;Não existe;;;Item / material (matéria-prima, embalagem, produto acabado)
+0;Forma farmacêutica, forma física, via de administração, classe terapêutica;Principal;Não existe;;;"Fórmula, ficha técnica e etapas de produção (mestre); Numeração de lote (formato e padrão); Produto (complemento do material, vem da Produção)"
+0;Conservação e cuidados de conservação;Principal;Não existe;;;Produto (complemento do material, vem da Produção)
+0;Destinação do produto e categoria do produto;Principal;Não existe;;;Produto (complemento do material, vem da Produção)
+0;Registro do produto na ANVISA e situação;Principal;Não existe;;;
+0;Dados fiscais (NCM, TIPI, CFOP, CST ICMS/IPI/PIS/COFINS, origem);Principal;Não existe;;;Item / material (matéria-prima, embalagem, produto acabado)
+0;Documento fiscal, de frete e de pagamento (tipos e situações);Principal;Não existe;;;
+0;Conta contábil, gerencial, financeira, conta corrente, banco, moeda;Principal;Não existe;;;"Local físico; Item / material (matéria-prima, embalagem, produto acabado)"
+0;Centro de custo;Principal;Feito;;;Local físico
+0;Especificação;Principal;Não existe;;;
+0;Tipos e situações de análise do CQ;Módulo: Controle da Qualidade;Não existe;;;Regras de amostragem, de análise e de estabilidade
+0;Perguntas e respostas (checklists, qualificação, auditoria, portaria);Plataforma (motor de formulários);Não existe;;;
+0;Treinamento: tipo, motivo, instrutor, avaliação;Módulo: Garantia da Qualidade;Não existe;;;
+0;Tipo de documento, situação, tipo de cópia;Módulo: Controle de Documentos;Não existe;;;
+0;Anexo (arquivo);Plataforma (todos);Parte (kb_documentos);;;
+0;Histórico de alterações (log);Plataforma (todos);Feito;;;
+0;Configuração, constantes e controle de código;Plataforma (todos);Não existe;;;
+0;Periodicidade e prioridade;Principal;Não existe;;;
+1;Profissional (usuário);Principal;Feito;;"Ocupação e tipo de funcionário; País, UF, Município, Bairro, Logradouro, Tipo de logradouro, Faixa de CEP";
+1;Perfil e funções do sistema (permissões);Principal;Feito;;Estrutura organizacional (setores/locais funcionais);"Conta de usuário e vínculo perfil; Notificações, alertas e eventos"
+1;Pessoa jurídica (fornecedor, fabricante, transportadora, cliente, laboratório);Principal;Tabela sem tela;;"País, UF, Município, Bairro, Logradouro, Tipo de logradouro, Faixa de CEP; Estado civil, Escolaridade, Profissão, Religião, Órgão emissor, Operadora de telefonia";"Equipamento (e categoria, tipo de manutenção); Instrumento; Utensílio e utilidade; Item / material (matéria-prima, embalagem, produto acabado)"
+1;Almoxarifado / armazém e endereços (rua, coluna, andar, endereço, tipo de endereço);Principal;Tabela sem tela;Condição de armazenagem e tipo de armazenagem;;Item / material (matéria-prima, embalagem, produto acabado)
+1;Local físico;Principal;Não existe;Conta contábil, gerencial, financeira, conta corrente, banco, moeda;Centro de custo;
+1;Ambiente (sala/área) e grau de contaminação;Principal;Não existe;;Estrutura organizacional (setores/locais funcionais);"Ponto de água e tipo de água; Equipamento (e categoria, tipo de manutenção); Instrumento; Utensílio e utilidade"
+1;Apresentação, embalagem, acondicionamento, concentração;Principal;Não existe;Unidade de medida e conversão;;Produto (complemento do material, vem da Produção)
+1;Regras de amostragem, de análise e de estabilidade;Módulo: Controle da Qualidade;Não existe;Tipos e situações de análise do CQ;Unidade de medida e conversão;
+2;Conta de usuário e vínculo perfil;Principal;Feito;;Perfil e funções do sistema (permissões);
+2;Ponto de água e tipo de água;Principal;Não existe;;Ambiente (sala/área) e grau de contaminação;
+2;Equipamento (e categoria, tipo de manutenção);Principal;Não existe;;"Estrutura organizacional (setores/locais funcionais); Pessoa jurídica (fornecedor, fabricante, transportadora, cliente, laboratório); Ambiente (sala/área) e grau de contaminação";
+2;Instrumento;Principal;Não existe;;"Estrutura organizacional (setores/locais funcionais); Pessoa jurídica (fornecedor, fabricante, transportadora, cliente, laboratório); Ambiente (sala/área) e grau de contaminação";
+2;Utensílio e utilidade;Principal;Não existe;;"Estrutura organizacional (setores/locais funcionais); Pessoa jurídica (fornecedor, fabricante, transportadora, cliente, laboratório); Ambiente (sala/área) e grau de contaminação";
+2;Item / material (matéria-prima, embalagem, produto acabado);Principal;Tabela sem tela;Unidade de medida e conversão;"Pessoa jurídica (fornecedor, fabricante, transportadora, cliente, laboratório); Almoxarifado / armazém e endereços (rua, coluna, andar, endereço, tipo de endereço); Condição de armazenagem e tipo de armazenagem; Classificação do material (grupo, subgrupo, classe, classificação, tipo de item); Substância controlada e Portaria 344; Dados fiscais (NCM, TIPI, CFOP, CST ICMS/IPI/PIS/COFINS, origem); Conta contábil, gerencial, financeira, conta corrente, banco, moeda";Fórmula, ficha técnica e etapas de produção (mestre)
+2;Notificações, alertas e eventos;Plataforma (todos);Não existe;Perfil e funções do sistema (permissões);;
+2;Produto (complemento do material, vem da Produção);Principal (complemento do Item);Não existe;Forma farmacêutica, forma física, via de administração, classe terapêutica;"Apresentação, embalagem, acondicionamento, concentração; Conservação e cuidados de conservação; Destinação do produto e categoria do produto";"Fórmula, ficha técnica e etapas de produção (mestre); Numeração de lote (formato e padrão)"
+3;Fórmula, ficha técnica e etapas de produção (mestre);Módulo: Produção;Não existe;"Item / material (matéria-prima, embalagem, produto acabado); Unidade de medida e conversão; Produto (complemento do material, vem da Produção)";Forma farmacêutica, forma física, via de administração, classe terapêutica;
+3;Numeração de lote (formato e padrão);Principal;Não existe;"Forma farmacêutica, forma física, via de administração, classe terapêutica; Produto (complemento do material, vem da Produção)";;

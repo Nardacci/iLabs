@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-19 · Claude · Passo 2: dependências entre cadastros e ordem de cadastro (rascunho para validação)
+
+- **Entregue:** `docs/roadmap/ordem-de-cadastro.md` e `ordem-de-cadastro.csv` (51 cadastros: os 50 do passo 1 mais o Produto, separado do Item). Script reprodutível em `docs/roadmap/ferramentas/dependencias.py` (lê o repositório do legado; gera `dependencias.json`).
+- **Método:** ligações entre tabelas do legado (FOREIGN KEY e campos ID_), separando **exigida** (campo NOT NULL) de **opcional** (aceita vazio), e níveis calculados com as duas.
+- **Resultado:** 4 fases (0 a 3). Fase 0 = base e listas (33 cadastros; 10 feitos, 3 em parte, **20 faltam**, todos listas simples). Fase 1: pessoa jurídica, almoxarifado em árvore, ambiente, apresentação, regras do CQ. Fase 2: Item, Produto, equipamentos, ponto de água. Fase 3: fórmula e numeração de lote. Sem ciclos.
+- **Achado:** o banco do legado só exige unidade de medida no Item; o resto é opcional. O iLabs deve exigir mais (decisão no passo 3).
+- **Limites:** só dependência de dados; a tela não foi lida (a obrigatoriedade pode ter sido na tela); dependências de fluxo ficam para o passo 3.
+- **Próximo:** passo 3 (fluxos e informações de cada fluxo), começando pelo recebimento de matéria-prima até a quarentena.
+
 ## 2026-11-19 · Claude · Passo 1 refeito: cadastros repetidos e o que é pertinente para o Principal
 
 - **Responsável:** "não quero um questionário"; o passo 1 é identificar os cadastros repetidos e se é pertinente trazê-los ao Principal, porque numa implantação (mesmo só com os 5 módulos do IVB) não se cadastra o Item sem os cadastros de que ele depende.
