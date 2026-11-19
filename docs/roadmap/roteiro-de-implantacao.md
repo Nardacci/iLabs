@@ -1,6 +1,6 @@
 # Roteiro de implantação do sistema
 
-**Versão 1.6, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
+**Versão 1.7, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
 
 **Para que serve:** responder, para qualquer cliente que vá implantar o iLabs, **"o que fazer, em que ordem, quem faz e quando está pronto"**. A ordem vem das dependências entre cadastros ([passo 2](ordem-de-cadastro.md)) e das informações que cada fluxo exige ([passo 3](fluxo-01-recebimento-quarentena.md)): **não se cadastra o Item sem antes ter o que o Item usa; não se recebe material sem fornecedor qualificado, local de quarentena e regra de análise.**
 
@@ -75,6 +75,13 @@ Sem qualquer um destes, o fluxo trava em alguma etapa.
 4. **Centro de custo, cliente e lista de tipo e motivo de movimentação** cadastrados antes do primeiro pedido.
 5. **No ensaio ponta a ponta (etapa 9):** acrescentar **um pedido de consumo até a entrega**, **uma tentativa de escolher o lote que vence depois** e **uma pesagem com divergência** (não finaliza).
 
+### Detalhe das etapas 5, 6 e 9: guardar as amostras do Controle da Qualidade
+(Vem do [fluxo 7](fluxo-07-almoxarifado-cq.md).)
+1. **Almoxarifados especiais** (etapa 5): referência, retenção e estabilidade, cada um com seus endereços.
+2. **Marcas do item** (etapa 6): quais amostras o item guarda, o **prazo de guarda** depois da validade e, para estabilidade, a **regra de estabilidade** (condição, prazo, pontos).
+3. **Listas de apoio** (antes do primeiro lote liberado): tipo de referência e tipo de estabilidade.
+4. **No ensaio ponta a ponta (etapa 9):** acrescentar **uma amostra de retenção até a saída** e **uma tentativa de saída antes do prazo** (recusada ou justificada e assinada).
+
 ## 3. Quem decide o quê
 | Decisão | Quem |
 |---|---|
@@ -104,6 +111,7 @@ O roteiro cresce conforme analisamos os fluxos (ordem em [Todos os fluxos](fluxo
 - **Reprovado, reanálise e revalidação**: **feito** (ficha 4); detalha as etapas 5, 6 e 9.
 - **Movimentação interna**: **feito** (ficha 5); detalha as etapas 1, 5, 6 e 9.
 - **Solicitação, separação e atendimento**: **feito** (ficha 6); detalha as etapas 1, 5, 6 e 9.
+- **Almoxarifado do Controle da Qualidade**: **feito** (ficha 7); detalha as etapas 5, 6 e 9.
 - **Devolução, remessa e inventário** acrescentam as etapas de uso do material.
 - **Documentos, Garantia da Qualidade, Produção, Comercial, Rastreabilidade e OPE** acrescentam as etapas das outras áreas.
 

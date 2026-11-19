@@ -1,0 +1,25 @@
+flowchart TB
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  subgraph P["1 · Preparar (cadastros)"]
+    direction LR
+    A1["Almoxarifado especial<br/>referência, retenção<br/>ou estabilidade"]:::passo --> A2["Item marcado como<br/>retém referência, retenção<br/>ou estabilidade"]:::trava
+  end
+  subgraph G["2 · Guardar a amostra"]
+    direction LR
+    B1["Entrada da amostra<br/>lote, quantidade, endereço"]:::passo --> B2{"O lote é liberado<br/>e o endereço serve?"}:::trava
+    B2 -- não --> X1(["Recusado"]):::bloqueio
+    B2 -- sim --> B3{"É de estabilidade?"}:::trava
+    B3 -- sim --> B4["Tipo de estabilidade obrigatório<br/>abre o acompanhamento no CQ"]:::trava
+    B3 -- não --> B5(["Amostra guardada<br/>fora do saldo disponível"]):::fim
+    B4 --> B5
+  end
+  subgraph S["3 · Dar saída"]
+    direction LR
+    C1["Pedido de saída<br/>quantidade e motivo<br/>consumo em análise ou descarte"]:::passo --> C2{"O prazo de guarda<br/>já passou?"}:::trava
+    C2 -- não --> X2(["Bloqueado ou justificado<br/>e assinado pela Qualidade"]):::bloqueio
+    C2 -- sim --> C3["Baixa conferida pelo banco<br/>quem, quando e por quê"]:::trava --> C4(["Histórico da amostra<br/>completo"]):::fim
+  end
+  P --> G --> S

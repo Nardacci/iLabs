@@ -2,6 +2,14 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-19 · Claude · Ficha 7 do passo 3: guardar as amostras do Controle da Qualidade
+
+- **Pedido do responsável:** seguir com a próxima ficha.
+- **Entregue:** `docs/roadmap/fluxo-07-almoxarifado-cq.md` (imagem no alto, coluna "Onde no sistema (legado)", 6 etapas: preparar, guardar, abrir estabilidade, consultar, dar saída, registrar destino); aba "9 · Fluxo"; roteiro **1.7** (etapas 5, 6 e 9); lista de fluxos marca o 7 como feito.
+- **Achados do legado citados:** saída da retenção antes do vencimento aceita sem aviso (`DV-EST-068`); estabilidade sem tipo e sem acompanhamento no CQ (`DV-EST-071`, `074`, `075`); retenção invisível na consulta e na saída (`DV-EST-047`); lista de Movimentações vazia e observação perdida (`DV-EST-124`, `125`). **O código não guarda prazo de guarda.**
+- **A validar:** prazo de guarda por produto; saída antes do prazo (proibida ou assinada); motivos e termo de descarte; pontos da estabilidade.
+- **Próxima ficha:** 8, devolução e entradas (produção, avulsa, produto acabado).
+
 ## 2026-11-19 · Claude · Ficha 6 do passo 3: pedir, separar e entregar o material
 
 - **Pedido do responsável:** seguir com a próxima ficha de fluxo.
