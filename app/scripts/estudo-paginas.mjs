@@ -19,6 +19,11 @@ const PAGINAS = [
     titulo: '4 · Fluxo: compras e fornecedor',
     arquivo: 'fluxo-02-compras-e-fornecedor.md',
   },
+  {
+    id: 'fluxo3',
+    titulo: '5 · Fluxo: regras, análise e laudo',
+    arquivo: 'fluxo-03-regras-analise-e-laudo.md',
+  },
   { id: 'fluxos', titulo: 'Todos os fluxos', arquivo: 'fluxos-do-legado.md' },
 ];
 

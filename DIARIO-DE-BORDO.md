@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-19 · Claude · Passo 3, fluxo 3: as regras do laboratório, a análise e o laudo
+
+- **Entregue:** `docs/roadmap/fluxo-03-regras-analise-e-laudo.md` (Parte A: 5 etapas das regras de amostragem e de análise, com **versão aprovada**; Parte B: 8 etapas do dia a dia, da solicitação ao aviso ao Estoque; o que o fluxo exige de cada cadastro; pontos a validar). Nova aba "5 · Fluxo: regras, análise e laudo". **Roteiro de implantação 1.2**: detalhe das etapas 7 e 9.
+- **Fontes:** fluxos do CQ feitos pelo código e defeitos confirmados nas telas (DV-CQ-002 a 009, 010, 029 a 033, 038, 043, 052).
+- **Achados do legado:** regra de análise sem versão nem aprovador (não se sabe qual versão cada laudo usou); regra de amostragem sem método, plano, recipiente nem precauções, quantidade fixa e tolerância "absoluto" aplicada como percentual; qualquer usuário (até de consulta) aprovava o laudo; reprovar sem motivo; aprovar, emitir e corrigir sem histórico; laudo de lote vencido aprovado; emitir sem decisão; resultado de laudo liberado alterável; etiqueta sem laudo; o Estoque recebia "reprovada" antes do laudo.
+- **Correção na redação:** a situação da solicitação tinha cinco etapas atribuídas e três cadastradas que nenhuma ação usava; ajustei o texto.
+- **A validar com a área:** plano de amostragem, quem aprova a versão da regra, investigação ao sair do limite, teor, reanálise, padrões de referência, equipamento por ensaio, reabrir laudo, água e ambiente.
+- **Próximo:** ficha 4 (reprovado, reanálise e revalidação) ou outra ordem que o responsável preferir.
+
 ## 2026-11-19 · Claude · Passo 3, fluxo 2: qualificar o fornecedor e comprar
 
 - **Entregue:** `docs/roadmap/fluxo-02-compras-e-fornecedor.md` (Parte A: qualificação do fornecedor por material, 6 etapas; Parte B: compras, 4 etapas; o que o fluxo exige de cada cadastro; pontos a validar). Nova aba "4 · Fluxo: compras e fornecedor" na página do estudo. O **roteiro de implantação** (versão 1.1) ganhou o detalhe da etapa 7 (qualificar o fornecedor para cada material).
