@@ -166,6 +166,43 @@ A GQ **não pergunta pela função profissional** para autorizar. Ela usa o **N�
 
 **No iLabs** (proposta, ligada à seção 8): cada linha desta matriz vira uma **capacidade nomeada** (por exemplo, "libera plano de ação", "avalia pré-avaliação da RNC"), concedida por **função, com área e validade**, e **conferida no banco** em cada gravação, com **segregação de funções** onde a norma pede. As travas por situação viram **transições de estado** do registro, que o banco impõe.
 
+### 6.7 A terceira camada: o Perfil do Principal (o que cada tela libera)
+
+Além da função e do Nível, existe o **Perfil**, que vale para **todos os módulos**. Fonte: `1.principal/02-matriz-de-permissoes.md` do legado (código em `LaboSys_Util/ClassePaiEd.cs:115-155` e `BaseController.cs:23-27`; teste nas telas, rodada 2 de 05 e 06/10/2026).
+
+**Como funciona.** O usuário tem **um ou mais Perfis**; cada Perfil marca **telas** e, em cada tela, até cinco **ações**. Os poderes **somam** quando o usuário tem mais de um Perfil.
+
+| Ação marcada no Perfil | O que a tela faz com ela |
+|---|---|
+| **Só a tela marcada** | Entra e **consulta** (não existe a ação "Consultar" na tela de Perfil) |
+| **Incluir** | Mostra o botão Novo |
+| **Alterar** | Libera a edição; sem ela a tela de edição devia abrir **travada** |
+| **Excluir** | Manda para a lixeira (o legado não apaga) |
+| **Consultar log** | Mostra o histórico de alterações |
+| **Imprimir / Excel** | Mostra os botões de imprimir e exportar |
+
+Exceções de cadastro: a tela de **Perfil** não tem Imprimir/Excel; **Pessoa jurídica** não tem Excluir. Um Perfil também se liga a **Locais** (setores).
+
+**Árvore de telas do Principal:** Administração (7 telas: configurar notificação, conta do usuário, microservices, notificações do sistema e padrão, perfil, profissional), Cadastros (ambientes, equipamentos, instrumentos, pontos de água, utensílios, utilidades, categoria de equipamento, centro de custo, conta contábil e gerencial, estrutura funcional, funções profissionais, grupo de usuários e outras) e Tabelas de apoio (grau de contaminação).
+
+**O que o teste mostrou (rodada 2):**
+1. **Quem não tem nenhuma função não entra** ("Seu perfil não possuí permissão!"): correto.
+2. **Perfil de consulta não ficou só de leitura:** na tela do usuário, 38 de 51 campos continuaram editáveis (`DV-PRI-023`).
+3. **A lista é negada, mas a edição abre:** com Perfil só de Centro de custo, as listas de Administração foram negadas, mas as telas de **edição**, a de configuração e os relatórios **abriram** pelo endereço (`DV-PRI-025`, `SEG-PRI-05`). Se gravam, **não foi testado**.
+4. **Das telas do Principal, só 10 bloqueiam a entrada**, 15 só ajustam botões e **29 não têm nenhum controle encontrado** no código.
+5. A checagem **no servidor** (envio forçado) **não foi provada**; a recusa vista era da validação técnica do ASP.NET, não de permissão.
+6. Perfis somam poder (`RN-PRI-040`): confirmado.
+
+**Resumo das três camadas no legado:**
+
+| Camada | Pergunta que responde | Onde mora | Abrange |
+|---|---|---|---|
+| **Perfil** | A pessoa entra na tela e faz incluir, alterar, excluir, ver log, imprimir? | Cadastro de Perfil (Principal) | Todos os módulos |
+| **Função profissional** | A pessoa executa esta tarefa (analisar, amostrar, liberar)? | Cadastro do profissional, mais Configuração de Sistema | Produção e CQ, sobretudo |
+| **Nível do grupo** | A pessoa age sobre **este** registro (da área, designado, na situação certa)? | Grupo de usuários | Só a GQ |
+
+No iLabs as três viram **uma só estrutura**: capacidades nomeadas, concedidas por função com área e validade, e conferidas no banco em cada gravação.
+
 ## 7. Resumo do que o legado mistura (e o que isso causa)
 
 | Problema | Onde aparece | Efeito |
