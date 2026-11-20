@@ -6,6 +6,14 @@
 
 *Coluna "Onde no sistema": o caminho no sistema atual (legado), no formato **Módulo › Menu › Tela**. Onde diz "tela nova", a tela não existe hoje e será criada.*
 
+> **Em uma frase:** Como o **produto sai da empresa** para um cliente ou destino, com baixa no estoque e registro de para onde foi.
+>
+> **Exemplo do dia a dia (ilustrativo, os números são inventados):** Uma caixa de remédio vai para uma distribuidora: o sistema tira do estoque, registra o destino e avisa a rastreabilidade.
+>
+> **Por que importa:** Sem registro do destino, não dá para fazer um recolhimento se o lote tiver problema.
+>
+> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+
 **Análise de 19/11/2026. Rascunho para validação do responsável.** Nona ficha do passo 3. É **a saída do lote para fora**: o material sai da empresa para um destino (cliente, consignatário, devolução ao fornecedor). Fecha o ciclo que começou no recebimento ([ficha 1](fluxo-01-recebimento-quarentena.md)), e é onde a **rastreabilidade do medicamento** deixa de ser só interna.
 
 **Fontes (todas no repositório do legado):** o fluxo "Remessa e expedição" (`3.estoque/fluxos/remessa-expedicao.md`, lido do código) e os resultados dos testes de tela do Estoque (casos `CT-EST-110` a `119`; achados `DV-EST-002`, `034`, `046`, `058`, `072`, `073`, `078`, `100`, `121`). **O que não fiz:** não li as telas uma a uma. A **remessa por guia (GMM)** e a **saída por nota fiscal** não puderam ser testadas, porque a tela de remessa **não tem** os campos delas; essas partes vêm **só do código** e estão marcadas. A norma pede o **vínculo do lote com o destino**; como a Rastreabilidade ainda não foi analisada, o elo com ela fica **a validar**.

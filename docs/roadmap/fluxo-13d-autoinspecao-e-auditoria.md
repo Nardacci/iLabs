@@ -6,6 +6,14 @@
 
 *Coluna "Onde no sistema": o caminho no sistema atual (legado), no formato **Módulo › Menu › Tela**. Onde diz "tela nova", a tela não existe hoje e será criada.*
 
+> **Em uma frase:** A empresa **faz vistorias em si mesma** (autoinspeção e auditoria) com uma lista de perguntas, para achar problemas antes da fiscalização.
+>
+> **Exemplo do dia a dia (ilustrativo, os números são inventados):** Uma equipe percorre a área de pesagem com um checklist de 50 perguntas, anota o que está fora do padrão e abre as correções.
+>
+> **Por que importa:** Se quem vistoria é da própria área vistoriada, o resultado perde a credibilidade.
+>
+> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+
 **Análise de 20/11/2026. Rascunho para validação do responsável.** Quarta das cinco fichas da Garantia da Qualidade (a [13a](fluxo-13a-treinamento.md) foi o treinamento, a [13b](fluxo-13b-desvios-e-capa.md), desvios e CAPA e a [13c](fluxo-13c-controle-de-mudancas.md), mudanças). A autoinspeção e a auditoria **procuram o que está fora do padrão antes que um desvio aconteça**; o que elas acham deve virar **desvio** e **CAPA** ([ficha 13b](fluxo-13b-desvios-e-capa.md)). No legado, essa ligação **não existe**.
 
 **Fontes (todas no repositório do legado):** o fluxo "Autoinspeção e auditoria" (`5.garantia_qualidade/fluxos/autoinspecao-auditoria.md`, lido do código) e os resultados dos testes de tela da GQ (rodadas de 15/10 e 22/10/2026; casos `CT-GQ-050` a `065` e `CT-GQ-AUD`; achados `DV-GQ-090`, `092`, `093`, `096`, `097`, `098`, `099`, `100`, `101`, `102`, `103`, `104`, `106`, `107`, `110`, `111`, `112`, `113`, `114`, `115`, `116`, `117`, `118`, `347`). **O que não fiz:** não li as telas uma a uma. O campo de **número de RNC** nunca apareceu no Registro, então o vínculo com o desvio **não pôde ser testado** (`CT-GQ-058`). A **reabertura** não tem botão (`CT-GQ-062`), ao contrário do que o código indicava.

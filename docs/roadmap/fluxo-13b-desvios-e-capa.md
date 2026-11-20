@@ -6,6 +6,14 @@
 
 *Coluna "Onde no sistema": o caminho no sistema atual (legado), no formato **Módulo › Menu › Tela**. Onde diz "tela nova", a tela não existe hoje e será criada.*
 
+> **Em uma frase:** Quando **algo sai do combinado** (um desvio), a empresa registra, investiga a causa verdadeira, corrige e **prova que não volta a acontecer**.
+>
+> **Exemplo do dia a dia (ilustrativo, os números são inventados):** A máquina esquentou além do limite. Registra-se, descobre-se que o sensor estava sem calibrar, calibra-se e cria-se uma rotina para não repetir.
+>
+> **Por que importa:** Se o problema é só 'arrumado' e não investigado, ele volta, e o lote pode ter saído com defeito.
+>
+> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+
 **Análise de 20/11/2026. Rascunho para validação do responsável.** Segunda das cinco fichas da Garantia da Qualidade (a [13a](fluxo-13a-treinamento.md) foi o treinamento). É o fluxo em que **um problema vira ação corretiva e preventiva com prova de que funcionou**. É também o fluxo que **deveria reter o lote**: o desvio com lote aberto não pode deixar o lote seguir ([ficha 4](fluxo-04-reprovado-reanalise-revalidacao.md), [ficha 6](fluxo-06-solicitacao-separacao-atendimento.md)).
 
 **Fontes (todas no repositório do legado):** o fluxo "Desvios e CAPA" (`5.garantia_qualidade/fluxos/desvios-capa.md`, lido do código) e os resultados dos testes de tela da GQ (rodadas de 12 a 22/10 e 11/11/2026; casos `CT-GQ-001` a `026`; achados `DV-GQ-001`, `002`, `010`, `012`, `016`, `017`, `019`, `020`, `021`, `022`, `023`, `025`, `030`, `036`, `039`, `041`, `042`, `044`, `046`, `047`, `057`, `062`, `078`, `082`, `083`, `086`, `099`). **O que não fiz:** não li as telas uma a uma. O **efeito do desvio sobre o lote** não pôde ser testado (a busca de produto e de material não devolvia nada, `DV-GQ-010`). Quem pode fazer cada etapa por Nível está na [matriz de Níveis](funcoes-do-profissional.md) (seção 6.3 e 6.4).

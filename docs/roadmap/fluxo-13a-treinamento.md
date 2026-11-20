@@ -6,6 +6,14 @@
 
 *Coluna "Onde no sistema": o caminho no sistema atual (legado), no formato **Módulo › Menu › Tela**. Onde diz "tela nova", a tela não existe hoje e será criada.*
 
+> **Em uma frase:** Garantir que **quem executa uma tarefa foi treinado nela** (e que o treinamento ainda vale), e registrar isso.
+>
+> **Exemplo do dia a dia (ilustrativo, os números são inventados):** Antes de operar a máquina de encher frascos, a pessoa faz um treinamento, tira nota e o sistema registra a validade. Vencido: não opera.
+>
+> **Por que importa:** Pessoa sem treinamento fazendo a tarefa é um risco de qualidade e de fiscalização.
+>
+> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+
 **Análise de 20/11/2026. Rascunho para validação do responsável.** Primeira das cinco fichas da Garantia da Qualidade (a ficha 13 se divide em 13a treinamento, 13b desvios e CAPA, 13c mudanças, 13d autoinspeção e 13e assuntos regulatórios). O treinamento liga o **documento vigente** ([ficha 12a](fluxo-12a-ciclo-do-documento.md)) à **pessoa e à função** ([funções do profissional](funcoes-do-profissional.md)): é o que diz **quem pode executar cada tarefa**. O legado tem o fluxo mais completo da GQ, mas **o treinamento não habilita nem bloqueia ninguém**.
 
 **Fontes (todas no repositório do legado):** o fluxo "Treinamento" (`5.garantia_qualidade/fluxos/treinamento.md`, lido do código) e os resultados dos testes de tela da GQ (rodadas de 15/10, 23/10 e 26/10/2026; casos `CT-GQ-070` a `083`; achados `DV-GQ-013`, `300`, `301`, `303`, `305`, `311`, `312`, `313`, `314`, `315`, `316`, `317`, `320`, `321`, `326`). **O que não fiz:** não li as telas uma a uma. O **dia seguinte** (o treinamento de 1 dia vencer) foi repetido em 24/10; o efeito sobre a **Produção e o Estoque** foi visto só pelo que a tela mostra. O elo com o **Controle de Documentos** vem **do código**, porque a tela de vigência não foi exercitada com turma insuficiente.

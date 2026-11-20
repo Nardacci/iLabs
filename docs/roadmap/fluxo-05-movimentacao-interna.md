@@ -6,6 +6,14 @@
 
 *Coluna "Onde no sistema": o caminho no sistema atual (legado), no formato **Módulo › Menu › Tela**. Onde diz "tela nova", a tela não existe hoje e será criada.*
 
+> **Em uma frase:** Como o material **muda de lugar** dentro do estoque (de uma prateleira para outra), sempre com registro de quem moveu e por quê.
+>
+> **Exemplo do dia a dia (ilustrativo, os números são inventados):** Mudar um lote da prateleira A1 para B3: o sistema confere se o lugar novo serve para aquele material e anota a troca.
+>
+> **Por que importa:** Sem registro, o saldo 'some' ou fica no lugar errado, e ninguém sabe onde está o lote.
+>
+> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+
 **Análise de 19/11/2026. Rascunho para validação do responsável.** Quinta ficha do passo 3. Ela trata do que acontece com o lote **depois de liberado**, dentro do almoxarifado: **endereçar, transferir de um endereço para outro, e consultar onde está e por onde passou.** Completa as etapas 7 e 11 do [fluxo 1](fluxo-01-recebimento-quarentena.md) e o destino do lote da [ficha 4](fluxo-04-reprovado-reanalise-revalidacao.md).
 
 **Fontes (todas no repositório do legado):** o fluxo de Movimentação interna (`3.estoque/fluxos/movimentacao-interna.md`, feito pelo código), os resultados dos testes de tela do Estoque (casos `CT-EST-030` a `045`; achados `DV-EST-016`, `017`, `018`, `033`, `034`, `042`, `044`) e a análise de saldo por situação. **O que não fiz:** não li as telas uma a uma. Os casos de endereçamento ficaram **bloqueados** nos testes por um defeito do legado (`DV-EST-016`); o que não foi testado está marcado.

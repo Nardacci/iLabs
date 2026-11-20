@@ -6,6 +6,14 @@
 
 *Coluna "Onde no sistema": o caminho no sistema atual (legado), no formato **Módulo › Menu › Tela**. Onde diz "tela nova", a tela não existe hoje e será criada.*
 
+> **Em uma frase:** **Contar o estoque de verdade** e comparar com o que o sistema diz; se houver diferença, justificar e ajustar o saldo.
+>
+> **Exemplo do dia a dia (ilustrativo, os números são inventados):** O sistema diz que há 100 frascos; a contagem acha 98. Alguém justifica a diferença e o ajuste é feito, com assinatura.
+>
+> **Por que importa:** Se a mesma pessoa conta, justifica e ajusta, abre-se espaço para erro ou fraude.
+>
+> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+
 **Análise de 19/11/2026. Rascunho para validação do responsável.** Décima ficha do passo 3, a **última do Estoque**. O inventário **confere o saldo que o sistema calcula com o que está na prateleira** e, quando diverge, **ajusta o saldo**. É a única operação em que o saldo muda **sem** haver entrada nem saída de material; por isso é a que mais exige **segregação de funções** e **registro de quem fez**. Depende de tudo o que vem antes: sem fichas 1 a 9, não há saldo para contar.
 
 **Fontes (todas no repositório do legado):** o fluxo "Inventário" (`3.estoque/fluxos/inventario.md`, lido do código) e os resultados dos testes de tela do Estoque (casos `CT-EST-130` a `140`; achados `DV-EST-034`, `049`, `050`, `130`, `136`, `137`, `138`, `139`). **O que não fiz:** não li as telas uma a uma. O **relatório de apuração** e as **etiquetas de inventário** não foram abertos no teste; o **inventário com recebimentos pendentes** só abriu num almoxarifado sem pendência (os outros recusaram). Essas partes vêm **do código** ou de teste parcial, e estão marcadas.

@@ -6,6 +6,14 @@
 
 *Coluna "Onde no sistema": o caminho no sistema atual (legado), no formato **Módulo › Menu › Tela**. Onde diz "tela nova", a tela não existe hoje e será criada.*
 
+> **Em uma frase:** **Nenhuma mudança** no processo, no produto ou no equipamento acontece sem **avaliar os riscos e aprovar antes**, e sem conferir depois se deu certo.
+>
+> **Exemplo do dia a dia (ilustrativo, os números são inventados):** Trocar o fornecedor de um ingrediente: as áreas avaliam o impacto, a Qualidade aprova, executa-se e depois se verifica se o produto continua igual.
+>
+> **Por que importa:** Mudança sem avaliação pode alterar o remédio sem ninguém perceber.
+>
+> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+
 **Análise de 20/11/2026. Rascunho para validação do responsável.** Terceira das cinco fichas da Garantia da Qualidade (a [13a](fluxo-13a-treinamento.md) foi o treinamento e a [13b](fluxo-13b-desvios-e-capa.md), desvios e CAPA). O controle de mudanças existe para que **nenhuma mudança em processo, fórmula, produto ou regulatório seja feita sem avaliação prévia das áreas impactadas** e sem prova de que funcionou. Ele **recebe** do desvio a necessidade de mudar e **entrega** documentos novos ([ficha 12a](fluxo-12a-ciclo-do-documento.md)) e lotes ligados ([Estoque](fluxos-do-legado.md)).
 
 **Fontes (todas no repositório do legado):** o fluxo "Controle de mudanças" (`5.garantia_qualidade/fluxos/controle-mudancas.md`, lido do código) e os resultados dos testes de tela da GQ (rodadas de 12 e 22/10/2026; casos `CT-GQ-030` a `049` e `CT-GQ-M01` a `M09`; achados `DV-GQ-003` a `007`, `219`, `235`, `236`, `239`, `244`, `247`, `248`, `250`, `251`, `253`, `256`, `258`, `261`, `267`, `268`, `277`, `339`). **O que não fiz:** não li as telas uma a uma. O **vencimento da mudança temporária** ficou **bloqueado no teste** (precisa do dia seguinte) e o **acesso pelo endereço** foi excluído por decisão do responsável nas rodadas de 22/10. Quem pode fazer cada etapa por Nível está na [matriz de Níveis](funcoes-do-profissional.md) (seção 6.1 e 6.2).

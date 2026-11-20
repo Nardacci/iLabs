@@ -2,6 +2,12 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-20 · Claude · Caixa "em uma frase" no topo das 19 fichas
+
+- **Pedido do responsável:** aprovou a ideia de explicar, no topo de cada ficha, para que serve o processo, em linguagem de quem não é da área.
+- **Entregue:** nas 19 fichas de fluxo (1 a 13e), antes da análise, uma caixa com **Em uma frase**, **Exemplo do dia a dia** (marcado como ilustrativo, números inventados) e **Por que importa**, mais a indicação da aba "24 · Glossário". As tabelas não foram alteradas.
+- **Limite:** os exemplos são didáticos e não vêm do sistema legado; a Qualidade deve confirmar se refletem a prática da empresa.
+
 ## 2026-11-20 · Claude · Glossário e regra de linguagem
 
 - **Pedido do responsável:** lembrou que é analista de negócios, não é da área farmacêutica; o estudo precisa de linguagem que ele entenda.

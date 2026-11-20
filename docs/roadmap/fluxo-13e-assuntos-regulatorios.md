@@ -6,6 +6,14 @@
 
 *Coluna "Onde no sistema": o caminho no sistema atual (legado), no formato **Módulo › Menu › Tela**. Onde diz "tela nova", a tela não existe hoje e será criada.*
 
+> **Em uma frase:** Manter **em dia as licenças e obrigações** com a ANVISA e outros órgãos, e o **registro de cada produto**, que tem validade.
+>
+> **Exemplo do dia a dia (ilustrativo, os números são inventados):** O registro de um remédio vence em março. O sistema avisa antes, e sem registro válido o produto não pode ser fabricado nem vendido.
+>
+> **Por que importa:** Registro vencido sem aviso pode parar a fábrica ou gerar autuação.
+>
+> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+
 **Análise de 20/11/2026. Rascunho para validação do responsável.** Última das cinco fichas da Garantia da Qualidade (a [13a](fluxo-13a-treinamento.md) foi o treinamento, a [13b](fluxo-13b-desvios-e-capa.md), desvios e CAPA, a [13c](fluxo-13c-controle-de-mudancas.md), mudanças e a [13d](fluxo-13d-autoinspecao-e-auditoria.md), autoinspeção). Os assuntos regulatórios cuidam de **duas coisas**: as **obrigações da empresa** perante os órgãos (licenças, certificados, notificações) e o **registro de cada produto** na ANVISA. O produto só pode ser **fabricado e vendido** se o registro está **deferido e dentro da validade**.
 
 **Fontes (todas no repositório do legado):** o fluxo "Assuntos regulatórios" (`5.garantia_qualidade/fluxos/assuntos-regulatorios.md`, lido do código) e os resultados dos testes de tela da GQ (rodadas de 15/10, 22/10 e 23/10/2026; casos `CT-GQ-090` a `101` e `CT-GQ-AR`; achados `DV-GQ-015`, `200`, `201`, `203`, `204`, `205`, `206`, `207`, `211`, `212`, `213`, `214`, `215`, `263`, `264`, `347`, `348`). **O que não fiz:** não li as telas uma a uma. **As quatro telas do registro de produto** (Check-list, Solicitação de Registro, Controle de Produtos, Exigências da ANVISA) **não têm entrada no menu** e **não puderam ser testadas** (`DV-GQ-015`, `348`); essa metade do fluxo vem **só do código**.
