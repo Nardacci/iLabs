@@ -130,6 +130,11 @@ const PAGINAS = [
     titulo: '26 · Fluxo: produto, fórmula e ordem (Produção)',
     arquivo: 'fluxo-14b-produto-formula-ordem.md',
   },
+  {
+    id: 'fluxo14c',
+    titulo: '27 · Fluxo: autorização, início e final (Produção)',
+    arquivo: 'fluxo-14c-autorizacao-inicio-final.md',
+  },
   { id: 'fluxos', titulo: 'Todos os fluxos', arquivo: 'fluxos-do-legado.md' },
 ];
 

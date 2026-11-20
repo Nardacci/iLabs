@@ -2,6 +2,16 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-20 · Claude · Ficha 14c do passo 3: do pedido de produção à liberação do lote (Produção)
+
+- **Pedido do responsável:** seguir com a Produção.
+- **Entregue:** `docs/roadmap/fluxo-14c-autorizacao-inicio-final.md` (12 etapas, caixa "Em uma frase", imagem no alto, coluna "Onde no sistema (legado)"); aba "27 · Fluxo: autorização, início e final (Produção)"; roteiro **1.20**; lista de fluxos marca autorização, início e final como feito.
+- **Achados citados (do código):** uma área que negou não impede a produção (`RN016`); as autorizações da GQ e do CQ são marcações, não consultam os módulos (`RN011`, `RN012`); o Estoque confirma insumos digitando lote e validade (`RN007`); equipamento pendente é liberado com justificativa curta (`RN009`); o produto acabado pode ser finalizado sem entrar no Estoque e entra antes da liberação (`RN030`, `RN031`); quem finaliza também reconcilia e libera (`RN035`); número de lote digitado, com formatos de clientes anteriores no código (`RN022`).
+- **Testado na tela:** só a Autorização de Equipamentos. **A cadeia ficou bloqueada** por `DV-PRO-010` (a solicitação grava, mas a integração com o Estoque não completa); o restante vem só do código.
+- **Normas conferidas no texto:** RDC 658/2022, arts. 137, 160, 167, 189, 195 e 220.
+- **A validar:** quem autoriza cada área, área que nega, quem é a Pessoa Delegada, quarentena do produto acabado, faixa de rendimento, reprovação do lote.
+- **Próxima ficha:** 14d, registro de lote (o "caderno" da fabricação).
+
 ## 2026-11-20 · Claude · Ficha 14b do passo 3: produto, fórmula e ordem de produção (Produção)
 
 - **Pedido do responsável:** seguir com a Produção.

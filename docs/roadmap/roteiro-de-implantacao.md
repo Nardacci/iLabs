@@ -1,6 +1,6 @@
 # Roteiro de implantação do sistema
 
-**Versão 1.19, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
+**Versão 1.20, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
 
 **Para que serve:** responder, para qualquer cliente que vá implantar o iLabs, **"o que fazer, em que ordem, quem faz e quando está pronto"**. A ordem vem das dependências entre cadastros ([passo 2](ordem-de-cadastro.md)) e das informações que cada fluxo exige ([passo 3](fluxo-01-recebimento-quarentena.md)): **não se cadastra o Item sem antes ter o que o Item usa; não se recebe material sem fornecedor qualificado, local de quarentena e regra de análise.**
 
@@ -166,6 +166,12 @@ Sem qualquer um destes, o fluxo trava em alguma etapa.
 2. **Insumo e produto acabado ligados ao Estoque** (etapa 6), com os controles de lote, validade e quarentena em um só lugar.
 3. **Fórmula com versão aprovada, lote padrão aprovado e ordem de produção com o modelo do registro** (etapa 7).
 4. **No ensaio ponta a ponta (etapa 9):** acrescentar **um produto com registro vencido** (não é liberado), **uma tentativa de aprovar o próprio lote padrão** (recusada) e **uma troca de modelo com produção em andamento** (recusada).
+
+### Detalhe das etapas 1, 7 e 9: do pedido de produção à liberação do lote (Produção)
+(Vem da ficha [14c](fluxo-14c-autorizacao-inicio-final.md).)
+1. **Funções separadas** (etapa 1): solicitar, autorizar por área, autorizar a produção, finalizar, reconciliar e a **Pessoa Delegada** que libera o lote, com assinatura.
+2. **Formato do número de lote, faixa de rendimento por produto e conversão de unidade dos itens** (etapa 7).
+3. **No ensaio ponta a ponta (etapa 9):** acrescentar **uma produção completa até a liberação**, **uma área que nega** (a produção não é autorizada), **um insumo vencido** (recusado), **uma finalização sem entrar no Estoque** (impossível) e **uma reprovação** (o Estoque retém o lote).
 
 ## 3. Quem decide o quê
 | Decisão | Quem |
