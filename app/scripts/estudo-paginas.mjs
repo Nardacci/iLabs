@@ -110,6 +110,11 @@ const PAGINAS = [
     titulo: '22 · O que a norma diz',
     arquivo: 'o-que-a-norma-diz.md',
   },
+  {
+    id: 'gqmodulos',
+    titulo: '23 · A GQ e os outros módulos',
+    arquivo: 'garantia-da-qualidade-e-os-outros-modulos.md',
+  },
   { id: 'fluxos', titulo: 'Todos os fluxos', arquivo: 'fluxos-do-legado.md' },
 ];
 

@@ -2,6 +2,13 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-20 · Claude · A Garantia da Qualidade e os outros módulos
+
+- **Observação do responsável:** o menu Treinamento fica na GQ, mas quem aprova é a Produção ou o CQ; ainda não ficou clara a importância, a usabilidade e a interconexão da GQ.
+- **Entregue:** `docs/roadmap/garantia-da-qualidade-e-os-outros-modulos.md`: a ideia central (a GQ cuida do sistema que faz o resto confiável), quem decide o quê no treinamento (art. 42), o que cada módulo entrega e recebe, as seis ligações que o legado não tinha e seis perguntas para a área. Aba "23 · A GQ e os outros módulos".
+- **Leitura:** o treinamento é um serviço comum (cadastro na GQ, aprovação pelo responsável da área, consulta pelos outros módulos).
+- **Próximo passo sugerido:** estudar Produção e CQ, que consomem treinamento e documento vigente e abrem os desvios.
+
 ## 2026-11-20 · Claude · O que a norma diz sobre as perguntas em aberto das fichas
 
 - **Pedido do responsável:** "são perguntas interessantes, que precisamos descobrir: o que as normas da ANVISA e BPF dizem?"
