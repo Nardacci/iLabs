@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-20 · Claude · O que a norma diz sobre as perguntas em aberto das fichas
+
+- **Pedido do responsável:** "são perguntas interessantes, que precisamos descobrir: o que as normas da ANVISA e BPF dizem?"
+- **Entregue:** `docs/roadmap/o-que-a-norma-diz.md`, com o texto da RDC 658/2022 (Diário Oficial) e do Guia 33/2020, por tema (treinamento, desvios e CAPA, mudanças, autoinspeção, documentos, amostras e estabilidade, água, registro do produto, estoque, assinatura e trilha). Cada pergunta traz o artigo e uma classificação: **manda**, **não define** (a empresa decide) ou **fora do alcance** (depende de norma que não está no repositório). Aba "22 · O que a norma diz" na página do estudo.
+- **Fechado pela norma:** treinamento obrigatório para executar (arts. 14 e 41), programa aprovado pelo Responsável da Produção ou do CQ (art. 42), causa raiz e erro humano justificado (arts. 339 e 340), eficácia da CAPA e da mudança (art. 341 e art. 8º, XIII), avaliação prévia da mudança (art. 8º, XII), lote liberado só com a Pessoa Delegada e conforme o registro (arts. 8º, XV e 14, VII), autoinspeção independente (art. 363).
+- **A empresa decide:** nota mínima, prazo da eficácia, o que é independente, frequências, FEFO, segregação de funções.
+- **Falta o documento:** instrução normativa das amostras de retenção e de referência, Farmacopeia (água), norma de registro, regulamento de estabilidade.
+- **Limite:** busca por tema, não leitura dos 370 artigos.
+
 ## 2026-11-20 · Claude · Ficha 13e do passo 3: assuntos regulatórios (fecha a Garantia da Qualidade)
 
 - **Pedido do responsável:** seguir com a próxima ficha.

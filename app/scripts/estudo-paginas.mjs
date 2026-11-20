@@ -105,6 +105,11 @@ const PAGINAS = [
     titulo: '21 · Fluxo: assuntos regulatórios (GQ)',
     arquivo: 'fluxo-13e-assuntos-regulatorios.md',
   },
+  {
+    id: 'norma',
+    titulo: '22 · O que a norma diz',
+    arquivo: 'o-que-a-norma-diz.md',
+  },
   { id: 'fluxos', titulo: 'Todos os fluxos', arquivo: 'fluxos-do-legado.md' },
 ];
 
