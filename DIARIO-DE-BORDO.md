@@ -2,6 +2,16 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-20 · Claude · Ficha 13c do passo 3: controle de mudanças (Garantia da Qualidade)
+
+- **Pedido do responsável:** seguir com a próxima ficha.
+- **Entregue:** `docs/roadmap/fluxo-13c-controle-de-mudancas.md` (10 etapas, imagem no alto, coluna "Onde no sistema (legado)"); aba "19 · Fluxo: controle de mudanças (GQ)"; roteiro **1.15**; lista de fluxos marca controle de mudanças como feito.
+- **Achados citados:** a GQ aprova com área "não aceito" (`DV-GQ-004`) e sem parecer (`DV-GQ-003`); o Nível 1 e o 2 aprovam a liberação (`DV-GQ-339`); a solicitação não pode ser recusada (`DV-GQ-235`); o plano finaliza com ação pendente e não há Reprovar (`DV-GQ-005`, `258`); a aprovação do produto vai a Aceito sem lote nem justificativa (`DV-GQ-261`); anexo gravado na solicitação errada (`DV-GQ-271`); a mudança não liga com desvio nem documento.
+- **Diferenças entre código e tela:** a consulta do plano não cria plano vazio (`CT-GQ-039`); a conferência por Nível só existe na tela (envio sem botão passa).
+- **Não testado:** vencimento da mudança temporária (precisa do dia seguinte); acesso pelo endereço (excluído por decisão do responsável).
+- **A validar:** liberar com área "não aceito", eficácia, aprovação do plano, destino da temporária, lote exigido.
+- **Próxima ficha:** 13d, autoinspeção e auditoria.
+
 ## 2026-11-20 · Claude · Ficha 13b do passo 3: desvios e CAPA (Garantia da Qualidade)
 
 - **Pedido do responsável:** seguir, avisando só o que está sendo feito e onde verificar.

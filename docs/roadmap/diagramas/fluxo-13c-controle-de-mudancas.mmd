@@ -1,0 +1,24 @@
+flowchart TB
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  subgraph S["1 · Pedir e revisar"]
+    direction LR
+    A1["Solicitar a mudança<br/>itens, impacto, urgência,<br/>validade se temporária"]:::trava --> A2{"A Qualidade aceita<br/>a solicitação?"}:::trava
+    A2 -- não --> X1(["Não aceita, com motivo<br/>assinado"]):::bloqueio
+    A2 -- sim --> A3["Define as áreas<br/>que avaliam"]:::trava
+  end
+  subgraph V["2 · Avaliar antes de aprovar"]
+    direction LR
+    B1["Cada área avalia<br/>só quem é da área"]:::trava --> B2{"Todas as áreas avaliaram<br/>e nenhuma não aceitou?"}:::trava
+    B2 -- não --> X2(["A liberação não aparece<br/>e o banco recusa"]):::bloqueio
+    B2 -- sim --> B3["Qualidade libera<br/>com assinatura"]:::trava
+  end
+  subgraph P["3 · Implantar e provar"]
+    direction LR
+    C1["Plano aprovado,<br/>com ações e prazos"]:::trava --> C2["Execução por quem<br/>não aprova o plano"]:::trava --> C3{"Todas as ações concluídas<br/>e eficácia verificada?"}:::trava
+    C3 -- não --> X3(["Não finaliza"]):::bloqueio
+    C3 -- sim --> C4["Documentos e lote ligados<br/>à mudança"]:::trava --> C5(["Mudança aceita<br/>temporária vence sozinha"]):::fim
+  end
+  S --> V --> P
