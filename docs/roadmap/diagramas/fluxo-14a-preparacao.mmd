@@ -1,0 +1,22 @@
+flowchart TB
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  subgraph P["1 · Agendar os cuidados"]
+    direction LR
+    A1["Programa de cuidados<br/>limpeza, calibração, manutenção,<br/>análises, com frequência fixa"]:::trava --> A2["O sistema gera as datas<br/>e avisa o atraso"]:::trava
+  end
+  subgraph R["2 · Fazer e provar"]
+    direction LR
+    B1["Executar e registrar<br/>início, fim, o que foi usado"]:::passo --> B2["Resultado medido<br/>e comparado com o limite"]:::trava --> B3{"Outra pessoa revisa<br/>com senha?"}:::trava
+    B3 -- não --> X1(["Não vale"]):::bloqueio
+    B3 -- sim --> B4["Validade calculada<br/>pelo tipo do item"]:::trava
+  end
+  subgraph L["3 · Liberar para produzir"]
+    direction LR
+    C1{"Sala, ponto de água,<br/>equipamento e instrumento<br/>em dia e com resultado bom?"}:::trava
+    C1 -- sim --> C2(["Liberado para a ordem<br/>de produção"]):::fim
+    C1 -- não --> X2(["Bloqueado pelo banco<br/>exceção só com justificativa assinada"]):::bloqueio
+  end
+  P --> R --> L

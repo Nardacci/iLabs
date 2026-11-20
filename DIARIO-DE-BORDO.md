@@ -2,6 +2,16 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-20 · Claude · Ficha 14a do passo 3: preparação (Produção)
+
+- **Pedido do responsável:** seguir com a Produção, com a linguagem nova.
+- **Entregue:** `docs/roadmap/fluxo-14a-preparacao.md` (10 etapas, com a caixa "Em uma frase", imagem no alto e coluna "Onde no sistema (legado)"); aba "25 · Fluxo: preparação (Produção)"; roteiro **1.18**; lista de fluxos marca a preparação como feita. A Produção tem cinco fichas (14a a 14e); esta é a primeira.
+- **Achados citados (do código):** o resultado da análise de água e de ambiente não conta para liberar a sala ou o ponto (`RN015`); a calibração não tem campo de resultado (`RN007`); a validade é digitada; sem aviso de atraso; revisão sem senha; água e ambiente repetidos entre Produção e CQ.
+- **Testado na tela:** só a Programação e o Registro de Limpeza (funcionam, com falhas de máscara de data e sessão que não se reproduziram). Calibração, qualificação, manutenção, lubrificação, análises e liberação ficaram **não testadas**; vêm só do código.
+- **Normas conferidas no texto:** RDC 658/2022, arts. 105, 110, 148, 195 e 198.
+- **A validar:** frequências, limites que bloqueiam, o que fazer com o produzido após calibração reprovada, quem autoriza exceção.
+- **Próxima ficha:** 14b, produto, fórmula e ordem de produção.
+
 ## 2026-11-20 · Claude · Caixa "em uma frase" no topo das 19 fichas
 
 - **Pedido do responsável:** aprovou a ideia de explicar, no topo de cada ficha, para que serve o processo, em linguagem de quem não é da área.
