@@ -6,6 +6,14 @@
 
 *Coluna "Onde no sistema": o caminho no sistema atual (legado), no formato **Módulo › Menu › Tela**. Onde diz "tela nova", a tela não existe hoje e será criada.*
 
+> **Em uma frase:** Como o laboratório **guarda pequenas amostras de cada lote** durante anos, para poder analisar de novo se aparecer problema ou reclamação.
+>
+> **Exemplo do dia a dia (ilustrativo, os números são inventados):** De cada lote fabricado, o laboratório guarda 20 comprimidos por, digamos, 3 anos. Se um cliente reclamar, dá para conferir o que foi vendido.
+>
+> **Por que importa:** Sem amostra guardada (ou retirada antes da hora), não há como investigar uma reclamação.
+>
+> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+
 **Análise de 19/11/2026. Rascunho para validação do responsável.** Sétima ficha do passo 3. É o destino das **amostras que a Qualidade guarda de cada lote**: a de **referência** (para comparar), a de **retenção** (para investigar reclamação) e a de **estabilidade** (para acompanhar o produto ao longo do tempo). Esse saldo **não é estoque disponível** e nunca sai por pedido de produção ([ficha 6](fluxo-06-solicitacao-separacao-atendimento.md)).
 
 **Fontes (todas no repositório do legado):** o fluxo "Almoxarifado do Controle da Qualidade" (`3.estoque/fluxos/almoxarifado-cq.md`, lido do código) e os resultados dos testes de tela do Estoque (casos `CT-EST-170` a `178`; achados `DV-EST-047`, `068`, `071`, `074`, `075`, `124`, `125`). **O que não fiz:** não li as telas uma a uma. A **estabilidade** não pôde ser testada até o fim (o acompanhamento no CQ nunca abriu) e a **saída** só funcionou em parte; essas partes vêm **do código** e estão marcadas.

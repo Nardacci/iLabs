@@ -19,7 +19,7 @@ A ordem segue o que cada fluxo **exige** dos anteriores (o mesmo raciocínio do 
 | **10** | **Inventário** | Estoque | **Feito.** Conferência do saldo; depende de tudo acima |
 | **11** | **Água e ambiente · Estabilidade** | CQ | **Feito** (fichas 11a e 11b). Usam ambiente, ponto de água e equipamento |
 | **12** | **Ciclo do documento · Controle de cópias · Documento externo · Tipos e modelos** | Controle de Documentos | **Feito** (fichas 12a e 12b; tipos e modelos dentro do 12a). Base do controle de versão que a GQ usa |
-| 13 | Treinamento (**feito**, ficha 13a) · Desvios e CAPA (**feito**, ficha 13b) · Controle de mudanças (**feito**, ficha 13c) · Autoinspeção (**feito**, ficha 13d) · Assuntos regulatórios | GQ | Dependem do lote (desvio retém), do documento (mudança gera versão) e do treinamento |
+| 13 | Treinamento (**feito**, ficha 13a) · Desvios e CAPA (**feito**, ficha 13b) · Controle de mudanças (**feito**, ficha 13c) · Autoinspeção (**feito**, ficha 13d) · Assuntos regulatórios (**feito**, ficha 13e) | GQ | Dependem do lote (desvio retém), do documento (mudança gera versão) e do treinamento |
 | 14 | Preparação · Produto, fórmula e ordem · Autorização de início e final · Registro de lote · Terceirização e validade | Produção | Consomem o lote aprovado e geram produto acabado |
 | 15 | Cliente e cadastros · Cotação, requisição e reserva · Fatura, remessa e cancelamento | Comercial | Vendem o produto acabado |
 | 16 | Geração do IUM e agregação · Eventos e declaração à ANVISA | Rastreabilidade | Fecham a corrente do lote |

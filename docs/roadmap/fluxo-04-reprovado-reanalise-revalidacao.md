@@ -6,6 +6,14 @@
 
 *Coluna "Onde no sistema": o caminho no sistema atual (legado), no formato **Módulo › Menu › Tela**. Onde diz "tela nova", a tela não existe hoje e será criada.*
 
+> **Em uma frase:** O que fazer com o lote **depois do laudo**: se foi aprovado, ele vai para o estoque comum; se foi reprovado, é isolado; e antes de vencer, é **analisado de novo**.
+>
+> **Exemplo do dia a dia (ilustrativo, os números são inventados):** O lote foi reprovado: vai para uma prateleira de refugo e de lá só sai para devolução ao fornecedor ou destruição, com registro.
+>
+> **Por que importa:** Reprovado que 'escapa' para o estoque comum pode entrar num remédio vendido.
+>
+> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+
 **Análise de 19/11/2026. Rascunho para validação do responsável.** Quarta ficha do passo 3. Ela completa o ciclo do lote que as fichas [1](fluxo-01-recebimento-quarentena.md) e [3](fluxo-03-regras-analise-e-laudo.md) deixaram na saída do laudo: **para onde vai o lote aprovado, o que fazer com o reprovado, e como o lote é reanalisado ou revalidado** antes de a validade acabar.
 
 **Fontes (todas no repositório do legado):** o fluxo de Reprovado, reanálise e revalidação (`3.estoque/fluxos/reprovado-reanalise-revalidacao.md`), os resultados dos testes de tela do Estoque (casos `CT-EST-050` a `065` e `211`; achados `DV-EST-014`, `025`, `027`, `029`, `039`, `043`) e a análise de saldo por situação (visão de saldo do banco). **O que não fiz:** não li as telas uma a uma. Vários casos de reanálise ficaram **bloqueados** nos testes (explicado abaixo), então parte da leitura vem **só do código**, e está marcada.

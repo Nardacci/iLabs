@@ -6,6 +6,14 @@
 
 *Coluna "Onde no sistema": o caminho no sistema atual (legado), no formato **Módulo › Menu › Tela**. Onde diz "tela nova", a tela não existe hoje e será criada.*
 
+> **Em uma frase:** O laboratório tem **regras escritas de como analisar** cada material e, no fim, emite o **laudo**: aprovado ou reprovado.
+>
+> **Exemplo do dia a dia (ilustrativo, os números são inventados):** Para o açúcar, a regra diz: colher 10 gramas, medir a pureza e comparar com o limite. O resultado vira o laudo, assinado por quem tem autorização.
+>
+> **Por que importa:** Sem regra clara e sem assinatura, ninguém consegue provar depois por que um material foi liberado.
+>
+> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+
 **Análise de 19/11/2026. Rascunho para validação do responsável.** Terceira ficha do passo 3. Ela abre a caixa-preta das etapas 8 a 10 do [fluxo 1](fluxo-01-recebimento-quarentena.md) (amostragem, análise e laudo) e das **regras** que o laboratório precisa ter cadastradas antes.
 
 **Fontes (todas no repositório do legado):** os fluxos do Controle da Qualidade feitos pelo código (`4.controle_qualidade/fluxos/regras-amostragem-analise.md` e `solicitacao-analise-laudo.md`) e os defeitos confirmados nas telas (`DV-CQ-002` a `009`, `029` a `033`, `038`, `043`, `052`, `010`). **O que não fiz:** não li as telas uma a uma; o que está como "legado" vem desses documentos.

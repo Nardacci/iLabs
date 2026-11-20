@@ -6,6 +6,14 @@
 
 *Coluna "Onde no sistema": o caminho no sistema atual (legado), no formato **Módulo › Menu › Tela**. Onde diz "tela nova", a tela não existe hoje e será criada.*
 
+> **Em uma frase:** Quando chega um ingrediente de fora, ele **não pode ser usado de imediato**: fica parado (em quarentena) até o laboratório analisar e dizer que está bom.
+>
+> **Exemplo do dia a dia (ilustrativo, os números são inventados):** Chega um saco de açúcar do fornecedor. O estoque dá entrada, mas o saco fica 'de castigo' até o laudo do laboratório sair aprovado.
+>
+> **Por que importa:** Se alguém usar o ingrediente antes da análise, o remédio pode sair contaminado ou fora do padrão.
+>
+> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+
 **Análise de 19/11/2026. Rascunho para validação do responsável.** É o seu exemplo: "para receber uma matéria-prima, que vai para quarentena, quais informações precisamos ter?". Continua os passos 1 e 2 ([`cadastros-repetidos.md`](cadastros-repetidos.md), [`ordem-de-cadastro.md`](ordem-de-cadastro.md)).
 
 **Fontes (todas no repositório do legado):** os dois fluxos escritos pela equipe (Recebimento de materiais e Estoque quarentena), a conferência pelo código (`3.estoque/fluxos/recebimento-quarentena-conferencia.md`) e os resultados dos testes de tela (achados `DV-EST-001` a `DV-EST-009`). **O que não fiz:** não li as telas uma a uma; o que está como "legado" vem desses documentos.

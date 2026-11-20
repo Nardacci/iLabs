@@ -100,6 +100,26 @@ const PAGINAS = [
     titulo: '20 · Fluxo: autoinspeção e auditoria (GQ)',
     arquivo: 'fluxo-13d-autoinspecao-e-auditoria.md',
   },
+  {
+    id: 'fluxo13e',
+    titulo: '21 · Fluxo: assuntos regulatórios (GQ)',
+    arquivo: 'fluxo-13e-assuntos-regulatorios.md',
+  },
+  {
+    id: 'norma',
+    titulo: '22 · O que a norma diz',
+    arquivo: 'o-que-a-norma-diz.md',
+  },
+  {
+    id: 'gqmodulos',
+    titulo: '23 · A GQ e os outros módulos',
+    arquivo: 'garantia-da-qualidade-e-os-outros-modulos.md',
+  },
+  {
+    id: 'glossario',
+    titulo: '24 · Glossário',
+    arquivo: 'glossario.md',
+  },
   { id: 'fluxos', titulo: 'Todos os fluxos', arquivo: 'fluxos-do-legado.md' },
 ];
 

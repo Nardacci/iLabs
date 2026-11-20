@@ -6,6 +6,14 @@
 
 *Coluna "Onde no sistema": o caminho no sistema atual (legado), no formato **Módulo › Menu › Tela**. Os nomes de menu seguem as pastas de menu do inventário de telas do módulo. Onde diz "tela nova", a tela não existe hoje e será criada.*
 
+> **Em uma frase:** Três casos ao redor dos documentos: a **cópia em papel**, o documento **que vem de fora** (norma, certificado) e o documento **anterior ao sistema**.
+>
+> **Exemplo do dia a dia (ilustrativo, os números são inventados):** Uma cópia impressa do POP vai para o setor de embalagem. Quando o POP muda, é preciso recolher essa cópia antiga.
+>
+> **Por que importa:** Cópia antiga solta no setor é o jeito mais comum de alguém trabalhar com a regra errada.
+>
+> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+
 **Análise de 19/11/2026. Rascunho para validação do responsável.** Segunda parte da ficha 12 do passo 3 (a outra é o [ciclo do documento](fluxo-12a-ciclo-do-documento.md)). Reúne **três caminhos que saem do ciclo**: a **cópia em papel** do documento vigente, o **documento externo** (norma, bula de fornecedor) e o **documento legado** (anterior ao sistema). Os três precisam da **mesma trava**: o que está em uso é o que está **vigente e dentro da validade**.
 
 **Fontes (todas no repositório do legado):** os fluxos "Controle de cópias" e "Documento externo e legado" (`6.controle_documento/fluxos/controle-copias.md` e `externo-legado.md`, lidos do código) e os resultados dos testes de tela (rodadas de 23/10 e 03/11/2026; casos `CT-DOC-020` a `037`; achados `DV-DOC-009`, `010`, `011`, `012`, `015`, `016`, `017`, `018`, `019`, `024`). **O que não fiz:** não li as telas uma a uma. A **marca d'água** não pôde ser verificada (a impressão da cópia devolveu arquivo vazio) e **o acesso pelo endereço** não foi testado (decisão do responsável).

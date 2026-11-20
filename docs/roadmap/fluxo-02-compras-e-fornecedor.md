@@ -6,6 +6,14 @@
 
 *Coluna "Onde no sistema": o caminho no sistema atual (legado), no formato **Módulo › Menu › Tela**. Onde diz "tela nova", a tela não existe hoje e será criada.*
 
+> **Em uma frase:** Antes de comprar um ingrediente, a empresa precisa **ter avaliado e aprovado o fornecedor**, e só então comprar dele.
+>
+> **Exemplo do dia a dia (ilustrativo, os números são inventados):** Para comprar um princípio ativo, o fornecedor passa antes por uma avaliação (documentos, auditoria). Sem aprovação, o sistema não deve aceitar o recebimento.
+>
+> **Por que importa:** Comprar de fornecedor não aprovado é um risco de qualidade e uma falha de BPF (as regras de fabricação).
+>
+> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+
 **Análise de 19/11/2026. Rascunho para validação do responsável.** Segunda ficha do passo 3. Ela detalha o que o [fluxo 1](fluxo-01-recebimento-quarentena.md) exige antes do primeiro recebimento: **o fornecedor qualificado para o material**.
 
 **Fontes (todas no repositório do legado):** o fluxo de Compras e avaliação do fornecedor (`3.estoque/fluxos/compras-fornecedor.md`), os resultados dos testes de tela do Estoque (casos `CT-EST-160` a `168`, achados `DV-EST-021` a `023`), a conformidade e o inventário da Garantia da Qualidade, e o modelo ideal (trava 5, "só fornecedor qualificado no recebimento"). **O que não fiz:** não li as telas uma a uma.

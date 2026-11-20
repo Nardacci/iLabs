@@ -6,6 +6,14 @@
 
 *Coluna "Onde no sistema": o caminho no sistema atual (legado), no formato **Módulo › Menu › Tela**. Onde diz "tela nova", a tela não existe hoje e será criada.*
 
+> **Em uma frase:** Acompanhar o remédio **ao longo do tempo** (meses e anos) para provar que continua bom até a data de validade.
+>
+> **Exemplo do dia a dia (ilustrativo, os números são inventados):** Um lote é guardado em câmara com temperatura controlada e analisado aos 3, 6, 12 e 24 meses. Se algum resultado piorar, a empresa investiga.
+>
+> **Por que importa:** Sem esse acompanhamento, a validade impressa na caixa não teria prova.
+>
+> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+
 **Análise de 19/11/2026. Rascunho para validação do responsável.** Segunda parte da ficha 11 do passo 3 (a outra é a [água e ambiente](fluxo-11a-agua-e-ambiente.md)). A estabilidade **acompanha o produto acabado ao longo do tempo** para provar que ele mantém a qualidade até a validade. Começa no Estoque ([ficha 7](fluxo-07-almoxarifado-cq.md), que guarda a amostra) e cada tempo do estudo vira uma análise do CQ ([ficha 3](fluxo-03-regras-analise-e-laudo.md)).
 
 **Fontes (todas no repositório do legado):** o fluxo "Estabilidade" (`4.controle_qualidade/fluxos/estabilidade.md`, lido do código) e os resultados dos testes de tela do CQ (rodadas de 23/10 e 28/10/2026; casos `CT-CQ-040` a `052`; achados `DV-CQ-015`, `016`, `017`, `022`, `041`, `042`; `DV-EST-071`, `074`, `075`). **O que não fiz:** não li as telas uma a uma. **Nenhum acompanhamento de estabilidade chegou a abrir** no teste (o Estoque não cria a entrada de estabilidade: `DV-EST-074`), então a **execução dos tempos, a interrupção e a finalização** vêm **só do código** e estão marcadas. Só a **Regra de Estabilidade** foi testada na tela.

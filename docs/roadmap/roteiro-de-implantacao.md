@@ -1,6 +1,6 @@
 # Roteiro de implantação do sistema
 
-**Versão 1.16, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
+**Versão 1.17, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
 
 **Para que serve:** responder, para qualquer cliente que vá implantar o iLabs, **"o que fazer, em que ordem, quem faz e quando está pronto"**. A ordem vem das dependências entre cadastros ([passo 2](ordem-de-cadastro.md)) e das informações que cada fluxo exige ([passo 3](fluxo-01-recebimento-quarentena.md)): **não se cadastra o Item sem antes ter o que o Item usa; não se recebe material sem fornecedor qualificado, local de quarentena e regra de análise.**
 
@@ -147,6 +147,13 @@ Sem qualquer um destes, o fluxo trava em alguma etapa.
 3. **Listas de apoio** (etapa 7): tipo de qualificação, tipo de auditoria (com fornecedor) e **item da norma**; e o **primeiro roteiro**.
 4. **No ensaio ponta a ponta (etapa 9):** acrescentar **uma autoinspeção até a avaliação**, **uma tentativa de o inspetor ser da área auditada** (recusada) e **um resultado "não conforme" que abre desvio**.
 
+### Detalhe das etapas 1, 6, 7 e 9: assuntos regulatórios (Garantia da Qualidade)
+(Vem da ficha [13e](fluxo-13e-assuntos-regulatorios.md).)
+1. **Funções regulatórias separadas** (etapa 1): programar, monitorar, enviar à ANVISA e registrar a decisão.
+2. **Registro de cada produto na ANVISA** (etapa 6): número, validade e revalidação, **antes** da primeira ordem de produção.
+3. **Processos regulatórios e tipos de registro** (etapa 7).
+4. **No ensaio ponta a ponta (etapa 9):** acrescentar **uma obrigação que vence** (gera aviso), **um envio com documento pendente** (recusado) e **uma ordem de produção de produto com registro indeferido** (bloqueada).
+
 ## 3. Quem decide o quê
 | Decisão | Quem |
 |---|---|
@@ -181,7 +188,7 @@ O roteiro cresce conforme analisamos os fluxos (ordem em [Todos os fluxos](fluxo
 - **Remessa e expedição**: **feito** (ficha 9); detalha as etapas 1, 3, 5 e 9.
 - **Inventário**: **feito** (ficha 10); detalha as etapas 1, 6 e 9.
 - **Com isso, os dez fluxos do Estoque estão feitos**, e também **água e ambiente e estabilidade** (fichas 11a e 11b, Controle da Qualidade) e **os documentos controlados** (fichas 12a e 12b, Controle de Documentos).
-- **Garantia da Qualidade**: **treinamento** (13a), **desvios e CAPA** (13b), **controle de mudanças** (13c) e **autoinspeção e auditoria** (13d) feitos; falta assuntos regulatórios.
+- **Garantia da Qualidade completa**: **treinamento** (13a), **desvios e CAPA** (13b), **controle de mudanças** (13c), **autoinspeção e auditoria** (13d) e **assuntos regulatórios** (13e).
 - **Produção, Comercial, Rastreabilidade e OPE** acrescentam as etapas das outras áreas.
 
 Cada ficha atualiza este roteiro: a etapa correspondente ganha o detalhe e a ordem é revista se uma dependência nova aparecer.

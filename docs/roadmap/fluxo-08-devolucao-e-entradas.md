@@ -6,6 +6,14 @@
 
 *Coluna "Onde no sistema": o caminho no sistema atual (legado), no formato **Módulo › Menu › Tela**. Onde diz "tela nova", a tela não existe hoje e será criada.*
 
+> **Em uma frase:** As **outras formas de entrada** de material no estoque, além da compra: o remédio pronto que sai da fábrica, a sobra que volta da produção e o material devolvido.
+>
+> **Exemplo do dia a dia (ilustrativo, os números são inventados):** A produção termina um lote de remédio e entrega ao estoque. O sistema só aceita se o lote veio de uma ordem de produção real e dentro da validade.
+>
+> **Por que importa:** Se entrar lote inventado ou vencido, a rastreabilidade (saber de onde veio) se perde.
+>
+> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+
 **Análise de 19/11/2026. Rascunho para validação do responsável.** Oitava ficha do passo 3. A [ficha 1](fluxo-01-recebimento-quarentena.md) cobriu a entrada por **compra**. Esta cobre **as outras portas**: o **produto acabado** que sai da fabricação, a **sobra** que volta da produção, o **material devolvido** e a **entrada avulsa**. Todas criam ou aumentam um lote, então todas precisam da **mesma trava**: lote rastreável, validade boa e quarentena até o laudo.
 
 **Fontes (todas no repositório do legado):** o fluxo "Devolução e entradas" (`3.estoque/fluxos/devolucao-entrada-producao.md`, lido do código) e os resultados dos testes de tela do Estoque (casos `CT-EST-090` a `102`; achados `DV-EST-024`, `025`, `026`, `034`, `063`, `064`, `076`, `104`, `126`, `168`). **O que não fiz:** não li as telas uma a uma. A **Devolução da Produção** e a **Entrada de Produção (serviços)** não puderam ser testadas, porque dependem da **ordem de produção**, que não nasceu; essas partes vêm **só do código** e estão marcadas.

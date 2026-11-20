@@ -6,6 +6,14 @@
 
 *Coluna "Onde no sistema": o caminho no sistema atual (legado), no formato **Módulo › Menu › Tela**. Onde diz "tela nova", a tela não existe hoje e será criada.*
 
+> **Em uma frase:** Como a produção (ou outro setor) **pede um material** ao estoque, o estoque **separa** o lote certo e **entrega**, com baixa no saldo.
+>
+> **Exemplo do dia a dia (ilustrativo, os números são inventados):** A produção pede 20 kg de açúcar. O estoque escolhe o lote que vence primeiro, pesa, entrega e o saldo diminui 20 kg.
+>
+> **Por que importa:** Entregar o lote errado ou fora da validade é um erro que pode contaminar a fabricação.
+>
+> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+
 **Análise de 19/11/2026. Rascunho para validação do responsável.** Sexta ficha do passo 3. É o **primeiro consumo do lote aprovado**: quem precisa de material pede ao Estoque, o Estoque escolhe o lote, pesa quando é preciso e entrega. Depois dela, o saldo do lote muda por **pedido**, e não só por movimentação interna ([ficha 5](fluxo-05-movimentacao-interna.md)).
 
 **Fontes (todas no repositório do legado):** o fluxo "Solicitação, separação e atendimento" (`3.estoque/fluxos/solicitacao-atendimento-producao.md`, lido do código) e os resultados dos testes de tela do Estoque (casos `CT-EST-070` a `083`; achados `DV-EST-032`, `045`, `048`, `061`, `060`, `063`, `067`, `069`, `070`, `073`, `164`, `165`). **O que não fiz:** não li as telas uma a uma. A **solicitação do tipo Produção** não pôde ser testada (a ordem de produção não nasceu), e a **pesagem** não abriu no teste; essas partes vêm **só do código** e estão marcadas.

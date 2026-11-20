@@ -6,6 +6,14 @@
 
 *Coluna "Onde no sistema": o caminho no sistema atual (legado), no formato **Módulo › Menu › Tela**. Onde diz "tela nova", a tela não existe hoje e será criada.*
 
+> **Em uma frase:** A empresa **testa regularmente a água e o ar das salas** onde se fabrica, porque sujeira ali contamina o remédio.
+>
+> **Exemplo do dia a dia (ilustrativo, os números são inventados):** Toda semana, uma amostra da água usada na fábrica vai ao laboratório. Se vier fora do limite, abre-se uma investigação.
+>
+> **Por que importa:** Água ou sala fora do padrão, se for usada mesmo assim, pode contaminar um lote inteiro.
+>
+> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+
 **Análise de 19/11/2026. Rascunho para validação do responsável.** Primeira parte da ficha 11 do passo 3 (a outra é a [estabilidade](fluxo-11b-estabilidade.md)), e a **primeira do Controle da Qualidade fora do material**. O CQ monitora a **água** (potável, purificada, para injetáveis) e as **salas** (ambiente). O ciclo é o mesmo da [ficha 3](fluxo-03-regras-analise-e-laudo.md) (solicitação, amostragem, análise, laudo, etiqueta); aqui estão **só as diferenças** e a ligação com a **Produção**, que usa os pontos e as salas.
 
 **Fontes (todas no repositório do legado):** o fluxo "Água e ambiente" (`4.controle_qualidade/fluxos/agua-ambiente.md`, lido do código) e os resultados dos testes de tela do CQ (rodadas de 23/10/2026 e de reteste de 03/11/2026; casos `CT-CQ-060` a `068`; achados `DV-CQ-001`, `008`, `009`, `018`, `019`, `020`, `022`, `023`, `025`, `060`). **O que não fiz:** não li as telas uma a uma. O **laudo de água**, a **etiqueta** e a **autorização do ponto de água na Produção** não puderam ser testados: o **resultado não grava** (`DV-CQ-009`), então nenhum laudo de água chegou a existir. A parte da Produção vem **só do código**.

@@ -6,6 +6,14 @@
 
 *Coluna "Onde no sistema": o caminho no sistema atual (legado), no formato **Módulo › Menu › Tela**. Os nomes de menu seguem as pastas de menu do inventário de telas do módulo (Documento, Cópias, Externo e Legado, Tabelas de Apoio). Onde diz "tela nova", a tela não existe hoje e será criada.*
 
+> **Em uma frase:** Todo procedimento escrito (POP) passa por **revisão, aprovação e entrada em vigor**, e só a versão em vigor pode ser usada.
+>
+> **Exemplo do dia a dia (ilustrativo, os números são inventados):** Alguém escreve o procedimento de limpeza; outros revisam; um aprova; só então ele vale. Quando sai uma versão nova, a antiga deixa de valer.
+>
+> **Por que importa:** Usar um procedimento antigo ou não aprovado é uma falha grave de BPF.
+>
+> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+
 **Análise de 19/11/2026. Rascunho para validação do responsável.** Primeira parte da ficha 12 do passo 3 (a outra é [cópias, documento externo e legado](fluxo-12b-copias-externo-legado.md)), e a **primeira do módulo Controle de Documentos**. É o fluxo que **garante que só a versão aprovada e vigente de um procedimento esteja em uso**. Outros módulos (Garantia da Qualidade, treinamento) só aceitam documento **vigente**.
 
 **Fontes (todas no repositório do legado):** o fluxo "Ciclo do documento" e o de "Tipo de documento, arquivos e modelos" (`6.controle_documento/fluxos/ciclo-documento.md` e `tipo-arquivos-modelos.md`, lidos do código) e os resultados dos testes de tela (rodadas de 23/10 e 03/11/2026; casos `CT-DOC-001` a `017`; achados `DV-DOC-001`, `002`, `004`, `005`, `007`, `008`, `023`, `024`). **O que não fiz:** não li as telas uma a uma. Nenhum teste abriu telas **digitando o endereço** (decisão do responsável), então a **conferência no servidor** de quem decide ficou **a confirmar**. As telas de **Arquivos e Modelos** (ciclo básico), que ficam **fora do menu**, vêm **só do código**.

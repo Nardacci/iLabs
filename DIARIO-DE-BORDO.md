@@ -2,6 +2,44 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-20 · Claude · Caixa "em uma frase" no topo das 19 fichas
+
+- **Pedido do responsável:** aprovou a ideia de explicar, no topo de cada ficha, para que serve o processo, em linguagem de quem não é da área.
+- **Entregue:** nas 19 fichas de fluxo (1 a 13e), antes da análise, uma caixa com **Em uma frase**, **Exemplo do dia a dia** (marcado como ilustrativo, números inventados) e **Por que importa**, mais a indicação da aba "24 · Glossário". As tabelas não foram alteradas.
+- **Limite:** os exemplos são didáticos e não vêm do sistema legado; a Qualidade deve confirmar se refletem a prática da empresa.
+
+## 2026-11-20 · Claude · Glossário e regra de linguagem
+
+- **Pedido do responsável:** lembrou que é analista de negócios, não é da área farmacêutica; o estudo precisa de linguagem que ele entenda.
+- **Entregue:** `docs/roadmap/glossario.md`: siglas e normas, módulos, material e lote, desvios e mudanças, documentos e provas, palavras do próprio sistema, cada uma com exemplo. Aba "24 · Glossário".
+- **Regra para as próximas fichas:** a primeira vez que uma palavra do meio farmacêutico aparecer, vem **explicada entre parênteses** ou com **exemplo do dia a dia**; siglas por extenso na primeira vez; frases curtas.
+- **Pendente (a combinar):** revisar as fichas já publicadas (1 a 13e) acrescentando, no topo de cada uma, "**em uma frase, para que serve esse processo**" e um **exemplo do cotidiano**.
+
+## 2026-11-20 · Claude · A Garantia da Qualidade e os outros módulos
+
+- **Observação do responsável:** o menu Treinamento fica na GQ, mas quem aprova é a Produção ou o CQ; ainda não ficou clara a importância, a usabilidade e a interconexão da GQ.
+- **Entregue:** `docs/roadmap/garantia-da-qualidade-e-os-outros-modulos.md`: a ideia central (a GQ cuida do sistema que faz o resto confiável), quem decide o quê no treinamento (art. 42), o que cada módulo entrega e recebe, as seis ligações que o legado não tinha e seis perguntas para a área. Aba "23 · A GQ e os outros módulos".
+- **Leitura:** o treinamento é um serviço comum (cadastro na GQ, aprovação pelo responsável da área, consulta pelos outros módulos).
+- **Próximo passo sugerido:** estudar Produção e CQ, que consomem treinamento e documento vigente e abrem os desvios.
+
+## 2026-11-20 · Claude · O que a norma diz sobre as perguntas em aberto das fichas
+
+- **Pedido do responsável:** "são perguntas interessantes, que precisamos descobrir: o que as normas da ANVISA e BPF dizem?"
+- **Entregue:** `docs/roadmap/o-que-a-norma-diz.md`, com o texto da RDC 658/2022 (Diário Oficial) e do Guia 33/2020, por tema (treinamento, desvios e CAPA, mudanças, autoinspeção, documentos, amostras e estabilidade, água, registro do produto, estoque, assinatura e trilha). Cada pergunta traz o artigo e uma classificação: **manda**, **não define** (a empresa decide) ou **fora do alcance** (depende de norma que não está no repositório). Aba "22 · O que a norma diz" na página do estudo.
+- **Fechado pela norma:** treinamento obrigatório para executar (arts. 14 e 41), programa aprovado pelo Responsável da Produção ou do CQ (art. 42), causa raiz e erro humano justificado (arts. 339 e 340), eficácia da CAPA e da mudança (art. 341 e art. 8º, XIII), avaliação prévia da mudança (art. 8º, XII), lote liberado só com a Pessoa Delegada e conforme o registro (arts. 8º, XV e 14, VII), autoinspeção independente (art. 363).
+- **A empresa decide:** nota mínima, prazo da eficácia, o que é independente, frequências, FEFO, segregação de funções.
+- **Falta o documento:** instrução normativa das amostras de retenção e de referência, Farmacopeia (água), norma de registro, regulamento de estabilidade.
+- **Limite:** busca por tema, não leitura dos 370 artigos.
+
+## 2026-11-20 · Claude · Ficha 13e do passo 3: assuntos regulatórios (fecha a Garantia da Qualidade)
+
+- **Pedido do responsável:** seguir com a próxima ficha.
+- **Entregue:** `docs/roadmap/fluxo-13e-assuntos-regulatorios.md` (9 etapas, imagem no alto, coluna "Onde no sistema (legado)"); aba "21 · Fluxo: assuntos regulatórios (GQ)"; roteiro **1.17**; lista de fluxos marca assuntos regulatórios como feito. **Os cinco fluxos da Garantia da Qualidade estão feitos.**
+- **Achados citados:** as datas fora de ordem são aceitas (`DV-GQ-203`); nenhum aviso de prazo ou validade (`DV-GQ-204`); o produto e o documento são texto livre; o monitoramento finaliza sem anexo (`DV-GQ-212`, `213`); as quatro telas do registro de produto não têm entrada no menu (`DV-GQ-015`, `348`); o registro do produto não chega à produção nem à venda (pelo código).
+- **Não testado:** toda a metade do registro de produto (check-list, solicitação, controle de produtos, exigências), por falta de entrada no menu.
+- **A validar:** uma lista ou duas, bloqueio do produto sem registro regular, antecedência do aviso, check-list para enviar, prazo da exigência.
+- **Próxima etapa:** fluxos da **Produção** (item 14 de `fluxos-do-legado.md`).
+
 ## 2026-11-20 · Claude · Ficha 13d do passo 3: autoinspeção e auditoria (Garantia da Qualidade)
 
 - **Pedido do responsável:** seguir com a próxima ficha.
