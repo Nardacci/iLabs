@@ -2,6 +2,16 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-20 · Claude · Ficha 14d do passo 3: registro de lote (Produção)
+
+- **Pedido do responsável:** seguir com a Produção.
+- **Entregue:** `docs/roadmap/fluxo-14d-registro-de-lote.md` (12 etapas, caixa "Em uma frase", imagem no alto, coluna "Onde no sistema (legado)"); aba "28 · Fluxo: registro de lote (Produção)"; roteiro **1.21**; lista de fluxos marca o registro de lote como feito.
+- **Achados citados (do código, nada testado na tela):** o modelo do caderno não tem limite de especificação (só se um programador o escreve na classe do produto); o nome "Glibenclamida" está no código geral; o controle em processo confere se foi preenchido, não se está no limite; a análise do CQ reprovada pode ser liberada com senha e justificativa, sem desvio; datas passadas são aceitas; a alteração de campo salvo não pede motivo e corta o valor em 255 caracteres; o rascunho grava campo inválido; duas pesagens que não conversam (a da Produção é isolada e sem senha).
+- **Testado na tela:** nada (Registro da Produção bloqueado por `DV-PRO-010`; Log OPE, pesagem, horas e solicitação avulsa não testados).
+- **Normas conferidas no texto:** RDC 658/2022, arts. 124, 125, 137, 192, 193 e 198.
+- **A validar:** onde ficam os limites, assinatura, análise reprovada, correção de campo, rascunho, pesagem, nome de produto no código.
+- **Próxima ficha:** 14e, terceirização e validade da OPE (última da Produção).
+
 ## 2026-11-20 · Claude · Ficha 14c do passo 3: do pedido de produção à liberação do lote (Produção)
 
 - **Pedido do responsável:** seguir com a Produção.

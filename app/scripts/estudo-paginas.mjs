@@ -135,6 +135,11 @@ const PAGINAS = [
     titulo: '27 · Fluxo: autorização, início e final (Produção)',
     arquivo: 'fluxo-14c-autorizacao-inicio-final.md',
   },
+  {
+    id: 'fluxo14d',
+    titulo: '28 · Fluxo: registro de lote (Produção)',
+    arquivo: 'fluxo-14d-registro-de-lote.md',
+  },
   { id: 'fluxos', titulo: 'Todos os fluxos', arquivo: 'fluxos-do-legado.md' },
 ];
 
