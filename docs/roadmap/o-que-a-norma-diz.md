@@ -89,7 +89,7 @@
 | **Lote que vence primeiro** é obrigatório? | Art. 159: armazenar de modo a tornar possível a **segregação dos lotes e a rotação do estoque**. Art. 189: **só** matérias-primas **liberadas pelo CQ e dentro da data de reteste** podem ser usadas. | *Não existe* "primeiro que vence, primeiro que sai" escrito. *Manda* **rotação** e **proíbe** usar material fora do prazo ou não liberado. A obrigatoriedade do critério é decisão da empresa. |
 | **Quarentena** | Art. 157: materiais recebidos e produtos acabados **em quarentena imediatamente** (física ou administrativa) até a liberação. | *Manda*. |
 | **Etiqueta** do lote | Arts. 185 e 186: nome, **número de lote**, **situação** (quarentena, análise, aprovado, reprovado), **validade ou reteste**. | *Manda*. |
-| **Data de reteste** | Art. 189 e art. 1º, XV (definições): após a data de reteste, o material deve ser **reanalisado**. | *Manda*. Prazo do reteste: do fabricante, **baseado em estabilidade**. |
+| **Data de reteste** | Art. 189 e art. 3º, XV (definição de data de reteste): após a data de reteste, o material deve ser **reanalisado**. | *Manda*. Prazo do reteste: do fabricante, **baseado em estabilidade**. |
 | **Fornecedor aprovado** no recebimento | Art. 8º, VI e art. 179, §2º. | *Manda*. |
 | **Rastro** da movimentação | Art. 124: registros feitos **quando a ação é realizada**, de modo a ser **rastreável**. Art. 125. | *Manda*. |
 
