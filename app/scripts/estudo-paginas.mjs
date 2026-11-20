@@ -85,6 +85,11 @@ const PAGINAS = [
     titulo: '17 · Fluxo: treinamento (GQ)',
     arquivo: 'fluxo-13a-treinamento.md',
   },
+  {
+    id: 'fluxo13b',
+    titulo: '18 · Fluxo: desvios e CAPA (GQ)',
+    arquivo: 'fluxo-13b-desvios-e-capa.md',
+  },
   { id: 'fluxos', titulo: 'Todos os fluxos', arquivo: 'fluxos-do-legado.md' },
 ];
 

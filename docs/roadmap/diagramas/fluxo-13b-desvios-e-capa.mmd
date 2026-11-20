@@ -1,0 +1,24 @@
+flowchart TB
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  subgraph R["1 · Registrar e conter"]
+    direction LR
+    A1["Registrar o desvio<br/>com lote, produto ou equipamento<br/>data do servidor"]:::trava --> A2["Ação imediata<br/>de contenção"]:::passo --> A3{"O lote está ligado<br/>ao desvio?"}:::trava
+    A3 -- sim --> A4["O banco retém o lote<br/>no Estoque, no CQ e na Produção"]:::trava
+    A3 -- não --> X1(["Registro recusado"]):::bloqueio
+  end
+  subgraph A["2 · Avaliar"]
+    direction LR
+    B1["Pré-avaliação:<br/>método de detecção,<br/>risco e áreas"]:::trava --> B2["Cada área avalia,<br/>só quem é da área"]:::trava --> B3{"Abrir CAPA?"}:::trava
+    B3 -- não --> B4(["Finalizado, com motivo<br/>assinado"]):::fim
+    B3 -- sim --> B5["Relatório de CAPA:<br/>causa raiz e criticidade"]:::trava
+  end
+  subgraph P["3 · Corrigir, prevenir e provar"]
+    direction LR
+    C1["Plano aprovado antes<br/>de executar"]:::trava --> C2["Execução por quem não<br/>escreveu nem aprova o plano"]:::trava --> C3{"Todas as ações concluídas<br/>e eficácia verificada?"}:::trava
+    C3 -- não --> X2(["Reprovado volta ao plano,<br/>não encerra"]):::bloqueio
+    C3 -- sim --> C4(["Desvio concluído<br/>e lote liberado pela Qualidade"]):::fim
+  end
+  R --> A --> P

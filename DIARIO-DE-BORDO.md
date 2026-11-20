@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-20 · Claude · Ficha 13b do passo 3: desvios e CAPA (Garantia da Qualidade)
+
+- **Pedido do responsável:** seguir, avisando só o que está sendo feito e onde verificar.
+- **Entregue:** `docs/roadmap/fluxo-13b-desvios-e-capa.md` (11 etapas, imagem no alto, coluna "Onde no sistema (legado)"); aba "18 · Fluxo: desvios e CAPA (GQ)"; roteiro **1.14**; lista de fluxos marca desvios e CAPA como feito.
+- **Achados citados:** o plano corretivo reprovado nunca é alcançado (`DV-GQ-016`); o preventivo finaliza como "não implementado" (`DV-GQ-012`); o monitoramento aprova com ação pendente (`DV-GQ-002`, `021`); a mesma pessoa escreve, executa e aprova (`DV-GQ-023`); o cancelamento pela tela do relatório não deixa histórico (`DV-GQ-001`); o desvio não alcança o lote (pelo código; `CT-GQ-014` bloqueado por `DV-GQ-010`); o Acompanhamento RD abre sem login (`CT-GQ-026`).
+- **Não confirmado:** a data do relato (o teste de 12/10 e os de 21 e 22/10 divergem: reconfirmar); o efeito do desvio sobre o lote.
+- **A validar:** retenção do lote, classificação de risco, quem aprova o plano, prazo e dono da verificação de eficácia, abrangência a outros lotes.
+- **Próxima ficha:** 13c, controle de mudanças.
+
 ## 2026-11-20 · Claude · Ficha 13a do passo 3: treinamento (Garantia da Qualidade)
 
 - **Pedido do responsável:** seguir com a próxima ficha. A ficha 13 da Garantia da Qualidade tem cinco fluxos e foi dividida em 13a treinamento, 13b desvios e CAPA, 13c mudanças, 13d autoinspeção, 13e assuntos regulatórios; uma por rodada.
