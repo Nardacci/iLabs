@@ -1,0 +1,24 @@
+flowchart TB
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  subgraph P["1 · Planejar"]
+    direction LR
+    A1["Roteiros de perguntas<br/>com qualificação e item da norma"]:::trava --> A2["Programa anual<br/>tipo, frequência e roteiros,<br/>inclusive auditoria de fornecedor"]:::trava --> A3{"O auditor é independente<br/>da área auditada?"}:::trava
+    A3 -- não --> X1(["Recusado, com o motivo"]):::bloqueio
+    A3 -- sim --> A4(["Programação aprovada"]):::passo
+  end
+  subgraph R["2 · Executar e registrar"]
+    direction LR
+    B1["Cada auditor responde<br/>os roteiros do departamento"]:::trava --> B2{"A área auditada<br/>pode alterar a resposta?"}:::trava
+    B2 -- sim --> X2(["Banco recusa"]):::bloqueio
+    B2 -- não --> B3["Só avança com todos<br/>os roteiros concluídos"]:::trava
+  end
+  subgraph A["3 · Concluir e tratar"]
+    direction LR
+    C1["Avaliação: período real,<br/>evidências, conclusões<br/>e resultado obrigatório"]:::trava --> C2{"Resultado não conforme?"}:::trava
+    C2 -- sim --> C3["Abre desvio e CAPA<br/>ligados à auditoria"]:::trava --> C4(["Finalizada e assinada"]):::fim
+    C2 -- não --> C4
+  end
+  P --> R --> A
