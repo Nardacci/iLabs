@@ -80,6 +80,11 @@ const PAGINAS = [
     titulo: '16 · Fluxo: cópias, externo e legado',
     arquivo: 'fluxo-12b-copias-externo-legado.md',
   },
+  {
+    id: 'fluxo13a',
+    titulo: '17 · Fluxo: treinamento (GQ)',
+    arquivo: 'fluxo-13a-treinamento.md',
+  },
   { id: 'fluxos', titulo: 'Todos os fluxos', arquivo: 'fluxos-do-legado.md' },
 ];
 

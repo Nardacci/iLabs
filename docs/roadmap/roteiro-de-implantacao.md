@@ -1,6 +1,6 @@
 # Roteiro de implantação do sistema
 
-**Versão 1.12, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
+**Versão 1.13, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
 
 **Para que serve:** responder, para qualquer cliente que vá implantar o iLabs, **"o que fazer, em que ordem, quem faz e quando está pronto"**. A ordem vem das dependências entre cadastros ([passo 2](ordem-de-cadastro.md)) e das informações que cada fluxo exige ([passo 3](fluxo-01-recebimento-quarentena.md)): **não se cadastra o Item sem antes ter o que o Item usa; não se recebe material sem fornecedor qualificado, local de quarentena e regra de análise.**
 
@@ -119,6 +119,13 @@ Sem qualquer um destes, o fluxo trava em alguma etapa.
 4. **Carga dos documentos anteriores ao sistema** (documento legado) com o original assinado anexado, feita uma só vez, antes dos documentos novos do mesmo tipo.
 5. **No ensaio ponta a ponta (etapa 9):** acrescentar **um documento até a vigência**, **uma tentativa de a mesma pessoa pré-aprovar e aprovar** (recusada), **uma nova revisão até a substituição** e **uma cópia controlada até o recolhimento**.
 
+### Detalhe das etapas 1, 7 e 9: treinar e habilitar (treinamento, Garantia da Qualidade)
+(Vem da ficha [13a](fluxo-13a-treinamento.md).)
+1. **Funções que exigem treinamento e a função de instrutor** (etapa 1).
+2. **Cadastro de treinamento de cada POP vigente**, com validade, funções, setores e **nota mínima** (etapa 7).
+3. **Tipo e motivo de treinamento** (listas de apoio) e a **instituição externa** (pessoa jurídica) antes do primeiro treinamento externo.
+4. **No ensaio ponta a ponta (etapa 9):** acrescentar **uma turma com um ausente** (não recebe validade), **um treinamento vencido** (bloqueia a tarefa) e **um documento novo que exige treinamento** (só entra em vigor com a turma suficiente).
+
 ## 3. Quem decide o quê
 | Decisão | Quem |
 |---|---|
@@ -153,6 +160,7 @@ O roteiro cresce conforme analisamos os fluxos (ordem em [Todos os fluxos](fluxo
 - **Remessa e expedição**: **feito** (ficha 9); detalha as etapas 1, 3, 5 e 9.
 - **Inventário**: **feito** (ficha 10); detalha as etapas 1, 6 e 9.
 - **Com isso, os dez fluxos do Estoque estão feitos**, e também **água e ambiente e estabilidade** (fichas 11a e 11b, Controle da Qualidade) e **os documentos controlados** (fichas 12a e 12b, Controle de Documentos).
-- **Documentos, Garantia da Qualidade, Produção, Comercial, Rastreabilidade e OPE** acrescentam as etapas das outras áreas.
+- **Garantia da Qualidade**: **treinamento feito** (ficha 13a); faltam desvios e CAPA, mudanças, autoinspeção e assuntos regulatórios.
+- **Produção, Comercial, Rastreabilidade e OPE** acrescentam as etapas das outras áreas.
 
 Cada ficha atualiza este roteiro: a etapa correspondente ganha o detalhe e a ordem é revista se uma dependência nova aparecer.
