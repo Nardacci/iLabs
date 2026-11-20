@@ -1,6 +1,6 @@
 # Roteiro de implantação do sistema
 
-**Versão 1.14, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
+**Versão 1.15, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
 
 **Para que serve:** responder, para qualquer cliente que vá implantar o iLabs, **"o que fazer, em que ordem, quem faz e quando está pronto"**. A ordem vem das dependências entre cadastros ([passo 2](ordem-de-cadastro.md)) e das informações que cada fluxo exige ([passo 3](fluxo-01-recebimento-quarentena.md)): **não se cadastra o Item sem antes ter o que o Item usa; não se recebe material sem fornecedor qualificado, local de quarentena e regra de análise.**
 
@@ -133,6 +133,13 @@ Sem qualquer um destes, o fluxo trava em alguma etapa.
 3. **Listas de apoio** (etapa 7): método de detecção, tipo de item, criticidade.
 4. **No ensaio ponta a ponta (etapa 9):** acrescentar **um desvio com lote** (o lote fica retido), **um plano reprovado** (volta ao plano) e **uma tentativa de a mesma pessoa escrever e aprovar o plano** (recusada).
 
+### Detalhe das etapas 1, 5, 7 e 9: controle de mudanças (Garantia da Qualidade)
+(Vem da ficha [13c](fluxo-13c-controle-de-mudancas.md).)
+1. **Funções da mudança separadas** (etapa 1): solicitar, revisar, avaliar pela área, liberar, executar e finalizar.
+2. **Áreas com responsáveis ativos** (etapa 5): as áreas avaliadoras.
+3. **Listas de impacto e urgência** (etapa 7).
+4. **No ensaio ponta a ponta (etapa 9):** acrescentar **uma mudança com produto até o lote**, **uma tentativa de liberar com área "não aceito"** (recusada), **uma de finalizar com ação pendente** (recusada) e **uma mudança temporária que vence**.
+
 ## 3. Quem decide o quê
 | Decisão | Quem |
 |---|---|
@@ -167,7 +174,7 @@ O roteiro cresce conforme analisamos os fluxos (ordem em [Todos os fluxos](fluxo
 - **Remessa e expedição**: **feito** (ficha 9); detalha as etapas 1, 3, 5 e 9.
 - **Inventário**: **feito** (ficha 10); detalha as etapas 1, 6 e 9.
 - **Com isso, os dez fluxos do Estoque estão feitos**, e também **água e ambiente e estabilidade** (fichas 11a e 11b, Controle da Qualidade) e **os documentos controlados** (fichas 12a e 12b, Controle de Documentos).
-- **Garantia da Qualidade**: **treinamento** (ficha 13a) e **desvios e CAPA** (ficha 13b) feitos; faltam mudanças, autoinspeção e assuntos regulatórios.
+- **Garantia da Qualidade**: **treinamento** (ficha 13a), **desvios e CAPA** (13b) e **controle de mudanças** (13c) feitos; faltam autoinspeção e assuntos regulatórios.
 - **Produção, Comercial, Rastreabilidade e OPE** acrescentam as etapas das outras áreas.
 
 Cada ficha atualiza este roteiro: a etapa correspondente ganha o detalhe e a ordem é revista se uma dependência nova aparecer.

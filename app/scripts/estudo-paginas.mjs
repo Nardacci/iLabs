@@ -90,6 +90,11 @@ const PAGINAS = [
     titulo: '18 · Fluxo: desvios e CAPA (GQ)',
     arquivo: 'fluxo-13b-desvios-e-capa.md',
   },
+  {
+    id: 'fluxo13c',
+    titulo: '19 · Fluxo: controle de mudanças (GQ)',
+    arquivo: 'fluxo-13c-controle-de-mudancas.md',
+  },
   { id: 'fluxos', titulo: 'Todos os fluxos', arquivo: 'fluxos-do-legado.md' },
 ];
 
