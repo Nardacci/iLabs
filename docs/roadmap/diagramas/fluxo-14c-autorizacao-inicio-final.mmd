@@ -1,0 +1,22 @@
+flowchart TB
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  subgraph A["1 · Pedir e conferir"]
+    direction LR
+    A1["Pedir a produção:<br/>produto, lote padrão, data"]:::passo --> A2["O banco confere cada área<br/>Estoque, salas, equipamentos,<br/>água, treinamento, registro"]:::trava --> A3{"Alguma área<br/>negou ou está pendente?"}:::trava
+    A3 -- sim --> X1(["Não autoriza"]):::bloqueio
+    A3 -- não --> A4["Reserva dos insumos<br/>só de lote liberado e na validade"]:::trava
+  end
+  subgraph F["2 · Fabricar"]
+    direction LR
+    B1["Número de lote gerado<br/>pelo sistema, único"]:::trava --> B2["Início e registro<br/>das etapas"]:::passo --> B3["Final: quantidade produzida<br/>e amostra de estabilidade"]:::trava
+  end
+  subgraph L["3 · Fechar e liberar"]
+    direction LR
+    C1["Produto acabado entra<br/>no Estoque em quarentena"]:::trava --> C2["Reconciliação:<br/>rendimento dentro da faixa"]:::trava --> C3{"A Pessoa Delegada<br/>aprova, com assinatura?"}:::trava
+    C3 -- não --> X2(["Lote reprovado:<br/>o Estoque é avisado"]):::bloqueio
+    C3 -- sim --> C4(["Lote liberado<br/>para venda"]):::fim
+  end
+  A --> F --> L

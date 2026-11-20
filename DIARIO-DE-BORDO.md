@@ -2,6 +2,36 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-20 · Claude · Ficha 14c do passo 3: do pedido de produção à liberação do lote (Produção)
+
+- **Pedido do responsável:** seguir com a Produção.
+- **Entregue:** `docs/roadmap/fluxo-14c-autorizacao-inicio-final.md` (12 etapas, caixa "Em uma frase", imagem no alto, coluna "Onde no sistema (legado)"); aba "27 · Fluxo: autorização, início e final (Produção)"; roteiro **1.20**; lista de fluxos marca autorização, início e final como feito.
+- **Achados citados (do código):** uma área que negou não impede a produção (`RN016`); as autorizações da GQ e do CQ são marcações, não consultam os módulos (`RN011`, `RN012`); o Estoque confirma insumos digitando lote e validade (`RN007`); equipamento pendente é liberado com justificativa curta (`RN009`); o produto acabado pode ser finalizado sem entrar no Estoque e entra antes da liberação (`RN030`, `RN031`); quem finaliza também reconcilia e libera (`RN035`); número de lote digitado, com formatos de clientes anteriores no código (`RN022`).
+- **Testado na tela:** só a Autorização de Equipamentos. **A cadeia ficou bloqueada** por `DV-PRO-010` (a solicitação grava, mas a integração com o Estoque não completa); o restante vem só do código.
+- **Normas conferidas no texto:** RDC 658/2022, arts. 137, 160, 167, 189, 195 e 220.
+- **A validar:** quem autoriza cada área, área que nega, quem é a Pessoa Delegada, quarentena do produto acabado, faixa de rendimento, reprovação do lote.
+- **Próxima ficha:** 14d, registro de lote (o "caderno" da fabricação).
+
+## 2026-11-20 · Claude · Ficha 14b do passo 3: produto, fórmula e ordem de produção (Produção)
+
+- **Pedido do responsável:** seguir com a Produção.
+- **Entregue:** `docs/roadmap/fluxo-14b-produto-formula-ordem.md` (12 etapas, caixa "Em uma frase", imagem no alto, coluna "Onde no sistema (legado)"); aba "26 · Fluxo: produto, fórmula e ordem (Produção)"; roteiro **1.19**; lista de fluxos marca produto, fórmula e ordem como feito.
+- **Achados citados:** a fórmula não tem versão nem aprovação (`RN008`); a ordem de produção é "aprovada" por um nome escolhido, sem assinatura (`RN021`, `RN022`, `CT-PRO-050`); registro do produto vencido é aceito e não impede produzir (`RN007`, `RN014`); a trava do produto cai com a configuração "em migração" (`RN011`); duplicar não guarda a origem (`RN012`); o modelo do registro de lote pode ser trocado com produção em andamento (a confirmar); ninguém aprovava lote padrão sem ligar uma função à configuração 19 (`DV-EST-076`).
+- **Testado na tela:** insumos, produto, lote padrão e ordem de produção. **Não testadas:** soluções, ligação com o Estoque, etapas, HH padrão, demandas, troca do modelo com produção em andamento.
+- **Normas conferidas no texto:** RDC 658/2022, arts. 133, 134, 135, 176 e 177.
+- **A validar:** quem aprova fórmula e ordem, lote padrão por tamanho, modelo do registro durante a produção, registro vencido, onde ficam os controles do insumo.
+- **Próxima ficha:** 14c, autorização de início e final da produção.
+
+## 2026-11-20 · Claude · Ficha 14a do passo 3: preparação (Produção)
+
+- **Pedido do responsável:** seguir com a Produção, com a linguagem nova.
+- **Entregue:** `docs/roadmap/fluxo-14a-preparacao.md` (10 etapas, com a caixa "Em uma frase", imagem no alto e coluna "Onde no sistema (legado)"); aba "25 · Fluxo: preparação (Produção)"; roteiro **1.18**; lista de fluxos marca a preparação como feita. A Produção tem cinco fichas (14a a 14e); esta é a primeira.
+- **Achados citados (do código):** o resultado da análise de água e de ambiente não conta para liberar a sala ou o ponto (`RN015`); a calibração não tem campo de resultado (`RN007`); a validade é digitada; sem aviso de atraso; revisão sem senha; água e ambiente repetidos entre Produção e CQ.
+- **Testado na tela:** só a Programação e o Registro de Limpeza (funcionam, com falhas de máscara de data e sessão que não se reproduziram). Calibração, qualificação, manutenção, lubrificação, análises e liberação ficaram **não testadas**; vêm só do código.
+- **Normas conferidas no texto:** RDC 658/2022, arts. 105, 110, 148, 195 e 198.
+- **A validar:** frequências, limites que bloqueiam, o que fazer com o produzido após calibração reprovada, quem autoriza exceção.
+- **Próxima ficha:** 14b, produto, fórmula e ordem de produção.
+
 ## 2026-11-20 · Claude · Caixa "em uma frase" no topo das 19 fichas
 
 - **Pedido do responsável:** aprovou a ideia de explicar, no topo de cada ficha, para que serve o processo, em linguagem de quem não é da área.

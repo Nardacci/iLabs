@@ -120,6 +120,21 @@ const PAGINAS = [
     titulo: '24 · Glossário',
     arquivo: 'glossario.md',
   },
+  {
+    id: 'fluxo14a',
+    titulo: '25 · Fluxo: preparação (Produção)',
+    arquivo: 'fluxo-14a-preparacao.md',
+  },
+  {
+    id: 'fluxo14b',
+    titulo: '26 · Fluxo: produto, fórmula e ordem (Produção)',
+    arquivo: 'fluxo-14b-produto-formula-ordem.md',
+  },
+  {
+    id: 'fluxo14c',
+    titulo: '27 · Fluxo: autorização, início e final (Produção)',
+    arquivo: 'fluxo-14c-autorizacao-inicio-final.md',
+  },
   { id: 'fluxos', titulo: 'Todos os fluxos', arquivo: 'fluxos-do-legado.md' },
 ];
 
