@@ -2,6 +2,13 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-20 · Claude · Glossário e regra de linguagem
+
+- **Pedido do responsável:** lembrou que é analista de negócios, não é da área farmacêutica; o estudo precisa de linguagem que ele entenda.
+- **Entregue:** `docs/roadmap/glossario.md`: siglas e normas, módulos, material e lote, desvios e mudanças, documentos e provas, palavras do próprio sistema, cada uma com exemplo. Aba "24 · Glossário".
+- **Regra para as próximas fichas:** a primeira vez que uma palavra do meio farmacêutico aparecer, vem **explicada entre parênteses** ou com **exemplo do dia a dia**; siglas por extenso na primeira vez; frases curtas.
+- **Pendente (a combinar):** revisar as fichas já publicadas (1 a 13e) acrescentando, no topo de cada uma, "**em uma frase, para que serve esse processo**" e um **exemplo do cotidiano**.
+
 ## 2026-11-20 · Claude · A Garantia da Qualidade e os outros módulos
 
 - **Observação do responsável:** o menu Treinamento fica na GQ, mas quem aprova é a Produção ou o CQ; ainda não ficou clara a importância, a usabilidade e a interconexão da GQ.

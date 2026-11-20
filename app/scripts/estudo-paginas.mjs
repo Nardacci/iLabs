@@ -115,6 +115,11 @@ const PAGINAS = [
     titulo: '23 · A GQ e os outros módulos',
     arquivo: 'garantia-da-qualidade-e-os-outros-modulos.md',
   },
+  {
+    id: 'glossario',
+    titulo: '24 · Glossário',
+    arquivo: 'glossario.md',
+  },
   { id: 'fluxos', titulo: 'Todos os fluxos', arquivo: 'fluxos-do-legado.md' },
 ];
 
