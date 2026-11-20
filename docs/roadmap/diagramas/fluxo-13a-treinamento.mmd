@@ -1,0 +1,22 @@
+flowchart TB
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  subgraph C["1 · Cadastrar e pedir"]
+    direction LR
+    A1["Treinamento ligado ao POP vigente,<br/>validade, funções e setores"]:::trava --> A2["Solicitação para<br/>funcionários da função"]:::passo --> A3["Programa da turma<br/>aprovado pelo responsável"]:::trava
+  end
+  subgraph T["2 · Dar o treinamento"]
+    direction LR
+    B1["Alocar na matriz<br/>respeitando as vagas"]:::trava --> B2["Iniciar e dar a turma"]:::passo --> B3{"Presente, nota mínima<br/>e desempenho coerentes?"}:::trava
+    B3 -- não --> X1(["Insuficiente, sem validade"]):::bloqueio
+    B3 -- sim --> B4["Suficiente: validade<br/>contada a partir da conclusão"]:::trava
+  end
+  subgraph H["3 · Habilitar quem trabalha"]
+    direction LR
+    C1["Situação por pessoa:<br/>vigente, vencendo, vencido"]:::trava --> C2{"A pessoa tem o treinamento<br/>da função, vigente?"}:::trava
+    C2 -- sim --> C3(["Pode executar a tarefa"]):::fim
+    C2 -- não --> X2(["Banco bloqueia a tarefa<br/>e avisa antes de vencer"]):::bloqueio
+  end
+  C --> T --> H

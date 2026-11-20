@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-20 · Claude · Ficha 13a do passo 3: treinamento (Garantia da Qualidade)
+
+- **Pedido do responsável:** seguir com a próxima ficha. A ficha 13 da Garantia da Qualidade tem cinco fluxos e foi dividida em 13a treinamento, 13b desvios e CAPA, 13c mudanças, 13d autoinspeção, 13e assuntos regulatórios; uma por rodada.
+- **Entregue:** `docs/roadmap/fluxo-13a-treinamento.md` (9 etapas, imagem no alto, coluna "Onde no sistema (legado)"); aba "17"; roteiro **1.13**; lista de fluxos marca o treinamento como feito.
+- **Achados citados:** o ausente pode concluir como "Suficiente" (`DV-GQ-301`); nota 11 aceita (`DV-GQ-305`); acompanhamento com função dá erro 500 (`DV-GQ-300`); o treinamento não bloqueia nem avisa (`DV-GQ-320`); o Controle de Documentos só olha se há turma concluída, não quantos foram aprovados (`DV-GQ-321`, pelo código); exclusões sem rastro (`DV-GQ-313`); programa sem aprovação (`DV-GQ-322`).
+- **Não confirmado:** efeito do treinamento vencido além do que a tela mostra; vigência com turma insuficiente (só pelo código).
+- **A validar:** nota mínima, bloqueio ou aviso, antecedência do aviso, quem aprova o programa, treinamento antes ou depois do POP.
+- **Próxima ficha:** 13b, desvios e CAPA.
+
 ## 2026-11-19 · Claude · Ficha 12 do passo 3 (12a e 12b): Controle de Documentos
 
 - **Pedido do responsável:** seguir com a próxima ficha.
