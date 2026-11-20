@@ -70,6 +70,16 @@ const PAGINAS = [
     titulo: '14 · Fluxo: estabilidade (CQ)',
     arquivo: 'fluxo-11b-estabilidade.md',
   },
+  {
+    id: 'fluxo12a',
+    titulo: '15 · Fluxo: ciclo do documento',
+    arquivo: 'fluxo-12a-ciclo-do-documento.md',
+  },
+  {
+    id: 'fluxo12b',
+    titulo: '16 · Fluxo: cópias, externo e legado',
+    arquivo: 'fluxo-12b-copias-externo-legado.md',
+  },
   { id: 'fluxos', titulo: 'Todos os fluxos', arquivo: 'fluxos-do-legado.md' },
 ];
 
