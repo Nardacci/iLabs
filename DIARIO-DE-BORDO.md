@@ -2,6 +2,16 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-20 · Claude · Ficha 13d do passo 3: autoinspeção e auditoria (Garantia da Qualidade)
+
+- **Pedido do responsável:** seguir com a próxima ficha.
+- **Entregue:** `docs/roadmap/fluxo-13d-autoinspecao-e-auditoria.md` (9 etapas, imagem no alto, coluna "Onde no sistema (legado)"); aba "20 · Fluxo: autoinspeção e auditoria (GQ)"; roteiro **1.16**; lista de fluxos marca autoinspeção como feito.
+- **Achados citados:** a auditoria "não conforme" não abre desvio (`DV-GQ-099`); o desvio da avaliação é registro digitado e sem histórico (`DV-GQ-098`, `115`); a pergunta não consegue gerar RNC (`DV-GQ-096`); não existe auditoria de fornecedor (`DV-GQ-111`); não há como reabrir (`DV-GQ-112`); a independência só é conferida contra o responsável da área (`CT-GQ-055`); inspetor externo não registra respostas (`DV-GQ-118`); o Nível 1 inclui e exclui (`DV-GQ-347`).
+- **Diferenças entre código e tela:** a área auditada só vê e não grava (`CT-GQ-057`); não há botão de reabrir (`CT-GQ-062`).
+- **Não testado:** o vínculo com o desvio (o campo do RNC não aparece); a conferência no servidor do avanço para a avaliação.
+- **A validar:** independência, coordenador, tipos de auditoria, qualificação das perguntas, reabertura, desvio de todo não conforme.
+- **Próxima ficha:** 13e, assuntos regulatórios (última da Garantia da Qualidade).
+
 ## 2026-11-20 · Claude · Ficha 13c do passo 3: controle de mudanças (Garantia da Qualidade)
 
 - **Pedido do responsável:** seguir com a próxima ficha.

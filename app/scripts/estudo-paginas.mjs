@@ -95,6 +95,11 @@ const PAGINAS = [
     titulo: '19 · Fluxo: controle de mudanças (GQ)',
     arquivo: 'fluxo-13c-controle-de-mudancas.md',
   },
+  {
+    id: 'fluxo13d',
+    titulo: '20 · Fluxo: autoinspeção e auditoria (GQ)',
+    arquivo: 'fluxo-13d-autoinspecao-e-auditoria.md',
+  },
   { id: 'fluxos', titulo: 'Todos os fluxos', arquivo: 'fluxos-do-legado.md' },
 ];
 
