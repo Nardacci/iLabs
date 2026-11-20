@@ -1,0 +1,24 @@
+flowchart TB
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  subgraph O["1 · Obrigações regulatórias"]
+    direction LR
+    A1["Processo regulatório<br/>órgão e obrigação"]:::passo --> A2["Programação:<br/>produto e documento do cadastro,<br/>datas coerentes"]:::trava --> A3{"Prazo e validade<br/>em ordem?"}:::trava
+    A3 -- não --> X1(["Recusado"]):::bloqueio
+    A3 -- sim --> A4["Aviso antes de vencer"]:::trava
+  end
+  subgraph R["2 · Registro do produto"]
+    direction LR
+    B1["Solicitação de registro<br/>com check-list"]:::trava --> B2{"Documentos do check-list<br/>todos concluídos?"}:::trava
+    B2 -- não --> X2(["Envio à ANVISA recusado"]):::bloqueio
+    B2 -- sim --> B3["Envio assinado<br/>e decisão da ANVISA registrada"]:::trava
+  end
+  subgraph P["3 · Proteger o produto"]
+    direction LR
+    C1["Registro do produto<br/>com validade e revalidação"]:::trava --> C2{"Registro deferido<br/>e dentro da validade?"}:::trava
+    C2 -- sim --> C3(["Produção e venda liberadas"]):::fim
+    C2 -- não --> X3(["Produção e venda bloqueadas<br/>pelo banco"]):::bloqueio
+  end
+  O --> R --> P

@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-20 · Claude · Ficha 13e do passo 3: assuntos regulatórios (fecha a Garantia da Qualidade)
+
+- **Pedido do responsável:** seguir com a próxima ficha.
+- **Entregue:** `docs/roadmap/fluxo-13e-assuntos-regulatorios.md` (9 etapas, imagem no alto, coluna "Onde no sistema (legado)"); aba "21 · Fluxo: assuntos regulatórios (GQ)"; roteiro **1.17**; lista de fluxos marca assuntos regulatórios como feito. **Os cinco fluxos da Garantia da Qualidade estão feitos.**
+- **Achados citados:** as datas fora de ordem são aceitas (`DV-GQ-203`); nenhum aviso de prazo ou validade (`DV-GQ-204`); o produto e o documento são texto livre; o monitoramento finaliza sem anexo (`DV-GQ-212`, `213`); as quatro telas do registro de produto não têm entrada no menu (`DV-GQ-015`, `348`); o registro do produto não chega à produção nem à venda (pelo código).
+- **Não testado:** toda a metade do registro de produto (check-list, solicitação, controle de produtos, exigências), por falta de entrada no menu.
+- **A validar:** uma lista ou duas, bloqueio do produto sem registro regular, antecedência do aviso, check-list para enviar, prazo da exigência.
+- **Próxima etapa:** fluxos da **Produção** (item 14 de `fluxos-do-legado.md`).
+
 ## 2026-11-20 · Claude · Ficha 13d do passo 3: autoinspeção e auditoria (Garantia da Qualidade)
 
 - **Pedido do responsável:** seguir com a próxima ficha.
