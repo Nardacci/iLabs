@@ -1,0 +1,24 @@
+flowchart TB
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  subgraph I["1 · Insumos e produto"]
+    direction LR
+    A1["Insumo ligado ao item<br/>do Estoque"]:::trava --> A2["Produto com a fórmula<br/>em versão aprovada"]:::trava --> A3{"Registro do produto<br/>válido?"}:::trava
+    A3 -- não --> X1(["Produto não é liberado<br/>para produzir"]):::bloqueio
+    A3 -- sim --> A4["Mudança só por<br/>mudança aprovada"]:::trava
+  end
+  subgraph L["2 · Lote padrão: o 'molde' do lote"]
+    direction LR
+    B1["Itens, salas, equipamentos,<br/>água, quantidade"]:::passo --> B2{"Aprovado por quem<br/>não elaborou, com assinatura?"}:::trava
+    B2 -- não --> X2(["Não vale"]):::bloqueio
+    B2 -- sim --> B3["Aprovado: não muda mais"]:::fim
+  end
+  subgraph O["3 · Ordem de produção e modelo do registro"]
+    direction LR
+    C1["Ordem com versão,<br/>elaborador e aprovadores<br/>que assinam"]:::trava --> C2["Modelo do registro de lote<br/>com versão e aprovado"]:::trava --> C3{"Há produção em andamento<br/>com este modelo?"}:::trava
+    C3 -- sim --> X3(["Trocar o modelo é recusado,<br/>só nova versão"]):::bloqueio
+    C3 -- não --> C4(["Pronto para solicitar<br/>a produção"]):::fim
+  end
+  I --> L --> O

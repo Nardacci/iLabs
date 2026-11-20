@@ -2,6 +2,16 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-20 · Claude · Ficha 14b do passo 3: produto, fórmula e ordem de produção (Produção)
+
+- **Pedido do responsável:** seguir com a Produção.
+- **Entregue:** `docs/roadmap/fluxo-14b-produto-formula-ordem.md` (12 etapas, caixa "Em uma frase", imagem no alto, coluna "Onde no sistema (legado)"); aba "26 · Fluxo: produto, fórmula e ordem (Produção)"; roteiro **1.19**; lista de fluxos marca produto, fórmula e ordem como feito.
+- **Achados citados:** a fórmula não tem versão nem aprovação (`RN008`); a ordem de produção é "aprovada" por um nome escolhido, sem assinatura (`RN021`, `RN022`, `CT-PRO-050`); registro do produto vencido é aceito e não impede produzir (`RN007`, `RN014`); a trava do produto cai com a configuração "em migração" (`RN011`); duplicar não guarda a origem (`RN012`); o modelo do registro de lote pode ser trocado com produção em andamento (a confirmar); ninguém aprovava lote padrão sem ligar uma função à configuração 19 (`DV-EST-076`).
+- **Testado na tela:** insumos, produto, lote padrão e ordem de produção. **Não testadas:** soluções, ligação com o Estoque, etapas, HH padrão, demandas, troca do modelo com produção em andamento.
+- **Normas conferidas no texto:** RDC 658/2022, arts. 133, 134, 135, 176 e 177.
+- **A validar:** quem aprova fórmula e ordem, lote padrão por tamanho, modelo do registro durante a produção, registro vencido, onde ficam os controles do insumo.
+- **Próxima ficha:** 14c, autorização de início e final da produção.
+
 ## 2026-11-20 · Claude · Ficha 14a do passo 3: preparação (Produção)
 
 - **Pedido do responsável:** seguir com a Produção, com a linguagem nova.
