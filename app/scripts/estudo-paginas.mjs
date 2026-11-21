@@ -45,6 +45,14 @@ const PAGINAS_SEM_ORDEM = [
     arquivo: 'glossario.md',
   },
   {
+    id: 'diretoria',
+    codigo: '',
+    titulo: 'Resumo para a diretoria',
+    modulo: 'Para começar',
+    tipo: 'Guia',
+    arquivo: 'resumo-para-a-diretoria.md',
+  },
+  {
     id: 'modulosanvisa',
     codigo: '',
     titulo: 'Para que serve cada módulo e o que a ANVISA espera',

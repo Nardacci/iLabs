@@ -2,6 +2,13 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-21 · Claude · Resumo para a diretoria
+
+- **Pedido do responsável:** seguir com a adaptação da página dos módulos e da ANVISA para a diretoria.
+- **Entregue:** `docs/roadmap/resumo-para-a-diretoria.md` (leitura de 5 minutos, sem números de artigos), no grupo "Para começar" da lista do estudo (`/estudo/roadmap/diretoria`): o que é o estudo e seu limite (só código e norma, nada testado), uma tabela de uma linha por módulo, os 7 pontos de maior risco do sistema atual, o que o iLabs faz diferente, o que se precisa da diretoria, da Qualidade e das áreas, e os próximos passos.
+- **Sem conteúdo novo:** só reúne o que já está nas fichas e nos documentos "Para que serve cada módulo e o que a ANVISA espera" e "Pontos a validar, por área". Os 7 riscos vêm dos achados já registrados nas fichas e continuam **a confirmar em teste**.
+- **Próxima etapa:** o responsável lê e ajusta o tom; se a diretoria quiser um arquivo Word de duas páginas, gerar com o padrão visual dos entregáveis.
+
 ## 2026-11-21 · Claude · Página "Para que serve cada módulo e o que a ANVISA espera"
 
 - **Pedido do responsável:** saber onde ficou a explicação sobre a Garantia da Qualidade e acrescentar uma página explicando a importância de cada módulo e o aspecto da ANVISA.
