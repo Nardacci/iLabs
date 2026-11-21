@@ -1,0 +1,24 @@
+flowchart TB
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  subgraph G["1 · Gerar o identificador de cada embalagem"]
+    direction LR
+    A1["Lote embalado"]:::passo --> A2{"Lote certificado pela<br/>Pessoa Delegada?"}:::trava
+    A2 -- não --> X1(["Não gera identificador"]):::bloqueio
+    A2 -- sim --> A3{"Quantidade até o total<br/>embalado, sem repetir?"}:::trava
+    A3 -- não --> X2(["Geração recusada"]):::bloqueio
+    A3 -- sim --> A4["Identificador único<br/>por embalagem"]:::trava
+  end
+  subgraph E["2 · Etiquetar"]
+    direction LR
+    B1["Etiqueta com dados<br/>da empresa titular"]:::trava --> B2["Código de barras<br/>bidimensional"]:::passo
+  end
+  subgraph C["3 · Agregar em caixas"]
+    direction LR
+    C1["Caixa com código<br/>da empresa"]:::trava --> C2{"Desfazer caixa<br/>já expedida?"}:::trava
+    C2 -- sim --> X3(["Recusado"]):::bloqueio
+    C2 -- não --> C3(["Cada embalagem em<br/>uma só caixa"]):::fim
+  end
+  G --> E --> C

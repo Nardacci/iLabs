@@ -160,6 +160,11 @@ const PAGINAS = [
     titulo: '32 · Fluxo: fatura, remessa e cancelamento (Comercial)',
     arquivo: 'fluxo-15c-fatura-remessa-cancelamento.md',
   },
+  {
+    id: 'fluxo16a',
+    titulo: '33 · Fluxo: geração do IUM e agregação (Rastreabilidade)',
+    arquivo: 'fluxo-16a-ium-e-agregacao.md',
+  },
   { id: 'fluxos', titulo: 'Todos os fluxos', arquivo: 'fluxos-do-legado.md' },
 ];
 
