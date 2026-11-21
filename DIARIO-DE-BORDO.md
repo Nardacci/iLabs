@@ -2,6 +2,13 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-21 · Claude · Pauta das reuniões com a Qualidade
+
+- **Pedido do responsável:** "pode seguir" depois da oferta de duas opções (Word da diretoria ou pauta da Qualidade); escolhi a pauta, que destrava o resto. O arquivo Word da diretoria continua possível.
+- **Entregue:** `docs/roadmap/pauta-reuniao-qualidade.md` (gerado junto com `pontos-a-validar.md` por `python3 ferramentas/gerar-pontos-a-validar.py`), no grupo "Para começar" (`/estudo/roadmap/pautaqualidade`): quem convidar, como registrar as respostas (com o código de cada pergunta), e **três reuniões**: (1) 8 decisões que a norma deixa para a empresa, 6 textos de norma que faltam e as 13 perguntas do Controle de Documentos; (2) as 23 perguntas do Controle da Qualidade; (3) as 37 perguntas da Garantia da Qualidade. A Qualidade concentra 73 das 219 perguntas.
+- **Sem conteúdo novo:** reúne o que já está nas fichas e no documento "O que a norma diz". Os tempos sugeridos são estimativa minha.
+- **Próxima etapa:** o responsável marca as reuniões e passa as respostas pelo chat, com o código de cada pergunta; eu atualizo as fichas e refaço as listas.
+
 ## 2026-11-21 · Claude · Resumo para a diretoria
 
 - **Pedido do responsável:** seguir com a adaptação da página dos módulos e da ANVISA para a diretoria.

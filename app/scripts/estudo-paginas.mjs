@@ -77,6 +77,14 @@ const PAGINAS_SEM_ORDEM = [
     arquivo: 'pontos-a-validar.md',
   },
   {
+    id: 'pautaqualidade',
+    codigo: '',
+    titulo: 'Pauta das reuniões com a Qualidade',
+    modulo: 'Para começar',
+    tipo: 'Guia',
+    arquivo: 'pauta-reuniao-qualidade.md',
+  },
+  {
     id: 'norma',
     codigo: '',
     titulo: 'O que a norma diz',
