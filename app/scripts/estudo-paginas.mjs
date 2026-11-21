@@ -150,6 +150,11 @@ const PAGINAS = [
     titulo: '30 · Fluxo: cliente e cadastros de venda (Comercial)',
     arquivo: 'fluxo-15a-cliente-e-cadastros.md',
   },
+  {
+    id: 'fluxo15b',
+    titulo: '31 · Fluxo: cotação, requisição e reserva (Comercial)',
+    arquivo: 'fluxo-15b-cotacao-requisicao-reserva.md',
+  },
   { id: 'fluxos', titulo: 'Todos os fluxos', arquivo: 'fluxos-do-legado.md' },
 ];
 

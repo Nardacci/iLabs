@@ -1,0 +1,24 @@
+flowchart TB
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  subgraph P["1 · Oferecer"]
+    direction LR
+    A1["Cotação com preço<br/>da tabela vigente"]:::trava --> A2{"Quantidade cabe<br/>no que existe?"}:::trava
+    A2 -- não --> X1(["Cotação recusada"]):::bloqueio
+    A2 -- sim --> A3["Requisição do pedido<br/>(convênio ou cotação)"]:::trava
+  end
+  subgraph L["2 · Escolher o lote"]
+    direction LR
+    B1{"Lote certificado pela<br/>Pessoa Delegada,<br/>com validade mínima?"}:::trava
+    B1 -- não --> X2(["Lote não oferecido"]):::bloqueio
+    B1 -- sim --> B2["Todo item com lote<br/>e dentro do limite"]:::trava
+  end
+  subgraph R["3 · Reservar"]
+    direction LR
+    C1["Reservar no Estoque<br/>de uma só vez"]:::trava --> C2{"Reserva deu certo?"}:::trava
+    C2 -- não --> X3(["Recusa clara,<br/>com o motivo"]):::bloqueio
+    C2 -- sim --> C3(["Reserva guardada,<br/>pronta para faturar"]):::fim
+  end
+  P --> L --> R

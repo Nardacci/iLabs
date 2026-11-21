@@ -1,6 +1,6 @@
 # Roteiro de implantação do sistema
 
-**Versão 1.23, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
+**Versão 1.24, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
 
 **Para que serve:** responder, para qualquer cliente que vá implantar o iLabs, **"o que fazer, em que ordem, quem faz e quando está pronto"**. A ordem vem das dependências entre cadastros ([passo 2](ordem-de-cadastro.md)) e das informações que cada fluxo exige ([passo 3](fluxo-01-recebimento-quarentena.md)): **não se cadastra o Item sem antes ter o que o Item usa; não se recebe material sem fornecedor qualificado, local de quarentena e regra de análise.**
 
@@ -190,6 +190,12 @@ Sem qualquer um destes, o fluxo trava em alguma etapa.
 1. **Cliente com tipo, documentos que autorizam receber medicamentos e endereços** (etapa 3); papel de cliente separado do de fornecedor.
 2. **Funções de cadastrar cliente, aprovar convênio e alterar preço, separadas e com assinatura** (etapa 1).
 3. **No ensaio ponta a ponta (etapa 9):** acrescentar **um cliente sem licença** (recusado) e **um endereço alterado depois da venda** (a fatura antiga mantém o endereço da época).
+
+### Detalhe das etapas 1, 3 e 9: cotação, requisição e reserva (Comercial)
+(Vem da ficha [15b](fluxo-15b-cotacao-requisicao-reserva.md).)
+1. **Validade mínima por cliente ou convênio** (etapa 3), em vez do valor fixado no código.
+2. **Função de escolher o lote e certificação da Pessoa Delegada guardada** antes de o lote ficar à venda (etapa 1).
+3. **No ensaio ponta a ponta (etapa 9):** acrescentar **um lote em quarentena** (não oferecido), **um lote perto do vencimento** (recusado) e **uma reserva sem saldo** (recusa clara, sem número negativo).
 
 ## 3. Quem decide o quê
 | Decisão | Quem |
