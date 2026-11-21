@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-21 · Claude · Ficha 16a do passo 3: geração do IUM e agregação (Rastreabilidade)
+
+- **Pedido do responsável:** seguir com a lista (Rastreabilidade).
+- **Entregue:** `docs/roadmap/fluxo-16a-ium-e-agregacao.md` (9 etapas, caixa "Em uma frase", imagem no alto, coluna "Onde no sistema (legado)"); aba "33 · Fluxo: geração do IUM e agregação (Rastreabilidade)"; roteiro **1.26**; lista de fluxos marca a 16a como feita. A Rastreabilidade tem duas fichas: 16a (esta) e 16b, eventos e declaração à ANVISA.
+- **Achados citados (do código, nada testado na tela):** o número de série (13 dígitos sorteados) só é conferido dentro da mesma geração, sem índice único (`RN006`); a quantidade de IUM não é limitada à do lote e pode-se gerar de novo para o mesmo lote (`RN004`, `RN005`); a liberação vem da Produção, sem a certificação da Pessoa Delegada (`RN001`, `RN002`); a etiqueta traz endereço, CNPJ, farmacêutico e SAC de outra empresa, escritos no código (`RN010`); o prefixo do código das caixas é um valor de exemplo (`RN014`); a caixa pode ser desfeita depois de expedida, sem motivo (`RN015`).
+- **Testado na tela:** nada.
+- **Normas conferidas no texto:** RDC 658/2022, arts. 8º XV, 14 VII, 124 e 344 a 347. **A Lei 11.903/2009 e a regulamentação do SNCM não estão no repositório:** formato do IUM e obrigação de declarar ficam como pontos a validar com Assuntos Regulatórios.
+- **Próxima ficha:** 16b, eventos e declaração à ANVISA.
+
 ## 2026-11-21 · Claude · Ficha 15c do passo 3: fatura, remessa e cancelamento (fecha o Comercial)
 
 - **Pedido do responsável:** seguir com o Comercial.
