@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-21 · Claude · Ficha 15b do passo 3: cotação, requisição e reserva (Comercial)
+
+- **Pedido do responsável:** seguir com o Comercial.
+- **Entregue:** `docs/roadmap/fluxo-15b-cotacao-requisicao-reserva.md` (8 etapas, caixa "Em uma frase", imagem no alto, coluna "Onde no sistema (legado)"); aba "31 · Fluxo: cotação, requisição e reserva (Comercial)"; roteiro **1.24**; lista de fluxos marca a 15b como feita.
+- **Achados citados (do código, nada testado na tela):** a venda oferece o lote "disponível", sem certificação da Pessoa Delegada (`RN010`); não há validade mínima, o zero está fixado no código (`RN011`); os itens da cotação e do convênio entram sem lote e a conferência de lote está comentada (`RN009`, `RN016`); os limites do convênio e da cotação nunca rodam (`RN017`); a reserva que falha vira -1 sem aviso e a requisição some da lista de faturar (`RN019`, `RN020`); a reserva é cancelada e refeita a cada gravação (`RN018`); o cancelamento não pede justificativa (`RN024`).
+- **Testado na tela:** nada.
+- **Normas conferidas no texto:** RDC 658/2022, arts. 8º XV, 14 VII, 125, 346 e 347.
+- **Próxima ficha:** 15c, fatura, remessa e cancelamento.
+
 ## 2026-11-21 · Claude · Ficha 15a do passo 3: cliente e cadastros de venda (Comercial)
 
 - **Pedido do responsável:** seguir com a lista (Comercial).
