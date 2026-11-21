@@ -17,6 +17,7 @@ const MODULOS = [
   'Produção',
   'Comercial',
   'Rastreabilidade',
+  'OPE',
 ];
 const f = (id, codigo, titulo, modulo, arquivo) => ({
   id,
@@ -215,6 +216,13 @@ const PAGINAS_SEM_ORDEM = [
     'Eventos e declaração à ANVISA',
     'Rastreabilidade',
     'fluxo-16b-eventos-e-declaracao.md',
+  ),
+  f(
+    'fluxo17',
+    '17',
+    'Montagem do modelo do registro de lote',
+    'OPE',
+    'fluxo-17-montagem-do-modelo.md',
   ),
 ];
 const PAGINAS = MODULOS.flatMap((m) => PAGINAS_SEM_ORDEM.filter((p) => p.modulo === m));

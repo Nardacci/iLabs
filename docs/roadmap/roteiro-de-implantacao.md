@@ -1,6 +1,6 @@
 # Roteiro de implantação do sistema
 
-**Versão 1.27, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
+**Versão 1.28, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
 
 **Para que serve:** responder, para qualquer cliente que vá implantar o iLabs, **"o que fazer, em que ordem, quem faz e quando está pronto"**. A ordem vem das dependências entre cadastros ([passo 2](ordem-de-cadastro.md)) e das informações que cada fluxo exige ([passo 3](fluxo-01-recebimento-quarentena.md)): **não se cadastra o Item sem antes ter o que o Item usa; não se recebe material sem fornecedor qualificado, local de quarentena e regra de análise.**
 
@@ -214,6 +214,12 @@ Sem qualquer um destes, o fluxo trava em alguma etapa.
 1. **Certificado digital e endereço do serviço da ANVISA, por variável de ambiente** (nunca no código), e **tipos de evento** definidos por Assuntos Regulatórios (etapa 3).
 2. **Funções de registrar, reenviar e retificar evento, separadas e com assinatura** (etapa 1).
 3. **No ensaio ponta a ponta (etapa 9):** acrescentar **entrega sem venda** (recusada), **evento fora de ordem** (recusado), **envio que falha** (fica pendente, com aviso, nunca como enviado) e **retificação sem motivo** (recusada). A Rastreabilidade fica completa (16a e 16b).
+
+### Detalhe das etapas 1, 3 e 9: montagem do modelo do registro de lote (OPE)
+(Vem da ficha [17](fluxo-17-montagem-do-modelo.md).)
+1. **Funções de montar, revisar e aprovar o modelo, separadas e com assinatura**, e as funções que assinam cada campo (etapa 1).
+2. **Limites de especificação (mínimo e máximo) como dado do produto** (etapa 3).
+3. **No ensaio ponta a ponta (etapa 9):** acrescentar **montar e aprovar um modelo**, **levar um modelo não aprovado à ordem** (recusado), **apagar um campo com uso** (recusado) e **alterar o modelo com uma produção em andamento** (a produção não muda). **Com a ficha 17, todas as fichas de fluxo do legado estão feitas.**
 
 ## 3. Quem decide o quê
 | Decisão | Quem |

@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-21 · Claude · Ficha 17 do passo 3: montagem do modelo do registro de lote (OPE, fecha a lista de fluxos)
+
+- **Pedido do responsável:** seguir com a lista (OPE).
+- **Entregue:** `docs/roadmap/fluxo-17-montagem-do-modelo.md` (12 etapas, caixa "Em uma frase", imagem no alto, coluna "Onde no sistema (legado)"); novo grupo **OPE** na lista do estudo; roteiro **1.28**; lista de fluxos marca a 17 como feita. **Todas as fichas de fluxo do legado estão feitas** (Estoque, CQ, GQ, Controle de Documentos, Produção, Comercial, Rastreabilidade e OPE).
+- **Achados citados (do código, nada testado na tela):** as instruções de fabricação mudam sem rascunho, revisão, aprovação nem histórico, e a revisão fica sempre "1" (`RN002`); apagar o código de um campo no texto apaga o campo e a configuração, sem aviso (`RN012`); aplicar um modelo-padrão e enviar um arquivo substituem tudo, sem aviso nem cópia do anterior (`RN027`, `RN030`); não há limite de especificação como dado do campo (`RN021`); a classe do produto lista só três nomes de programa (`RN018`); nada impede dois modelos para o mesmo produto (`RN003`); o modelo vai à produção como arquivo anexado à mão e o registro lê o modelo a cada abertura (`RN031`); 13 dificuldades de uso, como criar campo digitando `{0}` e nomes técnicos (`U1` a `U13`).
+- **Testado na tela:** nada.
+- **Normas conferidas no texto:** RDC 658/2022, arts. 119, 125, 133 a 135, 176, 177 e 198.
+- **Próxima etapa (proposta):** revisar o que ficou como ponto a validar em cada ficha com a área e com a Qualidade (lista na seção 6 de cada ficha), e pedir à Qualidade os textos que não estão no repositório (Lei 11.903/2009 e regulamentação do SNCM, RDC 430/2020, instrução normativa das amostras, norma de registro, Farmacopeia, regulamento de estabilidade).
+
 ## 2026-11-21 · Claude · Estudo do roadmap: a fileira de abas vira lista com busca e filtros
 
 - **Pedido do responsável:** com a lista de documentos crescendo (34 abas), achar outra forma de listar; escolheu a lista com filtros (e não o índice lateral, porque o sistema já tem o menu lateral).

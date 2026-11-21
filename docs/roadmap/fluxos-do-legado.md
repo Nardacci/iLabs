@@ -23,7 +23,7 @@ A ordem segue o que cada fluxo **exige** dos anteriores (o mesmo raciocínio do 
 | 14 | Preparação (**feito**, ficha 14a) · Produto, fórmula e ordem (**feito**, ficha 14b) · Autorização de início e final (**feito**, ficha 14c) · Registro de lote (**feito**, ficha 14d) · Terceirização e validade (**feito**, ficha 14e) | Produção | Consomem o lote aprovado e geram produto acabado |
 | 15 | Cliente e cadastros (**feito**, ficha 15a) · Cotação, requisição e reserva (**feito**, ficha 15b) · Fatura, remessa e cancelamento (**feito**, ficha 15c) | Comercial | Vendem o produto acabado |
 | 16 | Geração do IUM e agregação (**feito**, ficha 16a) · Eventos e declaração à ANVISA (**feito**, ficha 16b) | Rastreabilidade | Fecham a corrente do lote |
-| 17 | Montagem do modelo | OPE | Gera os arquivos de rastreabilidade |
+| 17 | Montagem do modelo (**feito**, ficha 17) | OPE | Gera os arquivos de rastreabilidade |
 
 ## Como cada ficha de fluxo será feita
 1. Ler o fluxo da equipe e a conferência pelo código (já no repositório do legado).
