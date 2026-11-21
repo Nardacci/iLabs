@@ -165,6 +165,11 @@ const PAGINAS = [
     titulo: '33 · Fluxo: geração do IUM e agregação (Rastreabilidade)',
     arquivo: 'fluxo-16a-ium-e-agregacao.md',
   },
+  {
+    id: 'fluxo16b',
+    titulo: '34 · Fluxo: eventos e declaração à ANVISA (Rastreabilidade)',
+    arquivo: 'fluxo-16b-eventos-e-declaracao.md',
+  },
   { id: 'fluxos', titulo: 'Todos os fluxos', arquivo: 'fluxos-do-legado.md' },
 ];
 
