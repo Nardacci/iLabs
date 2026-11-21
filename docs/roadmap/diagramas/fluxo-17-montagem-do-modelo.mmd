@@ -1,0 +1,20 @@
+flowchart TB
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  subgraph M["1 · Montar o modelo (em rascunho)"]
+    direction LR
+    A1["Modelo do produto:<br/>etapas, instruções e campos"]:::passo --> A2["Cada campo com regra:<br/>obrigatório, quem assina,<br/>limite de especificação"]:::trava
+  end
+  subgraph R["2 · Revisar e aprovar"]
+    direction LR
+    B1["Revisão por outra pessoa"]:::trava --> B2{"Aprovado pela<br/>Qualidade?"}:::trava
+    B2 -- não --> X1(["Continua em rascunho,<br/>não vai à produção"]):::bloqueio
+    B2 -- sim --> B3["Nova versão vigente,<br/>com assinatura"]:::trava
+  end
+  subgraph U["3 · Usar na produção"]
+    direction LR
+    C1["Ordem de produção<br/>fixa a versão aprovada"]:::trava --> C2(["Produção em andamento<br/>nunca muda sozinha"]):::fim
+  end
+  M --> R --> U
