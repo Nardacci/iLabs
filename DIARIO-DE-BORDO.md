@@ -2,6 +2,16 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-21 · Claude · Ficha 14e do passo 3: terceirização e validade da ordem de produção (fecha a Produção)
+
+- **Pedido do responsável:** seguir com a Produção.
+- **Entregue:** `docs/roadmap/fluxo-14e-terceirizacao-validade.md` (7 etapas, caixa "Em uma frase", imagem no alto, coluna "Onde no sistema (legado)"); aba "29 · Fluxo: terceirização e validade da OPE (Produção)"; roteiro **1.22**; lista de fluxos marca terceirização e validade como feito. **As cinco fichas da Produção estão feitas.**
+- **Achados citados (do código, nada testado na tela):** a terceirização não tem contrato nem acordo técnico e não confere a qualificação do fornecedor (`RN005`); não está claro como o registro do que o terceiro fez entra no caderno do lote (`RN004`); a validade do lote pode ser alterada com decisões em datas digitadas, sem separar quem pede, confirma e aprova, e pelo código mesmo com uma decisão reprovada (`RN008` a `RN010`); a nova validade não vai ao Estoque (`RN011`); a tela de validade está fora do menu (`RN012`).
+- **Testado na tela:** nada.
+- **Normas conferidas no texto:** RDC 658/2022, arts. 167, 298, 299, 304, 305 e 310.
+- **A validar:** se a empresa terceiriza hoje, onde ficam contrato e qualificação, como o relatório do terceiro entra no lote, se a validade de lote é alterada e com qual prova, se a tela deve existir.
+- **Próxima etapa:** Comercial (item 15 de `fluxos-do-legado.md`), Rastreabilidade (16) e OPE (17), e depois Controle de Documentos e demais já feitos.
+
 ## 2026-11-20 · Claude · Ficha 14d do passo 3: registro de lote (Produção)
 
 - **Pedido do responsável:** seguir com a Produção.

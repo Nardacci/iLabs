@@ -1,6 +1,6 @@
 # Roteiro de implantação do sistema
 
-**Versão 1.21, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
+**Versão 1.22, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
 
 **Para que serve:** responder, para qualquer cliente que vá implantar o iLabs, **"o que fazer, em que ordem, quem faz e quando está pronto"**. A ordem vem das dependências entre cadastros ([passo 2](ordem-de-cadastro.md)) e das informações que cada fluxo exige ([passo 3](fluxo-01-recebimento-quarentena.md)): **não se cadastra o Item sem antes ter o que o Item usa; não se recebe material sem fornecedor qualificado, local de quarentena e regra de análise.**
 
@@ -179,6 +179,12 @@ Sem qualquer um destes, o fluxo trava em alguma etapa.
 2. **Modelo do registro de cada produto, com limites de especificação e versão aprovada** (etapa 7), montado antes da primeira produção.
 3. **No ensaio ponta a ponta (etapa 9):** acrescentar **um resultado fora do limite** (alerta e desvio), **uma análise reprovada** (a etapa seguinte fica travada, sem exceção) e **uma correção de campo assinado** (exige motivo e reassinatura).
 
+### Detalhe das etapas 1, 3 e 9: terceirização e validade do lote (Produção)
+(Vem da ficha [14e](fluxo-14e-terceirizacao-validade.md).)
+1. **Fornecedor terceirizado qualificado, com contrato e acordo técnico** (etapa 3), antes da primeira terceirização.
+2. **Funções de confirmar a terceirização e aprovar a validade, separadas e com assinatura** (etapa 1).
+3. **No ensaio ponta a ponta (etapa 9):** acrescentar **uma etapa terceirizada** (o registro do terceiro entra no caderno do lote), **um fornecedor não qualificado** (recusado) e **um pedido de validade reprovado** (a validade não muda).
+
 ## 3. Quem decide o quê
 | Decisão | Quem |
 |---|---|
@@ -214,6 +220,7 @@ O roteiro cresce conforme analisamos os fluxos (ordem em [Todos os fluxos](fluxo
 - **Inventário**: **feito** (ficha 10); detalha as etapas 1, 6 e 9.
 - **Com isso, os dez fluxos do Estoque estão feitos**, e também **água e ambiente e estabilidade** (fichas 11a e 11b, Controle da Qualidade) e **os documentos controlados** (fichas 12a e 12b, Controle de Documentos).
 - **Garantia da Qualidade completa**: **treinamento** (13a), **desvios e CAPA** (13b), **controle de mudanças** (13c), **autoinspeção e auditoria** (13d) e **assuntos regulatórios** (13e).
-- **Produção, Comercial, Rastreabilidade e OPE** acrescentam as etapas das outras áreas.
+- **Produção completa**: **preparação** (14a), **produto, fórmula e ordem** (14b), **autorização, início e final** (14c), **registro de lote** (14d) e **terceirização e validade** (14e).
+- **Comercial, Rastreabilidade e OPE** acrescentam as etapas das outras áreas.
 
 Cada ficha atualiza este roteiro: a etapa correspondente ganha o detalhe e a ordem é revista se uma dependência nova aparecer.

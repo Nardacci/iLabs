@@ -1,0 +1,18 @@
+flowchart TB
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  subgraph T["1 · Terceirizar uma etapa"]
+    direction LR
+    A1["Escolher o fornecedor"]:::passo --> A2{"Fornecedor qualificado<br/>e com contrato válido?"}:::trava
+    A2 -- não --> X1(["Terceirização recusada"]):::bloqueio
+    A2 -- sim --> A3["Confirmar com assinatura<br/>da Qualidade"]:::trava --> A4["O registro do terceiro<br/>entra no caderno do lote"]:::trava
+  end
+  subgraph V["2 · Mudar a validade do lote"]
+    direction LR
+    B1["Pedido de nova validade<br/>com justificativa e estudo"]:::trava --> B2["Confirmação e aprovação<br/>por pessoas diferentes,<br/>com assinatura"]:::trava --> B3{"Todas as decisões<br/>foram favoráveis?"}:::trava
+    B3 -- não --> X2(["A validade não muda"]):::bloqueio
+    B3 -- sim --> B4(["Nova validade gravada<br/>e avisada ao Estoque"]):::fim
+  end
+  T --> V
