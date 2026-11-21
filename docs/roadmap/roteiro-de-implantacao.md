@@ -1,6 +1,6 @@
 # Roteiro de implantação do sistema
 
-**Versão 1.20, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
+**Versão 1.21, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
 
 **Para que serve:** responder, para qualquer cliente que vá implantar o iLabs, **"o que fazer, em que ordem, quem faz e quando está pronto"**. A ordem vem das dependências entre cadastros ([passo 2](ordem-de-cadastro.md)) e das informações que cada fluxo exige ([passo 3](fluxo-01-recebimento-quarentena.md)): **não se cadastra o Item sem antes ter o que o Item usa; não se recebe material sem fornecedor qualificado, local de quarentena e regra de análise.**
 
@@ -172,6 +172,12 @@ Sem qualquer um destes, o fluxo trava em alguma etapa.
 1. **Funções separadas** (etapa 1): solicitar, autorizar por área, autorizar a produção, finalizar, reconciliar e a **Pessoa Delegada** que libera o lote, com assinatura.
 2. **Formato do número de lote, faixa de rendimento por produto e conversão de unidade dos itens** (etapa 7).
 3. **No ensaio ponta a ponta (etapa 9):** acrescentar **uma produção completa até a liberação**, **uma área que nega** (a produção não é autorizada), **um insumo vencido** (recusado), **uma finalização sem entrar no Estoque** (impossível) e **uma reprovação** (o Estoque retém o lote).
+
+### Detalhe das etapas 1, 7 e 9: o registro de lote (Produção)
+(Vem da ficha [14d](fluxo-14d-registro-de-lote.md).)
+1. **Funções separadas, treinadas e com assinatura** (etapa 1): operador, conferente e liberar controle da qualidade.
+2. **Modelo do registro de cada produto, com limites de especificação e versão aprovada** (etapa 7), montado antes da primeira produção.
+3. **No ensaio ponta a ponta (etapa 9):** acrescentar **um resultado fora do limite** (alerta e desvio), **uma análise reprovada** (a etapa seguinte fica travada, sem exceção) e **uma correção de campo assinado** (exige motivo e reassinatura).
 
 ## 3. Quem decide o quê
 | Decisão | Quem |

@@ -1,0 +1,22 @@
+flowchart TB
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  subgraph M["1 · O caderno da fabricação"]
+    direction LR
+    A1["Modelo aprovado e com versão<br/>etapas, subetapas, campos,<br/>limites de especificação"]:::trava --> A2["Campos automáticos:<br/>lote, validade, pesagem do Estoque"]:::trava
+  end
+  subgraph P["2 · Preencher no momento"]
+    direction LR
+    B1["Operador anota<br/>na hora que faz"]:::trava --> B2{"Dentro do limite<br/>e do horário real?"}:::trava
+    B2 -- não --> X1(["Alerta e desvio aberto"]):::bloqueio
+    B2 -- sim --> B3["Assinatura com senha<br/>de quem tem a função"]:::trava --> B4["Conferente diferente<br/>do executor"]:::trava
+  end
+  subgraph C["3 · Controles e alterações"]
+    direction LR
+    C1["Controle em processo<br/>com resultado e limite"]:::trava --> C2{"Análise do CQ<br/>aprovada?"}:::trava
+    C2 -- não --> X2(["Etapa seguinte travada<br/>sem exceção por senha"]):::bloqueio
+    C2 -- sim --> C3["Alteração só com motivo,<br/>nova assinatura e histórico"]:::trava
+  end
+  M --> P --> C
