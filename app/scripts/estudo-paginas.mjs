@@ -53,6 +53,14 @@ const PAGINAS_SEM_ORDEM = [
     arquivo: 'fluxos-do-legado.md',
   },
   {
+    id: 'pendencias',
+    codigo: '',
+    titulo: 'Pontos a validar, por área (para as reuniões)',
+    modulo: 'Para começar',
+    tipo: 'Guia',
+    arquivo: 'pontos-a-validar.md',
+  },
+  {
     id: 'norma',
     codigo: '',
     titulo: 'O que a norma diz',
