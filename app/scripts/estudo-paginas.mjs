@@ -155,6 +155,11 @@ const PAGINAS = [
     titulo: '31 · Fluxo: cotação, requisição e reserva (Comercial)',
     arquivo: 'fluxo-15b-cotacao-requisicao-reserva.md',
   },
+  {
+    id: 'fluxo15c',
+    titulo: '32 · Fluxo: fatura, remessa e cancelamento (Comercial)',
+    arquivo: 'fluxo-15c-fatura-remessa-cancelamento.md',
+  },
   { id: 'fluxos', titulo: 'Todos os fluxos', arquivo: 'fluxos-do-legado.md' },
 ];
 
