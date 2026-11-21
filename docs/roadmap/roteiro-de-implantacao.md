@@ -1,6 +1,6 @@
 # Roteiro de implantação do sistema
 
-**Versão 1.26, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
+**Versão 1.27, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
 
 **Para que serve:** responder, para qualquer cliente que vá implantar o iLabs, **"o que fazer, em que ordem, quem faz e quando está pronto"**. A ordem vem das dependências entre cadastros ([passo 2](ordem-de-cadastro.md)) e das informações que cada fluxo exige ([passo 3](fluxo-01-recebimento-quarentena.md)): **não se cadastra o Item sem antes ter o que o Item usa; não se recebe material sem fornecedor qualificado, local de quarentena e regra de análise.**
 
@@ -208,6 +208,12 @@ Sem qualquer um destes, o fluxo trava em alguma etapa.
 1. **Empresa titular do registro** com os dados da etiqueta e o **prefixo GS1** (etapa 3); **formato do IUM** definido por Assuntos Regulatórios e guardado fora do código.
 2. **Funções de gerar IUM e desfazer caixa, separadas e com assinatura** (etapa 1).
 3. **No ensaio ponta a ponta (etapa 9):** acrescentar **gerar mais IUM do que o embalado** (recusado), **gerar IUM de lote bloqueado** (recusado), **etiqueta com os dados da empresa certa** e **desfazer caixa já expedida** (recusado).
+
+### Detalhe das etapas 1, 3 e 9: eventos e declaração à ANVISA (Rastreabilidade)
+(Vem da ficha [16b](fluxo-16b-eventos-e-declaracao.md).)
+1. **Certificado digital e endereço do serviço da ANVISA, por variável de ambiente** (nunca no código), e **tipos de evento** definidos por Assuntos Regulatórios (etapa 3).
+2. **Funções de registrar, reenviar e retificar evento, separadas e com assinatura** (etapa 1).
+3. **No ensaio ponta a ponta (etapa 9):** acrescentar **entrega sem venda** (recusada), **evento fora de ordem** (recusado), **envio que falha** (fica pendente, com aviso, nunca como enviado) e **retificação sem motivo** (recusada). A Rastreabilidade fica completa (16a e 16b).
 
 ## 3. Quem decide o quê
 | Decisão | Quem |

@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-21 · Claude · Ficha 16b do passo 3: eventos e declaração à ANVISA (fecha a Rastreabilidade)
+
+- **Pedido do responsável:** seguir com a Rastreabilidade.
+- **Entregue:** `docs/roadmap/fluxo-16b-eventos-e-declaracao.md` (11 etapas, caixa "Em uma frase", imagem no alto, coluna "Onde no sistema (legado)"); aba "34 · Fluxo: eventos e declaração à ANVISA (Rastreabilidade)"; roteiro **1.27**; lista de fluxos marca a 16b como feita. **As duas fichas da Rastreabilidade estão feitas.**
+- **Achados citados (do código, nada testado na tela):** nenhum evento chega à ANVISA, o envio é simulado e cai numa fila que ninguém lê, sem certificado nem assinatura (`RN010` a `RN012`); a tela afirma "envio efetuado com sucesso" sem ler a resposta, o que é registro falso (`RN009`, art. 124); os IUM mudam de situação antes do envio (`RN008`, `RN013`); a ordem dos eventos e a ligação com a venda e com a situação do lote não são conferidas (`RN002`, `RN006`, `RN007`); digitar um código inexistente na finalização cria um IUM (`RN003`); a situação do envio não é gravada e entregas e recebimentos ficam gravados duas vezes (`RN014`, `RN015`); a retificação não exige motivo (`RN019`); Estoque e Rastreabilidade têm duas telas de evento (`RN016`).
+- **Testado na tela:** nada.
+- **Normas conferidas no texto:** RDC 658/2022, arts. 8º XV, 124 e 344 a 347; Guia 33/2020, item 9.3.2.3. **A Lei 11.903/2009 e a regulamentação do SNCM não estão no repositório:** o que declarar, quando e em que formato ficam como pontos a validar com Assuntos Regulatórios.
+- **Próxima etapa:** OPE (item 17 de `fluxos-do-legado.md`, montagem do modelo), a última da lista de fluxos.
+
 ## 2026-11-21 · Claude · Ficha 16a do passo 3: geração do IUM e agregação (Rastreabilidade)
 
 - **Pedido do responsável:** seguir com a lista (Rastreabilidade).
