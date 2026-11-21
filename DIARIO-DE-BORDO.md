@@ -2,6 +2,14 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-21 · Claude · Pontos a validar de todas as fichas, juntos e por área
+
+- **Pedido do responsável:** seguir (item 3 da proposta: juntar os pontos a validar para levar às reuniões).
+- **Entregue:** `docs/roadmap/pontos-a-validar.md` (gerado por `python3 ferramentas/gerar-pontos-a-validar.py`, a partir da seção "Pontos a validar com a área" das 30 fichas): **219 perguntas**, com código por pergunta (`14d-3` = ficha 14d, pergunta 3), agrupadas por quem responde (Estoque e Compras, Controle da Qualidade, Garantia da Qualidade, Controle de Documentos, Produção, Comercial, Assuntos Regulatórios, OPE) e com o resumo por área. Entrou na lista do estudo (grupo "Para começar", "Pontos a validar, por área").
+- **Antes das reuniões:** o documento lista os 6 textos que não estão no repositório e que a Qualidade precisa fornecer (Lei 11.903/2009 e regulamentação do SNCM, RDC 430/2020, instrução normativa das amostras, norma de registro, Farmacopeia e normas de água e ambiente, regulamento de estabilidade).
+- **Sem conteúdo novo:** o documento só reúne o que já está nas fichas. Quando uma ficha mudar, refazer com o script.
+- **Próxima etapa (proposta):** o responsável leva as perguntas às áreas e passa as respostas pelo chat, com o código da pergunta; eu atualizo a ficha e refaço a lista.
+
 ## 2026-11-21 · Claude · Ficha 17 do passo 3: montagem do modelo do registro de lote (OPE, fecha a lista de fluxos)
 
 - **Pedido do responsável:** seguir com a lista (OPE).
