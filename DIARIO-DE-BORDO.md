@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-21 · Claude · Ficha 15a do passo 3: cliente e cadastros de venda (Comercial)
+
+- **Pedido do responsável:** seguir com a lista (Comercial).
+- **Entregue:** `docs/roadmap/fluxo-15a-cliente-e-cadastros.md` (9 etapas, caixa "Em uma frase", imagem no alto, coluna "Onde no sistema (legado)"); aba "30 · Fluxo: cliente e cadastros de venda (Comercial)"; roteiro **1.23**; lista de fluxos marca a 15a como feita. O Comercial tem três fichas: 15a (esta), 15b cotação, requisição e reserva, 15c fatura, remessa e cancelamento.
+- **Achados citados (do código, nada testado na tela):** o cliente não tem licença sanitária, autorização nem responsável técnico (`RN003`); o tipo de fornecimento número 3 abre a lista inteira de empresas, inclusive fornecedores (`RN004`); a fatura aponta para o endereço, sem cópia, então alterar ou excluir muda vendas antigas (`RN007`); convênio e preço sem vigência (`RN011`, `RN018`); o histórico existe mas nenhuma tela o chama (`RN021`).
+- **Testado na tela:** nada.
+- **Normas conferidas no texto:** RDC 658/2022, arts. 125 e 344 a 347. A exigência de licença do cliente vem da RDC 430/2020, que não está no repositório: ponto a validar.
+- **Próxima ficha:** 15b, cotação, requisição e reserva.
+
 ## 2026-11-21 · Claude · Ficha 14e do passo 3: terceirização e validade da ordem de produção (fecha a Produção)
 
 - **Pedido do responsável:** seguir com a Produção.

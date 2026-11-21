@@ -1,6 +1,6 @@
 # Roteiro de implantação do sistema
 
-**Versão 1.22, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
+**Versão 1.23, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
 
 **Para que serve:** responder, para qualquer cliente que vá implantar o iLabs, **"o que fazer, em que ordem, quem faz e quando está pronto"**. A ordem vem das dependências entre cadastros ([passo 2](ordem-de-cadastro.md)) e das informações que cada fluxo exige ([passo 3](fluxo-01-recebimento-quarentena.md)): **não se cadastra o Item sem antes ter o que o Item usa; não se recebe material sem fornecedor qualificado, local de quarentena e regra de análise.**
 
@@ -184,6 +184,12 @@ Sem qualquer um destes, o fluxo trava em alguma etapa.
 1. **Fornecedor terceirizado qualificado, com contrato e acordo técnico** (etapa 3), antes da primeira terceirização.
 2. **Funções de confirmar a terceirização e aprovar a validade, separadas e com assinatura** (etapa 1).
 3. **No ensaio ponta a ponta (etapa 9):** acrescentar **uma etapa terceirizada** (o registro do terceiro entra no caderno do lote), **um fornecedor não qualificado** (recusado) e **um pedido de validade reprovado** (a validade não muda).
+
+### Detalhe das etapas 1, 3 e 9: cliente e cadastros de venda (Comercial)
+(Vem da ficha [15a](fluxo-15a-cliente-e-cadastros.md).)
+1. **Cliente com tipo, documentos que autorizam receber medicamentos e endereços** (etapa 3); papel de cliente separado do de fornecedor.
+2. **Funções de cadastrar cliente, aprovar convênio e alterar preço, separadas e com assinatura** (etapa 1).
+3. **No ensaio ponta a ponta (etapa 9):** acrescentar **um cliente sem licença** (recusado) e **um endereço alterado depois da venda** (a fatura antiga mantém o endereço da época).
 
 ## 3. Quem decide o quê
 | Decisão | Quem |
