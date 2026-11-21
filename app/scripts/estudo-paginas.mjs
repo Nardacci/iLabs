@@ -140,6 +140,11 @@ const PAGINAS = [
     titulo: '28 · Fluxo: registro de lote (Produção)',
     arquivo: 'fluxo-14d-registro-de-lote.md',
   },
+  {
+    id: 'fluxo14e',
+    titulo: '29 · Fluxo: terceirização e validade da OPE (Produção)',
+    arquivo: 'fluxo-14e-terceirizacao-validade.md',
+  },
   { id: 'fluxos', titulo: 'Todos os fluxos', arquivo: 'fluxos-do-legado.md' },
 ];
 
