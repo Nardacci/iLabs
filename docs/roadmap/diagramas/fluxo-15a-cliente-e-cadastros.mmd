@@ -1,0 +1,20 @@
+flowchart TB
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  subgraph C["1 · Quem pode comprar"]
+    direction LR
+    A1["Empresa cadastrada<br/>no cadastro geral"]:::passo --> A2{"Autorizada a receber<br/>medicamentos?"}:::trava
+    A2 -- não --> X1(["Não vira cliente"]):::bloqueio
+    A2 -- sim --> A3["Tipo de cliente,<br/>endereços e contatos"]:::trava
+  end
+  subgraph R["2 · Como a venda funciona"]
+    direction LR
+    B1["Tipo de fornecimento<br/>e preço com vigência"]:::trava --> B2["Convênio com validade<br/>e limite por produto"]:::trava --> B3["Relacionamento<br/>e pregões"]:::passo
+  end
+  subgraph H["3 · O que fica guardado"]
+    direction LR
+    D1["Endereço da venda<br/>copiado na fatura"]:::trava --> D2(["Histórico de toda alteração<br/>para o recolhimento"]):::fim
+  end
+  C --> R --> H

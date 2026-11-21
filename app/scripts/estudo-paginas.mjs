@@ -145,6 +145,11 @@ const PAGINAS = [
     titulo: '29 · Fluxo: terceirização e validade da OPE (Produção)',
     arquivo: 'fluxo-14e-terceirizacao-validade.md',
   },
+  {
+    id: 'fluxo15a',
+    titulo: '30 · Fluxo: cliente e cadastros de venda (Comercial)',
+    arquivo: 'fluxo-15a-cliente-e-cadastros.md',
+  },
   { id: 'fluxos', titulo: 'Todos os fluxos', arquivo: 'fluxos-do-legado.md' },
 ];
 
