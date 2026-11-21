@@ -12,7 +12,7 @@
 >
 > **Por que importa:** o que o terceiro faz é responsabilidade da empresa. Se a etapa terceirizada não fica registrada no caderno do lote, ou se a validade muda sem prova, o lote perde a credibilidade.
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página. Aqui: **terceirização** é contratar outra empresa para executar uma etapa da fabricação ou da análise; **Contratante** é a empresa que contrata (a nossa); **Contratado** é quem executa; **OPE** é a ordem de produção.*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo). Aqui: **terceirização** é contratar outra empresa para executar uma etapa da fabricação ou da análise; **Contratante** é a empresa que contrata (a nossa); **Contratado** é quem executa; **OPE** é a ordem de produção.*
 
 **Análise de 21/11/2026. Rascunho para validação do responsável.** Última das cinco fichas da **Produção** (a [14a](fluxo-14a-preparacao.md) foi a preparação, a [14b](fluxo-14b-produto-formula-ordem.md), produto e ordem, a [14c](fluxo-14c-autorizacao-inicio-final.md), autorização e final e a [14d](fluxo-14d-registro-de-lote.md), registro de lote). São dois processos menores: a **terceirização** e a **alteração da validade da ordem de produção** (a tela está **fora do menu**).
 

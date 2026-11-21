@@ -12,7 +12,7 @@
 >
 > **Por que importa:** se a receita puder mudar sem aprovação, dois lotes do "mesmo" remédio podem sair diferentes sem ninguém perceber.
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página. Aqui: **fórmula** é a lista do que entra no remédio e em que quantidade; **lote padrão** é o "molde" aprovado de um lote (itens, locais, equipamentos); **OPE (ordem de produção)** é a ordem que manda fabricar, ligada a um modelo de **registro de lote** (o caderno de anotações da fabricação); **XML** é o formato do arquivo desse modelo.*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo). Aqui: **fórmula** é a lista do que entra no remédio e em que quantidade; **lote padrão** é o "molde" aprovado de um lote (itens, locais, equipamentos); **OPE (ordem de produção)** é a ordem que manda fabricar, ligada a um modelo de **registro de lote** (o caderno de anotações da fabricação); **XML** é o formato do arquivo desse modelo.*
 
 **Análise de 20/11/2026. Rascunho para validação do responsável.** Segunda das cinco fichas da **Produção** (a [14a](fluxo-14a-preparacao.md) foi a preparação). Aqui nasce **tudo o que a produção precisa para ser pedida**: sem produto, lote padrão aprovado e ordem de produção, não há como solicitar a produção (ficha 14c).
 

@@ -5,173 +5,222 @@ import { fileURLToPath } from 'node:url';
 import { marked } from 'marked';
 
 const raiz = fileURLToPath(new URL('..', import.meta.url));
-const PAGINAS = [
-  { id: 'implantacao', titulo: 'Roteiro de implantação', arquivo: 'roteiro-de-implantacao.md' },
-  { id: 'funcoes', titulo: 'Funções do profissional', arquivo: 'funcoes-do-profissional.md' },
-  { id: 'repetidos', titulo: '1 · Cadastros repetidos', arquivo: 'cadastros-repetidos.md' },
-  { id: 'ordem', titulo: '2 · Ordem de cadastro', arquivo: 'ordem-de-cadastro.md' },
+// Cada documento: id (vai no endereço), código da ficha, título sem número, módulo (grupo da lista) e tipo (filtro).
+// A ordem dos módulos é a de MODULOS; dentro de cada módulo vale a ordem desta lista.
+const MODULOS = [
+  'Para começar',
+  'Cadastros',
+  'Estoque',
+  'Controle da Qualidade',
+  'Garantia da Qualidade',
+  'Controle de Documentos',
+  'Produção',
+  'Comercial',
+  'Rastreabilidade',
+];
+const f = (id, codigo, titulo, modulo, arquivo) => ({
+  id,
+  codigo,
+  titulo,
+  modulo,
+  tipo: 'Fluxo',
+  arquivo,
+});
+const PAGINAS_SEM_ORDEM = [
   {
-    id: 'fluxo1',
-    titulo: '3 · Fluxo: recebimento e quarentena',
-    arquivo: 'fluxo-01-recebimento-quarentena.md',
+    id: 'implantacao',
+    codigo: '',
+    titulo: 'Roteiro de implantação',
+    modulo: 'Para começar',
+    tipo: 'Guia',
+    arquivo: 'roteiro-de-implantacao.md',
   },
   {
-    id: 'fluxo2',
-    titulo: '4 · Fluxo: compras e fornecedor',
-    arquivo: 'fluxo-02-compras-e-fornecedor.md',
+    id: 'glossario',
+    codigo: '',
+    titulo: 'Glossário',
+    modulo: 'Para começar',
+    tipo: 'Guia',
+    arquivo: 'glossario.md',
   },
   {
-    id: 'fluxo3',
-    titulo: '5 · Fluxo: regras, análise e laudo',
-    arquivo: 'fluxo-03-regras-analise-e-laudo.md',
-  },
-  {
-    id: 'fluxo4',
-    titulo: '6 · Fluxo: reprovado, reanálise e revalidação',
-    arquivo: 'fluxo-04-reprovado-reanalise-revalidacao.md',
-  },
-  {
-    id: 'fluxo5',
-    titulo: '7 · Fluxo: movimentação interna',
-    arquivo: 'fluxo-05-movimentacao-interna.md',
-  },
-  {
-    id: 'fluxo6',
-    titulo: '8 · Fluxo: pedir, separar e entregar o material',
-    arquivo: 'fluxo-06-solicitacao-separacao-atendimento.md',
-  },
-  {
-    id: 'fluxo7',
-    titulo: '9 · Fluxo: guardar as amostras do CQ',
-    arquivo: 'fluxo-07-almoxarifado-cq.md',
-  },
-  {
-    id: 'fluxo8',
-    titulo: '10 · Fluxo: devolução e entradas',
-    arquivo: 'fluxo-08-devolucao-e-entradas.md',
-  },
-  {
-    id: 'fluxo9',
-    titulo: '11 · Fluxo: remessa e expedição',
-    arquivo: 'fluxo-09-remessa-e-expedicao.md',
-  },
-  {
-    id: 'fluxo10',
-    titulo: '12 · Fluxo: inventário',
-    arquivo: 'fluxo-10-inventario.md',
-  },
-  {
-    id: 'fluxo11a',
-    titulo: '13 · Fluxo: água e ambiente (CQ)',
-    arquivo: 'fluxo-11a-agua-e-ambiente.md',
-  },
-  {
-    id: 'fluxo11b',
-    titulo: '14 · Fluxo: estabilidade (CQ)',
-    arquivo: 'fluxo-11b-estabilidade.md',
-  },
-  {
-    id: 'fluxo12a',
-    titulo: '15 · Fluxo: ciclo do documento',
-    arquivo: 'fluxo-12a-ciclo-do-documento.md',
-  },
-  {
-    id: 'fluxo12b',
-    titulo: '16 · Fluxo: cópias, externo e legado',
-    arquivo: 'fluxo-12b-copias-externo-legado.md',
-  },
-  {
-    id: 'fluxo13a',
-    titulo: '17 · Fluxo: treinamento (GQ)',
-    arquivo: 'fluxo-13a-treinamento.md',
-  },
-  {
-    id: 'fluxo13b',
-    titulo: '18 · Fluxo: desvios e CAPA (GQ)',
-    arquivo: 'fluxo-13b-desvios-e-capa.md',
-  },
-  {
-    id: 'fluxo13c',
-    titulo: '19 · Fluxo: controle de mudanças (GQ)',
-    arquivo: 'fluxo-13c-controle-de-mudancas.md',
-  },
-  {
-    id: 'fluxo13d',
-    titulo: '20 · Fluxo: autoinspeção e auditoria (GQ)',
-    arquivo: 'fluxo-13d-autoinspecao-e-auditoria.md',
-  },
-  {
-    id: 'fluxo13e',
-    titulo: '21 · Fluxo: assuntos regulatórios (GQ)',
-    arquivo: 'fluxo-13e-assuntos-regulatorios.md',
+    id: 'fluxos',
+    codigo: '',
+    titulo: 'Todos os fluxos e a ordem de análise',
+    modulo: 'Para começar',
+    tipo: 'Guia',
+    arquivo: 'fluxos-do-legado.md',
   },
   {
     id: 'norma',
-    titulo: '22 · O que a norma diz',
+    codigo: '',
+    titulo: 'O que a norma diz',
+    modulo: 'Para começar',
+    tipo: 'Estudo',
     arquivo: 'o-que-a-norma-diz.md',
   },
   {
     id: 'gqmodulos',
-    titulo: '23 · A GQ e os outros módulos',
+    codigo: '',
+    titulo: 'A Garantia da Qualidade e os outros módulos',
+    modulo: 'Para começar',
+    tipo: 'Estudo',
     arquivo: 'garantia-da-qualidade-e-os-outros-modulos.md',
   },
   {
-    id: 'glossario',
-    titulo: '24 · Glossário',
-    arquivo: 'glossario.md',
+    id: 'repetidos',
+    codigo: '',
+    titulo: 'Cadastros repetidos',
+    modulo: 'Cadastros',
+    tipo: 'Estudo',
+    arquivo: 'cadastros-repetidos.md',
   },
   {
-    id: 'fluxo14a',
-    titulo: '25 · Fluxo: preparação (Produção)',
-    arquivo: 'fluxo-14a-preparacao.md',
+    id: 'ordem',
+    codigo: '',
+    titulo: 'Ordem de cadastro',
+    modulo: 'Cadastros',
+    tipo: 'Estudo',
+    arquivo: 'ordem-de-cadastro.md',
   },
   {
-    id: 'fluxo14b',
-    titulo: '26 · Fluxo: produto, fórmula e ordem (Produção)',
-    arquivo: 'fluxo-14b-produto-formula-ordem.md',
+    id: 'funcoes',
+    codigo: '',
+    titulo: 'Funções do profissional',
+    modulo: 'Cadastros',
+    tipo: 'Estudo',
+    arquivo: 'funcoes-do-profissional.md',
   },
-  {
-    id: 'fluxo14c',
-    titulo: '27 · Fluxo: autorização, início e final (Produção)',
-    arquivo: 'fluxo-14c-autorizacao-inicio-final.md',
-  },
-  {
-    id: 'fluxo14d',
-    titulo: '28 · Fluxo: registro de lote (Produção)',
-    arquivo: 'fluxo-14d-registro-de-lote.md',
-  },
-  {
-    id: 'fluxo14e',
-    titulo: '29 · Fluxo: terceirização e validade da OPE (Produção)',
-    arquivo: 'fluxo-14e-terceirizacao-validade.md',
-  },
-  {
-    id: 'fluxo15a',
-    titulo: '30 · Fluxo: cliente e cadastros de venda (Comercial)',
-    arquivo: 'fluxo-15a-cliente-e-cadastros.md',
-  },
-  {
-    id: 'fluxo15b',
-    titulo: '31 · Fluxo: cotação, requisição e reserva (Comercial)',
-    arquivo: 'fluxo-15b-cotacao-requisicao-reserva.md',
-  },
-  {
-    id: 'fluxo15c',
-    titulo: '32 · Fluxo: fatura, remessa e cancelamento (Comercial)',
-    arquivo: 'fluxo-15c-fatura-remessa-cancelamento.md',
-  },
-  {
-    id: 'fluxo16a',
-    titulo: '33 · Fluxo: geração do IUM e agregação (Rastreabilidade)',
-    arquivo: 'fluxo-16a-ium-e-agregacao.md',
-  },
-  {
-    id: 'fluxo16b',
-    titulo: '34 · Fluxo: eventos e declaração à ANVISA (Rastreabilidade)',
-    arquivo: 'fluxo-16b-eventos-e-declaracao.md',
-  },
-  { id: 'fluxos', titulo: 'Todos os fluxos', arquivo: 'fluxos-do-legado.md' },
+  f('fluxo1', '1', 'Recebimento e quarentena', 'Estoque', 'fluxo-01-recebimento-quarentena.md'),
+  f('fluxo2', '2', 'Compras e fornecedor', 'Estoque', 'fluxo-02-compras-e-fornecedor.md'),
+  f(
+    'fluxo4',
+    '4',
+    'Reprovado, reanálise e revalidação',
+    'Estoque',
+    'fluxo-04-reprovado-reanalise-revalidacao.md',
+  ),
+  f('fluxo5', '5', 'Movimentação interna', 'Estoque', 'fluxo-05-movimentacao-interna.md'),
+  f(
+    'fluxo6',
+    '6',
+    'Pedir, separar e entregar o material',
+    'Estoque',
+    'fluxo-06-solicitacao-separacao-atendimento.md',
+  ),
+  f('fluxo7', '7', 'Guardar as amostras do CQ', 'Estoque', 'fluxo-07-almoxarifado-cq.md'),
+  f('fluxo8', '8', 'Devolução e entradas', 'Estoque', 'fluxo-08-devolucao-e-entradas.md'),
+  f('fluxo9', '9', 'Remessa e expedição', 'Estoque', 'fluxo-09-remessa-e-expedicao.md'),
+  f('fluxo10', '10', 'Inventário', 'Estoque', 'fluxo-10-inventario.md'),
+  f(
+    'fluxo3',
+    '3',
+    'Regras de amostragem, análise e laudo',
+    'Controle da Qualidade',
+    'fluxo-03-regras-analise-e-laudo.md',
+  ),
+  f('fluxo11a', '11a', 'Água e ambiente', 'Controle da Qualidade', 'fluxo-11a-agua-e-ambiente.md'),
+  f('fluxo11b', '11b', 'Estabilidade', 'Controle da Qualidade', 'fluxo-11b-estabilidade.md'),
+  f('fluxo13a', '13a', 'Treinamento', 'Garantia da Qualidade', 'fluxo-13a-treinamento.md'),
+  f('fluxo13b', '13b', 'Desvios e CAPA', 'Garantia da Qualidade', 'fluxo-13b-desvios-e-capa.md'),
+  f(
+    'fluxo13c',
+    '13c',
+    'Controle de mudanças',
+    'Garantia da Qualidade',
+    'fluxo-13c-controle-de-mudancas.md',
+  ),
+  f(
+    'fluxo13d',
+    '13d',
+    'Autoinspeção e auditoria',
+    'Garantia da Qualidade',
+    'fluxo-13d-autoinspecao-e-auditoria.md',
+  ),
+  f(
+    'fluxo13e',
+    '13e',
+    'Assuntos regulatórios',
+    'Garantia da Qualidade',
+    'fluxo-13e-assuntos-regulatorios.md',
+  ),
+  f(
+    'fluxo12a',
+    '12a',
+    'Ciclo do documento',
+    'Controle de Documentos',
+    'fluxo-12a-ciclo-do-documento.md',
+  ),
+  f(
+    'fluxo12b',
+    '12b',
+    'Cópias, documento externo e legado',
+    'Controle de Documentos',
+    'fluxo-12b-copias-externo-legado.md',
+  ),
+  f('fluxo14a', '14a', 'Preparação', 'Produção', 'fluxo-14a-preparacao.md'),
+  f(
+    'fluxo14b',
+    '14b',
+    'Produto, fórmula e ordem',
+    'Produção',
+    'fluxo-14b-produto-formula-ordem.md',
+  ),
+  f(
+    'fluxo14c',
+    '14c',
+    'Autorização, início e final',
+    'Produção',
+    'fluxo-14c-autorizacao-inicio-final.md',
+  ),
+  f('fluxo14d', '14d', 'Registro de lote', 'Produção', 'fluxo-14d-registro-de-lote.md'),
+  f(
+    'fluxo14e',
+    '14e',
+    'Terceirização e validade da ordem de produção',
+    'Produção',
+    'fluxo-14e-terceirizacao-validade.md',
+  ),
+  f(
+    'fluxo15a',
+    '15a',
+    'Cliente e cadastros de venda',
+    'Comercial',
+    'fluxo-15a-cliente-e-cadastros.md',
+  ),
+  f(
+    'fluxo15b',
+    '15b',
+    'Cotação, requisição e reserva',
+    'Comercial',
+    'fluxo-15b-cotacao-requisicao-reserva.md',
+  ),
+  f(
+    'fluxo15c',
+    '15c',
+    'Fatura, remessa e cancelamento',
+    'Comercial',
+    'fluxo-15c-fatura-remessa-cancelamento.md',
+  ),
+  f(
+    'fluxo16a',
+    '16a',
+    'Geração do IUM e agregação',
+    'Rastreabilidade',
+    'fluxo-16a-ium-e-agregacao.md',
+  ),
+  f(
+    'fluxo16b',
+    '16b',
+    'Eventos e declaração à ANVISA',
+    'Rastreabilidade',
+    'fluxo-16b-eventos-e-declaracao.md',
+  ),
 ];
+const PAGINAS = MODULOS.flatMap((m) => PAGINAS_SEM_ORDEM.filter((p) => p.modulo === m));
+if (PAGINAS.length !== PAGINAS_SEM_ORDEM.length) {
+  throw new Error('Há documento com módulo que não está em MODULOS.');
+}
 
 // As imagens dos fluxos (docs/roadmap/diagramas/*.png) vão para app/public/estudo/ e a página as usa pelo endereço relativo.
 mkdirSync(`${raiz}/public/estudo`, { recursive: true });
@@ -207,15 +256,28 @@ function html(arquivo) {
   return saida.replace(/<h1[^>]*>[\s\S]*?<\/h1>/, '');
 }
 
-const paginas = PAGINAS.map((p) => ({ id: p.id, titulo: p.titulo, html: html(p.arquivo) }));
+const paginas = PAGINAS.map((p) => ({
+  id: p.id,
+  codigo: p.codigo,
+  titulo: p.titulo,
+  modulo: p.modulo,
+  tipo: p.tipo,
+  html: html(p.arquivo),
+}));
 writeFileSync(
   `${raiz}/src/app/estudo/paginas.gerado.ts`,
   `// GERADO por scripts/estudo-paginas.mjs a partir de docs/roadmap/*.md. Não edite à mão.
 export interface PaginaDoEstudo {
   id: string;
+  /** Código da ficha de fluxo ("14d"); vazio nos demais documentos. */
+  codigo: string;
   titulo: string;
+  modulo: string;
+  tipo: string;
   html: string;
 }
+
+export const MODULOS_DO_ESTUDO: readonly string[] = ${JSON.stringify(MODULOS)};
 
 export const PAGINAS_DO_ESTUDO: readonly PaginaDoEstudo[] = ${JSON.stringify(paginas, null, 2)};
 `,

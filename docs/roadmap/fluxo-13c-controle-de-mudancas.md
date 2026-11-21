@@ -12,7 +12,7 @@
 >
 > **Por que importa:** Mudança sem avaliação pode alterar o remédio sem ninguém perceber.
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo).*
 
 **Análise de 20/11/2026. Rascunho para validação do responsável.** Terceira das cinco fichas da Garantia da Qualidade (a [13a](fluxo-13a-treinamento.md) foi o treinamento e a [13b](fluxo-13b-desvios-e-capa.md), desvios e CAPA). O controle de mudanças existe para que **nenhuma mudança em processo, fórmula, produto ou regulatório seja feita sem avaliação prévia das áreas impactadas** e sem prova de que funcionou. Ele **recebe** do desvio a necessidade de mudar e **entrega** documentos novos ([ficha 12a](fluxo-12a-ciclo-do-documento.md)) e lotes ligados ([Estoque](fluxos-do-legado.md)).
 

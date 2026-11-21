@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-21 · Claude · Estudo do roadmap: a fileira de abas vira lista com busca e filtros
+
+- **Pedido do responsável:** com a lista de documentos crescendo (34 abas), achar outra forma de listar; escolheu a lista com filtros (e não o índice lateral, porque o sistema já tem o menu lateral).
+- **Entregue:** a página `/estudo/roadmap` agora é uma **lista agrupada por módulo** (Para começar, Cadastros, Estoque, Controle da Qualidade, Garantia da Qualidade, Controle de Documentos, Produção, Comercial, Rastreabilidade), com **busca** (ignora acento), filtro de **módulo** e de **tipo** (Fluxo, Estudo, Guia) e contagem. Cada documento tem **endereço próprio** (`/estudo/roadmap/<id>`, por exemplo `/estudo/roadmap/fluxo14d`) e abre em tela cheia, com **← Voltar à lista** e **anterior/próximo**. Os **números dos títulos saíram**; o código da ficha ("14d") aparece na lista e no documento.
+- **Onde mexer para acrescentar um documento:** em `app/scripts/estudo-paginas.mjs`, na lista `PAGINAS_SEM_ORDEM` (id, código, título, módulo, tipo, arquivo); depois `node scripts/estudo-paginas.mjs`.
+- **Texto das fichas:** a frase "veja a aba 24 · Glossário" virou "documento Glossário (grupo Para começar da lista do estudo)" nas 29 fichas.
+- **Conferido:** testes da tela (lista, busca, filtros, documento, anterior/próximo, ficha inexistente, acessibilidade), teste de ponta a ponta com acessibilidade, build e fotos da lista e de uma ficha.
+- **Próxima etapa:** OPE (item 17 de `fluxos-do-legado.md`), a última ficha da lista.
+
 ## 2026-11-21 · Claude · Ficha 16b do passo 3: eventos e declaração à ANVISA (fecha a Rastreabilidade)
 
 - **Pedido do responsável:** seguir com a Rastreabilidade.

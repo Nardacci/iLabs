@@ -12,7 +12,7 @@
 >
 > **Por que importa:** Água ou sala fora do padrão, se for usada mesmo assim, pode contaminar um lote inteiro.
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo).*
 
 **Análise de 19/11/2026. Rascunho para validação do responsável.** Primeira parte da ficha 11 do passo 3 (a outra é a [estabilidade](fluxo-11b-estabilidade.md)), e a **primeira do Controle da Qualidade fora do material**. O CQ monitora a **água** (potável, purificada, para injetáveis) e as **salas** (ambiente). O ciclo é o mesmo da [ficha 3](fluxo-03-regras-analise-e-laudo.md) (solicitação, amostragem, análise, laudo, etiqueta); aqui estão **só as diferenças** e a ligação com a **Produção**, que usa os pontos e as salas.
 

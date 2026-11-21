@@ -12,7 +12,7 @@
 >
 > **Por que importa:** é aqui que **tudo o que foi estudado antes se encontra**. Se uma área pode ser ignorada, um lote pode ser fabricado com ingrediente vencido, equipamento sem calibrar ou gente sem treinamento.
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página. Aqui: **reconciliação** é conferir se a quantidade que entrou e a que saiu **fecham** (sem sumiço nem sobra); **rendimento** é quanto saiu pronto em relação ao esperado; **Pessoa Delegada** é quem assina que o lote pode ser vendido; **estabilidade** é a amostra guardada para acompanhar o produto ao longo da validade.*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo). Aqui: **reconciliação** é conferir se a quantidade que entrou e a que saiu **fecham** (sem sumiço nem sobra); **rendimento** é quanto saiu pronto em relação ao esperado; **Pessoa Delegada** é quem assina que o lote pode ser vendido; **estabilidade** é a amostra guardada para acompanhar o produto ao longo da validade.*
 
 **Análise de 20/11/2026. Rascunho para validação do responsável.** Terceira das cinco fichas da **Produção** (a [14a](fluxo-14a-preparacao.md) foi a preparação e a [14b](fluxo-14b-produto-formula-ordem.md), produto, fórmula e ordem). É a ficha mais importante da Produção: **liga o Estoque, o CQ e a GQ à fabricação**.
 

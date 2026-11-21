@@ -12,7 +12,7 @@
 >
 > **Por que importa:** Registro vencido sem aviso pode parar a fábrica ou gerar autuação.
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo).*
 
 **Análise de 20/11/2026. Rascunho para validação do responsável.** Última das cinco fichas da Garantia da Qualidade (a [13a](fluxo-13a-treinamento.md) foi o treinamento, a [13b](fluxo-13b-desvios-e-capa.md), desvios e CAPA, a [13c](fluxo-13c-controle-de-mudancas.md), mudanças e a [13d](fluxo-13d-autoinspecao-e-auditoria.md), autoinspeção). Os assuntos regulatórios cuidam de **duas coisas**: as **obrigações da empresa** perante os órgãos (licenças, certificados, notificações) e o **registro de cada produto** na ANVISA. O produto só pode ser **fabricado e vendido** se o registro está **deferido e dentro da validade**.
 

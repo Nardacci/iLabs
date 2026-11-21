@@ -12,7 +12,7 @@
 >
 > **Por que importa:** Cópia antiga solta no setor é o jeito mais comum de alguém trabalhar com a regra errada.
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo).*
 
 **Análise de 19/11/2026. Rascunho para validação do responsável.** Segunda parte da ficha 12 do passo 3 (a outra é o [ciclo do documento](fluxo-12a-ciclo-do-documento.md)). Reúne **três caminhos que saem do ciclo**: a **cópia em papel** do documento vigente, o **documento externo** (norma, bula de fornecedor) e o **documento legado** (anterior ao sistema). Os três precisam da **mesma trava**: o que está em uso é o que está **vigente e dentro da validade**.
 

@@ -12,7 +12,7 @@
 >
 > **Por que importa:** Entregar o lote errado ou fora da validade é um erro que pode contaminar a fabricação.
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo).*
 
 **Análise de 19/11/2026. Rascunho para validação do responsável.** Sexta ficha do passo 3. É o **primeiro consumo do lote aprovado**: quem precisa de material pede ao Estoque, o Estoque escolhe o lote, pesa quando é preciso e entrega. Depois dela, o saldo do lote muda por **pedido**, e não só por movimentação interna ([ficha 5](fluxo-05-movimentacao-interna.md)).
 

@@ -173,5 +173,11 @@ export const rotasInternas: Routes = [
     data: dados({ titulo: 'Estudo do roadmap', menu: { grupo: 'Estudo do roadmap' } }),
     loadComponent: () => import('./estudo/estudo-roadmap').then((m) => m.EstudoRoadmap),
   },
+  {
+    // Um documento do estudo em tela cheia (o `ficha` do endereço chega ao componente por ligação de parâmetro).
+    path: 'estudo/roadmap/:ficha',
+    data: dados({ titulo: 'Estudo do roadmap' }),
+    loadComponent: () => import('./estudo/estudo-roadmap').then((m) => m.EstudoRoadmap),
+  },
   // <novas-telas> (o gerador `npm run nova-tela` acrescenta acima desta linha)
 ];

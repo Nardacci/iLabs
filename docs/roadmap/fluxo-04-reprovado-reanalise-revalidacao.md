@@ -12,7 +12,7 @@
 >
 > **Por que importa:** Reprovado que 'escapa' para o estoque comum pode entrar num remédio vendido.
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo).*
 
 **Análise de 19/11/2026. Rascunho para validação do responsável.** Quarta ficha do passo 3. Ela completa o ciclo do lote que as fichas [1](fluxo-01-recebimento-quarentena.md) e [3](fluxo-03-regras-analise-e-laudo.md) deixaram na saída do laudo: **para onde vai o lote aprovado, o que fazer com o reprovado, e como o lote é reanalisado ou revalidado** antes de a validade acabar.
 

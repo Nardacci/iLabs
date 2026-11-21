@@ -12,7 +12,7 @@
 >
 > **Por que importa:** Se o problema é só 'arrumado' e não investigado, ele volta, e o lote pode ter saído com defeito.
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo).*
 
 **Análise de 20/11/2026. Rascunho para validação do responsável.** Segunda das cinco fichas da Garantia da Qualidade (a [13a](fluxo-13a-treinamento.md) foi o treinamento). É o fluxo em que **um problema vira ação corretiva e preventiva com prova de que funcionou**. É também o fluxo que **deveria reter o lote**: o desvio com lote aberto não pode deixar o lote seguir ([ficha 4](fluxo-04-reprovado-reanalise-revalidacao.md), [ficha 6](fluxo-06-solicitacao-separacao-atendimento.md)).
 

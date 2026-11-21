@@ -12,7 +12,7 @@
 >
 > **Por que importa:** Se a mesma pessoa conta, justifica e ajusta, abre-se espaço para erro ou fraude.
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo).*
 
 **Análise de 19/11/2026. Rascunho para validação do responsável.** Décima ficha do passo 3, a **última do Estoque**. O inventário **confere o saldo que o sistema calcula com o que está na prateleira** e, quando diverge, **ajusta o saldo**. É a única operação em que o saldo muda **sem** haver entrada nem saída de material; por isso é a que mais exige **segregação de funções** e **registro de quem fez**. Depende de tudo o que vem antes: sem fichas 1 a 9, não há saldo para contar.
 
