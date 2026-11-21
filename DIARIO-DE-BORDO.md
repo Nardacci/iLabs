@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-21 · Claude · Ficha 15c do passo 3: fatura, remessa e cancelamento (fecha o Comercial)
+
+- **Pedido do responsável:** seguir com o Comercial.
+- **Entregue:** `docs/roadmap/fluxo-15c-fatura-remessa-cancelamento.md` (9 etapas, caixa "Em uma frase", imagem no alto, coluna "Onde no sistema (legado)"); aba "32 · Fluxo: fatura, remessa e cancelamento (Comercial)"; roteiro **1.25**; lista de fluxos marca a 15c como feita. **As três fichas do Comercial estão feitas.**
+- **Achados citados (do código, nada testado na tela):** a fatura não reconfere a situação do lote, então lote bloqueado depois da separação é faturado e remetido (`RN005`, `RN010`); falha na remessa é ignorada sem aviso (`RN007`); itens excluídos entram na remessa e no relatório (`RN009`, `RN020`); finalizar não grava quem nem quando (`RN011`); cancelar não desfaz a requisição nem a remessa e apaga a observação original (`RN012`, `RN013`); o relatório de recolhimento (RV07) está fora do menu, exige período, não traz o endereço e ignora fatura cancelada (`RN017` a `RN021`); o prazo de pagamento é fixo em 30 dias (`RN004`); a data sai com o mês no lugar dos minutos (`RN015`).
+- **Testado na tela:** nada.
+- **Normas conferidas no texto:** RDC 658/2022, arts. 8º XV, 14 VII, 125 e 344 a 347.
+- **Próxima etapa:** Rastreabilidade (item 16 de `fluxos-do-legado.md`) e OPE (17).
+
 ## 2026-11-21 · Claude · Ficha 15b do passo 3: cotação, requisição e reserva (Comercial)
 
 - **Pedido do responsável:** seguir com o Comercial.

@@ -1,0 +1,22 @@
+flowchart TB
+  classDef trava fill:#fff0e2,stroke:#c24f00,stroke-width:2px,color:#17191c
+  classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
+  classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
+  classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
+  subgraph F["1 · Faturar"]
+    direction LR
+    A1["Requisição reservada<br/>e separada"]:::passo --> A2{"Lote ainda liberado<br/>no momento da fatura?"}:::trava
+    A2 -- não --> X1(["Fatura recusada"]):::bloqueio
+    A2 -- sim --> A3["Fatura com cópia do<br/>endereço e preço da época"]:::trava
+  end
+  subgraph S["2 · Dar saída"]
+    direction LR
+    B1["Remessa criada junto<br/>com a fatura"]:::trava --> B2{"Remessa deu certo?"}:::trava
+    B2 -- não --> X2(["Fatura desfeita,<br/>com aviso"]):::bloqueio
+    B2 -- sim --> B3["Fatura finalizada<br/>com assinatura"]:::trava
+  end
+  subgraph R["3 · Cancelar e consultar"]
+    direction LR
+    C1["Cancelamento com justificativa<br/>desfaz remessa e requisição"]:::trava --> C2(["Consulta do lote: toda venda,<br/>mesmo cancelada, com endereço"]):::fim
+  end
+  F --> S --> R
