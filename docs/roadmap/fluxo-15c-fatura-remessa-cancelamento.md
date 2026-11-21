@@ -12,7 +12,7 @@
 >
 > **Por que importa:** é o último elo da corrente do lote dentro da empresa. A norma exige que os registros de distribuição estejam **prontamente disponíveis** para quem faz o recolhimento. Se o relatório esconde uma venda, um paciente pode ficar com um medicamento que já deveria ter sido retirado.
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página. Aqui: **fatura** é o documento da venda; **remessa** é o registro da saída física do material; **guia de simples remessa** é o tipo de venda em que a saída é registrada por remessa; **recolhimento** é tirar do mercado um lote já vendido.*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo). Aqui: **fatura** é o documento da venda; **remessa** é o registro da saída física do material; **guia de simples remessa** é o tipo de venda em que a saída é registrada por remessa; **recolhimento** é tirar do mercado um lote já vendido.*
 
 **Análise de 21/11/2026. Rascunho para validação do responsável.** Última das três fichas do **Comercial** (a [15a](fluxo-15a-cliente-e-cadastros.md) foi cliente e cadastros e a [15b](fluxo-15b-cotacao-requisicao-reserva.md), cotação, requisição e reserva).
 

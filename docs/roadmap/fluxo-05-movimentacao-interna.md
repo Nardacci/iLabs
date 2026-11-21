@@ -12,7 +12,7 @@
 >
 > **Por que importa:** Sem registro, o saldo 'some' ou fica no lugar errado, e ninguém sabe onde está o lote.
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo).*
 
 **Análise de 19/11/2026. Rascunho para validação do responsável.** Quinta ficha do passo 3. Ela trata do que acontece com o lote **depois de liberado**, dentro do almoxarifado: **endereçar, transferir de um endereço para outro, e consultar onde está e por onde passou.** Completa as etapas 7 e 11 do [fluxo 1](fluxo-01-recebimento-quarentena.md) e o destino do lote da [ficha 4](fluxo-04-reprovado-reanalise-revalidacao.md).
 

@@ -12,7 +12,7 @@
 >
 > **Por que importa:** Se quem vistoria é da própria área vistoriada, o resultado perde a credibilidade.
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo).*
 
 **Análise de 20/11/2026. Rascunho para validação do responsável.** Quarta das cinco fichas da Garantia da Qualidade (a [13a](fluxo-13a-treinamento.md) foi o treinamento, a [13b](fluxo-13b-desvios-e-capa.md), desvios e CAPA e a [13c](fluxo-13c-controle-de-mudancas.md), mudanças). A autoinspeção e a auditoria **procuram o que está fora do padrão antes que um desvio aconteça**; o que elas acham deve virar **desvio** e **CAPA** ([ficha 13b](fluxo-13b-desvios-e-capa.md)). No legado, essa ligação **não existe**.
 

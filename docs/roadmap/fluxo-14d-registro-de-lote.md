@@ -12,7 +12,7 @@
 >
 > **Por que importa:** se alguém consegue **mudar o caderno depois**, anotar uma hora que não é a real ou liberar uma análise reprovada, a empresa não consegue provar que o lote foi bem feito, e uma fiscalização encontra isso.
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página. Aqui: **etapa e subetapa** são os passos da fabricação, em ordem; **controle em processo** é uma conferência feita no meio da fabricação (por exemplo, medir o peso médio dos comprimidos); **modelo XML** é o arquivo que desenha o caderno de cada produto; **assinatura** é confirmar com usuário e senha.*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo). Aqui: **etapa e subetapa** são os passos da fabricação, em ordem; **controle em processo** é uma conferência feita no meio da fabricação (por exemplo, medir o peso médio dos comprimidos); **modelo XML** é o arquivo que desenha o caderno de cada produto; **assinatura** é confirmar com usuário e senha.*
 
 **Análise de 20/11/2026. Rascunho para validação do responsável.** Quarta das cinco fichas da **Produção** (a [14a](fluxo-14a-preparacao.md) foi a preparação, a [14b](fluxo-14b-produto-formula-ordem.md), produto e ordem e a [14c](fluxo-14c-autorizacao-inicio-final.md), autorização e final). É o **registro que a fiscalização lê primeiro**: mostra, passo a passo, como o lote foi fabricado.
 

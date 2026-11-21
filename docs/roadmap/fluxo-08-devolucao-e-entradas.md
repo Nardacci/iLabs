@@ -12,7 +12,7 @@
 >
 > **Por que importa:** Se entrar lote inventado ou vencido, a rastreabilidade (saber de onde veio) se perde.
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo).*
 
 **Análise de 19/11/2026. Rascunho para validação do responsável.** Oitava ficha do passo 3. A [ficha 1](fluxo-01-recebimento-quarentena.md) cobriu a entrada por **compra**. Esta cobre **as outras portas**: o **produto acabado** que sai da fabricação, a **sobra** que volta da produção, o **material devolvido** e a **entrada avulsa**. Todas criam ou aumentam um lote, então todas precisam da **mesma trava**: lote rastreável, validade boa e quarentena até o laudo.
 

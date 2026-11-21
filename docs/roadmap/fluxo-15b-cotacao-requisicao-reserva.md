@@ -12,7 +12,7 @@
 >
 > **Por que importa:** é aqui que se decide **qual lote sai para qual cliente**. Num recolhimento (tirar do mercado um lote já vendido), é essa decisão que diz quem recebeu o quê. E nenhum lote pode ser vendido antes de uma pessoa responsável da Qualidade **certificar** que ele foi feito e controlado conforme o registro do produto.
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página. Aqui: **cotação** é a proposta de preço enviada ao cliente; **requisição** é o pedido de venda; **reserva** é separar no Estoque, no papel, o lote que foi prometido; **Pessoa Delegada** é a pessoa designada pela empresa para liberar cada lote para venda.*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo). Aqui: **cotação** é a proposta de preço enviada ao cliente; **requisição** é o pedido de venda; **reserva** é separar no Estoque, no papel, o lote que foi prometido; **Pessoa Delegada** é a pessoa designada pela empresa para liberar cada lote para venda.*
 
 **Análise de 21/11/2026. Rascunho para validação do responsável.** Segunda das três fichas do **Comercial** (a [15a](fluxo-15a-cliente-e-cadastros.md) foi cliente e cadastros; a 15c será fatura, remessa e cancelamento).
 

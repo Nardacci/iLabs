@@ -12,7 +12,7 @@
 >
 > **Por que importa:** Sem amostra guardada (ou retirada antes da hora), não há como investigar uma reclamação.
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo).*
 
 **Análise de 19/11/2026. Rascunho para validação do responsável.** Sétima ficha do passo 3. É o destino das **amostras que a Qualidade guarda de cada lote**: a de **referência** (para comparar), a de **retenção** (para investigar reclamação) e a de **estabilidade** (para acompanhar o produto ao longo do tempo). Esse saldo **não é estoque disponível** e nunca sai por pedido de produção ([ficha 6](fluxo-06-solicitacao-separacao-atendimento.md)).
 

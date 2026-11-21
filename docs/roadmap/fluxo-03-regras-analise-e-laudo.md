@@ -12,7 +12,7 @@
 >
 > **Por que importa:** Sem regra clara e sem assinatura, ninguém consegue provar depois por que um material foi liberado.
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo).*
 
 **Análise de 19/11/2026. Rascunho para validação do responsável.** Terceira ficha do passo 3. Ela abre a caixa-preta das etapas 8 a 10 do [fluxo 1](fluxo-01-recebimento-quarentena.md) (amostragem, análise e laudo) e das **regras** que o laboratório precisa ter cadastradas antes.
 

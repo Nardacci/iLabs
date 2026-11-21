@@ -12,7 +12,7 @@
 >
 > **Por que importa:** a norma exige que os registros de distribuição tenham informação suficiente sobre os clientes abastecidos, para o **recolhimento** de um lote. **Recolhimento** é tirar do mercado um lote já vendido. Se o endereço mudou ou sumiu depois da venda, o recolhimento fica no escuro.
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página. Aqui: **convênio** é um contrato de venda com produtos e quantidades combinados; **pregão** é uma concorrência pública de que o cliente participa; **tipo de fornecimento** diz de que jeito a venda acontece (convênio, cotação, guia de simples remessa).*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo). Aqui: **convênio** é um contrato de venda com produtos e quantidades combinados; **pregão** é uma concorrência pública de que o cliente participa; **tipo de fornecimento** diz de que jeito a venda acontece (convênio, cotação, guia de simples remessa).*
 
 **Análise de 21/11/2026. Rascunho para validação do responsável.** Primeira das três fichas do **Comercial** (a 15b será cotação, requisição e reserva; a 15c, fatura, remessa e cancelamento). Este fluxo é a base das outras duas: tudo o que se vende depende dele.
 

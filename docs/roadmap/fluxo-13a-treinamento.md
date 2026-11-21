@@ -12,7 +12,7 @@
 >
 > **Por que importa:** Pessoa sem treinamento fazendo a tarefa é um risco de qualidade e de fiscalização.
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo).*
 
 **Análise de 20/11/2026. Rascunho para validação do responsável.** Primeira das cinco fichas da Garantia da Qualidade (a ficha 13 se divide em 13a treinamento, 13b desvios e CAPA, 13c mudanças, 13d autoinspeção e 13e assuntos regulatórios). O treinamento liga o **documento vigente** ([ficha 12a](fluxo-12a-ciclo-do-documento.md)) à **pessoa e à função** ([funções do profissional](funcoes-do-profissional.md)): é o que diz **quem pode executar cada tarefa**. O legado tem o fluxo mais completo da GQ, mas **o treinamento não habilita nem bloqueia ninguém**.
 

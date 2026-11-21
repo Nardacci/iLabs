@@ -12,7 +12,7 @@
 >
 > **Por que importa:** Comprar de fornecedor não aprovado é um risco de qualidade e uma falha de BPF (as regras de fabricação).
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo).*
 
 **Análise de 19/11/2026. Rascunho para validação do responsável.** Segunda ficha do passo 3. Ela detalha o que o [fluxo 1](fluxo-01-recebimento-quarentena.md) exige antes do primeiro recebimento: **o fornecedor qualificado para o material**.
 

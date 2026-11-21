@@ -12,7 +12,7 @@
 >
 > **Por que importa:** Sem registro do destino, não dá para fazer um recolhimento se o lote tiver problema.
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo).*
 
 **Análise de 19/11/2026. Rascunho para validação do responsável.** Nona ficha do passo 3. É **a saída do lote para fora**: o material sai da empresa para um destino (cliente, consignatário, devolução ao fornecedor). Fecha o ciclo que começou no recebimento ([ficha 1](fluxo-01-recebimento-quarentena.md)), e é onde a **rastreabilidade do medicamento** deixa de ser só interna.
 

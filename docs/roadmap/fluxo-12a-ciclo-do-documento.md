@@ -12,7 +12,7 @@
 >
 > **Por que importa:** Usar um procedimento antigo ou não aprovado é uma falha grave de BPF.
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo).*
 
 **Análise de 19/11/2026. Rascunho para validação do responsável.** Primeira parte da ficha 12 do passo 3 (a outra é [cópias, documento externo e legado](fluxo-12b-copias-externo-legado.md)), e a **primeira do módulo Controle de Documentos**. É o fluxo que **garante que só a versão aprovada e vigente de um procedimento esteja em uso**. Outros módulos (Garantia da Qualidade, treinamento) só aceitam documento **vigente**.
 

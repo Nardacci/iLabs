@@ -12,7 +12,7 @@
 >
 > **Por que importa:** com o número único, dá para seguir **cada caixinha** até o paciente e recolher só a que tem problema. Se o número se repetir, ou se nascer de um lote que ainda não foi liberado, a rastreabilidade perde o valor.
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página. Aqui: **IUM** (Identificador Único de Medicamento) é o número que identifica uma embalagem; **agregação** é juntar embalagens em caixas, com código próprio; **SNCM** (Sistema Nacional de Controle de Medicamentos) é o sistema da ANVISA que recebe o registro desses números; **GTIN** é o código de barras do produto; **DataMatrix** é o código de barras quadrado da etiqueta.*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo). Aqui: **IUM** (Identificador Único de Medicamento) é o número que identifica uma embalagem; **agregação** é juntar embalagens em caixas, com código próprio; **SNCM** (Sistema Nacional de Controle de Medicamentos) é o sistema da ANVISA que recebe o registro desses números; **GTIN** é o código de barras do produto; **DataMatrix** é o código de barras quadrado da etiqueta.*
 
 **Análise de 21/11/2026. Rascunho para validação do responsável.** Primeira das duas fichas da **Rastreabilidade** (a 16b será eventos e declaração à ANVISA). Este fluxo é a base da outra: sem IUM correto, nenhum evento tem valor.
 

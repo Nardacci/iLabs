@@ -12,7 +12,7 @@
 >
 > **Por que importa:** é o último elo da corrente. Se a empresa é obrigada a declarar e o sistema só finge que declarou, ela descumpre a obrigação sem saber. E uma tela que afirma "enviado com sucesso" quando nada foi enviado é um **registro falso**.
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página. Aqui: **evento** é um fato da vida da embalagem (produção, entrega, recebimento, finalização); **protocolo** é o número de recibo que a ANVISA devolve; **certificado digital** é a assinatura eletrônica que prova quem enviou; **retificar** é corrigir um evento já enviado, sem apagar o original.*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo). Aqui: **evento** é um fato da vida da embalagem (produção, entrega, recebimento, finalização); **protocolo** é o número de recibo que a ANVISA devolve; **certificado digital** é a assinatura eletrônica que prova quem enviou; **retificar** é corrigir um evento já enviado, sem apagar o original.*
 
 **Análise de 21/11/2026. Rascunho para validação do responsável.** Última das duas fichas da **Rastreabilidade** (a [16a](fluxo-16a-ium-e-agregacao.md) foi a geração do IUM e a agregação).
 

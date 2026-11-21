@@ -12,7 +12,7 @@
 >
 > **Por que importa:** Sem esse acompanhamento, a validade impressa na caixa não teria prova.
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo).*
 
 **Análise de 19/11/2026. Rascunho para validação do responsável.** Segunda parte da ficha 11 do passo 3 (a outra é a [água e ambiente](fluxo-11a-agua-e-ambiente.md)). A estabilidade **acompanha o produto acabado ao longo do tempo** para provar que ele mantém a qualidade até a validade. Começa no Estoque ([ficha 7](fluxo-07-almoxarifado-cq.md), que guarda a amostra) e cada tempo do estudo vira uma análise do CQ ([ficha 3](fluxo-03-regras-analise-e-laudo.md)).
 

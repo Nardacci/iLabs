@@ -12,7 +12,7 @@
 >
 > **Por que importa:** Se alguém usar o ingrediente antes da análise, o remédio pode sair contaminado ou fora do padrão.
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página.*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo).*
 
 **Análise de 19/11/2026. Rascunho para validação do responsável.** É o seu exemplo: "para receber uma matéria-prima, que vai para quarentena, quais informações precisamos ter?". Continua os passos 1 e 2 ([`cadastros-repetidos.md`](cadastros-repetidos.md), [`ordem-de-cadastro.md`](ordem-de-cadastro.md)).
 

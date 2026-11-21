@@ -12,7 +12,7 @@
 >
 > **Por que importa:** equipamento sujo ou balança descalibrada pode estragar um lote inteiro sem ninguém perceber.
 >
-> *Palavra que não conhece? Veja a aba "24 · Glossário" desta página. Aqui: **calibração** é conferir um instrumento de medir (uma balança, um termômetro) contra um padrão e ajustá-lo; **qualificação** é provar que um equipamento funciona como deveria; **manutenção preventiva** é cuidar da máquina antes de quebrar; **LogBook** é o "livro de bordo" do equipamento, com tudo que foi feito nele.*
+> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo). Aqui: **calibração** é conferir um instrumento de medir (uma balança, um termômetro) contra um padrão e ajustá-lo; **qualificação** é provar que um equipamento funciona como deveria; **manutenção preventiva** é cuidar da máquina antes de quebrar; **LogBook** é o "livro de bordo" do equipamento, com tudo que foi feito nele.*
 
 **Análise de 20/11/2026. Rascunho para validação do responsável.** Primeira das cinco fichas da **Produção** (a [13e](fluxo-13e-assuntos-regulatorios.md) fechou a Garantia da Qualidade). É o **passo que vem antes da ordem de produção**: os registros daqui alimentam as **autorizações** da ficha 14c, e um item com registro vencido aparece como **pendente**.
 
