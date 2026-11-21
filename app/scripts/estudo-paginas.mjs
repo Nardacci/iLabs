@@ -45,6 +45,14 @@ const PAGINAS_SEM_ORDEM = [
     arquivo: 'glossario.md',
   },
   {
+    id: 'modulosanvisa',
+    codigo: '',
+    titulo: 'Para que serve cada módulo e o que a ANVISA espera',
+    modulo: 'Para começar',
+    tipo: 'Estudo',
+    arquivo: 'os-modulos-e-a-anvisa.md',
+  },
+  {
     id: 'fluxos',
     codigo: '',
     titulo: 'Todos os fluxos e a ordem de análise',

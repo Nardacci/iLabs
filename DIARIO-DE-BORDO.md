@@ -2,6 +2,14 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-21 · Claude · Página "Para que serve cada módulo e o que a ANVISA espera"
+
+- **Pedido do responsável:** saber onde ficou a explicação sobre a Garantia da Qualidade e acrescentar uma página explicando a importância de cada módulo e o aspecto da ANVISA.
+- **Onde está a explicação da GQ:** documento "A Garantia da Qualidade e os outros módulos" (`docs/roadmap/garantia-da-qualidade-e-os-outros-modulos.md`), no grupo "Para começar" da lista do estudo (`/estudo/roadmap/gqmodulos`).
+- **Entregue:** `docs/roadmap/os-modulos-e-a-anvisa.md`, no grupo "Para começar" (`/estudo/roadmap/modulosanvisa`): a ideia geral das BPF, uma tabela de uma linha por módulo (para que serve, a pergunta que a ANVISA faz, artigos principais) e uma seção por módulo (Principal, Estoque, Controle da Qualidade, Garantia da Qualidade, Controle de Documentos, Produção, OPE, Comercial e Rastreabilidade) com o que a norma espera, o que acontece se falhar e as fichas. Fecha com a corrente do lote de ponta a ponta.
+- **Normas conferidas no texto:** RDC 658/2022, arts. 4º, 8º, 12, 14, 41 a 43, 105, 110, 119 a 125, 133 a 137, 157, 159, 160, 167, 176, 177, 179, 185, 189, 194, 195, 198, 220, 245, 275 a 280, 298 a 305, 332, 339 a 342, 344 a 347 e 361 a 366; Guia 33/2020 (9.3.2.3 e 11.12). Não li a norma inteira; Lei 11.903/2009, RDC 430/2020, norma de registro, instrução normativa das amostras, Farmacopeia e regulamento de estabilidade não estão no repositório.
+- **Próxima etapa:** o responsável lê e diz onde discorda; levar as perguntas de `pontos-a-validar.md` às áreas.
+
 ## 2026-11-21 · Claude · Pontos a validar de todas as fichas, juntos e por área
 
 - **Pedido do responsável:** seguir (item 3 da proposta: juntar os pontos a validar para levar às reuniões).

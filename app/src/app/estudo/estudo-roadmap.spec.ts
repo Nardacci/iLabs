@@ -109,5 +109,7 @@ describe('Estudo do roadmap (página de leitura)', () => {
     expect(await violacoesDeAcessibilidade(abrir('fluxo14d'))).toEqual([]);
     TestBed.resetTestingModule();
     expect(await violacoesDeAcessibilidade(abrir('pendencias'))).toEqual([]);
+    TestBed.resetTestingModule();
+    expect(await violacoesDeAcessibilidade(abrir('modulosanvisa'))).toEqual([]);
   });
 });
