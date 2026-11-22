@@ -203,14 +203,14 @@ DADOS.update({
     "14e-6": ("D", "**Sem tela própria:** o pedido de nova validade entra **no controle de mudanças**", "Desenho do produto"),
     "14e-7": ("A+B", "**Decisão desfavorável encerra o pedido:** a validade **nunca muda**", "Art. 167"),
     # Ficha 15a · Cliente e cadastros de venda
-    "15a-1": ("C", "O que se exige do cliente vem da RDC 430/2020, **não lida.** Padrão: **documentos do cliente e validade como campos obrigatórios**", "Texto não lido"),
+    "15a-1": ("A+C", "**Só vende para quem tem licença e autorização da autoridade sanitária** (art. 6º da RDC 430, pelas Perguntas e Respostas da ANVISA). O cadastro guarda **razão social, CNPJ, AFE, endereço, telefone, e-mail e validade**. Falta o texto da norma e saber se vale para o fabricante que vende direto", "RDC 430 (Perguntas e Respostas)"),
     "15a-2": ("D", "**Tipos de cliente cadastráveis.** Regra de venda por tipo é parâmetro", "Escolha da empresa"),
     "15a-3": ("B", "**Regra única e clara por tipo de fornecimento.** Nenhum número fixo no código; a lista inteira de empresas **nunca** vira cliente", "Arts. 346 e 347"),
     "15a-4": ("B", "**Convênio com vigência obrigatória.** Aprovação por função. **Limite esgotado bloqueia**", "Art. 125"),
     "15a-5": ("B", "**Preço com vigência.** Alteração por função, **preço da época guardado**", "Art. 125"),
     "15a-6": ("D", "**Recurso opcional:** o pregão vira cotação por ação do usuário", "Escolha da empresa"),
     "15a-7": ("A+B", "**Trilha de alteração imutável,** de preço, endereço e convênio. **Guarda mínima:** a do art. 127", "Arts. 125 e 127"),
-    "15a-8": ("C", "A exigência de **licença sanitária do cliente** vem da RDC 430/2020 (não lida)", "Texto não lido"),
+    "15a-8": ("A+C", "Pelas **Perguntas e Respostas da ANVISA** (art. 6º), fornece-se só a empresa **licenciada e autorizada**; o **texto da RDC 430** não foi lido", "RDC 430 (Perguntas e Respostas)"),
     # Ficha 15b · Cotação, requisição e reserva
     "15b-1": ("A", "**Lote só vai à venda depois da certificação da Pessoa Delegada** (função própria)", "Arts. 8º XV e 14 VII"),
     "15b-2": ("B", "**Validade mínima em dias, por cliente, convênio ou compra pública: campo obrigatório,** sem padrão", "Escolha da empresa"),
@@ -221,7 +221,7 @@ DADOS.update({
     "15b-7": ("B", "**Cancelamento exige justificativa**", "Art. 125"),
     "15b-8": ("Decidido", "**Sugerido, não imposto** (decisão de 22/11/2026)", "Arts. 159 e 189"),
     # Ficha 15c · Fatura, remessa e cancelamento
-    "15c-1": ("A", "**Consulta por lote na hora** (mapa de distribuição). O procedimento escrito de recolhimento é da empresa (art. 343)", "Arts. 343 a 347"),
+    "15c-1": ("A", "**Consulta por lote na hora** (mapa de distribuição), com o conteúdo do art. 10 da RDC 625/2022. **Simulação anual de recolhimento** como recurso. O procedimento escrito de recolhimento é da empresa (art. 343)", "Arts. 343 a 347; RDC 625/2022"),
     "15c-2": ("A", "**Lote bloqueado depois da separação: a fatura é recusada**", "Arts. 189 e 8º XV"),
     "15c-3": ("D", "**Toda saída gera remessa e registro de distribuição,** em qualquer tipo de venda", "Lei 11.903, art. 3º-A"),
     "15c-4": ("B", "**Cancelar desfaz a remessa;** se o material já saiu, **vira devolução.** Por função, com justificativa", "Art. 125"),
@@ -239,7 +239,7 @@ DADOS.update({
     "16a-7": ("C", "**Regulamentação nova e cronograma** da Lei 14.338/2022: **não lidos**", "Lei 14.338, art. 2º"),
     "16a-8": ("A", "**A certificação vem antes da etiqueta**", "Arts. 8º XV e 14 VII"),
     # Ficha 16b · Mapa de distribuição e declaração de eventos
-    "16b-1": ("C", "**Regulamentação do mapa:** não lida; pode definir formato e periodicidade", "Lei 11.903, art. 3º-A"),
+    "16b-1": ("A+C", "**Conteúdo do mapa no recolhimento: art. 10 da RDC 625/2022** (lido por citação). A **regulamentação do art. 3º-A da lei** (formato, periodicidade) segue **não lida**", "RDC 625/2022; Lei 11.903, art. 3º-A"),
     "16b-2": ("B", "**Declaração de eventos é opcional e vem desligada**", "Escolha da empresa"),
     "16b-3": ("C", "**Número e data do ato revogador** da RDC 157/2017: **conferir no Diário Oficial**", "Texto não lido"),
     "16b-4": ("A+C", "**Guarda mínima: a do art. 127.** A norma de distribuição pode fixar outra (não lida)", "Art. 127"),

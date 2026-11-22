@@ -16,7 +16,7 @@
 
 **Análise de 21/11/2026. Rascunho para validação do responsável.** Primeira das três fichas do **Comercial** (a 15b será cotação, requisição e reserva; a 15c, fatura, remessa e cancelamento). Este fluxo é a base das outras duas: tudo o que se vende depende dele.
 
-**Fontes (todas no repositório do legado):** o fluxo "Cliente e cadastros de venda" (`7.comercial/fluxos/cliente-cadastros.md`, lido do código, regras `RN001` a `RN021`) e o inventário de telas do Comercial (casos `CT-COM-034` a `048`). **O que não fiz:** não li as telas uma a uma. **Nada deste fluxo foi testado na tela** (todas as telas aparecem como "não testada"); **tudo vem só do código.** As normas (RDC 658/2022, arts. 125, 344 a 347) foram conferidas no texto. A exigência de licença sanitária do cliente vem das Boas Práticas de Distribuição (RDC 430/2020), que **não está no repositório**: fica como ponto a validar.
+**Fontes (todas no repositório do legado):** o fluxo "Cliente e cadastros de venda" (`7.comercial/fluxos/cliente-cadastros.md`, lido do código, regras `RN001` a `RN021`) e o inventário de telas do Comercial (casos `CT-COM-034` a `048`). **O que não fiz:** não li as telas uma a uma. **Nada deste fluxo foi testado na tela** (todas as telas aparecem como "não testada"); **tudo vem só do código.** As normas (RDC 658/2022, arts. 125, 344 a 347) foram conferidas no texto. **Atualização de 22/11/2026:** as **Perguntas e Respostas da ANVISA sobre a RDC 430/2020** foram lidas: as distribuidoras só fornecem a empresas **licenciadas e autorizadas** (art. 6º), e a cadeia guarda **razão social, CNPJ, AFE, endereço, telefone e e-mail** (art. 30, §1º). O texto da RDC 430 **não foi lido**, e se ela vale para o **fabricante que vende direto** fica a confirmar.
 
 ## 1. O caminho, em uma linha
 **Cadastrar a empresa** (cadastro geral do Principal) → **marcar como cliente** e dar o **tipo** → **endereços e contatos** → **tipo de fornecimento e preço** → **convênio** (quando há contrato) → **relacionamento e pregões**.
@@ -52,7 +52,7 @@ No legado o cliente **não tem situação**: basta ter um tipo de cliente. No iL
 | Cadastro (passo 1) | O que o fluxo precisa que ele guarde |
 |---|---|
 | **Pessoa jurídica** | Papel de **cliente** separado do de **fornecedor** (uma empresa pode ter os dois, **só se marcada**); **situação** (ativa, suspensa, inativa) |
-| **Documentos do cliente** (novo) | **Licença sanitária**, **autorização de funcionamento**, **responsável técnico**, **validade** de cada um |
+| **Documentos do cliente** (novo) | **Licença sanitária**, **AFE (autorização de funcionamento)**, **responsável técnico**, **telefone e e-mail** e **validade** de cada um |
 | **Endereço** | Tipo (entrega, cobrança), **inativação sem exclusão** e **histórico**; **a venda guarda a cópia** |
 | **Produto acabado** (ficha 14b) | Somente produto **liberado** entra em convênio, preço e pregão |
 | **Tipo de cliente, tipo de cobrança e tipo de fornecimento** | Regra do tipo **fora do código** (hoje o número 3 está fixado) |
@@ -76,4 +76,4 @@ Atividades de relacionamento · pregões · alterações de preço, endereço e 
 5. **Preço:** quem pode alterar? Precisa de **vigência**? Há **preço por contrato**?
 6. **Pregão:** a empresa participa de pregões? Ele deve **virar cotação** automaticamente?
 7. **Histórico:** quem pediria o histórico de uma alteração de preço ou de endereço, e **por quanto tempo** deve ser guardado?
-8. **Licença do cliente (RDC 430/2020):** o texto da norma de distribuição **não está no repositório**; pedir à Qualidade para confirmar a exigência.
+8. **Licença do cliente (RDC 430/2020):** as Perguntas e Respostas da ANVISA dizem que só se fornece a empresa **licenciada e autorizada**; o **texto da norma** não foi lido, e vale confirmar se ela se aplica ao **fabricante que vende direto**.

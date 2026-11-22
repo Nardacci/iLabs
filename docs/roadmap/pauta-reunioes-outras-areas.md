@@ -237,7 +237,7 @@
 - **15a-5** **Preço:** quem pode alterar? Precisa de **vigência**? Há **preço por contrato**?
 - **15a-6** **Pregão:** a empresa participa de pregões? Ele deve **virar cotação** automaticamente?
 - **15a-7** **Histórico:** quem pediria o histórico de uma alteração de preço ou de endereço, e **por quanto tempo** deve ser guardado?
-- **15a-8** **Licença do cliente (RDC 430/2020):** o texto da norma de distribuição **não está no repositório**; pedir à Qualidade para confirmar a exigência.
+- **15a-8** **Licença do cliente (RDC 430/2020):** as Perguntas e Respostas da ANVISA dizem que só se fornece a empresa **licenciada e autorizada**; o **texto da norma** não foi lido, e vale confirmar se ela se aplica ao **fabricante que vende direto**.
 
 #### Ficha 15b · Cotação, requisição e reserva
 

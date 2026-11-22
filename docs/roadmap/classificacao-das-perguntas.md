@@ -6,9 +6,9 @@
 
 | Tipo | O que significa | Perguntas |
 |---|---|---|
-| **A** | A norma manda: comportamento fixo, conferido pelo banco | 65 |
+| **A** | A norma manda: comportamento fixo, conferido pelo banco | 68 |
 | **B** | A norma deixa para a empresa: parâmetro configurável (sem número inventado, padrão mais rigoroso) | 110 |
-| **C** | Depende de texto que não temos: padrão seguro, a confirmar | 12 |
+| **C** | Depende de texto que não temos: padrão seguro, a confirmar | 9 |
 | **D** | Depende do cliente ou do desenho do produto: flexível, definido na implantação | 25 |
 | **Decidido** | Decisão já tomada pelo responsável | 7 |
 
@@ -320,14 +320,14 @@
 
 | Código | Tipo | Pergunta | Proposta do iLabs | Base |
 |---|---|---|---|---|
-| **15a-1** | C | **Autorização do cliente:** onde a empresa confere hoje a licença sanitária e o responsável técnico de quem compra? Quem **confere**? | O que se exige do cliente vem da RDC 430/2020, **não lida.** Padrão: **documentos do cliente e validade como campos obrigatórios** | Texto não lido |
+| **15a-1** | A+C | **Autorização do cliente:** onde a empresa confere hoje a licença sanitária e o responsável técnico de quem compra? Quem **confere**? | **Só vende para quem tem licença e autorização da autoridade sanitária** (art. 6º da RDC 430, pelas Perguntas e Respostas da ANVISA). O cadastro guarda **razão social, CNPJ, AFE, endereço, telefone, e-mail e validade**. Falta o texto da norma e saber se vale para o fabricante que vende direto | RDC 430 (Perguntas e Respostas) |
 | **15a-2** | D | **Tipos de cliente:** quais existem (hospital, distribuidor, governo, farmácia)? A regra de venda **muda** conforme o tipo? | **Tipos de cliente cadastráveis.** Regra de venda por tipo é parâmetro | Escolha da empresa |
 | **15a-3** | B | **Tipo de fornecimento:** a regra do "primeiro vínculo" e a do "qualquer vínculo" são **intencionais**? O que o **número 3** (lista inteira do Principal) tenta resolver? | **Regra única e clara por tipo de fornecimento.** Nenhum número fixo no código; a lista inteira de empresas **nunca** vira cliente | Arts. 346 e 347 |
 | **15a-4** | B | **Convênio:** tem **prazo**? Quem **aprova**? O que acontece quando o **limite** acaba? | **Convênio com vigência obrigatória.** Aprovação por função. **Limite esgotado bloqueia** | Art. 125 |
 | **15a-5** | B | **Preço:** quem pode alterar? Precisa de **vigência**? Há **preço por contrato**? | **Preço com vigência.** Alteração por função, **preço da época guardado** | Art. 125 |
 | **15a-6** | D | **Pregão:** a empresa participa de pregões? Ele deve **virar cotação** automaticamente? | **Recurso opcional:** o pregão vira cotação por ação do usuário | Escolha da empresa |
 | **15a-7** | A+B | **Histórico:** quem pediria o histórico de uma alteração de preço ou de endereço, e **por quanto tempo** deve ser guardado? | **Trilha de alteração imutável,** de preço, endereço e convênio. **Guarda mínima:** a do art. 127 | Arts. 125 e 127 |
-| **15a-8** | C | **Licença do cliente (RDC 430/2020):** o texto da norma de distribuição **não está no repositório**; pedir à Qualidade para confirmar a exigência. | A exigência de **licença sanitária do cliente** vem da RDC 430/2020 (não lida) | Texto não lido |
+| **15a-8** | A+C | **Licença do cliente (RDC 430/2020):** as Perguntas e Respostas da ANVISA dizem que só se fornece a empresa **licenciada e autorizada**; o **texto da norma** não foi lido, e vale confirmar se ela se aplica ao **fabricante que vende direto**. | Pelas **Perguntas e Respostas da ANVISA** (art. 6º), fornece-se só a empresa **licenciada e autorizada**; o **texto da RDC 430** não foi lido | RDC 430 (Perguntas e Respostas) |
 
 ### Ficha 15b · Cotação, requisição e reserva
 
@@ -346,7 +346,7 @@
 
 | Código | Tipo | Pergunta | Proposta do iLabs | Base |
 |---|---|---|---|---|
-| **15c-1** | A | **Recolhimento:** quem faz a consulta "para quem foi o lote X" hoje, e em quanto tempo? Existe procedimento escrito (art. 343)? | **Consulta por lote na hora** (mapa de distribuição). O procedimento escrito de recolhimento é da empresa (art. 343) | Arts. 343 a 347 |
+| **15c-1** | A | **Recolhimento:** quem faz a consulta "para quem foi o lote X" hoje, e em quanto tempo? Existe procedimento escrito (art. 343)? | **Consulta por lote na hora** (mapa de distribuição), com o conteúdo do art. 10 da RDC 625/2022. **Simulação anual de recolhimento** como recurso. O procedimento escrito de recolhimento é da empresa (art. 343) | Arts. 343 a 347; RDC 625/2022 |
 | **15c-2** | A | **Lote bloqueado depois da separação:** o que a empresa faz? A fatura **deve ser recusada**? | **Lote bloqueado depois da separação: a fatura é recusada** | Arts. 189 e 8º XV |
 | **15c-3** | D | **Remessa só no tipo "guia de simples remessa":** como o material sai nos **outros tipos** de venda? | **Toda saída gera remessa e registro de distribuição,** em qualquer tipo de venda | Lei 11.903, art. 3º-A |
 | **15c-4** | B | **Cancelamento:** quando acontece? O material **volta ao estoque** ou já saiu? Quem **autoriza**? | **Cancelar desfaz a remessa;** se o material já saiu, **vira devolução.** Por função, com justificativa | Art. 125 |
@@ -374,7 +374,7 @@
 
 | Código | Tipo | Pergunta | Proposta do iLabs | Base |
 |---|---|---|---|---|
-| **16b-1** | C | **Regulamentação nova** do mapa de distribuição (Lei 14.338/2022, art. 3º-A): já existe? Define **formato, periodicidade** ou **envio à ANVISA**? **Não li** nenhuma. | **Regulamentação do mapa:** não lida; pode definir formato e periodicidade | Lei 11.903, art. 3º-A |
+| **16b-1** | A+C | **Regulamentação nova** do mapa de distribuição (Lei 14.338/2022, art. 3º-A): já existe? Define **formato, periodicidade** ou **envio à ANVISA**? **Não li** nenhuma. | **Conteúdo do mapa no recolhimento: art. 10 da RDC 625/2022** (lido por citação). A **regulamentação do art. 3º-A da lei** (formato, periodicidade) segue **não lida** | RDC 625/2022; Lei 11.903, art. 3º-A |
 | **16b-2** | B | **Declaração de eventos:** o cliente quer ligar o recurso opcional? Quais eventos? **Padrão proposto: desligado.** | **Declaração de eventos é opcional e vem desligada** | Escolha da empresa |
 | **16b-3** | C | **Ato revogador da RDC 157/2017:** número e data corretos, e se a **IN 19/2017** e a **IN 100/2021** também caíram. | **Número e data do ato revogador** da RDC 157/2017: **conferir no Diário Oficial** | Texto não lido |
 | **16b-4** | A+C | **Prazo de guarda** do mapa e dos registros de distribuição: o do art. 127 da RDC 658/2022 basta, ou a norma de distribuição (RDC 430/2020, **não lida**) fixa outro? | **Guarda mínima: a do art. 127.** A norma de distribuição pode fixar outra (não lida) | Art. 127 |

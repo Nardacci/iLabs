@@ -2,6 +2,14 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-22 · Claude · Perguntas e Respostas da RDC 430/2020 lidas; RDC 625/2022 entra no estudo
+
+- **Pedido do responsável:** seguir. Com o `gov.br` aberto na rede da sessão, li por inteiro o documento oficial **"Perguntas e Respostas sobre a RDC 430/2020"** (ANVISA, atualizado em 16/11/2022, 30 páginas). **É a orientação da ANVISA, e não o texto da norma.**
+- **O que o documento diz, e entrou no estudo:** (1) **só se fornece medicamento a empresa licenciada e autorizada** pela autoridade sanitária (art. 6º), e a verificação é da distribuidora; (2) a cadeia guarda **razão social, CNPJ, AFE, endereço, telefone e e-mail** (art. 30, §1º); (3) **simulação anual de recolhimento** (art. 30, §2º), dispensada só se houve recolhimento real no ano; (4) **procedimentos guardados por 5 anos após a obsolescência** (art. 24); (5) cita a **RDC 625/2022 (recolhimento)**, arts. 10 a 12: o distribuidor entrega ao detentor do registro o **mapa de distribuição em até 48 horas**, com registro, princípio ativo, apresentação, lotes, **número da nota fiscal**, quantidade adquirida e remanescente, **quantidade por estabelecimento receptor** e assinaturas. **Isso dá o conteúdo do mapa de distribuição** que a ficha 16b precisa produzir.
+- **Alterado:** ficha **16b** (conteúdo do mapa, nova etapa "simular o recolhimento uma vez por ano"), ficha **15a** (documentos do cliente: AFE, telefone e e-mail; licença exigida), classificação (15a-1, 15a-8, 15c-1, 16b-1), "Guia do analista" e "Textos oficiais lidos" (novo item "lido" e novos itens a ler).
+- **Limites:** o **texto da RDC 430/2020 e da RDC 625/2022 continua não lido**; a RDC 430 se aplica a distribuição, armazenagem e transporte, e **se vale para o fabricante que distribui o próprio produto fica a confirmar**. Planalto, Senado e Diário Oficial seguem sem abrir.
+- **Próxima etapa:** ler o texto integral da RDC 625/2022 e da RDC 430/2020 se aparecerem em fontes abertas; conferir o ato revogador da RDC 157/2017; gerar nova versão do Word.
+
 ## 2026-11-22 · Claude · Documento Word único montado
 
 - **Pedido do responsável:** montar o Word com as **30 fichas completas** (item 5 do plano) e **no mesmo padrão visual** dos entregáveis (capa, histórico de revisão, acrônimos, títulos numerados em caixa cinza, tabelas com cabeçalho cinza, rodapé).

@@ -27,6 +27,15 @@
 ### Notícia da ANVISA, 23/05/2022
 - "Suspensão foi motivada pela Lei nº 14.338/2022, que alterou o modelo para a rastreabilidade de medicamentos." A ANVISA pediu a **suspensão do contrato de desenvolvimento do SNCM**. (Só o título e o subtítulo foram lidos.)
 
+### Perguntas e Respostas sobre a RDC 430/2020 (ANVISA, atualizado em 16/11/2022), com trecho da RDC 625/2022
+- **Fonte:** documento oficial da ANVISA (30 páginas), lido por inteiro no site `gov.br`. **É a orientação da ANVISA sobre a RDC 430/2020, e não o texto da norma.**
+- **Quem pode receber medicamento (art. 6º):** as distribuidoras devem fornecer medicamentos **somente a empresas licenciadas e autorizadas** pela autoridade sanitária para distribuir ou dispensar; a verificação cabe à distribuidora, que responde pelo destino na nota fiscal. A exceção citada é a venda a operadoras de planos de saúde por decisão judicial, com verificação de CNPJ ativo, decisão válida e contrato de qualidade.
+- **Informações mínimas das empresas da cadeia (art. 30, §1º):** **razão social, CNPJ, AFE (autorização de funcionamento), endereço, telefone e e-mail**, para uso em recolhimento e na simulação de recolhimento.
+- **Simulação de recolhimento (art. 30, §2º):** exercício de efetividade **anual**, que só se dispensa se houve recolhimento real no ano; o fabricante simula como se fosse real, inclusive com as unidades ainda não comercializadas nos clientes.
+- **Guarda dos procedimentos (art. 24, parágrafo único):** **cinco anos após a obsolescência** (regra geral para os procedimentos operacionais).
+- **RDC 625/2022 (recolhimento), arts. 10 a 12, transcritos no documento:** o distribuidor envia ao detentor do registro o **mapa de distribuição** do medicamento recolhido, em **até 48 horas**, com: razão social, CNPJ e inscrição estadual; endereço completo; responsável técnico e registro no conselho; nome do medicamento, **registro, princípio ativo, apresentação, lotes envolvidos e número da nota fiscal do detentor**; **quantidade adquirida e remanescente em estoque**; **quantidade distribuída a cada estabelecimento receptor e o que resta no estoque dele**; assinaturas do responsável técnico e do representante legal.
+- **Limite:** o texto integral da **RDC 430/2020** e da **RDC 625/2022** continua **não lido**. A RDC 430 se aplica às empresas de **distribuição, armazenagem e transporte**; se ela vale para o **fabricante que distribui o próprio produto** fica **a confirmar**.
+
 ### RDC 157/2017 (página da base de legislação da ANVISA, impressa pelo responsável em 22/11/2026)
 - A página traz a linha **"Revogada pela Resolução da Diretoria Colegiada - RDC nº 886, de 10/07/2024"** e o texto da norma com as alterações da RDC 319/2019. **Lido:** definições (art. 3º), tecnologia (arts. 4º a 7º: IUM com GTIN, registro, código serial de até 20 caracteres, validade e lote, nessa ordem; DataMatrix; código da embalagem de transporte), rotulagem e serialização (arts. 9º e 10), registro e comunicação de eventos (arts. 11 a 15: guarda por 1 ano após a validade, prazo de 3 dias úteis para detentores, retificação por novo evento, vedada a alteração) e disposições finais. **Hoje é só referência histórica.**
 
@@ -36,13 +45,13 @@
 
 ## 2. Só resumo de busca (não conferido no texto)
 - **IN 19/2017 e IN 100/2021:** um escritório de advocacia diria que também foram revogadas junto com a RDC 157/2017. **Não conferido.**
-- **RDC 430/2020** (Boas Práticas de Distribuição, Armazenagem e Transporte): em vigor desde 16/03/2021, **alterada pela RDC 653/2022** (arts. 64 e 89).
+- **RDC 430/2020** (Boas Práticas de Distribuição, Armazenagem e Transporte): em vigor desde 16/03/2021, **alterada pela RDC 653/2022** (arts. 64 e 89). **O texto da norma não foi lido;** as orientações da ANVISA sobre ela foram (seção 1).
 - **Parecer nº 22/2023/SEI/GGMED/DIRE2/ANVISA** (processo 25351.925884/2022-71), sobre bula digital: diria que a lei vincula a ANVISA apenas ao código bidimensional e ao sistema do mapa de distribuição.
 
 ## 3. Ainda falta ler
 1. **Regulamentação em vigor do mapa de distribuição** (se já existe) e o **cronograma**.
 2. **O ato que revogou a RDC 157/2017** (número e data corretos, no Diário Oficial de 12/07/2024) e o status da **IN 19/2017** e da **IN 100/2021**.
-3. **RDC 430/2020** (texto) e **RDC 653/2022**.
+3. **RDC 430/2020** (texto da norma, não só as perguntas e respostas), **RDC 653/2022** e **RDC 625/2022** (recolhimento, texto integral).
 4. **Norma de registro de medicamentos.**
 5. **Instrução normativa das amostras de retenção e de referência.**
 6. **Farmacopeia** e normas de água e ambiente.
