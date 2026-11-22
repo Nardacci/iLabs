@@ -2,6 +2,14 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-22 · Claude · Guia do analista (resumo do documento Word)
+
+- **Pedido do responsável:** a única mudança no plano do documento Word é o **item 2: em vez de "resumo para a diretoria", um resumo para o analista de negócios** (o próprio responsável), com o **conhecimento do sistema (o que ele faz hoje), o que ele precisa fazer no futuro com as novas versões e as normas**.
+- **Entregue:** `docs/roadmap/resumo-para-o-analista.md` (grupo "Para começar", `/estudo/roadmap/analista`): como ler e os limites; a ideia que une tudo e a corrente do lote; **os nove módulos, cada um com três blocos: Hoje, A norma espera e O iLabs deve** (com os códigos de defeito do legado e os artigos conferidos); as sete regras que valem para todos os módulos; o que ainda não se sabe; onde achar mais.
+- **Plano do Word, atualizado:** (1) capa, histórico e como ler; (2) **Guia do analista** (este resumo); (3) situação da norma e textos lidos e que faltam; (4) módulos e o que a ANVISA espera; (5) as 30 fichas; (6) classificação das 219 perguntas; (7) roteiro de implantação; (8) anexos (glossário, o que a norma diz, decisões). O "Resumo para a diretoria" **fica no site, mas não entra no Word**.
+- **Pendente de resposta do responsável:** (a) todas as 30 fichas completas no Word (proposta) ou resumo de cada uma; (b) visual: o gerador de Word do legado (`gerar_docx.py`, modelo com capa, cabeçalho cinza e rodapé) existe, mas o modelo traz o nome LabMedSys; proposta: usar o mesmo padrão visual com **o nome do iLabs na capa**.
+- **Próxima etapa:** montar o documento Word.
+
 ## 2026-11-22 · Claude · Classificação das 219 perguntas concluída; plano do documento Word único
 
 - **Pedido do responsável:** seguir com a classificação e **já ir pensando que, ao final da análise, será criado um único documento no Word.**

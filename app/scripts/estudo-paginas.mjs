@@ -37,6 +37,14 @@ const PAGINAS_SEM_ORDEM = [
     arquivo: 'roteiro-de-implantacao.md',
   },
   {
+    id: 'analista',
+    codigo: '',
+    titulo: 'Guia do analista: hoje, futuro e norma, por módulo',
+    modulo: 'Para começar',
+    tipo: 'Guia',
+    arquivo: 'resumo-para-o-analista.md',
+  },
+  {
     id: 'decidir',
     codigo: '',
     titulo: 'Como decidir quando não há área para perguntar',
