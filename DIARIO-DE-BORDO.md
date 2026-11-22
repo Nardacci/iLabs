@@ -2,6 +2,16 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-22 · Claude · RDC 157/2017 consta como revogada; modelo antigo de rastreabilidade acabou
+
+- **Arquivo enviado pelo responsável:** impressão da página da base de legislação da ANVISA com o texto da **RDC 157/2017** e a linha **"Revogada pela Resolução da Diretoria Colegiada - RDC nº 886, de 10/07/2024"**. Também enviou capturas das páginas "Legislação" e "Plano de Serialização" do site da ANVISA (de 2021, desatualizadas).
+- **Confirmado (base da ANVISA):** a **RDC 157/2017 está revogada**. Com isso e com o **texto da Lei 14.338/2022** (já lido), o regime antigo (IUM com código serial, DataMatrix, comunicação de eventos ao banco central em 3 dias úteis) **deixou de ser exigência**; o que vale é o **mapa de distribuição por lote e destinatário** e a identificação da embalagem com registro, lote, validade e código da bula digital.
+- **Contradição a resolver:** o ato revogador aparece como "RDC 886 de 10/07/2024", mas a RDC 886 que o responsável baixou do Diário Oficial é de **26/06/2024** e trata de **UDI de dispositivos médicos**. O número não pode ser de dois atos. **Conferir no Diário Oficial de 12/07/2024 (seção 1, p. 123).** A revogação em si consta na base da ANVISA.
+- **Texto lido da RDC 157/2017 (histórico):** IUM = GTIN, registro, código serial (até 20 caracteres), validade, lote, nessa ordem; serial não repetido; DataMatrix; código da embalagem de transporte; eventos comunicados em até 3 dias úteis (detentores); retificação por novo evento; vedada a alteração; guarda de 1 ano após a validade. **Comparação com o legado (a refazer na reescrita da ficha 16a):** o legado monta o IUM em outra ordem (registro, série, validade, lote, GTIN) e confere a repetição do serial só dentro da mesma geração.
+- **Alterado:** fichas 16a e 16b (aviso no alto: "o modelo antigo acabou"), "Para que serve cada módulo", "Textos oficiais lidos", "Como decidir" (SNCM e formato do IUM viram recurso opcional), classificação (9-3), resumo da diretoria (risco 2) e o cabeçalho das listas de pendências. **As tabelas das fichas 16a e 16b ainda não foram reescritas.**
+- **Ainda não conferido:** o ato revogador; status da IN 19/2017 e da IN 100/2021 (um escritório de advocacia diz que também foram revogadas); se há regulamentação nova do mapa de distribuição.
+- **Próxima etapa:** reescrever as fichas 16a e 16b para o modelo atual (mapa de distribuição como obrigação, número de série e declaração como opcionais); classificar as 124 perguntas restantes.
+
 ## 2026-11-22 · Claude · Correção: a RDC 886/2024 não revogou a RDC 157/2017
 
 - **Erro meu, corrigido:** nas rodadas anteriores escrevi, com base em um **resumo de busca** (não no texto), que a **RDC 886/2024 revogou a RDC 157/2017**. O responsável enviou o PDF do Diário Oficial: a **RDC/ANVISA nº 886, de 26/06/2024** (DOU de 01/07/2024, p. 269) **altera a RDC 591/2021 e trata do UDI de dispositivos médicos**; não é sobre medicamentos e **não menciona a RDC 157/2017**. A data que eu citava (10/07/2024) também estava errada.

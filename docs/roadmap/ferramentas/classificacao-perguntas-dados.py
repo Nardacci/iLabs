@@ -59,7 +59,7 @@ DADOS = {
     # ---- Ficha 9 · Remessa e expedição
     "9-1": ("D", "**Não carregar a sigla GMM:** tipos de remessa com **nome descritivo**. O cliente confirma se a guia ainda é usada", "Desconhecido no legado"),
     "9-2": ("D", "**A venda do Comercial gera a remessa** (ficha 15c). Remessas especiais (devolução ao fornecedor, amostra) saem pelo Estoque. **A nota fiscal fica fora** da primeira fatia", "Escolha de escopo"),
-    "9-3": ("A+C", "**A remessa alimenta o mapa de distribuição** por lote e destinatário (lei lida). A **declaração de eventos** é recurso ligável, até ler a regulamentação", "Lei 11.903, art. 3º-A"),
+    "9-3": ("A+B", "**A remessa alimenta o mapa de distribuição** por lote e destinatário (lei lida). A **declaração de eventos** é **recurso opcional** (a RDC 157/2017 consta como revogada)", "Lei 11.903, art. 3º-A"),
     "9-4": ("A+B", "**Fixo:** só sai lote liberado e dentro do prazo. **Exceção** para devolver ao fornecedor lote vencido ou reprovado, com **motivo e assinatura**. A ordem por validade é só sugestão (decisão de 22/11/2026)", "Art. 189"),
     "9-5": ("B", "**Padrão: não estorna depois de sair;** gera devolução (ficha 8)", "Art. 125"),
     "9-6": ("Decidido", "**O kit não existe mais** (decisão do responsável de 19/11/2026)", "Decisão de 19/11"),
