@@ -2,6 +2,14 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-22 · Claude · IN 139/2022 (amostras de retenção e referência) lida pela orientação da ANVISA
+
+- **Pedido do responsável:** seguir na busca dos textos que faltam. Baixei do `gov.br` o documento oficial "Perguntas e Respostas sobre a RDC 658/2022 e suas INs" (ANVISA, atualizado em 15/02/2023) e li a parte da IN 139/2022.
+- **O que entrou:** guarda de **pelo menos um ano após a validade** (30 dias para parenterais de grande volume e hemodiálise); matéria-prima só até a validade dela; quantidade de **duas análises completas**; retenção pode substituir referência se os lotes de embalagem estiverem representados; importador guarda só a retenção. Também o art. 127 da RDC 658 (documentação de lote: um ano após a validade ou cinco anos após a certificação, o que for maior).
+- **Alterado:** ficha 7 (pontos 1 e 5), classificação (7-1 e 7-5 passam a tipo A: agora **A 70, B 109, C 8, D 25, Decididas 7**), `textos-oficiais-lidos.md`, Guia do analista, páginas geradas do site.
+- **Limites:** o **texto integral da IN 139/2022 não foi lido**, só o que a ANVISA cita. A **norma de registro** não apareceu nessas fontes; segue pendente, assim como o ato que revogou a RDC 157/2017. Planalto e Diário Oficial continuam sem abrir.
+- **Próxima etapa:** procurar a norma de registro (ficha 13e e 14b) e, se achar, atualizar; depois gerar nova versão do Word.
+
 ## 2026-11-22 · Claude · Perguntas e Respostas da RDC 430/2020 lidas; RDC 625/2022 entra no estudo
 
 - **Pedido do responsável:** seguir. Com o `gov.br` aberto na rede da sessão, li por inteiro o documento oficial **"Perguntas e Respostas sobre a RDC 430/2020"** (ANVISA, atualizado em 16/11/2022, 30 páginas). **É a orientação da ANVISA, e não o texto da norma.**

@@ -43,11 +43,11 @@ DADOS = {
     "6-6": ("D", "Decisão de desenho nossa: **aberta, aprovada, em separação, separada, atendida e cancelada.** \"Fechada\" e \"finalizada\" viram **uma só** (encerrada)", "Desenho do produto"),
     "6-7": ("B", "**Padrão: não cancela atendimento já entregue;** gera **devolução** (ficha 8), com motivo e assinatura", "Art. 125"),
     # ---- Ficha 7 · Guardar as amostras do CQ
-    "7-1": ("C", "O prazo está numa instrução normativa que não temos. O sistema guarda a **data de fim de guarda por produto** (campo obrigatório, sem padrão)", "Art. 14 VIII"),
+    "7-1": ("A", "**Mínimo da IN 139/2022, art. 10:** um ano depois da validade (30 dias para parenterais de grande volume e hemodiálise); matéria-prima até a validade dela. O sistema guarda a **data de fim de guarda por produto**, sem aceitar menos que o mínimo. *Texto integral da IN ainda não lido*", "IN 139/2022, arts. 10 e 11"),
     "7-2": ("B", "**Padrão: saída antes do prazo proibida.** Exceção com **assinatura da Qualidade e motivo**", "Art. 14 VIII"),
     "7-3": ("B", "**Motivos cadastráveis** (análise, descarte, devolução). **Descarte exige termo anexado e segunda pessoa**", "Art. 124"),
     "7-4": ("A+C", "O acompanhamento **nasce do protocolo aprovado** (pontos e condições). As condições padronizadas vêm de um regulamento que não temos", "Arts. 275 e 277"),
-    "7-5": ("B", "**Mesmo fluxo,** com tipo de amostra (referência ou retenção) e **prazos próprios por tipo**, obrigatórios", "Art. 14 VIII"),
+    "7-5": ("A", "**Mesmo fluxo,** com tipo de amostra (referência ou retenção), **quantidade mínima de duas análises completas** e registro dos lotes de embalagem representados", "IN 139/2022, arts. 5, 12 e 13"),
     "7-6": ("A", "A amostra do CQ **passa pela pesagem** como as demais, com o peso registrado", "Arts. 110 e 124"),
     # ---- Ficha 8 · Devolução e entradas
     "8-1": ("B", "**Padrão: a sobra volta à quarentena** e só retorna ao saldo com liberação do CQ. \"Volta direto\" é parâmetro desligado", "Arts. 157 e 189"),

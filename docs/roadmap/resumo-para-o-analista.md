@@ -87,7 +87,7 @@ O remédio precisa ser **produzido e controlado de forma consistente, conforme o
 
 ## 5. O que ainda não se sabe
 - **Normas não lidas:** a regulamentação nova do mapa de distribuição e o cronograma; o ato que revogou a RDC 157/2017; IN 19/2017 e IN 100/2021; RDC 430/2020; a norma de registro; a instrução normativa das amostras; Farmacopeia; o regulamento de estabilidade.
-- **Respostas do cliente:** as 219 perguntas das fichas estão classificadas (65 a norma manda, 110 parâmetro da empresa, 12 dependem de texto, 25 dependem do cliente, 7 decididas). **Nenhuma foi validada por quem opera uma fábrica.**
+- **Respostas do cliente:** as 219 perguntas das fichas estão classificadas (70 a norma manda, 109 parâmetro da empresa, 8 dependem de texto, 25 dependem do cliente, 7 decididas). **Nenhuma foi validada por quem opera uma fábrica.**
 - **Testes de tela:** o legado foi testado só em parte; o que está "pelo código" ainda precisa de teste.
 
 ## 6. Onde achar mais

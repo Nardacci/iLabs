@@ -48,12 +48,17 @@
 - **RDC 430/2020** (Boas Práticas de Distribuição, Armazenagem e Transporte): em vigor desde 16/03/2021, **alterada pela RDC 653/2022** (arts. 64 e 89). **O texto da norma não foi lido;** as orientações da ANVISA sobre ela foram (seção 1).
 - **Parecer nº 22/2023/SEI/GGMED/DIRE2/ANVISA** (processo 25351.925884/2022-71), sobre bula digital: diria que a lei vincula a ANVISA apenas ao código bidimensional e ao sistema do mapa de distribuição.
 
+### Perguntas e Respostas sobre a RDC 658/2022 e suas INs (ANVISA, atualizado em 15/02/2023), parte da IN 139/2022
+- **IN 139/2022** (amostras de referência e retenção): **art. 10** guarda de **pelo menos um ano após a validade** do produto acabado; **30 dias** após a validade para soluções parenterais de grande volume e concentrados para hemodiálise (§ 2º). **Art. 11, parágrafo único:** matéria-prima limitada à própria validade. **Art. 12:** material de embalagem retido com a amostra de retenção, se todos os lotes usados estiverem representados. **Art. 13:** quantidade de **duas análises completas**, também para matéria-prima e embalagem. **Art. 6º:** o importador guarda só a retenção. **Arts. 5º, 21, 23 e 24:** intercambialidade e local de guarda.
+- **RDC 658/2022, art. 127:** documentação de lote guardada **um ano após a expiração ou cinco anos após a certificação, o que for mais longo**; art. 128: outros documentos conforme a finalidade, e dados críticos que sustentam o registro **enquanto a autorização estiver em vigor**.
+- **Limite:** o **texto integral da IN 139/2022 não foi lido**; vale o que a ANVISA cita nas respostas.
+
 ## 3. Ainda falta ler
 1. **Regulamentação em vigor do mapa de distribuição** (se já existe) e o **cronograma**.
 2. **O ato que revogou a RDC 157/2017** (número e data corretos, no Diário Oficial de 12/07/2024) e o status da **IN 19/2017** e da **IN 100/2021**.
 3. **RDC 430/2020** (texto da norma, não só as perguntas e respostas), **RDC 653/2022** e **RDC 625/2022** (recolhimento, texto integral).
 4. **Norma de registro de medicamentos.**
-5. **Instrução normativa das amostras de retenção e de referência.**
+5. **Texto integral da IN 139/2022** (o conteúdo principal já foi lido nas respostas da ANVISA, seção 2).
 6. **Farmacopeia** e normas de água e ambiente.
 7. **Regulamento de estabilidade.**
 

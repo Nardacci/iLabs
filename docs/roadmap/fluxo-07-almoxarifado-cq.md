@@ -65,9 +65,9 @@ Entrada da amostra · reserva (referência, retenção, estabilidade) · acompan
 - **Ficha 3 (laudo):** a **amostra de retenção e de referência** nasce na **separação da amostra** do CQ; o elo com a Central de Pesagem (`DV-EST-032`) fica nesta ficha como **ponto a validar**.
 
 ## 6. Pontos a validar com a área (não consegui tirar do código)
-1. **Prazo de guarda:** quantos anos **depois da validade do lote** para referência e para retenção? É o mesmo para todo produto? (A RDC 658/2022 pede um período definido; o código **não guarda esse prazo**.)
+1. **Prazo de guarda:** a **IN 139/2022** (lida pela orientação da ANVISA de 15/02/2023, não pelo texto integral) fixa, no art. 10, **pelo menos um ano depois da data de validade do lote**, para referência e retenção do produto acabado; para **soluções parenterais de grande volume** e **concentrados para hemodiálise** são **30 dias** depois da validade. Na **matéria-prima**, a guarda vai **até a validade dela**, mesmo que vença antes do produto (art. 11, parágrafo único). O sistema guarda o prazo **por produto**, com **mínimo da norma** que não se pode reduzir. Falta só conferir o texto integral.
 2. **Saída antes do prazo:** é **proibida** ou permitida **com justificativa assinada** pela Qualidade? Quem assina?
 3. **Motivos de saída:** consumo em análise, descarte e devolução bastam? Descarte precisa de **termo** e testemunha?
 4. **Estabilidade:** quem define os **pontos** e as condições? O acompanhamento nasce **na entrada** ou depois da **regra de estabilidade** aprovada?
-5. **Amostra de referência e de retenção** do **medicamento acabado** e da **matéria-prima**: as duas seguem o mesmo fluxo?
+5. **Amostra de referência e de retenção** do **medicamento acabado** e da **matéria-prima**: as duas seguem o mesmo fluxo? (Orientação da ANVISA sobre a IN 139/2022: a **quantidade** é a de **duas análises completas** e vale também para matéria-prima e material de embalagem (art. 13); a retenção pode **substituir** a referência se tiver todos os lotes de embalagem representados (arts. 5º e 12); a referência fica só na **embalagem primária**; o **importador** guarda só a retenção. O sistema deve registrar **o tipo da amostra, a quantidade e os lotes de embalagem representados**.)
 6. **Amostra do CQ que sai pelo pedido do CQ** (ficha 6): passa pela pesagem como as demais (`DV-EST-032`)?
