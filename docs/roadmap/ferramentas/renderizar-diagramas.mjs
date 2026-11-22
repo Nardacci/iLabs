@@ -12,7 +12,8 @@ import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 
 const aqui = fileURLToPath(new URL('.', import.meta.url));
-const pasta = join(aqui, '..', 'diagramas');
+// PASTA_MMD (opcional): outra pasta de .mmd, por exemplo a dos diagramas de situação extraídos das fichas (montar-word.py --extrair-estados).
+const pasta = process.env.PASTA_MMD ?? join(aqui, '..', 'diagramas');
 const mermaidJs = process.env.MERMAID_JS ?? sys('Defina MERMAID_JS com o caminho de mermaid.min.js.');
 function sys(m) { console.error(m); process.exit(1); }
 const require = createRequire(process.env.PLAYWRIGHT_DIR ? join(process.env.PLAYWRIGHT_DIR, 'x.js') : import.meta.url);
