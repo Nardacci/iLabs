@@ -270,14 +270,14 @@ const PAGINAS_SEM_ORDEM = [
   f(
     'fluxo16a',
     '16a',
-    'Geração do IUM e agregação',
+    'Identificação da embalagem e agregação',
     'Rastreabilidade',
     'fluxo-16a-ium-e-agregacao.md',
   ),
   f(
     'fluxo16b',
     '16b',
-    'Eventos e declaração à ANVISA',
+    'Mapa de distribuição e declaração de eventos',
     'Rastreabilidade',
     'fluxo-16b-eventos-e-declaracao.md',
   ),

@@ -3,22 +3,22 @@ flowchart TB
   classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
   classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
   classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
-  subgraph G["1 · Gerar o identificador de cada embalagem"]
+  subgraph O["1 · O que a lei exige da embalagem (obrigatório)"]
     direction LR
     A1["Lote embalado"]:::passo --> A2{"Lote certificado pela<br/>Pessoa Delegada?"}:::trava
-    A2 -- não --> X1(["Não gera identificador"]):::bloqueio
-    A2 -- sim --> A3{"Quantidade até o total<br/>embalado, sem repetir?"}:::trava
-    A3 -- não --> X2(["Geração recusada"]):::bloqueio
-    A3 -- sim --> A4["Identificador único<br/>por embalagem"]:::trava
+    A2 -- não --> X1(["Sem etiqueta do lote"]):::bloqueio
+    A2 -- sim --> A3["Etiqueta com registro, lote,<br/>fabricação, validade<br/>e código da bula digital"]:::trava
   end
-  subgraph E["2 · Etiquetar"]
+  subgraph P["2 · Recurso opcional da empresa"]
     direction LR
-    B1["Etiqueta com dados<br/>da empresa titular"]:::trava --> B2["Código de barras<br/>bidimensional"]:::passo
+    B1["Número de série<br/>por embalagem"]:::trava --> B2{"Série repetida<br/>ou acima do embalado?"}:::trava
+    B2 -- sim --> X2(["Geração recusada"]):::bloqueio
+    B2 -- não --> B3["Caixas de transporte<br/>com código próprio"]:::trava
   end
-  subgraph C["3 · Agregar em caixas"]
+  subgraph C["3 · Depois de expedida"]
     direction LR
-    C1["Caixa com código<br/>da empresa"]:::trava --> C2{"Desfazer caixa<br/>já expedida?"}:::trava
-    C2 -- sim --> X3(["Recusado"]):::bloqueio
-    C2 -- não --> C3(["Cada embalagem em<br/>uma só caixa"]):::fim
+    C1{"Desfazer caixa<br/>já expedida?"}:::trava
+    C1 -- sim --> X3(["Recusado"]):::bloqueio
+    C1 -- não --> C2(["Cada embalagem em<br/>uma só caixa"]):::fim
   end
-  G --> E --> C
+  O --> P --> C

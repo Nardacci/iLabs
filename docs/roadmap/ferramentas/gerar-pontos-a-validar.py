@@ -44,8 +44,8 @@ ARQUIVOS = {  # ficha -> (módulo, código, título)
     "fluxo-15a-cliente-e-cadastros.md": ("Comercial", "15a", "Cliente e cadastros de venda"),
     "fluxo-15b-cotacao-requisicao-reserva.md": ("Comercial", "15b", "Cotação, requisição e reserva"),
     "fluxo-15c-fatura-remessa-cancelamento.md": ("Comercial", "15c", "Fatura, remessa e cancelamento"),
-    "fluxo-16a-ium-e-agregacao.md": ("Rastreabilidade", "16a", "Geração do IUM e agregação"),
-    "fluxo-16b-eventos-e-declaracao.md": ("Rastreabilidade", "16b", "Eventos e declaração à ANVISA"),
+    "fluxo-16a-ium-e-agregacao.md": ("Rastreabilidade", "16a", "Identificação da embalagem e agregação"),
+    "fluxo-16b-eventos-e-declaracao.md": ("Rastreabilidade", "16b", "Mapa de distribuição e declaração de eventos"),
     "fluxo-17-montagem-do-modelo.md": ("OPE", "17", "Montagem do modelo do registro de lote"),
 }
 

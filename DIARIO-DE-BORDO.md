@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-22 · Claude · Fichas 16a e 16b reescritas para o modelo atual
+
+- **Pedido do responsável:** seguir com a reescrita das fichas de Rastreabilidade depois da confirmação de que a RDC 157/2017 consta como revogada.
+- **Reescrito:** `fluxo-16a-ium-e-agregacao.md` (agora **identificação da embalagem**: etiqueta com registro, lote, data de fabricação, validade e código da bula digital, **obrigatória**; número de série por embalagem e caixas, **opcionais**) e `fluxo-16b-eventos-e-declaracao.md` (agora **mapa de distribuição por lote e destinatário**, **obrigatório**; declaração de eventos à ANVISA, **opcional**). Diagramas, tabelas etapa a etapa (com coluna "Obrigatório?"), cadastros, seção "A situação da norma" e pontos a validar refeitos. Os nomes dos arquivos e os endereços continuam os mesmos.
+- **Padrões propostos:** recursos opcionais **desligados por padrão** (parâmetro da empresa); guarda mínima dos registros pelo art. 127 da RDC 658/2022 (um ano após a validade ou cinco após a certificação, o que for maior), a confirmar com a norma de distribuição; **registro de distribuição nunca se apaga**, retificação por novo registro com motivo.
+- **Atualizado:** roteiro de implantação **1.29**, títulos na lista do estudo, lista de fluxos.
+- **Ainda não conferido:** o ato que revogou a RDC 157/2017 (a base da ANVISA diz "RDC 886 de 10/07/2024", que conflita com a RDC 886 de 26/06/2024); IN 19/2017 e IN 100/2021; regulamentação nova do mapa de distribuição e cronograma; RDC 71/2009 (rotulagem) e RDC 430/2020.
+- **Próxima etapa:** classificar as 124 perguntas restantes (Controle da Qualidade e Controle de Documentos primeiro).
+
 ## 2026-11-22 · Claude · RDC 157/2017 consta como revogada; modelo antigo de rastreabilidade acabou
 
 - **Arquivo enviado pelo responsável:** impressão da página da base de legislação da ANVISA com o texto da **RDC 157/2017** e a linha **"Revogada pela Resolução da Diretoria Colegiada - RDC nº 886, de 10/07/2024"**. Também enviou capturas das páginas "Legislação" e "Plano de Serialização" do site da ANVISA (de 2021, desatualizadas).

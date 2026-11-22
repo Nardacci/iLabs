@@ -320,27 +320,27 @@ A lista vem do documento "O que a norma diz", seção final, e das fichas 15a, 1
 
 ## Rastreabilidade: responde Assuntos Regulatórios
 
-### Ficha 16a · Geração do IUM e agregação
+### Ficha 16a · Identificação da embalagem e agregação
 
-- **16a-1** **Obrigação:** a empresa precisa declarar ao SNCM? Desde quando e para quais produtos? **A Lei 11.903/2009 e a regulamentação não estão no repositório:** pedir a Assuntos Regulatórios.
-- **16a-2** **Formato do IUM:** o padrão atual (registro, série, validade, lote e GTIN, sem separadores) é o que o SNCM exige?
-- **16a-3** **Série:** 13 dígitos sorteados é aceitável, ou o sistema deve gerar em sequência?
-- **16a-4** **Quantidade:** pode gerar IUM de reserva (perdas na linha de embalagem)? Quanto?
-- **16a-5** **Etiqueta:** quem é a **empresa titular** em cada produto? Quem é o **farmacêutico responsável** na etiqueta e quem o troca?
-- **16a-6** **Prefixo GS1:** qual é o da empresa? Onde fica guardado?
-- **16a-7** **Desfazer caixa:** em que situações se desfaz uma caixa? O que acontece com a declaração, se já foi feita?
-- **16a-8** **Pessoa Delegada:** a certificação do lote **acontece antes** de gerar o IUM, hoje? Quem faz?
+- **16a-1** **Série por embalagem:** a empresa do cliente quer **seguir cada caixinha** (recurso opcional) ou só o lote? Padrão proposto: **desligado**.
+- **16a-2** **Formato da série**, se ligado: usar a ordem da RDC 157/2017 (GTIN, registro, serial até 20 caracteres, validade, lote) como referência, ou outro?
+- **16a-3** **Bula digital:** onde o cliente hospeda e **qual endereço a ANVISA autorizou** (art. 3º, §3º)?
+- **16a-4** **Etiqueta:** quem é a **empresa titular** em cada produto e **quem é o farmacêutico responsável** na etiqueta?
+- **16a-5** **Caixas:** o cliente usa caixas com código próprio (prefixo GS1)? Qual é o prefixo?
+- **16a-6** **Rotulagem:** o que a **RDC 71/2009** e a regulamentação atual exigem na etiqueta, além do que a lei lista? (Texto **não lido**.)
+- **16a-7** **Regulamentação nova** da Lei 14.338/2022 e o seu **cronograma**: já existe? Muda o que a embalagem traz?
+- **16a-8** **Pessoa Delegada:** a certificação do lote **acontece antes** da etiqueta, hoje? Quem faz?
 
-### Ficha 16b · Eventos e declaração à ANVISA
+### Ficha 16b · Mapa de distribuição e declaração de eventos
 
-- **16b-1** **Obrigação:** a empresa precisa declarar ao SNCM? Quais eventos, em que prazo, a partir de quando? **A Lei 11.903/2009 e a regulamentação não estão no repositório.**
-- **16b-2** **Hoje, como a empresa declara?** Existe outro sistema, planilha ou portal da ANVISA usado fora do LabMedSys?
-- **16b-3** **Certificado digital:** quem o guarda e renova? Há um por empresa ou por pessoa?
-- **16b-4** **Ordem dos eventos:** a ANVISA recusa entrega de IUM não ativado. Qual é a **ordem exata** e o que ela recusa?
-- **16b-5** **Venda e entrega:** todo evento de entrega do tipo venda precisa de uma fatura? E os tipos doação, amostra e transferência?
-- **16b-6** **Retificação:** quem pode retificar e em que prazo? O que a ANVISA aceita como motivo?
-- **16b-7** **Duas telas de evento (Rastreabilidade e Estoque):** qual a empresa usa e quem faz?
-- **16b-8** **Fila e reenvio:** quanto tempo um evento pode ficar pendente até alguém ser avisado?
+- **16b-1** **Regulamentação nova** do mapa de distribuição (Lei 14.338/2022, art. 3º-A): já existe? Define **formato, periodicidade** ou **envio à ANVISA**? **Não li** nenhuma.
+- **16b-2** **Declaração de eventos:** o cliente quer ligar o recurso opcional? Quais eventos? **Padrão proposto: desligado.**
+- **16b-3** **Ato revogador da RDC 157/2017:** número e data corretos, e se a **IN 19/2017** e a **IN 100/2021** também caíram.
+- **16b-4** **Prazo de guarda** do mapa e dos registros de distribuição: o do art. 127 da RDC 658/2022 basta, ou a norma de distribuição (RDC 430/2020, **não lida**) fixa outro?
+- **16b-5** **Saídas que entram no mapa:** além de venda, entram **doação, amostra, devolução ao fornecedor e transferência entre unidades**?
+- **16b-6** **Quem consulta** o mapa e em quanto tempo precisa responder a um recolhimento.
+- **16b-7** **Retificação:** quem pode retificar e o que vale como motivo?
+- **16b-8** **Duas telas de evento do legado** (Rastreabilidade e Estoque): se o recurso for ligado, **um só caminho**?
 
 ## OPE: responde Produção e Garantia da Qualidade
 

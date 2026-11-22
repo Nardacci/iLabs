@@ -1,6 +1,6 @@
 # Roteiro de implantação do sistema
 
-**Versão 1.28, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
+**Versão 1.29, de 19/11/2026. Rascunho para validação do responsável. É um roteiro vivo:** nasce do que já sabemos (passos 1 a 3) e ganha detalhe a cada ficha de fluxo analisada.
 
 **Para que serve:** responder, para qualquer cliente que vá implantar o iLabs, **"o que fazer, em que ordem, quem faz e quando está pronto"**. A ordem vem das dependências entre cadastros ([passo 2](ordem-de-cadastro.md)) e das informações que cada fluxo exige ([passo 3](fluxo-01-recebimento-quarentena.md)): **não se cadastra o Item sem antes ter o que o Item usa; não se recebe material sem fornecedor qualificado, local de quarentena e regra de análise.**
 
@@ -203,17 +203,11 @@ Sem qualquer um destes, o fluxo trava em alguma etapa.
 2. **Condição de pagamento por cliente ou convênio**, em vez dos 30 dias fixos (etapa 3).
 3. **No ensaio ponta a ponta (etapa 9):** acrescentar **a fatura de um lote bloqueado depois da separação** (recusada), **uma fatura cancelada com remessa já saída** (remessa revertida) e **a consulta "para quem foi o lote X"**, que mostra toda venda com endereço. O Comercial fica completo (15a, 15b e 15c).
 
-### Detalhe das etapas 1, 3 e 9: geração do IUM e agregação (Rastreabilidade)
-(Vem da ficha [16a](fluxo-16a-ium-e-agregacao.md).)
-1. **Empresa titular do registro** com os dados da etiqueta e o **prefixo GS1** (etapa 3); **formato do IUM** definido por Assuntos Regulatórios e guardado fora do código.
-2. **Funções de gerar IUM e desfazer caixa, separadas e com assinatura** (etapa 1).
-3. **No ensaio ponta a ponta (etapa 9):** acrescentar **gerar mais IUM do que o embalado** (recusado), **gerar IUM de lote bloqueado** (recusado), **etiqueta com os dados da empresa certa** e **desfazer caixa já expedida** (recusado).
-
-### Detalhe das etapas 1, 3 e 9: eventos e declaração à ANVISA (Rastreabilidade)
-(Vem da ficha [16b](fluxo-16b-eventos-e-declaracao.md).)
-1. **Certificado digital e endereço do serviço da ANVISA, por variável de ambiente** (nunca no código), e **tipos de evento** definidos por Assuntos Regulatórios (etapa 3).
-2. **Funções de registrar, reenviar e retificar evento, separadas e com assinatura** (etapa 1).
-3. **No ensaio ponta a ponta (etapa 9):** acrescentar **entrega sem venda** (recusada), **evento fora de ordem** (recusado), **envio que falha** (fica pendente, com aviso, nunca como enviado) e **retificação sem motivo** (recusada). A Rastreabilidade fica completa (16a e 16b).
+### Detalhe das etapas 1, 3 e 9: identificação da embalagem e mapa de distribuição (Rastreabilidade)
+(Vem das fichas [16a](fluxo-16a-ium-e-agregacao.md) e [16b](fluxo-16b-eventos-e-declaracao.md), **reescritas em 22/11/2026** depois que a RDC 157/2017 passou a constar como revogada e a Lei 14.338/2022 mudou o que se exige.)
+1. **Empresa titular do registro** com os dados da etiqueta e o **endereço da bula digital** de cada produto (etapa 3). O **número de série por embalagem**, as **caixas com prefixo GS1** e a **declaração de eventos à ANVISA** (com **certificado digital por variável de ambiente**, nunca no código) são **recursos opcionais**, ligados por empresa e **desligados por padrão**.
+2. **Funções de emitir etiqueta, consultar o mapa de distribuição e retificar registro, separadas e com assinatura** (etapa 1).
+3. **No ensaio ponta a ponta (etapa 9):** acrescentar **lote não certificado sem etiqueta e sem saída** (recusados), **etiqueta com os dados da empresa certa**, **fatura cancelada com remessa já saída** (continua no mapa) e **a consulta "para quem foi o lote X"** com endereço. Se o cliente ligar os recursos opcionais: **série acima do embalado** (recusada), **caixa já expedida desfeita** (recusado) e **envio que falha** (fica pendente, com aviso, nunca como enviado). A Rastreabilidade fica completa (16a e 16b).
 
 ### Detalhe das etapas 1, 3 e 9: montagem do modelo do registro de lote (OPE)
 (Vem da ficha [17](fluxo-17-montagem-do-modelo.md).)

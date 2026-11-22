@@ -1,87 +1,81 @@
-# Passo 3, fluxo 16a: dar uma identidade a cada embalagem e juntá-las em caixas (geração do IUM e agregação, Rastreabilidade)
+# Passo 3, fluxo 16a: identificar a embalagem do lote (etiqueta, bula digital, número de série opcional e caixas)
 
-![Fluxo 16a: geração do IUM e agregação](diagramas/fluxo-16a-ium-e-agregacao.png)
+![Fluxo 16a: identificação da embalagem e agregação](diagramas/fluxo-16a-ium-e-agregacao.png)
 
 *Como ler: **laranja** = o sistema confere (trava); **vermelho** = bloqueio; **verde** = resultado. Clique na imagem para ampliar.*
 
 *Coluna "Onde no sistema": o caminho no sistema atual (legado), no formato **Módulo › Menu › Tela**. Onde diz "tela nova", a tela não existe hoje e será criada.*
 
-> **Em uma frase:** cada caixinha de remédio recebe um **número único** (o IUM), impresso na etiqueta como um código de barras quadrado, e as caixinhas são **agrupadas** em caixas maiores, que também têm código.
+> **Em uma frase:** cada embalagem do lote precisa trazer **quem é o produto e o lote** (registro, lote, data de fabricação, validade) e um **código quadrado que leva à bula digital**. Dar um **número de série único a cada caixinha** e **juntá-las em caixas** deixou de ser exigência da ANVISA e fica como **recurso opcional** do iLabs.
 >
-> **Exemplo do dia a dia (ilustrativo, os números são inventados):** um lote tem 10.000 caixinhas. O sistema gera 10.000 números, nem um a mais, nem repetido, imprime as etiquetas e depois junta 50 caixinhas numa caixa de transporte, que ganha o seu próprio código.
+> **Exemplo do dia a dia (ilustrativo, os números são inventados):** o lote 123 tem 10.000 caixinhas. Todas saem com a etiqueta do lote e o código da bula digital. Se a empresa quiser **seguir cada caixinha**, liga o número de série; o sistema então gera 10.000 números, nem um a mais, nem repetido.
 >
-> **Por que importa:** com o número único, dá para seguir **cada caixinha** até o paciente e recolher só a que tem problema. Se o número se repetir, ou se nascer de um lote que ainda não foi liberado, a rastreabilidade perde o valor.
+> **Por que importa:** a etiqueta errada (dados de outra empresa, lote que não foi liberado) é um problema de rotulagem e de segurança do paciente. O número de série só ajuda a recolher **uma caixinha** em vez do lote inteiro, e agora é escolha da empresa.
 >
-> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo). Aqui: **IUM** (Identificador Único de Medicamento) é o número que identifica uma embalagem; **agregação** é juntar embalagens em caixas, com código próprio; **SNCM** (Sistema Nacional de Controle de Medicamentos) é o sistema da ANVISA que recebe o registro desses números; **GTIN** é o código de barras do produto; **DataMatrix** é o código de barras quadrado da etiqueta.*
+> *Palavra que não conhece? Veja o documento "Glossário" (grupo "Para começar" da lista do estudo). Aqui: **IUM** era o Identificador Único de Medicamento (um número por embalagem); **agregação** é juntar embalagens em caixas, com código próprio; **SNCM** é o sistema central da ANVISA; **bula digital** é a bula que se abre por um código de barras quadrado; **DataMatrix** é esse código de barras quadrado.*
 
-**Análise de 21/11/2026. Rascunho para validação do responsável.** Primeira das duas fichas da **Rastreabilidade** (a 16b será eventos e declaração à ANVISA). Este fluxo é a base da outra: sem IUM correto, nenhum evento tem valor.
+**Análise de 22/11/2026, reescrita depois que a norma mudou. Rascunho para validação do responsável.** Primeira das duas fichas da **Rastreabilidade** (a [16b](fluxo-16b-eventos-e-declaracao.md) é o mapa de distribuição). **A versão anterior desta ficha descrevia o modelo antigo (IUM com número de série obrigatório); ele deixou de ser exigência.**
 
-**Fontes (todas no repositório do legado):** o fluxo "Geração de IUM e agregação" (`8.rastreabilidade/fluxos/geracao-ium-agregacao.md`, lido do código, regras `RN001` a `RN015`) e o inventário de telas da Rastreabilidade (casos `CT-RAS-017` a `029`). **O que não fiz:** não li as telas uma a uma. **Nada deste fluxo foi testado na tela; tudo vem só do código.** As normas da RDC 658/2022 (arts. 8º XV, 14 VII, 124 e 344 a 347) foram conferidas no texto. **A regra do identificador único e do SNCM (Lei 11.903/2009 e a regulamentação da ANVISA) não está no repositório:** o formato do IUM e a obrigação de declarar ficam como pontos a validar com Assuntos Regulatórios.
-
-> **Confirmado em 22/11/2026: o modelo antigo de rastreabilidade acabou, e a lei de 2022 mudou o que se exige.**
-> - **A RDC 157/2017 consta como REVOGADA** na base de legislação da ANVISA (página impressa pelo responsável em 22/11/2026, com a linha "Revogada pela Resolução da Diretoria Colegiada - RDC nº 886, de 10/07/2024"). **Atenção ao número e à data do ato que revogou:** a RDC 886 que o responsável baixou do Diário Oficial é **outra** (de 26/06/2024, trata de UDI de **dispositivos médicos**). Os dois dados não podem ser o mesmo ato; **a revogação está na base da ANVISA, mas o número do ato revogador precisa ser conferido no Diário Oficial**.
-> - **O que a RDC 157/2017 exigia** (texto lido, agora histórico): **IUM** com **GTIN, número de registro, código serial de até 20 caracteres, validade e lote**, nessa ordem (art. 6º); **código serial nunca repetido** na mesma apresentação (art. 6º, parágrafo único); **DataMatrix** (art. 4º); **código próprio para a embalagem de transporte** (art. 7º); **registro e comunicação das instâncias de evento** ao banco central em até **3 dias úteis** (detentores), com **retificação** por novo evento e **vedada a alteração** do que foi comunicado (arts. 12 e 13); sistemas que garantam **sigilo, integridade, disponibilidade e autenticidade** (art. 15).
-> - **O que vale hoje, pelo texto da Lei 14.338/2022 (lida):** o detentor do registro precisa de um sistema que gere o **mapa de distribuição** (quantidades por lote e **destinatários das remessas**), e a embalagem traz **registro, lote, validade e o código bidimensional da bula digital** (Lei 11.903/2009, arts. 3º e 3º-A). O texto **não exige** número de série por embalagem nem declaração de cada evento. A ANVISA suspendeu o desenvolvimento do sistema central por causa dessa lei (notícia de 23/05/2022).
-> - **Ainda não lido:** se existe **regulamentação nova do mapa de distribuição** e o seu cronograma (art. 2º da Lei 14.338/2022); o status da **IN 19/2017 e da IN 100/2021** (um escritório de advocacia diz que também foram revogadas; **não conferido**).
-> - **O que isso muda nesta ficha:** o que está abaixo descreve o **modelo antigo**, que **deixou de ser exigência**. O que o iLabs precisa ter é o **mapa de distribuição por lote e destinatário** (sai dos dados de venda e remessa) e a **identificação da embalagem com registro, lote, validade e bula digital**. **Número de série por embalagem e declaração de eventos** ficam como **recurso opcional**, com o desenho do modelo antigo como referência. **A reescrita desta ficha está pendente.** Continua valendo o que a RDC 658/2022 pede para o recolhimento (arts. 344 a 347) e o defeito de a tela dizer "enviado" sem ter enviado (art. 124).
+## A situação da norma (o que mudou)
+- **Lido no texto da Lei 14.338/2022 e da Lei 11.903/2009 atual** (Câmara dos Deputados; a página avisa que não substitui o Diário Oficial): as embalagens recebem **identificação específica** com, no mínimo, **número de registro, número do lote ou partida, data de validade** e **código de barras bidimensional que leva à bula digital** (art. 3º, §1º). O mapa de distribuição e as embalagens trazem **lote, data de fabricação e validade** (art. 3º-A, §1º). As bulas digitais ficam em **endereços autorizados pela ANVISA** (art. 3º, §3º), e a **bula impressa continua obrigatória** (art. 3º, §4º).
+- **A RDC 157/2017 consta como revogada** na base de legislação da ANVISA (página impressa pelo responsável em 22/11/2026). O texto dela, lido, é a **referência histórica** do número de série: **GTIN, registro, código serial de até 20 caracteres, validade e lote**, nessa ordem; serial **nunca repetido** na mesma apresentação; DataMatrix.
+- **Conferir:** o número e a data do ato que a revogou (a base diz "RDC 886 de 10/07/2024"; a RDC 886 de 26/06/2024 do Diário Oficial é outra, de dispositivos médicos); o status da IN 19/2017 e da IN 100/2021; se há **regulamentação nova** e o **cronograma** da lei (art. 2º da Lei 14.338/2022). **Não li** a RDC 71/2009 (rotulagem), que a RDC 157 citava para o rótulo.
 
 ## 1. O caminho, em uma linha
-**Buscar a produção liberada** → **gerar os IUM** (um por embalagem) → **imprimir a etiqueta** → **agregar em caixas** (montar, concluir) → ou **desfazer** a caixa.
+**Buscar o lote embalado e certificado** → **etiqueta com registro, lote, fabricação, validade e código da bula digital** → *(opcional)* **gerar o número de série de cada embalagem** → *(opcional)* **montar as caixas** → **desfazer só antes de expedir**.
 
-### A situação do IUM e da caixa
+### A situação do número de série e da caixa (quando a empresa usa)
 ```mermaid
 stateDiagram-v2
-  [*] --> AguardandoUso: IUM gerado de lote certificado
-  AguardandoUso --> EmAgregacao: lido para uma caixa em montagem
+  [*] --> AguardandoUso: série gerada de lote certificado
+  AguardandoUso --> EmAgregacao: lida para uma caixa em montagem
   EmAgregacao --> Agregado: caixa concluída
-  Agregado --> Expedido: evento de entrega (ficha 16b)
+  Agregado --> Expedido: lote sai na remessa (ficha 16b)
   Agregado --> EmAgregacao: desfazer, só antes da expedição
   AguardandoUso --> Bloqueado: lote bloqueado ou recolhido
   Agregado --> Bloqueado: lote bloqueado ou recolhido
 ```
-No legado o IUM nasce "aguardando uso" e **não acompanha a situação do lote**, e a caixa pode ser desfeita mesmo depois de expedida. No iLabs a situação é **uma só, guardada e conferida pelo banco**.
+No legado a série **não acompanha a situação do lote**, e a caixa pode ser desfeita mesmo depois de expedida. No iLabs a situação é **uma só, guardada e conferida pelo banco**.
 
 ## 2. Etapa a etapa
 
-| # | Etapa | Onde no sistema (legado) | Quem faz | Exige antes | O que entra | O banco garante (iLabs) | Falha do legado |
+| # | Etapa | Obrigatório? | Onde no sistema (legado) | Quem faz | O que entra | O banco garante (iLabs) | Falha do legado |
 |---|---|---|---|---|---|---|---|
-| 1 | **Buscar o lote embalado** | **Rastreabilidade** › Geração de IUM | Rastreabilidade | Produção **finalizada** e lote **certificado pela Pessoa Delegada** ([ficha 14c](fluxo-14c-autorizacao-inicio-final.md), [ficha 15b](fluxo-15b-cotacao-requisicao-reserva.md)) | Produto, lote, validade, registro, GTIN, quantidade embalada | A lista traz **só lote certificado** e **não bloqueado**; os dados **vêm do lote**, não da tela | A lista traz as produções "liberadas" pela Produção, **sem a certificação da Pessoa Delegada** (`RN001`, `RN002`, ponto 3, arts. 8º XV e 14 VII); lote, validade, registro e GTIN são **reenviados pela tela** (`RN003`) |
-| 2 | **Gerar os IUM** | Mesma tela | Rastreabilidade | Lote escolhido | **Quantidade** de IUM | **Quantidade até o total embalado** do lote, **somando as gerações anteriores**; **um aviso e uma recusa** para gerar de novo sem motivo | A quantidade só precisa ser maior que zero: **pode gerar mais IUM do que embalagens**; **gerar de novo para o mesmo lote** é possível, sem aviso (`RN004`, `RN005`, ponto 2) |
-| 3 | **Compor o número** | Automático | Automático | — | Registro, série, validade, lote, GTIN | Número de série **único em todo o banco** (índice único), no **formato exigido pelo SNCM** | Série de **13 dígitos sorteados**, conferida **só dentro da mesma geração**, **sem índice único**: pode repetir (`RN006`, ponto 1); formato **a validar** (`RN007`, ponto 7) |
-| 4 | **Registrar o nascimento** | Automático | Automático | — | Quem e quando | IUM nasce **aguardando uso**, com **quem e quando pelo servidor** e **trilha de auditoria** | Já gravava quem e quando (`RN008`) |
-| 5 | **Imprimir a etiqueta** | **Rastreabilidade** › Etiqueta do IUM (pela pesquisa e pela geração) | Rastreabilidade | IUM gerado | — | Etiqueta com **os dados da empresa titular, vindos do cadastro**, e o código **DataMatrix** | Endereço, CNPJ, farmacêutico responsável e SAC **de outra empresa, escritos no código** (`RN009`, `RN010`, ponto 4) |
-| 6 | **Montar a caixa (agregação)** | **Rastreabilidade** › Agregação | Rastreabilidade | IUM aguardando uso | IUM e/ou outras caixas | **Cada IUM e cada caixa em uma só caixa**; não agrega a si mesma; IUM de lote **bloqueado** não entra | Exige ao menos um IUM ou caixa; **não repete** IUM nem caixa em outra caixa (`RN011`, `RN012`); a situação do lote **não é conferida** |
-| 7 | **Dar o código da caixa** | Automático | Automático | — | — | Código com **prefixo GS1 da empresa**, sequência **sem reaproveitar** número excluído, e dígito verificador | O prefixo é **um valor de exemplo fixado no código**; a sequência parte da maior caixa não excluída, e **pode reaproveitar código** (`RN014`, ponto 5) |
-| 8 | **Concluir a caixa** | Mesma tela | Rastreabilidade | Caixa montada | — | Caixa **concluída** e IUM **agregados**, **assinados**, com histórico | Salvar deixa "em processo"; concluir deixa "concluída"; os IUM, "agregados" (`RN013`) |
-| 9 | **Desfazer a caixa** | Mesma tela | Rastreabilidade e Qualidade | Caixa concluída | **Justificativa** | **Só antes da expedição**; **com motivo e assinatura**; **a caixa já declarada como enviada nunca se desfaz** | **Desfaz sem conferir se já houve evento** de embalagem, transporte ou entrega, e **sem pedir motivo** (`RN015`, ponto 6) |
+| 1 | **Buscar o lote embalado** | **Sim** | **Rastreabilidade** › Geração de IUM | Rastreabilidade | Produto, lote, data de fabricação, validade, registro, total embalado | A lista traz **só lote certificado pela Pessoa Delegada** e **não bloqueado**; os dados **vêm do lote**, não da tela | A lista vinha das produções "liberadas" pela Produção, **sem a certificação** (`RN001`, `RN002`, ponto 3, arts. 8º XV e 14 VII); lote, validade, registro e GTIN eram **reenviados pela tela** (`RN003`) |
+| 2 | **Dados da embalagem** | **Sim** | Etiqueta do IUM | Rastreabilidade | Registro, lote, **data de fabricação**, validade, **endereço da bula digital** | A etiqueta só sai com **todos os dados obrigatórios**; o endereço da bula digital é **um dado do produto, em endereço autorizado** | O legado imprimia o código do IUM; **não encontrei** código de bula digital nem data de fabricação na etiqueta (a confirmar na tela) |
+| 3 | **Imprimir a etiqueta** | **Sim** | **Rastreabilidade** › Etiqueta do IUM | Rastreabilidade | — | Etiqueta com **os dados da empresa titular, vindos do cadastro** | Endereço, CNPJ, farmacêutico responsável e SAC **de outra empresa, escritos no código** (`RN009`, `RN010`, ponto 4) |
+| 4 | **Gerar o número de série** | **Opcional** (parâmetro da empresa) | **Rastreabilidade** › Geração de IUM | Rastreabilidade | **Quantidade** de séries | **Quantidade até o total embalado**, somando as gerações anteriores; série **única em todo o banco** (índice único); formato configurável, **com o da RDC 157/2017 como referência** | Quantidade só precisava ser maior que zero; **série de 13 dígitos sorteados, conferida só dentro da mesma geração**; **ordem do IUM diferente da RDC 157** (`RN004` a `RN007`, pontos 1, 2 e 7) |
+| 5 | **Montar a caixa (agregação)** | **Opcional** | **Rastreabilidade** › Agregação | Rastreabilidade | Séries e/ou outras caixas | **Cada série e cada caixa em uma só caixa**; não agrega a si mesma; série de lote **bloqueado** não entra | Não repetia série nem caixa em outra caixa; a situação do lote **não era conferida** (`RN011`, `RN012`) |
+| 6 | **Dar o código da caixa** | **Opcional** | Automático | Automático | — | Código com **prefixo GS1 da empresa**, sequência **sem reaproveitar** número excluído, dígito verificador | **Prefixo de exemplo fixado no código**; sequência podia **reaproveitar código** (`RN014`, ponto 5) |
+| 7 | **Concluir a caixa** | **Opcional** | Mesma tela | Rastreabilidade | — | Caixa **concluída**, séries **agregadas**, **assinadas**, com histórico | Salvar deixava "em processo"; concluir, "concluída" (`RN013`) |
+| 8 | **Desfazer a caixa** | **Opcional** | Mesma tela | Rastreabilidade e Qualidade | **Justificativa** | **Só antes da expedição**; **com motivo e assinatura** | **Desfazia sem conferir se já houve expedição** e sem motivo (`RN015`, ponto 6) |
 
 ## 3. O que este fluxo exige de cada cadastro global
 
 | Cadastro (passo 1) | O que o fluxo precisa que ele guarde |
 |---|---|
-| **Empresa titular do registro** | **CNPJ, endereço, telefone do SAC e farmacêutico responsável (com número no conselho)** para a etiqueta; **prefixo GS1** para o código das caixas |
-| **Produto acabado (ficha 14b)** | **GTIN**, **número do registro**, **composição** e a **quantidade embalada** de cada lote |
-| **Lote (Estoque)** | **Certificação da Pessoa Delegada**, **situação** (liberado, bloqueado, recolhido) e **total embalado**, que limita os IUM |
-| **Formato do IUM** (novo) | O padrão do SNCM, **definido por Assuntos Regulatórios** e guardado fora do código |
-| **Profissional e função** | Quem **gera** IUM, **monta** e **desfaz** caixa: funções separadas, com assinatura |
-| **Notificações (serviço comum)** | Aviso de **IUM de lote bloqueado**, de **geração acima do embalado** e de **caixa desfeita** |
+| **Empresa titular do registro** | **CNPJ, endereço, telefone do SAC e farmacêutico responsável (com número no conselho)** para a etiqueta; **prefixo GS1** só se usar caixas |
+| **Produto acabado (ficha 14b)** | **Número do registro**, **composição**, **endereço da bula digital** (autorizado pela ANVISA) e, se usar série, o **GTIN** |
+| **Lote (Estoque)** | **Certificação da Pessoa Delegada**, **data de fabricação**, **validade**, **situação** (liberado, bloqueado, recolhido) e **total embalado** |
+| **Parâmetro da empresa** (novo) | **Usa número de série por embalagem?** **Usa caixas com código?** (por produto ou por empresa; padrão: **desligado**) |
+| **Profissional e função** | Quem **emite a etiqueta**, **gera série** e **desfaz caixa**: funções separadas, com assinatura |
+| **Notificações (serviço comum)** | Aviso de **etiqueta com dado faltando**, de **série acima do embalado** e de **caixa desfeita** |
 
 ## 4. Os registros que nascem no fluxo (não são cadastros)
-IUM (um por embalagem) · etiqueta impressa · agregação (caixa) e os IUM dela · situação de cada IUM com data e usuário · histórico.
+Etiqueta impressa (com os dados e a versão da bula digital) · *(opcional)* série de cada embalagem · *(opcional)* caixa e as séries dela · histórico.
 
 ## 5. O que muda nos documentos anteriores
-- **Roteiro de implantação:** na etapa 3, a **empresa titular do registro** com os dados da etiqueta e o **prefixo GS1**; na etapa 1, as funções de **gerar IUM** e **desfazer caixa**; na etapa 9, o ensaio fecha a corrente do lote: **gerar mais IUM do que o embalado** (recusado), **gerar IUM de lote bloqueado** (recusado), **etiqueta com os dados da empresa certa** e **desfazer caixa já expedida** (recusado).
-- **Ficha 14c (liberação do lote):** a **certificação da Pessoa Delegada** passa a ser pré-condição **também** da geração do IUM.
-- **Ficha 14d (registro de lote):** o **total embalado** do lote vem do caderno, e **limita** os IUM.
-- **Ficha 15b e 15c (Comercial):** o lote **bloqueado** ou **recolhido** impede a venda **e** impede novos IUM.
-- **Ficha 16b (eventos):** o evento de entrega só aceita IUM **agregado ou aguardando uso** e de lote **liberado**.
+- **Roteiro de implantação:** na etapa 3, a **empresa titular** com os dados da etiqueta e o **endereço da bula digital** de cada produto; o **prefixo GS1** e o **formato do número de série** só se a empresa ligar o recurso. Na etapa 9, o ensaio inclui **etiqueta com os dados da empresa certa** e **lote não certificado sem etiqueta**; e, se o recurso estiver ligado, **gerar série acima do embalado** (recusado) e **desfazer caixa já expedida** (recusado).
+- **Ficha 14c (liberação do lote):** a **certificação da Pessoa Delegada** é pré-condição da etiqueta.
+- **Ficha 14d (registro de lote):** o **total embalado** e a **data de fabricação** do lote vêm do caderno.
+- **Ficha 16b (mapa de distribuição):** a **expedição** alimenta o mapa; a caixa expedida não se desfaz.
 
-## 6. Pontos a validar com a área (não consegui tirar do código)
-1. **Obrigação:** a empresa precisa declarar ao SNCM? Desde quando e para quais produtos? **A Lei 11.903/2009 e a regulamentação não estão no repositório:** pedir a Assuntos Regulatórios.
-2. **Formato do IUM:** o padrão atual (registro, série, validade, lote e GTIN, sem separadores) é o que o SNCM exige?
-3. **Série:** 13 dígitos sorteados é aceitável, ou o sistema deve gerar em sequência?
-4. **Quantidade:** pode gerar IUM de reserva (perdas na linha de embalagem)? Quanto?
-5. **Etiqueta:** quem é a **empresa titular** em cada produto? Quem é o **farmacêutico responsável** na etiqueta e quem o troca?
-6. **Prefixo GS1:** qual é o da empresa? Onde fica guardado?
-7. **Desfazer caixa:** em que situações se desfaz uma caixa? O que acontece com a declaração, se já foi feita?
-8. **Pessoa Delegada:** a certificação do lote **acontece antes** de gerar o IUM, hoje? Quem faz?
+## 6. Pontos a validar com a área (decisões de produto a registrar)
+1. **Série por embalagem:** a empresa do cliente quer **seguir cada caixinha** (recurso opcional) ou só o lote? Padrão proposto: **desligado**.
+2. **Formato da série**, se ligado: usar a ordem da RDC 157/2017 (GTIN, registro, serial até 20 caracteres, validade, lote) como referência, ou outro?
+3. **Bula digital:** onde o cliente hospeda e **qual endereço a ANVISA autorizou** (art. 3º, §3º)?
+4. **Etiqueta:** quem é a **empresa titular** em cada produto e **quem é o farmacêutico responsável** na etiqueta?
+5. **Caixas:** o cliente usa caixas com código próprio (prefixo GS1)? Qual é o prefixo?
+6. **Rotulagem:** o que a **RDC 71/2009** e a regulamentação atual exigem na etiqueta, além do que a lei lista? (Texto **não lido**.)
+7. **Regulamentação nova** da Lei 14.338/2022 e o seu **cronograma**: já existe? Muda o que a embalagem traz?
+8. **Pessoa Delegada:** a certificação do lote **acontece antes** da etiqueta, hoje? Quem faz?

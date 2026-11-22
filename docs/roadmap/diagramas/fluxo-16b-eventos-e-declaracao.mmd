@@ -3,20 +3,20 @@ flowchart TB
   classDef passo fill:#ffffff,stroke:#565b63,color:#17191c
   classDef fim fill:#e3f4ea,stroke:#17703f,stroke-width:2px,color:#17191c
   classDef bloqueio fill:#fde8e6,stroke:#b42318,stroke-width:2px,color:#17191c
-  subgraph R["1 · Registrar o evento"]
+  subgraph R["1 · Registrar a distribuição (obrigatório)"]
     direction LR
-    A1["Evento da embalagem<br/>(produção, entrega, recebimento...)"]:::passo --> A2{"Na ordem certa, lote liberado<br/>e venda correspondente?"}:::trava
-    A2 -- não --> X1(["Evento recusado"]):::bloqueio
-    A2 -- sim --> A3["Evento gravado, IUM muda<br/>de situação só após o envio"]:::trava
+    A1["Venda ou remessa<br/>de um lote"]:::passo --> A2{"Lote certificado, liberado<br/>e cliente autorizado?"}:::trava
+    A2 -- não --> X1(["Saída recusada"]):::bloqueio
+    A2 -- sim --> A3["Registro por lote:<br/>quantidade e destinatário"]:::trava
   end
-  subgraph D["2 · Declarar à ANVISA"]
+  subgraph M["2 · Mapa de distribuição e recolhimento"]
     direction LR
-    B1["Arquivo assinado com<br/>certificado digital"]:::trava --> B2{"ANVISA devolveu<br/>protocolo?"}:::trava
-    B2 -- não --> X2(["Fica pendente, com aviso,<br/>nunca como enviado"]):::bloqueio
-    B2 -- sim --> B3(["Enviado, com protocolo<br/>guardado"]):::fim
+    B1["Mapa por lote:<br/>quantidades e destinatários"]:::trava --> B2(["Consulta do lote: toda saída,<br/>mesmo cancelada, com endereço"]):::fim
   end
-  subgraph C["3 · Corrigir e consultar"]
+  subgraph D["3 · Declaração à ANVISA (opcional)"]
     direction LR
-    C1["Retificação com motivo,<br/>original preservado"]:::trava --> C2(["Linha do tempo de cada IUM<br/>e consulta por lote"]):::fim
+    C1["Evento assinado com<br/>certificado digital"]:::trava --> C2{"ANVISA devolveu<br/>protocolo?"}:::trava
+    C2 -- não --> X2(["Pendente, com aviso,<br/>nunca como enviado"]):::bloqueio
+    C2 -- sim --> C3(["Enviado, com protocolo"]):::fim
   end
-  R --> D --> C
+  R --> M --> D
