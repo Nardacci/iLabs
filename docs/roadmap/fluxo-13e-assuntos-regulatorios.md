@@ -78,6 +78,8 @@ Processo regulatório · programação · monitoramento e anexos · check-list e
 - **Produção, Estoque e Comercial:** o **bloqueio por registro** entra nos fluxos de ordem de produção, expedição e venda.
 
 ## 6. Pontos a validar com a área (não consegui tirar do código)
+
+> **O que a RDC 753/2022 diz (lida na tradução oficial em inglês da ANVISA, publicada no DOU de 05/10/2022):** vale para registro de medicamentos **novos, inovadores, genéricos e similares** de princípio ativo sintético e semissintético. O **tamanho de lote autorizado** é o do lote usado na prova de eficácia e segurança (art. 18); faixa de tamanho industrial só se aprovada pela norma de **alteração pós-registro** (§ 2º); **incluir outro local de fabricação** (do medicamento ou do princípio ativo) exige a documentação de alteração pós-registro (art. 19); para produto importado a granel, a validade conta da **fabricação no exterior** e segue a validade autorizada (art. 17, § 11). **Consequência para o iLabs:** o registro do produto guarda **tamanho de lote autorizado, locais de fabricação autorizados e validade autorizada**, e a ordem de produção **é recusada** fora deles. O site da ANVISA informa que a **RDC 948/2024** trouxe requisitos gerais para regularização de medicamentos de uso humano; **esse texto não foi lido**, nem a norma de alteração pós-registro.
 1. **Duas listas ou uma:** obrigações regulatórias (licenças, certificados) e registro de produto são **a mesma tela** ou **duas**? Quem cuida de cada uma?
 2. **Registro e produção:** o registro **indeferido ou vencido** bloqueia a **produção**, a **venda**, ou só avisa? E o produto **em exigência**?
 3. **Aviso:** com quantos dias de antecedência do prazo e da validade, e para quem?
