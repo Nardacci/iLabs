@@ -45,6 +45,14 @@ const PAGINAS_SEM_ORDEM = [
     arquivo: 'como-decidir-sem-a-area.md',
   },
   {
+    id: 'classificacao',
+    codigo: '',
+    titulo: 'Classificação das perguntas das fichas (A, B, C, D)',
+    modulo: 'Para começar',
+    tipo: 'Guia',
+    arquivo: 'classificacao-das-perguntas.md',
+  },
+  {
     id: 'textosoficiais',
     codigo: '',
     titulo: 'Textos oficiais lidos e o que ainda falta',
