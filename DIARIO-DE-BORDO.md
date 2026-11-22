@@ -2,6 +2,16 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-22 · Claude · Documento Word único montado
+
+- **Pedido do responsável:** montar o Word com as **30 fichas completas** (item 5 do plano) e **no mesmo padrão visual** dos entregáveis (capa, histórico de revisão, acrônimos, títulos numerados em caixa cinza, tabelas com cabeçalho cinza, rodapé).
+- **Entregue:** `docs/roadmap/ferramentas/montar-word.py`. Ele **reaproveita, sem alterar,** o gerador de Word e o modelo do repositório do legado (importa `gerar_docx.py` e usa o `.docx` modelo como base) e troca a identidade para **iLabs** (capa, rodapé, propriedades do arquivo e lista de acrônimos). **Os nomes das pessoas do modelo não foram levados** (tabela "Envolvidos" e metadados): o autor é "Equipe do projeto iLabs" e a primeira linha da tabela diz "Responsável pelo estudo". Conferido que o arquivo não contém esses nomes.
+- **Conteúdo do Word (cerca de 300 páginas, 60 figuras):** capa, histórico e acrônimos; sumário (campo do Word); como ler; **Guia do analista** (no lugar do resumo para a diretoria); situação da norma e textos lidos; os módulos e a ANVISA; a GQ e os outros módulos; cadastros globais; fluxos do legado; **as 30 fichas, agrupadas por módulo,** cada uma com o diagrama do fluxo e o diagrama de situações; como decidimos sem área; **classificação das 219 perguntas**; roteiro de implantação; anexos (glossário, o que a norma diz, decisões).
+- **Adaptações do conteúdo ao Word:** tabelas com mais de 5 colunas viram **blocos de duas colunas** (uma por etapa), para caber na página; os diagramas de situação (mermaid) viram imagens; citações viram parágrafos comuns; referências à lista do site foram trocadas por "Anexo A".
+- **Como gerar de novo:** os três passos estão no começo de `montar-word.py` (extrair os diagramas, renderizar com `renderizar-diagramas.mjs` usando a variável `PASTA_MMD`, montar). O **arquivo .docx (cerca de 10 MB) não vai para o git:** muda a cada edição e depende do modelo do repositório do legado; é gerado a pedido.
+- **Ao abrir no Word:** ele pergunta se atualiza os campos; responder **Sim** monta o sumário. O sumário é um campo; a conferência foi feita com o LibreOffice, que não o preenche.
+- **Próxima etapa:** o responsável abre o Word, aponta o que ajustar (ordem dos capítulos, o que sai, o que entra) e eu gero de novo.
+
 ## 2026-11-22 · Claude · Guia do analista (resumo do documento Word)
 
 - **Pedido do responsável:** a única mudança no plano do documento Word é o **item 2: em vez de "resumo para a diretoria", um resumo para o analista de negócios** (o próprio responsável), com o **conhecimento do sistema (o que ele faz hoje), o que ele precisa fazer no futuro com as novas versões e as normas**.
