@@ -98,6 +98,7 @@ O sistema computadorizado precisa garantir isso **sozinho**, e não depender da 
 ### Rastreabilidade
 - **Para que serve:** dá um **número único (IUM)** a cada embalagem, agrupa em caixas e **declara cada passo à ANVISA**, para seguir a caixinha até o paciente.
 - **O que a ANVISA espera:** **registros que permitam rastrear** a atividade (art. 124) e a capacidade de **recolher um lote a qualquer momento** (arts. 344 a 346). A obrigação de **declarar ao SNCM** vem da **Lei 11.903/2009 e da regulamentação**, que **não estão no repositório**: o que declarar, quando e em que formato fica para Assuntos Regulatórios.
+- **Atenção (22/11/2026, a confirmar):** resumos de busca indicam que a **Lei 14.338/2022 mudou esse modelo**: a rastreabilidade passaria a ser do detentor do registro, com mapa de distribuição por lote e destinatário, e a RDC 157/2017 teria sido revogada em 2024. Não li o texto oficial. Se for confirmado, esta seção muda.
 - **Se falhar:** o número se repete; a tela diz "enviado" sem a ANVISA ter recebido; num recolhimento, não se sabe onde está cada embalagem.
 - **Fichas:** 16a e 16b.
 
