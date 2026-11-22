@@ -2,6 +2,7 @@
 
 ## Contexto
 - Repositório **independente** da nova versão (decisão do responsável, 02/11/2026). O legado e a sua análise ficam em repositório privado do legado (privado, fora deste repositório); aqui não se copia código do legado.
+- **Não há áreas da empresa para consultar** (decisão registrada em 22/11/2026): o sistema foi comprado de um fornecedor que faliu e é desenvolvido para um cliente futuro. As fontes são o legado e as normas da ANVISA. O que depende de escolha da empresa vira **parâmetro configurável por empresa**, com padrão proposto; o cliente confirma na implantação (`docs/roadmap/como-decidir-sem-a-area.md`).
 - Quem conduz é analista de negócio e de homologação, não desenvolvedor: português claro, sem jargão sem explicação.
 - Objetivo: um ERP SaaS (Supabase, PostgreSQL) que atenda à RDC 658/2022 e ao Guia 33/2020, corrigindo as falhas encontradas no legado.
 

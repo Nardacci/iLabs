@@ -71,7 +71,7 @@ if ficheiros != set(ARQUIVOS):
 L = []
 L.append("# Pontos a validar: todas as perguntas das fichas, por área\n")
 L.append(f"**Reunidos em {date.today().strftime('%d/%m/%Y')}, de forma automática, a partir da seção \"Pontos a validar com a área\" de cada uma das {len(ARQUIVOS)} fichas de fluxo.** São **{total} perguntas**. Este documento **não tem conteúdo novo**: serve para levar às reuniões, uma área por vez. Quem responde cada grupo está indicado no título. Cada pergunta tem um código (por exemplo `14d-3` = ficha 14d, pergunta 3) para você anotar a resposta no chat e eu atualizar a ficha.\n")
-L.append("> **Como usar:** escolha a área, leve a lista de perguntas, anote a resposta e a pessoa que a deu. Pergunta sem resposta fica como \"ponto para validar\". Resposta de quem manda na área vira decisão e entra na ficha.\n")
+L.append("> **Atenção (decisão de 22/11/2026):** **não há áreas da empresa para consultar** (o sistema é feito para um cliente futuro). Por isso esta lista serve para **a implantação com o cliente**; enquanto isso, valem as **propostas** do documento \"Como decidir quando não há área para perguntar\". Quem responde cada grupo (títulos abaixo) é o **papel que o cliente terá**.\n")
 L.append("## Resumo por área\n")
 L.append("| Quem responde | Fichas | Perguntas |\n|---|---|---|")
 for mod, quem in AREAS:
@@ -117,6 +117,7 @@ n_gq = sum(len(dados[a]) for a, v in ARQUIVOS.items() if v[0] == "Garantia da Qu
 P = []
 P.append("# Pauta das reuniões com a Qualidade\n")
 P.append(f"**Montada em {date.today().strftime('%d/%m/%Y')}, em parte de forma automática, a partir das fichas de fluxo.** Para quem conduz as reuniões: a Qualidade concentra {n_docs + n_cq + n_gq} das {total} perguntas das fichas e os textos de norma que faltam. Proponho **três reuniões**, para não cansar.\n")
+P.append("> **Atenção (22/11/2026):** não há, hoje, pessoas da empresa para essas reuniões. **Use esta pauta na implantação com o cliente.** Enquanto isso, valem as propostas de \"Como decidir quando não há área para perguntar\".\n")
 P.append("> **Objetivo:** sair de cada reunião com (a) as **decisões** que a norma deixa para a empresa, (b) os **textos** que precisamos, e (c) a **resposta de cada pergunta** pelo código (por exemplo `13a-3`). Resposta sem dono ou sem data fica como \"ponto para validar\".\n")
 P.append("## Quem convidar\n")
 P.append("- **Responsável pela Qualidade** (ou quem responde pela Garantia da Qualidade).")
@@ -231,6 +232,7 @@ OUTRAS = [
 Q = []
 Q.append("# Pautas das reuniões com as outras áreas\n")
 Q.append(f"**Montadas em {date.today().strftime('%d/%m/%Y')}, em parte de forma automática, a partir das fichas de fluxo.** Complementam a [pauta da Qualidade](pauta-reuniao-qualidade.md): aqui ficam as áreas que **operam** o dia a dia (Estoque e Compras, Produção, Comercial e Assuntos Regulatórios). Uma reunião por área, com as decisões que só ela toma, as perguntas das fichas e os textos que ela pode fornecer.\n")
+Q.append("> **Atenção (22/11/2026):** não há, hoje, pessoas da empresa para essas reuniões. **Use estas pautas na implantação com o cliente.** Enquanto isso, valem as propostas de \"Como decidir quando não há área para perguntar\".\n")
 Q.append("> **Como registrar:** igual à reunião da Qualidade. Para cada pergunta, a **resposta**, **quem respondeu** e a **data**; passe pelo chat com o código (por exemplo `15b-2: 90 dias de validade mínima, resposta do Comercial, 28/11`).\n")
 Q.append("## Resumo\n")
 Q.append("| Área | Fichas | Perguntas | Tempo sugerido |\n|---|---|---|---|")

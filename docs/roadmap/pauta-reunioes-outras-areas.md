@@ -2,6 +2,8 @@
 
 **Montadas em 22/11/2026, em parte de forma automática, a partir das fichas de fluxo.** Complementam a [pauta da Qualidade](pauta-reuniao-qualidade.md): aqui ficam as áreas que **operam** o dia a dia (Estoque e Compras, Produção, Comercial e Assuntos Regulatórios). Uma reunião por área, com as decisões que só ela toma, as perguntas das fichas e os textos que ela pode fornecer.
 
+> **Atenção (22/11/2026):** não há, hoje, pessoas da empresa para essas reuniões. **Use estas pautas na implantação com o cliente.** Enquanto isso, valem as propostas de "Como decidir quando não há área para perguntar".
+
 > **Como registrar:** igual à reunião da Qualidade. Para cada pergunta, a **resposta**, **quem respondeu** e a **data**; passe pelo chat com o código (por exemplo `15b-2: 90 dias de validade mínima, resposta do Comercial, 28/11`).
 
 ## Resumo
@@ -75,7 +77,7 @@
 
 #### Ficha 6 · Pedir, separar e entregar o material
 
-- **6-1** **Lote que vence primeiro:** é **obrigatório** (só o primeiro é aceito) ou **recomendado** (aceita outro, com justificativa assinada)?
+- **6-1** **Lote que vence primeiro:** ~~obrigatório ou recomendado?~~ **Decidido pelo responsável em 22/11/2026: não é obrigatório.** O sistema **sugere** o lote que vence primeiro e **aceita outro**, registrando a escolha (parâmetro por empresa para exigir justificativa). A norma só manda girar o estoque e proíbe usar material vencido ou não liberado (arts. 159 e 189).
 - **6-2** **Aprovação:** vale **sempre**, só para certos almoxarifados (como hoje) ou **por tipo e por valor**? Quem aprova pode ser da mesma área de quem pediu?
 - **6-3** **Reserva:** o pedido **reserva** o lote desde a aprovação ou só desde a separação?
 - **6-4** **Diferença de pesagem:** qual é o limite por subgrupo? Vale para todos os tipos de pedido ou só para produção?

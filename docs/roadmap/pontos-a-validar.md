@@ -2,7 +2,7 @@
 
 **Reunidos em 22/11/2026, de forma automática, a partir da seção "Pontos a validar com a área" de cada uma das 30 fichas de fluxo.** São **219 perguntas**. Este documento **não tem conteúdo novo**: serve para levar às reuniões, uma área por vez. Quem responde cada grupo está indicado no título. Cada pergunta tem um código (por exemplo `14d-3` = ficha 14d, pergunta 3) para você anotar a resposta no chat e eu atualizar a ficha.
 
-> **Como usar:** escolha a área, leve a lista de perguntas, anote a resposta e a pessoa que a deu. Pergunta sem resposta fica como "ponto para validar". Resposta de quem manda na área vira decisão e entra na ficha.
+> **Atenção (decisão de 22/11/2026):** **não há áreas da empresa para consultar** (o sistema é feito para um cliente futuro). Por isso esta lista serve para **a implantação com o cliente**; enquanto isso, valem as **propostas** do documento "Como decidir quando não há área para perguntar". Quem responde cada grupo (títulos abaixo) é o **papel que o cliente terá**.
 
 ## Resumo por área
 
@@ -73,7 +73,7 @@ A lista vem do documento "O que a norma diz", seção final, e das fichas 15a, 1
 
 ### Ficha 6 · Pedir, separar e entregar o material
 
-- **6-1** **Lote que vence primeiro:** é **obrigatório** (só o primeiro é aceito) ou **recomendado** (aceita outro, com justificativa assinada)?
+- **6-1** **Lote que vence primeiro:** ~~obrigatório ou recomendado?~~ **Decidido pelo responsável em 22/11/2026: não é obrigatório.** O sistema **sugere** o lote que vence primeiro e **aceita outro**, registrando a escolha (parâmetro por empresa para exigir justificativa). A norma só manda girar o estoque e proíbe usar material vencido ou não liberado (arts. 159 e 189).
 - **6-2** **Aprovação:** vale **sempre**, só para certos almoxarifados (como hoje) ou **por tipo e por valor**? Quem aprova pode ser da mesma área de quem pediu?
 - **6-3** **Reserva:** o pedido **reserva** o lote desde a aprovação ou só desde a separação?
 - **6-4** **Diferença de pesagem:** qual é o limite por subgrupo? Vale para todos os tipos de pedido ou só para produção?
