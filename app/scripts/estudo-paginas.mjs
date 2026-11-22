@@ -85,6 +85,14 @@ const PAGINAS_SEM_ORDEM = [
     arquivo: 'pauta-reuniao-qualidade.md',
   },
   {
+    id: 'pautaareas',
+    codigo: '',
+    titulo: 'Pautas das reuniões com as outras áreas',
+    modulo: 'Para começar',
+    tipo: 'Guia',
+    arquivo: 'pauta-reunioes-outras-areas.md',
+  },
+  {
     id: 'norma',
     codigo: '',
     titulo: 'O que a norma diz',

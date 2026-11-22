@@ -2,6 +2,13 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-22 · Claude · Pautas das reuniões com as outras áreas
+
+- **Pedido do responsável:** "pode seguir" depois da oferta de montar pautas para as outras áreas.
+- **Entregue:** `docs/roadmap/pauta-reunioes-outras-areas.md` (gerado por `python3 ferramentas/gerar-pontos-a-validar.py`, junto com `pontos-a-validar.md` e a pauta da Qualidade), no grupo "Para começar" (`/estudo/roadmap/pautaareas`): uma seção por área, com quem convidar, **3 decisões que só ela toma**, o texto de norma que ela pode fornecer e as perguntas das fichas com código. Áreas: **Estoque e Compras** (58 perguntas), **Produção** (48, com a OPE), **Comercial** (24) e **Assuntos Regulatórios** (16, Rastreabilidade).
+- **Sem conteúdo novo:** reúne o que já está nas fichas. Os tempos (20 minutos mais 3 por pergunta) e as decisões por área são estimativa e síntese minhas, a ajustar com o responsável. Estoque e Compras passa de 3 horas: vale dividir.
+- **Próxima etapa:** o responsável marca as reuniões e passa as respostas pelo chat com o código de cada pergunta; eu atualizo as fichas e refaço as listas.
+
 ## 2026-11-21 · Claude · Pauta das reuniões com a Qualidade
 
 - **Pedido do responsável:** "pode seguir" depois da oferta de duas opções (Word da diretoria ou pauta da Qualidade); escolhi a pauta, que destrava o resto. O arquivo Word da diretoria continua possível.
