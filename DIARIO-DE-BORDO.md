@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-22 · Claude · SNCM: texto da lei lido e achado confirmado
+
+- **Pedido do responsável:** seguir. A liberação de rede passou a valer em parte: **Câmara dos Deputados** e **gov.br** abriram; **Planalto, Senado e Diário Oficial** ainda não.
+- **Lido (texto):** Lei 14.338/2022 (publicação original) e Lei 11.903/2009 (redação atual e publicação original), na Câmara dos Deputados; notícia da ANVISA de 23/05/2022 (título e subtítulo). **Confirmado:** a Lei 14.338/2022 **mudou o modelo de rastreabilidade**: o detentor do registro deve ter sistema que gere o **mapa de distribuição por lote e destinatário** (art. 3º-A), a embalagem traz **registro, lote, validade e código bidimensional da bula digital** (art. 3º, §1º), e foram **revogados** o inciso II do §1º do art. 3º e os arts. 4º, 4º-A e 5º. O texto lido **não exige**, por si só, número de série por embalagem nem declaração de cada evento. A ANVISA suspendeu o desenvolvimento do SNCM por causa dessa lei.
+- **Mudado:** o aviso "indício a confirmar" das fichas **16a** e **16b** virou **"Confirmado com o texto da lei"**, com o que foi lido, o que falta (regulamentação em vigor e cronograma; RDC 886/2024 só por resumo de busca) e o efeito na ficha; também em "Para que serve cada módulo", em "Como decidir" (as duas linhas do SNCM e do formato do IUM passam a "C → muda"), no resumo da diretoria e na lista de textos que faltam. **As tabelas das fichas 16a e 16b ainda não foram reescritas**, porque falta a regulamentação.
+- **Novo:** `docs/roadmap/textos-oficiais-lidos.md` (grupo "Para começar", `/estudo/roadmap/textosoficiais`): o que foi **lido** (com o texto dos dispositivos), o que é **só resumo de busca**, o que **falta ler** e o que muda no estudo.
+- **Cuidado de método:** a reprodução da Câmara avisa que não substitui o Diário Oficial. Conferir no DOU antes de uso formal.
+- **Próxima etapa:** quando Planalto e Diário Oficial abrirem, ler a RDC 886/2024 e a regulamentação do mapa de distribuição; depois reescrever as fichas 16a e 16b. Ler também a RDC 430/2020 e as demais normas que faltam. Em paralelo, classificar as 219 perguntas (A, B, C, D) nos módulos que não dependem desses textos.
+
 ## 2026-11-22 · Claude · Primeira busca dos textos públicos: achado sobre o SNCM e rede liberada
 
 - **Pedido do responsável:** seguir (buscar nas fontes públicas os textos que faltam).
