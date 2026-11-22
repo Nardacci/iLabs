@@ -1,6 +1,6 @@
 # Pontos a validar: todas as perguntas das fichas, por área
 
-**Reunidos em 21/11/2026, de forma automática, a partir da seção "Pontos a validar com a área" de cada uma das 30 fichas de fluxo.** São **219 perguntas**. Este documento **não tem conteúdo novo**: serve para levar às reuniões, uma área por vez. Quem responde cada grupo está indicado no título. Cada pergunta tem um código (por exemplo `14d-3` = ficha 14d, pergunta 3) para você anotar a resposta no chat e eu atualizar a ficha.
+**Reunidos em 22/11/2026, de forma automática, a partir da seção "Pontos a validar com a área" de cada uma das 30 fichas de fluxo.** São **219 perguntas**. Este documento **não tem conteúdo novo**: serve para levar às reuniões, uma área por vez. Quem responde cada grupo está indicado no título. Cada pergunta tem um código (por exemplo `14d-3` = ficha 14d, pergunta 3) para você anotar a resposta no chat e eu atualizar a ficha.
 
 > **Como usar:** escolha a área, leve a lista de perguntas, anote a resposta e a pessoa que a deu. Pergunta sem resposta fica como "ponto para validar". Resposta de quem manda na área vira decisão e entra na ficha.
 

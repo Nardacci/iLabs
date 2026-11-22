@@ -1,6 +1,6 @@
 # Pauta das reuniões com a Qualidade
 
-**Montada em 21/11/2026, em parte de forma automática, a partir das fichas de fluxo.** Para quem conduz as reuniões: a Qualidade concentra 73 das 219 perguntas das fichas e os textos de norma que faltam. Proponho **três reuniões**, para não cansar.
+**Montada em 22/11/2026, em parte de forma automática, a partir das fichas de fluxo.** Para quem conduz as reuniões: a Qualidade concentra 73 das 219 perguntas das fichas e os textos de norma que faltam. Proponho **três reuniões**, para não cansar.
 
 > **Objetivo:** sair de cada reunião com (a) as **decisões** que a norma deixa para a empresa, (b) os **textos** que precisamos, e (c) a **resposta de cada pergunta** pelo código (por exemplo `13a-3`). Resposta sem dono ou sem data fica como "ponto para validar".
 
