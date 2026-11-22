@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-22 · Claude · Classificação das 219 perguntas concluída; plano do documento Word único
+
+- **Pedido do responsável:** seguir com a classificação e **já ir pensando que, ao final da análise, será criado um único documento no Word.**
+- **Entregue:** `docs/roadmap/classificacao-das-perguntas.md` agora cobre **as 219 perguntas** (antes, 95): Controle da Qualidade, Controle de Documentos, Produção, Comercial, Rastreabilidade e OPE entraram nesta rodada (124). Resultado: **65 A** (a norma manda), **110 B** (parâmetro da empresa), **12 C** (depende de texto que falta), **25 D** (depende do cliente ou do desenho) e **7 já decididas**. Dados em `ferramentas/classificacao-perguntas-dados.py`.
+- **Conferido no texto:** art. 193 da RDC 658/2022 (cada material pesado e seu peso verificados independentemente, com registro), usado na pergunta 14d-6.
+- **Decisão registrada** em `docs/decisoes.md`: o entregável final do estudo é **um único documento Word**.
+- **Plano do documento Word** (proposta, a validar): (1) capa, histórico de revisão e como ler; (2) resumo para a diretoria; (3) a situação da norma e os textos lidos (e os que faltam); (4) o que cada módulo é e o que a ANVISA espera; (5) as fichas de fluxo, por módulo (30 fichas, com os diagramas); (6) a classificação das 219 perguntas e os padrões propostos; (7) o roteiro de implantação; (8) anexos: glossário, o que a norma diz, decisões registradas. Geração a partir dos `.md` por script (ferramentas disponíveis na sessão: `pandoc` e `python-docx`), repetível a cada mudança.
+- **Próxima etapa:** (a) o responsável aprova ou muda a classificação por exceção (passando o código da pergunta); (b) montar o documento Word único; (c) conferir o ato que revogou a RDC 157/2017, IN 19/2017, IN 100/2021 e a regulamentação nova do mapa de distribuição.
+
 ## 2026-11-22 · Claude · Fichas 16a e 16b reescritas para o modelo atual
 
 - **Pedido do responsável:** seguir com a reescrita das fichas de Rastreabilidade depois da confirmação de que a RDC 157/2017 consta como revogada.
