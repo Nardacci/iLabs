@@ -61,3 +61,11 @@ O detalhe das decisões do banco está em `../banco/README.md` e `../banco/model
 | 18/11/2026 | **Roadmap de telas por ondas e fatias ponta a ponta** (proposta, aguarda validação) | Em vez de um módulo inteiro por vez, ondas 0 a 7; Estoque e CQ juntos (recebimento ao laudo); situação única do lote e assinatura eletrônica como peças de base. Ver `docs/roadmap/roadmap-de-telas.md`. |
 | 18/11/2026 | **O iLabs é um sistema remodelado e COMPLETO (nove módulos), não uma versão do IVB** | Correção do responsável: o escopo de cinco módulos e o edital do IVB como limite não valem. Produção, Comercial, Rastreabilidade e OPE entram no roadmap. Prevalece sobre o roadmap de telas de 18/11 até ser refeito. |
 | 19/11/2026 | **Kits não existe mais no sistema** (6 telas e 5 relatórios do Estoque, mais o fluxo de Kits) | Decisão do responsável: o item foi retirado. Não entra em cadastros, fluxos nem roadmap. |
+
+## Decisões do estudo do roadmap (22/11/2026)
+
+| Data | Decisão | Motivo |
+|---|---|---|
+| 22/11/2026 | **Não há áreas da empresa para consultar.** O sistema foi comprado de um fornecedor que faliu e é desenvolvido para um cliente futuro. As fontes são **o legado (regras e código) e as normas da ANVISA**. O que depende de escolha da empresa vira **parâmetro configurável por empresa**, com padrão proposto; o cliente confirma na implantação | Informação do responsável. Antes disso, as fichas pediam "validar com a área" e as pautas de reunião supunham pessoas a consultar. Ver `roadmap/como-decidir-sem-a-area.md` |
+| 22/11/2026 | **"Primeiro que vence, primeiro que sai" não é obrigatório.** O sistema sugere o lote que vence primeiro e aceita outro, registrando a escolha; parâmetro por empresa para exigir justificativa | Decisão do responsável. A norma só manda girar o estoque e proíbe usar material vencido ou não liberado (RDC 658/2022, arts. 159 e 189) |
+

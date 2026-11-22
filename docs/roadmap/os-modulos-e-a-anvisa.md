@@ -109,6 +109,6 @@ Por baixo de tudo, o **Controle de Documentos** (instrução vigente), a **GQ** 
 
 ## 5. Como usar este texto
 - **Para entender um módulo novo:** leia a seção dele, depois as fichas indicadas.
-- **Para uma reunião com a Qualidade:** use a coluna "A pergunta que a ANVISA faz" como roteiro.
+- **Para a implantação com o cliente:** use a coluna "A pergunta que a ANVISA faz" como roteiro de conversa com a Qualidade dele.
 - **Para as dúvidas abertas:** veja o documento "Pontos a validar, por área".
 - **Ressalva:** a leitura jurídica final é da Qualidade e da área regulatória. Se um tema não aparece aqui, **não afirmo que a norma é omissa**: só que não o encontrei nos textos que li.

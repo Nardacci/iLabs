@@ -37,6 +37,14 @@ const PAGINAS_SEM_ORDEM = [
     arquivo: 'roteiro-de-implantacao.md',
   },
   {
+    id: 'decidir',
+    codigo: '',
+    titulo: 'Como decidir quando não há área para perguntar',
+    modulo: 'Para começar',
+    tipo: 'Guia',
+    arquivo: 'como-decidir-sem-a-area.md',
+  },
+  {
     id: 'glossario',
     codigo: '',
     titulo: 'Glossário',

@@ -40,11 +40,11 @@ Os módulos existem, mas **as ligações entre eles quase não funcionam**. Os p
 
 ## O que precisamos para avançar
 
-**Da diretoria:**
-1. **Indicar quem é a Pessoa Delegada** (a que certifica o lote) e **os responsáveis pela Produção e pelo Controle da Qualidade**, que aprovam treinamento e instruções.
-2. **Liberar as áreas para as reuniões de validação** (Qualidade, Produção, Estoque, Comercial e Assuntos Regulatórios).
+Não há hoje pessoas da empresa para consultar: o sistema foi comprado de um fornecedor que faliu e está sendo feito **para um cliente**. Por isso:
 
-**Da Qualidade e de Assuntos Regulatórios, textos que não temos:**
+**Do responsável pelo projeto:** aprovar as **propostas de decisão** do documento "Como decidir quando não há área para perguntar" (o que a norma manda fica fixo; o que a norma deixa para a empresa vira **parâmetro configurável**, com o padrão mais rigoroso).
+
+**Buscar nas fontes públicas da ANVISA e do Planalto**, para completar o estudo:
 - Lei 11.903/2009 e a regulamentação do SNCM (número único da embalagem e declaração);
 - Boas Práticas de Distribuição (RDC 430/2020);
 - norma de registro de medicamentos;
@@ -52,11 +52,11 @@ Os módulos existem, mas **as ligações entre eles quase não funcionam**. Os p
 - Farmacopeia e normas de água e ambiente;
 - regulamento de estabilidade.
 
-**Das áreas:** respostas a **219 perguntas** que o código não responde, reunidas por área no documento "Pontos a validar, por área".
+**Do cliente, na implantação:** indicar a **Pessoa Delegada** e os responsáveis pela Produção e pelo Controle da Qualidade, e **confirmar os parâmetros** (notas, prazos, frequências). As **219 perguntas** das fichas, reunidas em "Pontos a validar, por área", viram o roteiro dessa implantação.
 
 ## Próximos passos
-1. **Reuniões de validação** com as áreas, uma por vez.
-2. **Atualizar as fichas** com as respostas.
+1. **Classificar cada pergunta** das fichas (a norma manda, parâmetro da empresa, depende de texto, depende do cliente) e propor um padrão.
+2. **Obter os textos públicos que faltam** e atualizar as fichas.
 3. **Testar as telas do sistema atual** nos casos de maior risco para confirmar os achados.
 4. **Começar a construção**, na ordem que o estudo definiu (cadastros globais primeiro).
 

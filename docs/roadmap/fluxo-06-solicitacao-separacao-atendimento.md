@@ -71,7 +71,7 @@ Solicitação de material e seus itens · aprovação · separação · pesagem 
 - **Ficha 5:** o que sai pelo atendimento passa a ser **consumo** (nota) e não "movimentação".
 
 ## 6. Pontos a validar com a área (não consegui tirar do código)
-1. **Lote que vence primeiro:** é **obrigatório** (só o primeiro é aceito) ou **recomendado** (aceita outro, com justificativa assinada)?
+1. **Lote que vence primeiro:** ~~obrigatório ou recomendado?~~ **Decidido pelo responsável em 22/11/2026: não é obrigatório.** O sistema **sugere** o lote que vence primeiro e **aceita outro**, registrando a escolha (parâmetro por empresa para exigir justificativa). A norma só manda girar o estoque e proíbe usar material vencido ou não liberado (arts. 159 e 189).
 2. **Aprovação:** vale **sempre**, só para certos almoxarifados (como hoje) ou **por tipo e por valor**? Quem aprova pode ser da mesma área de quem pediu?
 3. **Reserva:** o pedido **reserva** o lote desde a aprovação ou só desde a separação?
 4. **Diferença de pesagem:** qual é o limite por subgrupo? Vale para todos os tipos de pedido ou só para produção?

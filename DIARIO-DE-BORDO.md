@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-22 · Claude · Não há áreas para consultar: como decidir sem elas
+
+- **Informação do responsável:** "Eu não tenho com quem marcar reunião": o sistema foi comprado de uma empresa que faliu e está sendo desenvolvido para um cliente. Tudo o que se sabe vem das regras do LabMedSys e das normas da ANVISA. Respostas dadas: (1) Estoque, "primeiro que vence, primeiro que sai": **não é obrigatório**; (2) Produção: não sei; (3) Assuntos Regulatórios: não sei.
+- **Correção do método:** as fichas, o resumo da diretoria e as pautas de reunião **supunham pessoas da empresa a consultar**. Isso estava errado. Registrado em `docs/decisoes.md` (22/11/2026) e em `CLAUDE.md`.
+- **Entregue:** `docs/roadmap/como-decidir-sem-a-area.md` (grupo "Para começar", `/estudo/roadmap/decidir`): as quatro fontes que temos; a regra que classifica cada pergunta em **A** (a norma manda: comportamento fixo), **B** (a norma deixa para a empresa: parâmetro configurável, sem inventar número, padrão mais rigoroso), **C** (depende de texto que não temos: padrão seguro e a obter em fonte pública) e **D** (depende de como o cliente opera: flexível, definido na implantação); as 8 decisões da Qualidade e as respostas "não sei" de Produção e Assuntos Regulatórios já tratadas como **propostas** (aguardam aprovação do responsável).
+- **Decisão registrada:** "primeiro que vence, primeiro que sai" não é obrigatório; o sistema sugere e aceita outro, com registro e parâmetro por empresa para exigir justificativa (ficha 6, ponto 1).
+- **Corrigido:** cabeçalho de "Pontos a validar, por área" e das duas pautas (passam a servir **à implantação com o cliente**); seção "O que precisamos para avançar" e "Próximos passos" do resumo da diretoria; frase sobre reunião em "Para que serve cada módulo".
+- **Próxima etapa (proposta):** classificar as 219 perguntas das fichas (A, B, C ou D) com proposta de padrão, módulo por módulo, e **buscar nas fontes públicas** os seis textos que faltam (Lei 11.903/2009 e SNCM, RDC 430/2020, norma de registro, instrução normativa das amostras, Farmacopeia, regulamento de estabilidade).
+
 ## 2026-11-22 · Claude · Pautas das reuniões com as outras áreas
 
 - **Pedido do responsável:** "pode seguir" depois da oferta de montar pautas para as outras áreas.
