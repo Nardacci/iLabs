@@ -6,9 +6,9 @@
 
 | Tipo | O que significa | Perguntas |
 |---|---|---|
-| **A** | A norma manda: comportamento fixo, conferido pelo banco | 68 |
-| **B** | A norma deixa para a empresa: parâmetro configurável (sem número inventado, padrão mais rigoroso) | 110 |
-| **C** | Depende de texto que não temos: padrão seguro, a confirmar | 9 |
+| **A** | A norma manda: comportamento fixo, conferido pelo banco | 70 |
+| **B** | A norma deixa para a empresa: parâmetro configurável (sem número inventado, padrão mais rigoroso) | 109 |
+| **C** | Depende de texto que não temos: padrão seguro, a confirmar | 8 |
 | **D** | Depende do cliente ou do desenho do produto: flexível, definido na implantação | 25 |
 | **Decidido** | Decisão já tomada pelo responsável | 7 |
 
@@ -78,11 +78,11 @@
 
 | Código | Tipo | Pergunta | Proposta do iLabs | Base |
 |---|---|---|---|---|
-| **7-1** | C | **Prazo de guarda:** quantos anos **depois da validade do lote** para referência e para retenção? É o mesmo para todo produto? (A RDC 658/2022 pede um período definido; o código **não guarda esse prazo**.) | O prazo está numa instrução normativa que não temos. O sistema guarda a **data de fim de guarda por produto** (campo obrigatório, sem padrão) | Art. 14 VIII |
+| **7-1** | A | **Prazo de guarda:** a **IN 139/2022** (lida pela orientação da ANVISA de 15/02/2023, não pelo texto integral) fixa, no art. 10, **pelo menos um ano depois da data de validade do lote**, para referência e retenção do produto acabado; para **soluções parenterais de grande volume** e **concentrados para hemodiálise** são **30 dias** depois da validade. Na **matéria-prima**, a guarda vai **até a validade dela**, mesmo que vença antes do produto (art. 11, parágrafo único). O sistema guarda o prazo **por produto**, com **mínimo da norma** que não se pode reduzir. Falta só conferir o texto integral. | **Mínimo da IN 139/2022, art. 10:** um ano depois da validade (30 dias para parenterais de grande volume e hemodiálise); matéria-prima até a validade dela. O sistema guarda a **data de fim de guarda por produto**, sem aceitar menos que o mínimo. *Texto integral da IN ainda não lido* | IN 139/2022, arts. 10 e 11 |
 | **7-2** | B | **Saída antes do prazo:** é **proibida** ou permitida **com justificativa assinada** pela Qualidade? Quem assina? | **Padrão: saída antes do prazo proibida.** Exceção com **assinatura da Qualidade e motivo** | Art. 14 VIII |
 | **7-3** | B | **Motivos de saída:** consumo em análise, descarte e devolução bastam? Descarte precisa de **termo** e testemunha? | **Motivos cadastráveis** (análise, descarte, devolução). **Descarte exige termo anexado e segunda pessoa** | Art. 124 |
 | **7-4** | A+C | **Estabilidade:** quem define os **pontos** e as condições? O acompanhamento nasce **na entrada** ou depois da **regra de estabilidade** aprovada? | O acompanhamento **nasce do protocolo aprovado** (pontos e condições). As condições padronizadas vêm de um regulamento que não temos | Arts. 275 e 277 |
-| **7-5** | B | **Amostra de referência e de retenção** do **medicamento acabado** e da **matéria-prima**: as duas seguem o mesmo fluxo? | **Mesmo fluxo,** com tipo de amostra (referência ou retenção) e **prazos próprios por tipo**, obrigatórios | Art. 14 VIII |
+| **7-5** | A | **Amostra de referência e de retenção** do **medicamento acabado** e da **matéria-prima**: as duas seguem o mesmo fluxo? (Orientação da ANVISA sobre a IN 139/2022: a **quantidade** é a de **duas análises completas** e vale também para matéria-prima e material de embalagem (art. 13); a retenção pode **substituir** a referência se tiver todos os lotes de embalagem representados (arts. 5º e 12); a referência fica só na **embalagem primária**; o **importador** guarda só a retenção. O sistema deve registrar **o tipo da amostra, a quantidade e os lotes de embalagem representados**.) | **Mesmo fluxo,** com tipo de amostra (referência ou retenção), **quantidade mínima de duas análises completas** e registro dos lotes de embalagem representados | IN 139/2022, arts. 5, 12 e 13 |
 | **7-6** | A | **Amostra do CQ que sai pelo pedido do CQ** (ficha 6): passa pela pesagem como as demais (`DV-EST-032`)? | A amostra do CQ **passa pela pesagem** como as demais, com o peso registrado | Arts. 110 e 124 |
 
 ### Ficha 8 · Devolução e entradas
