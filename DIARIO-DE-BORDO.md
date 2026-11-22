@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-22 · Claude · Correção: a RDC 886/2024 não revogou a RDC 157/2017
+
+- **Erro meu, corrigido:** nas rodadas anteriores escrevi, com base em um **resumo de busca** (não no texto), que a **RDC 886/2024 revogou a RDC 157/2017**. O responsável enviou o PDF do Diário Oficial: a **RDC/ANVISA nº 886, de 26/06/2024** (DOU de 01/07/2024, p. 269) **altera a RDC 591/2021 e trata do UDI de dispositivos médicos**; não é sobre medicamentos e **não menciona a RDC 157/2017**. A data que eu citava (10/07/2024) também estava errada.
+- **Efeito:** **não se sabe** se a RDC 157/2017 (IUM e envio à ANVISA) continua em vigor. Corrigido nas fichas **16a** e **16b**, em "Para que serve cada módulo", em "Como decidir" e em "Textos oficiais lidos". O que continua confirmado pelo **texto da Lei 14.338/2022** não muda (mapa de distribuição por lote e destinatário; revogação dos arts. 4º, 4º-A e 5º da Lei 11.903/2009).
+- **Lição de método:** resumo de busca **não é prova**. Todo achado sobre norma só entra como "lido" depois de abrir o texto. O documento "Textos oficiais lidos" já separa os dois.
+- **Arquivo `Edital222023.pdf`:** é um edital da ANVISA para contratar consultor de farmacovigilância (RPBR); não entrou no estudo.
+- **Página da ANVISA "Documentação técnica" da rastreabilidade (captura do responsável):** publicada em 15/10/2020 e **modificada em 07/04/2022, antes da Lei 14.338/2022**; descreve o SNCM antigo (serviço `evtIn`, guia, manual de padrões e interfaces). **Não responde à pergunta sobre o mapa de distribuição.**
+- **Próxima etapa:** descobrir o status da RDC 157/2017 e se há regulamentação do mapa de distribuição; classificar as 124 perguntas restantes.
+
 ## 2026-11-22 · Claude · Classificação das perguntas: Estoque e Garantia da Qualidade
 
 - **Pedido do responsável:** seguir com a classificação das 219 perguntas pelos módulos que não dependem dos textos que faltam.

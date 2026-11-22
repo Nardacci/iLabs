@@ -27,13 +27,16 @@
 ### Notícia da ANVISA, 23/05/2022
 - "Suspensão foi motivada pela Lei nº 14.338/2022, que alterou o modelo para a rastreabilidade de medicamentos." A ANVISA pediu a **suspensão do contrato de desenvolvimento do SNCM**. (Só o título e o subtítulo foram lidos.)
 
+### RDC 886/2024 (PDF baixado do Diário Oficial pelo responsável)
+- **RDC/ANVISA nº 886, de 26/06/2024** (DOU de 01/07/2024, seção 1, p. 269): **altera a RDC 591/2021**, que trata do **UDI de dispositivos médicos**. **Não trata de medicamentos e não menciona a RDC 157/2017.** Um resumo de busca anterior dizia que ela revogara a RDC 157/2017: **estava errado.**
+
 ## 2. Só resumo de busca (não conferido no texto)
-- **RDC 157/2017** (IUM e envio à ANVISA) aparece entre os atos **revogados pela RDC 886/2024** (consolidação de 10/07/2024, publicada em 12/07/2024).
 - **RDC 430/2020** (Boas Práticas de Distribuição, Armazenagem e Transporte): em vigor desde 16/03/2021, **alterada pela RDC 653/2022** (arts. 64 e 89).
+- **Parecer nº 22/2023/SEI/GGMED/DIRE2/ANVISA** (processo 25351.925884/2022-71), sobre bula digital: diria que a lei vincula a ANVISA apenas ao código bidimensional e ao sistema do mapa de distribuição.
 
 ## 3. Ainda falta ler
 1. **Regulamentação em vigor do mapa de distribuição** (se já existe) e o **cronograma**.
-2. **RDC 886/2024**, itens sobre rastreabilidade.
+2. **O status da RDC 157/2017** (IUM e envio à ANVISA): em vigor ou revogada, e por qual ato.
 3. **RDC 430/2020** (texto) e **RDC 653/2022**.
 4. **Norma de registro de medicamentos.**
 5. **Instrução normativa das amostras de retenção e de referência.**
