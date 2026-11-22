@@ -25,7 +25,7 @@ Antes de construir o iLabs, analisamos **como o sistema atual (LabMedSys) funcio
 Os módulos existem, mas **as ligações entre eles quase não funcionam**. Os pontos de maior risco, todos a confirmar em teste:
 
 1. **O lote é vendido sem a certificação da Pessoa Delegada.** Nenhum módulo registra essa certificação antes da venda, e a norma a exige.
-2. **A declaração à ANVISA não acontece.** O envio é simulado, a tela diz "enviado com sucesso" sem ter enviado, e não há certificado digital. **Atenção (confirmado no texto da lei):** em 2022 a lei **mudou o modelo**: o que ela exige hoje é um **mapa de distribuição por lote e destinatário**, e não a declaração de cada evento ao sistema central. A tela dizer "enviado" sem ter enviado continua sendo registro falso.
+2. **A rastreabilidade do legado seguia um modelo que acabou.** A norma que exigia número de série em cada embalagem e declaração de cada evento à ANVISA (RDC 157/2017) consta como **revogada**, e a lei de 2022 passou a exigir o **mapa de distribuição por lote e destinatário**. O legado ainda mostra "enviado com sucesso" sem ter enviado nada, o que é registro falso.
 3. **O recolhimento de um lote é frágil.** O relatório que mostra para quem foi o lote fica fora do menu, exige período e esconde as vendas canceladas.
 4. **As instruções de fabricação mudam sem aprovação nem histórico**, e um ajuste de texto pode apagar campos do registro de lote sem aviso.
 5. **Um desvio não retém o lote**, e **o treinamento vencido não impede** a pessoa de executar a tarefa. Cada tela da qualidade é uma ilha.
