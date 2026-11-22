@@ -2,6 +2,13 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-22 · Claude · RDC 753/2022 (registro de medicamentos) lida
+
+- **Pedido do responsável:** seguir. Achei no `gov.br` a **tradução oficial em inglês da RDC 753/2022** e li o texto: tamanho de lote autorizado (art. 18), local de fabricação (art. 19), validade do importado a granel (art. 17, § 11).
+- **Alterado:** ficha 13e (nota no início dos pontos a validar: o registro guarda lote, locais e validade autorizados e a ordem de produção os respeita) e `textos-oficiais-lidos.md`.
+- **Limites:** é tradução; **RDC 948/2024** e a norma de alteração pós-registro **não lidas**. Ato revogador da RDC 157/2017 segue sem confirmação.
+- **Próxima etapa:** gerar a versão 0.3 do Word, se o responsável quiser.
+
 ## 2026-11-22 · Claude · IN 139/2022 (amostras de retenção e referência) lida pela orientação da ANVISA
 
 - **Pedido do responsável:** seguir na busca dos textos que faltam. Baixei do `gov.br` o documento oficial "Perguntas e Respostas sobre a RDC 658/2022 e suas INs" (ANVISA, atualizado em 15/02/2023) e li a parte da IN 139/2022.

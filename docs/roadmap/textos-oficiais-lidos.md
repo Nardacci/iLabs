@@ -53,11 +53,15 @@
 - **RDC 658/2022, art. 127:** documentação de lote guardada **um ano após a expiração ou cinco anos após a certificação, o que for mais longo**; art. 128: outros documentos conforme a finalidade, e dados críticos que sustentam o registro **enquanto a autorização estiver em vigor**.
 - **Limite:** o **texto integral da IN 139/2022 não foi lido**; vale o que a ANVISA cita nas respostas.
 
+### RDC 753/2022, registro de medicamentos sintéticos e semissintéticos (tradução oficial em inglês, ANVISA; DOU 05/10/2022)
+- **Lido o texto** (21 páginas): âmbito (novos, inovadores, genéricos, similares); **art. 17, § 11** validade do produto importado a granel conta da fabricação no exterior; **art. 18** tamanho de lote autorizado e faixa só por alteração pós-registro; **art. 19** inclusão de local de fabricação exige documentação pós-registro.
+- **Limite:** é **tradução** (o original em português vale); a página da ANVISA cita a **RDC 948/2024** como norma geral de regularização, **não lida**.
+
 ## 3. Ainda falta ler
 1. **Regulamentação em vigor do mapa de distribuição** (se já existe) e o **cronograma**.
 2. **O ato que revogou a RDC 157/2017** (número e data corretos, no Diário Oficial de 12/07/2024) e o status da **IN 19/2017** e da **IN 100/2021**.
 3. **RDC 430/2020** (texto da norma, não só as perguntas e respostas), **RDC 653/2022** e **RDC 625/2022** (recolhimento, texto integral).
-4. **Norma de registro de medicamentos.**
+4. **Norma de alteração pós-registro** e **RDC 948/2024** (a RDC 753/2022 já foi lida, na tradução).
 5. **Texto integral da IN 139/2022** (o conteúdo principal já foi lido nas respostas da ANVISA, seção 2).
 6. **Farmacopeia** e normas de água e ambiente.
 7. **Regulamento de estabilidade.**
