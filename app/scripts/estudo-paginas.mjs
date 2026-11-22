@@ -45,6 +45,14 @@ const PAGINAS_SEM_ORDEM = [
     arquivo: 'como-decidir-sem-a-area.md',
   },
   {
+    id: 'textosoficiais',
+    codigo: '',
+    titulo: 'Textos oficiais lidos e o que ainda falta',
+    modulo: 'Para começar',
+    tipo: 'Estudo',
+    arquivo: 'textos-oficiais-lidos.md',
+  },
+  {
     id: 'glossario',
     codigo: '',
     titulo: 'Glossário',

@@ -22,7 +22,7 @@
 
 Várias perguntas dependem de documentos que **não estão no repositório**. Sem eles, a resposta fica em aberto:
 
-1. **Lei 11.903/2009 (com a Lei 14.338/2022) e a regulamentação do SNCM** (identificador único de medicamento e declaração à ANVISA): fichas 16a e 16b. **Indício de que o modelo mudou em 2022: em verificação.**
+1. **Lei 11.903/2009 (com a Lei 14.338/2022) e a regulamentação do SNCM** (identificador único de medicamento e declaração à ANVISA): fichas 16a e 16b. **Lido em 22/11/2026: a Lei 14.338/2022 mudou o modelo (mapa de distribuição por lote e destinatário); falta ler a regulamentação em vigor.**
 2. **RDC 430/2020** (Boas Práticas de Distribuição): licença sanitária e responsável técnico do cliente, ficha 15a.
 3. **Instrução normativa das amostras de retenção e de referência** (prazo e quantidade de guarda): ficha 7.
 4. **Norma de registro de medicamentos** (texto que proíbe vender sem registro válido e prazos de revalidação): ficha 13e.
