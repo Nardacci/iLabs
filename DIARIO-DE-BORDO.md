@@ -2,6 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-22 · Claude · Classificação das perguntas: Estoque e Garantia da Qualidade
+
+- **Pedido do responsável:** seguir com a classificação das 219 perguntas pelos módulos que não dependem dos textos que faltam.
+- **Entregue:** `docs/roadmap/classificacao-das-perguntas.md` (grupo "Para começar", `/estudo/roadmap/classificacao`), gerado por `python3 ferramentas/gerar-classificacao.py` a partir de `ferramentas/classificacao-perguntas-dados.py` (os dados são editados lá, nunca no `.md`). **Cobertura: 95 de 219 perguntas** (Estoque, 58 de 58; Garantia da Qualidade, 37 de 37). Cada pergunta ganhou **tipo** (A: a norma manda; B: parâmetro da empresa; C: depende de texto que falta; D: depende do cliente ou do desenho; Decidido), **proposta do iLabs** e **base** (só artigos conferidos no texto da RDC 658/2022 e da lei lida). Resultado: 22 A, 57 B, 4 C, 10 D e 2 já decididas (primeiro que vence e kit).
+- **Como o responsável aprova:** por exceção. Quem concorda não faz nada; quem discorda passa o código da pergunta (por exemplo `13a-2`) e a mudança.
+- **Ainda não classificadas (124):** Controle da Qualidade, Controle de Documentos, Produção, Comercial, Rastreabilidade e OPE. Rastreabilidade e partes de Produção dependem de textos que ainda faltam.
+- **Arquivo enviado pelo responsável (`Edital222023.pdf`):** é um edital de contratação de consultor da ANVISA (Projeto BRA 10/008, Edital nº 22/2023) para os Relatórios Periódicos de Avaliação Benefício-Risco (RPBR, farmacovigilância, RDC 406/2020 e IN 63/2020); **não trata de rastreabilidade nem do mapa de distribuição**. Não entrou no estudo; perguntado ao responsável a qual edital se referia.
+- **Próxima etapa:** classificar as outras 124 perguntas (Controle da Qualidade e Controle de Documentos primeiro) e reescrever as fichas 16a e 16b quando a regulamentação da rastreabilidade for lida.
+
 ## 2026-11-22 · Claude · SNCM: texto da lei lido e achado confirmado
 
 - **Pedido do responsável:** seguir. A liberação de rede passou a valer em parte: **Câmara dos Deputados** e **gov.br** abriram; **Planalto, Senado e Diário Oficial** ainda não.
