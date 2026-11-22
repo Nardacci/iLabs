@@ -2,6 +2,14 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-22 · Claude · Primeira busca dos textos públicos: achado sobre o SNCM e rede liberada
+
+- **Pedido do responsável:** seguir (buscar nas fontes públicas os textos que faltam).
+- **Achado importante, NÃO confirmado:** resumos de busca (não o texto da lei) indicam que a **Lei 14.338/2022 mudou a Lei 11.903/2009**: a rastreabilidade deixa de ser um sistema central da ANVISA que recebe cada movimentação e passa a ser do **detentor do registro**, com sistema próprio que gera **mapa de distribuição** (quantidades por lote e destinatários), mais código para a bula digital; a **RDC 157/2017** (IUM e envio à ANVISA) aparece entre os atos **revogados pela RDC 886/2024**. Se confirmado, as fichas **16a e 16b** descrevem um modelo que já não é exigência da ANVISA. **Nada nas fichas foi alterado; só foi acrescentado um aviso** (também no resumo da diretoria, em "Para que serve cada módulo", em "Como decidir" e na lista de textos que faltam).
+- **Também localizado:** a **RDC 430/2020** (distribuição) está em vigor desde 16/03/2021 e foi alterada pela RDC 653/2022 (arts. 64 e 89), segundo resumo de busca.
+- **Bloqueio:** os sites oficiais (Planalto, Câmara, Senado) estão fora da rede da sessão (erro de DNS). Criei, com aprovação do responsável, o ambiente pessoal **"iLabs estudo e normas oficiais"** liberando `www.planalto.gov.br`, `www.gov.br`, `bvsms.saude.gov.br`, `pesquisa.in.gov.br`, `www2.camara.leg.br` e `legis.senado.leg.br`, e movi a sessão para ele. **A liberação ainda não valia ao fim desta rodada** (pode levar até cerca de uma hora). As variáveis `LABMEDSYS_*` do ambiente Default não foram levadas; não são necessárias para o estudo.
+- **Próxima etapa:** quando a liberação valer, ler o texto oficial da Lei 14.338/2022, da Lei 11.903/2009 atualizada, da RDC 886/2024 (itens sobre rastreabilidade), da RDC 430/2020 e das demais normas; só então reescrever as fichas 16a e 16b e reclassificar as perguntas delas.
+
 ## 2026-11-22 · Claude · Não há áreas para consultar: como decidir sem elas
 
 - **Informação do responsável:** "Eu não tenho com quem marcar reunião": o sistema foi comprado de uma empresa que faliu e está sendo desenvolvido para um cliente. Tudo o que se sabe vem das regras do LabMedSys e das normas da ANVISA. Respostas dadas: (1) Estoque, "primeiro que vence, primeiro que sai": **não é obrigatório**; (2) Produção: não sei; (3) Assuntos Regulatórios: não sei.

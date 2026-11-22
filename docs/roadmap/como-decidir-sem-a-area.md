@@ -56,6 +56,8 @@ Elas mostram bem o método: o que ninguém sabe vira **configuração**, não pa
 ## 5. O que falta e dá para buscar sozinhos
 As seis fontes que não estão no repositório são **públicas** (Lei 11.903/2009, RDC 430/2020, norma de registro, instrução normativa das amostras, Farmacopeia, regulamento de estabilidade). **Sem ninguém para pedir, a saída é buscá-las nos sites oficiais** (ANVISA e Planalto) e acrescentá-las ao estudo. Cada uma que entrar transforma perguntas do tipo **C** em tipo **A** ou **B**.
 
+**Primeira tentativa (22/11/2026):** a busca encontrou onde estão a **RDC 430/2020** (distribuição; em vigor desde 16/03/2021, alterada pela RDC 653/2022) e as normas do SNCM. **Achado importante, ainda não confirmado:** resumos indicam que a **Lei 14.338/2022 trocou o sistema central da ANVISA por rastreabilidade a cargo do detentor do registro** (mapa de distribuição por lote e destinatário) e que a **RDC 157/2017 foi revogada pela RDC 886/2024**. Isso mudaria as fichas 16a e 16b. Para ler o texto oficial, liberei os sites do Planalto, da Câmara, do Senado, da ANVISA (`gov.br`), do Ministério da Saúde e do Diário Oficial no ambiente da sessão; **a liberação pode levar até cerca de uma hora para valer**.
+
 ## 6. O que isso muda nos outros documentos
 - **Fichas (seção "Pontos a validar com a área"):** a seção continua, mas passa a ser lida como **"decisões de produto a registrar"**. Cada ponto será classificado (A, B, C ou D) e receberá uma **proposta**, módulo por módulo. Os pontos já tratados acima são o começo.
 - **Pontos a validar e pautas de reunião:** servem como **roteiro da implantação com o cliente**. O cabeçalho deles diz isso.
