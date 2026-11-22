@@ -51,7 +51,7 @@ describe('Estudo do roadmap (página de leitura)', () => {
     const f = abrir();
     digitar(f, 'estudo-busca', 'agregacao');
     expect(linhas(f).map((a) => a.textContent)).toEqual([
-      expect.stringContaining('Geração do IUM e agregação'),
+      expect.stringContaining('Identificação da embalagem e agregação'),
     ]);
     digitar(f, 'estudo-busca', '');
     digitar(f, 'estudo-modulo', 'Comercial', 'change');

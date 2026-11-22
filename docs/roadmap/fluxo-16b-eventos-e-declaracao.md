@@ -1,91 +1,87 @@
-# Passo 3, fluxo 16b: registrar a vida de cada embalagem e declará-la à ANVISA (eventos e declaração, Rastreabilidade)
+# Passo 3, fluxo 16b: saber para onde foi cada lote (mapa de distribuição e declaração opcional de eventos, Rastreabilidade)
 
-![Fluxo 16b: eventos e declaração à ANVISA](diagramas/fluxo-16b-eventos-e-declaracao.png)
+![Fluxo 16b: mapa de distribuição e declaração de eventos](diagramas/fluxo-16b-eventos-e-declaracao.png)
 
 *Como ler: **laranja** = o sistema confere (trava); **vermelho** = bloqueio; **verde** = resultado. Clique na imagem para ampliar.*
 
 *Coluna "Onde no sistema": o caminho no sistema atual (legado), no formato **Módulo › Menu › Tela**. Onde diz "tela nova", a tela não existe hoje e será criada.*
 
-> **Em uma frase:** cada vez que uma embalagem muda de mãos (sai da fábrica, chega a um cliente, é vendida ao paciente ou descartada), o sistema registra um **evento**, e a empresa deveria **avisar a ANVISA** de cada um, com um arquivo assinado digitalmente.
+> **Em uma frase:** a empresa que tem o registro do remédio precisa de um **sistema que diga, para cada lote, quanto foi vendido e distribuído e para quem foi** (o **mapa de distribuição**). Avisar a ANVISA de **cada evento** de cada caixinha, como se fazia no modelo antigo, deixou de ser exigência confirmada e fica como **recurso opcional**.
 >
-> **Exemplo do dia a dia (ilustrativo, os números são inventados):** o lote foi entregue a uma distribuidora. O sistema registra "entrega", envia o aviso à ANVISA e guarda o **protocolo** que ela devolve, como um recibo. Se o aviso falhar, a tela precisa dizer que **falhou**, e não que deu certo.
+> **Exemplo do dia a dia (ilustrativo, os números são inventados):** o lote 123 teve um problema. A empresa digita o número do lote e vê, em segundos, as 4 vendas e as 4 remessas: cliente, endereço, quantidade e data. Se uma fatura foi cancelada **depois** de o material sair, essa saída continua aparecendo.
 >
-> **Por que importa:** é o último elo da corrente. Se a empresa é obrigada a declarar e o sistema só finge que declarou, ela descumpre a obrigação sem saber. E uma tela que afirma "enviado com sucesso" quando nada foi enviado é um **registro falso**.
+> **Por que importa:** é isto que a lei exige da empresa, e é o que permite **recolher só o lote com problema**, sem esconder nenhum cliente. O legado tinha a consulta fora do menu, exigia período e **escondia as vendas canceladas**.
 >
-> *Palavra que não conhece? Veja a documento "Glossário" (grupo "Para começar" da lista do estudo). Aqui: **evento** é um fato da vida da embalagem (produção, entrega, recebimento, finalização); **protocolo** é o número de recibo que a ANVISA devolve; **certificado digital** é a assinatura eletrônica que prova quem enviou; **retificar** é corrigir um evento já enviado, sem apagar o original.*
+> *Palavra que não conhece? Veja o documento "Glossário" (grupo "Para começar" da lista do estudo). Aqui: **mapa de distribuição** é o relatório por lote com as quantidades e os destinatários; **recolhimento** é tirar do mercado um lote já vendido; **evento** é um fato da vida da embalagem (entrega, recebimento, finalização); **protocolo** é o recibo que a ANVISA devolve; **certificado digital** é a assinatura eletrônica de quem envia.*
 
-**Análise de 21/11/2026. Rascunho para validação do responsável.** Última das duas fichas da **Rastreabilidade** (a [16a](fluxo-16a-ium-e-agregacao.md) foi a geração do IUM e a agregação).
+**Análise de 22/11/2026, reescrita depois que a norma mudou. Rascunho para validação do responsável.** Última das duas fichas da **Rastreabilidade** (a [16a](fluxo-16a-ium-e-agregacao.md) é a identificação da embalagem). **A versão anterior desta ficha descrevia a declaração de eventos ao banco central como obrigação; esse regime deixou de ser exigência.**
 
-**Fontes (todas no repositório do legado):** o fluxo "Eventos e declaração à ANVISA" (`8.rastreabilidade/fluxos/eventos-declaracao-anvisa.md`, lido do código, regras `RN001` a `RN021`) e o inventário de telas da Rastreabilidade (casos `CT-RAS-001` a `016`). **O que não fiz:** não li as telas uma a uma. **Nada deste fluxo foi testado na tela; tudo vem só do código.** As normas (RDC 658/2022, arts. 8º XV, 124 e 344 a 347, e o Guia 33/2020, item 9.3.2.3) foram conferidas no texto. **A obrigação de declarar ao SNCM (Lei 11.903/2009 e a regulamentação) não está no repositório:** ficam como pontos a validar com Assuntos Regulatórios o que declarar, quando e em que formato.
-
-> **Confirmado em 22/11/2026: o modelo antigo de rastreabilidade acabou, e a lei de 2022 mudou o que se exige.**
-> - **A RDC 157/2017 consta como REVOGADA** na base de legislação da ANVISA (página impressa pelo responsável em 22/11/2026, com a linha "Revogada pela Resolução da Diretoria Colegiada - RDC nº 886, de 10/07/2024"). **Atenção ao número e à data do ato que revogou:** a RDC 886 que o responsável baixou do Diário Oficial é **outra** (de 26/06/2024, trata de UDI de **dispositivos médicos**). Os dois dados não podem ser o mesmo ato; **a revogação está na base da ANVISA, mas o número do ato revogador precisa ser conferido no Diário Oficial**.
-> - **O que a RDC 157/2017 exigia** (texto lido, agora histórico): **IUM** com **GTIN, número de registro, código serial de até 20 caracteres, validade e lote**, nessa ordem (art. 6º); **código serial nunca repetido** na mesma apresentação (art. 6º, parágrafo único); **DataMatrix** (art. 4º); **código próprio para a embalagem de transporte** (art. 7º); **registro e comunicação das instâncias de evento** ao banco central em até **3 dias úteis** (detentores), com **retificação** por novo evento e **vedada a alteração** do que foi comunicado (arts. 12 e 13); sistemas que garantam **sigilo, integridade, disponibilidade e autenticidade** (art. 15).
-> - **O que vale hoje, pelo texto da Lei 14.338/2022 (lida):** o detentor do registro precisa de um sistema que gere o **mapa de distribuição** (quantidades por lote e **destinatários das remessas**), e a embalagem traz **registro, lote, validade e o código bidimensional da bula digital** (Lei 11.903/2009, arts. 3º e 3º-A). O texto **não exige** número de série por embalagem nem declaração de cada evento. A ANVISA suspendeu o desenvolvimento do sistema central por causa dessa lei (notícia de 23/05/2022).
-> - **Ainda não lido:** se existe **regulamentação nova do mapa de distribuição** e o seu cronograma (art. 2º da Lei 14.338/2022); o status da **IN 19/2017 e da IN 100/2021** (um escritório de advocacia diz que também foram revogadas; **não conferido**).
-> - **O que isso muda nesta ficha:** o que está abaixo descreve o **modelo antigo**, que **deixou de ser exigência**. O que o iLabs precisa ter é o **mapa de distribuição por lote e destinatário** (sai dos dados de venda e remessa) e a **identificação da embalagem com registro, lote, validade e bula digital**. **Número de série por embalagem e declaração de eventos** ficam como **recurso opcional**, com o desenho do modelo antigo como referência. **A reescrita desta ficha está pendente.** Continua valendo o que a RDC 658/2022 pede para o recolhimento (arts. 344 a 347) e o defeito de a tela dizer "enviado" sem ter enviado (art. 124).
+## A situação da norma (o que mudou)
+- **Lido no texto da Lei 14.338/2022 e da Lei 11.903/2009 atual:** o detentor de registro **deve possuir sistema que permita a elaboração de mapa de distribuição de medicamentos**, com os **quantitativos comercializados e distribuídos para cada lote** e os **destinatários das remessas**; o mapa traz **lote, data de fabricação e validade** (art. 3º-A). A lei revogou os artigos que tratavam da implantação do sistema central pela ANVISA (arts. 4º, 4º-A e 5º) e a adoção segue o **cronograma da regulamentação** (art. 2º da Lei 14.338/2022).
+- **A RDC 157/2017 consta como revogada** na base de legislação da ANVISA. Ela exigia a comunicação de cada evento em até 3 dias úteis, com retificação por novo evento e **vedada a alteração** do que foi comunicado (arts. 12 e 13); isso é a **referência histórica** do recurso opcional.
+- **Conferir:** o número e a data do ato revogador; IN 19/2017 e IN 100/2021; **regulamentação nova do mapa** e cronograma.
+- **Continua valendo (RDC 658/2022):** os registros de distribuição ficam **prontamente disponíveis** para quem faz o recolhimento e trazem informação suficiente sobre os clientes abastecidos (arts. 346 e 347); a capacidade de **recolher a qualquer momento** (art. 345); registros **rastreáveis**, alteração **assinada e datada** com o original legível (arts. 124 e 125); **nenhum lote vendido** antes da certificação da Pessoa Delegada (arts. 8º XV e 14 VII).
 
 ## 1. O caminho, em uma linha
-**Registrar o evento** (produção, embalagem e transporte, entrega, recebimento ou finalização) → **enviar à ANVISA** (arquivo assinado) → **receber o protocolo** → se preciso, **retificar** → **consultar a linha do tempo**.
+**Venda ou remessa de um lote** → **registro por lote** (quantidade e destinatário) → **mapa de distribuição** e **consulta do lote** (recolhimento) → *(opcional)* **declaração de eventos com protocolo** → **retificar** sem apagar.
 
-### A situação do evento
+### A situação do registro de distribuição e da declaração
 ```mermaid
 stateDiagram-v2
-  [*] --> Registrado: evento gravado, na ordem certa
-  Registrado --> Pendente: envio à ANVISA pedido
+  [*] --> Registrado: saída do lote com destinatário
+  Registrado --> Retificado: correção por novo registro, com motivo
+  Registrado --> Cancelado: venda cancelada, saída revertida ou mantida
+  Registrado --> NaoDeclarado: empresa não usa a declaração
+  Registrado --> Pendente: declaração ligada, envio pedido
   Pendente --> Enviado: protocolo da ANVISA recebido
   Pendente --> Recusado: ANVISA recusou, com o motivo
   Pendente --> FalhaDeEnvio: sem conexão, será reenviado
   FalhaDeEnvio --> Pendente: reenvio
-  Enviado --> Retificado: invalidado ou substituído, com motivo
 ```
-No legado o evento só era "Enviado" ou "Falha no envio", e **"Enviado" era marcado sem a ANVISA ter respondido**. No iLabs a situação é **uma só, guardada e conferida pelo banco**, e **só vira "Enviado" com o protocolo**.
+No legado o evento só era "Enviado" ou "Falha no envio", e **"Enviado" era marcado sem a ANVISA ter respondido**. No iLabs o registro de distribuição **nunca se apaga**, e a declaração, se ligada, **só vira "Enviado" com o protocolo**.
 
 ## 2. Etapa a etapa
 
-| # | Etapa | Onde no sistema (legado) | Quem faz | Exige antes | O que entra | O banco garante (iLabs) | Falha do legado |
+| # | Etapa | Obrigatório? | Onde no sistema (legado) | Quem faz | O que entra | O banco garante (iLabs) | Falha do legado |
 |---|---|---|---|---|---|---|---|
-| 1 | **Registrar a produção** | **Rastreabilidade** › Evento Produção | Rastreabilidade | IUM gerado de lote certificado ([ficha 16a](fluxo-16a-ium-e-agregacao.md)) | IUM | Só IUM **aguardando uso** e de lote **liberado** | Aceita o IUM não finalizado e não agregado; a situação do lote **não é conferida** (`RN001`, `RN007`, ponto 6) |
-| 2 | **Registrar embalagem e transporte** | Evento Embalagem Transporte | Rastreabilidade | Caixa concluída | Código da caixa | Só **caixa concluída**, conferida pelo validador de agregação | Confere a agregação pelo código (`RN001`) |
-| 3 | **Registrar a entrega** | Evento Entrega (e **Estoque** › Remessa › Evento ANVISA) | Rastreabilidade, Estoque | Produção declarada; **venda no Comercial** ([ficha 15c](fluxo-15c-fatura-remessa-cancelamento.md)) | Tipo (venda, transferência, doação, devolução, recolhimento, amostra), remetente, destinatário, transportadora | **Só depois da produção declarada**; o destinatário **precisa ter a fatura e a remessa** correspondentes; o mesmo IUM **não entra duas vezes** | **A ordem dos eventos não é conferida**; **nada liga a entrega à venda**; a remessa da fatura **não gera** evento (`RN002`, `RN005`, `RN006`, `RN018`, pontos 4 e 6); o mesmo IUM não repete (`RN001`) |
-| 4 | **Registrar o recebimento** | Evento Recebimento | Rastreabilidade | Entrega declarada | Tipo (compra, transferência, doação, devolução, recolhimento, amostra), partes | Só **depois da entrega** do mesmo IUM; partes **do cadastro** | Mesma falta de ordem e de ligação com a venda (`RN002`, `RN004`, `RN005`) |
-| 5 | **Registrar a finalização** | Evento Finalização | Rastreabilidade | IUM entregue | Tipo (dispensação, baixa, extravio, perda, descarte) | Só **IUM que existe e foi entregue**; **nunca cria IUM** | Digitar um código inexistente **cria um IUM "externo"**, sem conferência (`RN003`, ponto 5) |
-| 6 | **Mudar a situação do IUM** | Automático | Automático | Evento registrado | — | A situação do IUM **só muda depois** da resposta da ANVISA | A tela **marca os IUM antes de enviar**; se o envio falha, **continuam como enviados** (`RN008`, `RN013`, ponto 3) |
-| 7 | **Montar e assinar o arquivo** | Microsserviço da Rastreabilidade | Automático | Evento registrado | Evento | Arquivo **assinado com certificado digital** da empresa, guardado | **Não há certificado, assinatura nem endereço do serviço da ANVISA no código** (`RN012`) |
-| 8 | **Enviar e receber o protocolo** | Microsserviço e serviço do Windows | Automático | Arquivo assinado | — | **Protocolo guardado** com cada evento; **recusa guarda o motivo**; **falha vai para a fila e é reenviada** | O envio **é simulado** ("erro de conexão" sempre) e cai numa fila que **nenhum serviço lê**; a tela mostra **"envio efetuado com sucesso"** sem ler a resposta; o Estoque faz o mesmo (`RN009` a `RN011`, `RN017`, pontos 1 e 2, art. 124) |
-| 9 | **Guardar o registro de cada envio** | Tabela de registro dos envios | Automático | Envio feito | XML, situação, protocolo | Cada tentativa com **situação, protocolo, data e quem**, **que não se apaga** | A situação **não é gravada** (coluna vazia); entregas e recebimentos **gravados duas vezes** (`RN014`, `RN015`) |
-| 10 | **Retificar um evento** | Eventos (lista) › Retificação | Rastreabilidade e Qualidade | Evento enviado | Tipo (invalidar ou substituir), **motivo** | **Motivo obrigatório**, **original preservado e ligado ao substituto**, **assinatura** | Guarda o original, mas **não exige o motivo** (`RN019`, `RN020`) |
-| 11 | **Consultar a vida da embalagem** | Pesquisa de IUM › Linha do tempo | Qualidade, Assuntos Regulatórios | — | IUM, lote ou cliente | **Linha do tempo** com data, usuário e protocolo; **consulta por lote** que lista toda venda (ficha 15c) | A linha do tempo existe, com data e usuário (`RN021`); não traz protocolo |
+| 1 | **Registrar a distribuição de cada saída** | **Sim** | **Comercial** › Faturamento › Fatura ([ficha 15c](fluxo-15c-fatura-remessa-cancelamento.md)); **Estoque** › Remessa | Automático | Lote, quantidade, **destinatário e endereço da época**, data | **Todo lote que sai** (venda, remessa, devolução ao fornecedor, amostra) **gera um registro por lote**, **só de lote certificado, liberado e não recolhido**, e de **cliente autorizado** | A remessa da fatura **não gerava** evento; **nada ligava a entrega à venda** nem à situação do lote (`RN006`, `RN007`, `RN018`, pontos 4 e 6) |
+| 2 | **Guardar o endereço e o destinatário** | **Sim** | Fatura ([ficha 15a](fluxo-15a-cliente-e-cadastros.md)) | Automático | Cópia do endereço de entrega | **Cópia do endereço na saída**: mudar ou inativar o cadastro **não mexe no registro antigo** | A fatura **apontava** para o cadastro, sem cópia (ficha 15a) |
+| 3 | **Gerar o mapa de distribuição** | **Sim** | **Comercial** › RV07 Produtos Faturados (fora do menu) | Qualidade, Assuntos Regulatórios | Lote, período (opcional) | **Mapa por lote:** quantidades comercializadas e distribuídas, **destinatários**, **lote, data de fabricação e validade**; **no menu**; **sem exigir período** | O RV07 estava **fora do menu**, **exigia período** e **ignorava faturas canceladas**; não trazia **endereço** nem o número da remessa (ficha 15c, `RN017` a `RN021`) |
+| 4 | **Consultar para onde foi o lote (recolhimento)** | **Sim** | Mesmo relatório | Qualidade | Lote | **"Para quem foi o lote X"** com **toda saída**, inclusive de **fatura cancelada cuja remessa já saiu**, com **cliente, endereço, remessa, quantidade e data**; disponível **na hora** | Vendas canceladas sumiam do relatório (arts. 345 a 347, ficha 15c) |
+| 5 | **Retificar um registro** | **Sim** | Eventos (lista) › Retificação | Qualidade | Tipo (invalidar ou substituir), **motivo** | **Motivo obrigatório**, **original preservado e ligado ao substituto**, **assinatura**, histórico que não se apaga | Guardava o original, mas **não exigia o motivo** (`RN019`, `RN020`) |
+| 6 | **Guardar os registros** | **Sim** | — | Automático | — | **Guarda mínima:** a do art. 127 da RDC 658/2022 para a documentação do lote (**um ano após a validade ou cinco anos após a certificação, o que for maior**); prazo próprio da norma de distribuição **a confirmar** | Sem prazo de guarda no legado |
+| 7 | **Declarar eventos à ANVISA** | **Opcional** (parâmetro da empresa; **desligado por padrão**) | **Rastreabilidade** › Evento Produção, Embalagem Transporte, Entrega, Recebimento, Finalização | Rastreabilidade | Evento, partes (CNPJ, razão social, endereço), tipo | Evento **só na ordem certa**; arquivo **assinado com certificado digital** da empresa (**segredo, nunca em arquivo**); **protocolo guardado**; **recusa guarda o motivo**; **falha vai para a fila e é reenviada** | O envio **era simulado** (sempre "erro de conexão"), caía numa fila que **nenhum serviço lia**, e a tela dizia **"envio efetuado com sucesso"** sem ler a resposta; **não havia certificado nem endereço do serviço** (`RN009` a `RN012`, pontos 1 e 2, art. 124) |
+| 8 | **Mudar a situação só depois do envio** | **Opcional** | Automático | Automático | — | A situação da série **só muda depois da resposta** da ANVISA | A tela **marcava antes de enviar**; se o envio falhava, ficavam "enviadas" (`RN008`, `RN013`, ponto 3) |
+| 9 | **Guardar o registro de cada envio** | **Opcional** | Tabela de registro dos envios | Automático | XML, situação, protocolo | Cada tentativa com **situação, protocolo, data e quem**, **que não se apaga** | A situação **não era gravada**; entregas e recebimentos **gravados duas vezes** (`RN014`, `RN015`) |
+| 10 | **Consultar a vida da embalagem** | **Opcional** | Pesquisa de IUM › Linha do tempo | Qualidade | Série ou lote | **Linha do tempo** com data, usuário e protocolo | Existia, com data e usuário (`RN021`); sem protocolo |
 
 ## 3. O que este fluxo exige de cada cadastro global
 
 | Cadastro (passo 1) | O que o fluxo precisa que ele guarde |
 |---|---|
-| **Empresa titular e certificado digital** | **CNPJ**, **certificado digital** com validade e **endereço do serviço da ANVISA**, ambos **por variável de ambiente, nunca no código** |
-| **Pessoa jurídica (remetente, destinatário, transportadora)** | CNPJ, razão social, endereço, município, estado e país; **papel** (cliente, transportadora) |
-| **IUM e caixa (ficha 16a)** | **Situação** conferida a cada evento; **ordem** produção → entrega → recebimento → finalização |
-| **Venda (ficha 15c)** | **Fatura e remessa** que **sustentam** cada evento de entrega |
-| **Lote (Estoque)** | **Situação** (liberado, bloqueado, recolhido); lote **recolhido** gera evento do tipo recolhimento |
-| **Tipos de evento** (novo) | Lista dos tipos **definida por Assuntos Regulatórios**, fora do código |
-| **Profissional e função** | Quem **registra**, **reenvia** e **retifica**: funções separadas, com assinatura |
-| **Notificações (serviço comum)** | Aviso de **envio recusado ou com falha**, **pendência parada** e **certificado vencendo** |
+| **Cliente e endereço (ficha 15a)** | Cliente **autorizado**; **cópia do endereço** em cada saída |
+| **Lote (Estoque)** | **Certificação**, **situação** (liberado, bloqueado, recolhido), **data de fabricação** e **validade** |
+| **Venda e remessa (fichas 15c e 9)** | **Lote, quantidade e destinatário** de cada saída, **inclusive cancelada com material já saído** |
+| **Parâmetro da empresa** (novo) | **Declara eventos à ANVISA?** (padrão: **desligado**); **tipos de evento** e **certificado digital** (por variável de ambiente, nunca no código), **só se ligar** |
+| **Profissional e função** | Quem **consulta o mapa**, **retifica** registro e, se ligado, **envia e reenvia** evento: funções separadas, com assinatura |
+| **Notificações (serviço comum)** | Aviso de **registro com dado faltando** e, se ligado, de **envio recusado ou com falha** e **certificado vencendo** |
 
 ## 4. Os registros que nascem no fluxo (não são cadastros)
-Evento (um por tipo e IUM) · registro de cada envio com protocolo · retificação · linha do tempo do IUM · fila de reenvio.
+Registro de distribuição por lote e destinatário · retificação · *(opcional)* evento, registro de cada envio com protocolo e fila de reenvio · histórico.
 
 ## 5. O que muda nos documentos anteriores
-- **Roteiro de implantação:** na etapa 3, o **certificado digital e o endereço do serviço da ANVISA** (por variável de ambiente) e os **tipos de evento**; na etapa 1, as funções de **registrar, reenviar e retificar** evento; na etapa 9, o ensaio fecha a corrente do lote: **entrega sem venda** (recusada), **evento fora de ordem** (recusado), **envio que falha** (fica pendente, com aviso, nunca como enviado) e **retificação sem motivo** (recusada).
-- **Ficha 15c (fatura):** a remessa gerada pela fatura **cria o evento de entrega**; a consulta do lote traz o **protocolo**.
-- **Ficha 9 (remessa e expedição):** a remessa do Estoque e a tela de evento da Rastreabilidade passam a ser **um só caminho**.
-- **Ficha 16a (IUM e agregação):** a caixa **declarada como enviada** não se desfaz.
-- **Fichas de recolhimento (passo 4):** o evento do tipo **recolhimento** nasce do lote recolhido.
+- **Roteiro de implantação:** na etapa 1, a função de **consultar o mapa** e **retificar** registro; na etapa 9, o ensaio fecha a corrente do lote: **saída de lote não certificado** (recusada), **fatura cancelada com remessa já saída** (continua no mapa) e **a consulta "para quem foi o lote X"** com endereço. A **declaração de eventos** só entra na implantação **se o cliente ligar o recurso** (certificado digital por variável de ambiente).
+- **Fichas 15b e 15c (Comercial):** cada venda e cada remessa **grava o registro de distribuição por lote e destinatário**.
+- **Ficha 9 (remessa e expedição):** a remessa do Estoque grava o mesmo registro.
+- **Ficha 16a (identificação da embalagem):** a caixa expedida não se desfaz.
+- **Passo 4 (recolhimento):** a **consulta do lote** é o ponto de partida do recolhimento (art. 345).
 
-## 6. Pontos a validar com a área (não consegui tirar do código)
-1. **Obrigação:** a empresa precisa declarar ao SNCM? Quais eventos, em que prazo, a partir de quando? **A Lei 11.903/2009 e a regulamentação não estão no repositório.**
-2. **Hoje, como a empresa declara?** Existe outro sistema, planilha ou portal da ANVISA usado fora do LabMedSys?
-3. **Certificado digital:** quem o guarda e renova? Há um por empresa ou por pessoa?
-4. **Ordem dos eventos:** a ANVISA recusa entrega de IUM não ativado. Qual é a **ordem exata** e o que ela recusa?
-5. **Venda e entrega:** todo evento de entrega do tipo venda precisa de uma fatura? E os tipos doação, amostra e transferência?
-6. **Retificação:** quem pode retificar e em que prazo? O que a ANVISA aceita como motivo?
-7. **Duas telas de evento (Rastreabilidade e Estoque):** qual a empresa usa e quem faz?
-8. **Fila e reenvio:** quanto tempo um evento pode ficar pendente até alguém ser avisado?
+## 6. Pontos a validar com a área (decisões de produto a registrar)
+1. **Regulamentação nova** do mapa de distribuição (Lei 14.338/2022, art. 3º-A): já existe? Define **formato, periodicidade** ou **envio à ANVISA**? **Não li** nenhuma.
+2. **Declaração de eventos:** o cliente quer ligar o recurso opcional? Quais eventos? **Padrão proposto: desligado.**
+3. **Ato revogador da RDC 157/2017:** número e data corretos, e se a **IN 19/2017** e a **IN 100/2021** também caíram.
+4. **Prazo de guarda** do mapa e dos registros de distribuição: o do art. 127 da RDC 658/2022 basta, ou a norma de distribuição (RDC 430/2020, **não lida**) fixa outro?
+5. **Saídas que entram no mapa:** além de venda, entram **doação, amostra, devolução ao fornecedor e transferência entre unidades**?
+6. **Quem consulta** o mapa e em quanto tempo precisa responder a um recolhimento.
+7. **Retificação:** quem pode retificar e o que vale como motivo?
+8. **Duas telas de evento do legado** (Rastreabilidade e Estoque): se o recurso for ligado, **um só caminho**?
