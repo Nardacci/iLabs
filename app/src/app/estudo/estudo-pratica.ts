@@ -58,7 +58,8 @@ import { PRATICAS } from './pratica.dados';
             <p class="pratica-caminho">{{ s.tela }}</p>
             <h3 id="pratica-passo-titulo">Passo {{ indice() + 1 }}: {{ s.titulo }}</h3>
             <p class="pratica-situacao">
-              Situação do lote depois deste passo: <span class="chip-tag">{{ s.situacao }}</span>
+              {{ p.rotuloSituacao }} depois deste passo:
+              <span class="chip-tag">{{ s.situacao }}</span>
             </p>
             <dl class="pratica-campos">
               @for (c of s.campos; track c.rotulo) {

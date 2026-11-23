@@ -2,6 +2,14 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-23 · Claude · "Na prática": fluxos 2, 3 e 6
+
+- **Pedido do responsável:** seguir com os outros fluxos (o botão da ficha 1 apareceu depois de limpar o cache do navegador).
+- **Entregue:** três novas telas de exemplo, no mesmo formato da primeira: **fornecedor e compra** (ficha 2, 8 passos), **regras do laboratório, análise e laudo** (ficha 3, 9 passos) e **pedir, separar e entregar o material** (ficha 6, 7 passos). Cada ficha ganhou o botão "Ver na prática". Endereços: `/estudo/pratica/fornecedor`, `/estudo/pratica/laudo`, `/estudo/pratica/pedido-material`.
+- **Decisão aplicada:** na separação (ficha 6), o lote que vence primeiro é **sugerido, não obrigatório**: escolher outro é livre e fica registrado; a justificativa assinada é um parâmetro da empresa.
+- **Limites:** dados inventados, mensagens escritas à mão, nenhuma regra no front. Os dados ficam em `app/src/app/estudo/pratica.dados.ts`.
+- **Próxima etapa:** o responsável vê os quatro fluxos; depois, fichas 4, 5, 7 e 8 (Estoque) ou, se preferir, as telas também no Word.
+
 ## 2026-11-23 · Claude · "Na prática": telas de exemplo clicáveis ao lado da teoria
 
 - **Pedido do responsável:** ver a teoria aplicada nas telas, para entender melhor. Escolheu **protótipos clicáveis no site**.
