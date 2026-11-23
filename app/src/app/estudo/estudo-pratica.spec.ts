@@ -28,6 +28,16 @@ describe('Na prática (telas de exemplo)', () => {
     for (const p of PRATICAS) expect(PAGINAS_DO_ESTUDO.some((d) => d.id === p.ficha)).toBe(true);
   });
 
+  it('todo passo tem tela, campos, garantia e tentativa', () => {
+    expect(PRATICAS.length).toBeGreaterThanOrEqual(4);
+    for (const p of PRATICAS)
+      for (const passo of p.passos) {
+        expect(passo.campos.length).toBeGreaterThan(0);
+        expect(passo.garantia).not.toBe('');
+        expect(passo.tentativa.resposta).not.toBe('');
+      }
+  });
+
   it('sem id, lista as práticas', () => {
     const f = abrir();
     expect(raiz(f).querySelectorAll('.estudo-linha').length).toBe(PRATICAS.length);

@@ -29,6 +29,8 @@ export interface PraticaFicha {
   ficha: string;
   titulo: string;
   resumo: string;
+  /** O que a "situação" acompanha neste fluxo (lote, fornecedor, pedido…). */
+  rotuloSituacao: string;
   passos: readonly PassoPratica[];
 }
 
@@ -37,6 +39,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
     id: 'recebimento',
     ficha: 'fluxo1',
     titulo: 'Receber a matéria-prima, colocá-la em quarentena e liberá-la',
+    rotuloSituacao: 'Situação do lote',
     resumo:
       'Acompanhe um saco de açúcar (dados inventados) do portão da fábrica até o estoque liberado. Em cada passo veja a tela, quem faz, o que o banco garante e tente "errar" para ver o que o sistema responde.',
     passos: [
@@ -224,6 +227,529 @@ export const PRATICAS: readonly PraticaFicha[] = [
         tentativa: {
           acao: 'Mandar um lote reprovado para o estoque comum',
           resposta: 'Recusado: "Lote reprovado só pode ir para local de refugo."',
+        },
+      },
+    ],
+  },
+  {
+    id: 'fornecedor',
+    ficha: 'fluxo2',
+    titulo: 'Qualificar o fornecedor e comprar',
+    rotuloSituacao: 'Situação do fornecedor para este material',
+    resumo:
+      'Acompanhe uma fornecedora de açúcar (dados inventados) desde o cadastro até a compra e a baixa do pedido. O ponto central: só se compra, e só se recebe, de quem a Qualidade qualificou para aquele material.',
+    passos: [
+      {
+        titulo: 'Cadastrar o fornecedor',
+        tela: 'Principal › Cadastros e tabelas de apoio › Pessoa jurídica',
+        quem: 'Compras',
+        situacao: 'Cadastrado, ainda não avaliado',
+        campos: [
+          { rotulo: 'Razão social', valor: 'Fornecedora Exemplo Ltda.' },
+          { rotulo: 'CNPJ', valor: '00.000.000/0001-00 (fictício)', exigido: true },
+          { rotulo: 'Papel', valor: 'Fornecedor', exigido: true },
+          { rotulo: 'O que fornece', valor: 'Açúcar refinado' },
+        ],
+        garantia: 'O CNPJ é único e empresa inativa não é escolhida em nenhuma tela.',
+        tentativa: {
+          acao: 'Cadastrar o mesmo CNPJ pela segunda vez',
+          resposta:
+            'Recusado: "Já existe uma empresa com este CNPJ." (No sistema antigo havia quatro cadastros diferentes.)',
+        },
+      },
+      {
+        titulo: 'Avaliar o fornecedor para um material',
+        tela: 'Garantia da Qualidade › Fornecedores › Avaliação de fornecedores',
+        quem: 'Garantia da Qualidade',
+        situacao: 'Em avaliação',
+        campos: [
+          {
+            rotulo: 'Fornecedor e material',
+            valor: 'Fornecedora Exemplo, açúcar refinado',
+            exigido: true,
+          },
+          { rotulo: 'Questionário', valor: '34 perguntas respondidas (versão 1)' },
+          { rotulo: 'Documentos do fornecedor', valor: 'Licença e certificado anexados' },
+          { rotulo: 'Resultado de amostra', valor: 'Amostra piloto aprovada' },
+        ],
+        garantia:
+          'A avaliação fica ligada ao par fornecedor + material e guarda as respostas. Ser qualificado para um material não vale para outro.',
+        tentativa: {
+          acao: 'Usar a avaliação do açúcar para qualificar o mesmo fornecedor em outro material',
+          resposta:
+            'Recusado: "A avaliação é de outro material. Avalie o fornecedor para este material."',
+        },
+      },
+      {
+        titulo: 'Decidir a qualificação',
+        tela: 'Garantia da Qualidade › Fornecedores › Qualificação (tela nova)',
+        quem: 'Responsável da Garantia da Qualidade',
+        situacao: 'Qualificado, com validade',
+        campos: [
+          { rotulo: 'Decisão', valor: 'Qualificado', exigido: true },
+          { rotulo: 'Validade da qualificação', valor: '23/11/2028', exigido: true },
+          { rotulo: 'Restrições', valor: 'Só lotes acima de 500 kg exigem nova amostra' },
+          {
+            rotulo: 'Assinatura eletrônica',
+            valor: 'Login, senha e significado "aprovo"',
+            exigido: true,
+          },
+        ],
+        garantia:
+          'Só quem tem a função aprova, e quem avaliou não aprova. Sem validade não qualifica. Fica o histórico de cada decisão.',
+        tentativa: {
+          acao: 'A própria avaliadora aprovar a qualificação',
+          resposta:
+            'Recusado: "Quem avaliou não pode aprovar a qualificação." (Segregação de funções.)',
+        },
+      },
+      {
+        titulo: 'Usar no recebimento',
+        tela: 'Estoque › Estoque › Recebimento de Material (automático)',
+        quem: 'Sistema (conferência automática)',
+        situacao: 'Qualificado: o recebimento é aceito',
+        campos: [
+          { rotulo: 'Fornecedor da nota', valor: 'Fornecedora Exemplo Ltda.' },
+          { rotulo: 'Material da nota', valor: 'Açúcar refinado' },
+          { rotulo: 'Qualificação em vigor?', valor: 'Sim, até 23/11/2028', exigido: true },
+        ],
+        garantia:
+          'O recebimento consulta a qualificação. Fornecedor sem qualificação, ou com qualificação vencida, é recusado (ou exige decisão registrada da Qualidade).',
+        tentativa: {
+          acao: 'Receber de fornecedor com qualificação vencida',
+          resposta:
+            'Bloqueado: "Qualificação vencida para este material." (No sistema antigo o recebimento nunca consultava a avaliação.)',
+        },
+      },
+      {
+        titulo: 'Avaliar o desempenho a cada entrega',
+        tela: 'Estoque › Estoque › Avaliação do Fornecedor',
+        quem: 'Estoque e Qualidade',
+        situacao: 'Qualificado, com nota da entrega',
+        campos: [
+          { rotulo: 'Entrega', valor: 'Lote L-2026-001' },
+          { rotulo: 'Pontuação', valor: '82 de 100' },
+          { rotulo: 'Motivos de perda de pontos', valor: 'Atraso de 2 dias' },
+          { rotulo: 'Limite para requalificar', valor: '70 (parâmetro da empresa)', exigido: true },
+        ],
+        garantia:
+          'A nota fica ligada ao lote. Uma nota abaixo do limite abre a requalificação. Depois de gravada, a nota não se altera sem histórico.',
+        tentativa: {
+          acao: 'Mudar a nota de uma entrega já gravada, sem deixar rastro',
+          resposta:
+            'Recusado: "A avaliação gravada não pode ser alterada. Faça uma correção com justificativa."',
+        },
+      },
+      {
+        titulo: 'Requalificar ou desqualificar',
+        tela: 'Garantia da Qualidade › Fornecedores › Qualificação (tela nova)',
+        quem: 'Garantia da Qualidade',
+        situacao: 'Em requalificação, depois desqualificado ou renovado',
+        campos: [
+          { rotulo: 'Motivo', valor: 'Duas entregas abaixo do limite' },
+          { rotulo: 'Decisão', valor: 'Desqualificado', exigido: true },
+          {
+            rotulo: 'Assinatura eletrônica',
+            valor: 'Feita agora, com significado "desqualifico"',
+            exigido: true,
+          },
+        ],
+        garantia:
+          'Qualificação vencida bloqueia como a de fornecedor não qualificado. Há aviso antes do vencimento. Desqualificar exige assinatura.',
+        tentativa: {
+          acao: 'Desqualificar sem assinar',
+          resposta: 'Recusado: "A desqualificação exige assinatura eletrônica e motivo."',
+        },
+      },
+      {
+        titulo: 'Gerar o pedido de compra',
+        tela: 'Estoque › Gestão analítica › Análise de Estoque (Gerar pedido de compra)',
+        quem: 'Compras',
+        situacao: 'Pedido aberto',
+        campos: [
+          { rotulo: 'Necessidade', valor: 'Açúcar refinado: 500 kg (curva ABC, últimos 12 meses)' },
+          {
+            rotulo: 'Fornecedor oferecido',
+            valor: 'Só os qualificados para este material',
+            exigido: true,
+          },
+          { rotulo: 'Centro de custo', valor: 'Produção' },
+        ],
+        garantia:
+          'A lista só oferece fornecedor qualificado para aquele material. Sem fornecedor, o sistema diz o motivo com clareza.',
+        tentativa: {
+          acao: 'Gerar pedido para um material sem nenhum fornecedor qualificado',
+          resposta:
+            'Recusado: "Não há fornecedor qualificado para este material." (No sistema antigo o botão não respondia nada.)',
+        },
+      },
+      {
+        titulo: 'Baixar o pedido no recebimento',
+        tela: 'Estoque › Gestão analítica › Pedido de Compra (a baixa vem do recebimento)',
+        quem: 'Sistema (a partir do recebimento)',
+        situacao: 'Pedido parcial ou concluído',
+        campos: [
+          { rotulo: 'Pedido', valor: '500 kg de açúcar' },
+          { rotulo: 'Recebido até agora', valor: '25 kg (lote L-2026-001)' },
+          { rotulo: 'Saldo do pedido', valor: '475 kg', exigido: true },
+        ],
+        garantia:
+          'A baixa vem do próprio recebimento, com a quantidade recebida. A baixa manual só existe com justificativa e assinatura.',
+        tentativa: {
+          acao: 'Dar baixa manual no pedido, sem justificativa',
+          resposta: 'Recusado: "A baixa manual exige justificativa e assinatura."',
+        },
+      },
+    ],
+  },
+  {
+    id: 'laudo',
+    ficha: 'fluxo3',
+    titulo: 'As regras do laboratório, a análise e o laudo',
+    rotuloSituacao: 'Situação',
+    resumo:
+      'Acompanhe como a Qualidade prepara as regras de um material (açúcar, dados inventados) e depois colhe a amostra, analisa e emite o laudo. O ponto central: o que vale é a versão aprovada da regra, e quem decide o laudo não é quem digitou o resultado.',
+    passos: [
+      {
+        titulo: 'Cadastrar a regra de amostragem',
+        tela: 'Controle da Qualidade › Amostragem › Regra de Amostragem',
+        quem: 'Controle da Qualidade',
+        situacao: 'Regra de amostragem em elaboração',
+        campos: [
+          {
+            rotulo: 'Material e tipo de análise',
+            valor: 'Açúcar refinado, físico-química',
+            exigido: true,
+          },
+          { rotulo: 'Quantidade e tolerância', valor: '100 g, tolerância de 5%', exigido: true },
+          { rotulo: 'Plano de amostragem e recipiente', valor: 'Sonda, frasco âmbar' },
+          { rotulo: 'Precauções e limpeza', valor: 'Descritas' },
+        ],
+        garantia:
+          'Só uma regra ativa por material e tipo de análise. Quantidade e tolerância inválidas são recusadas, não viram zero em silêncio.',
+        tentativa: {
+          acao: 'Salvar quantidade "0" ou tolerância negativa',
+          resposta:
+            'Recusado: "A quantidade deve ser maior que zero e a tolerância não pode ser negativa."',
+        },
+      },
+      {
+        titulo: 'Cadastrar a regra de análise',
+        tela: 'Controle da Qualidade › Análise e Laudo › Regra de Análise',
+        quem: 'Controle da Qualidade',
+        situacao: 'Regra de análise em elaboração',
+        campos: [
+          { rotulo: 'Ensaio', valor: 'Pureza' },
+          { rotulo: 'Limites', valor: 'Mínimo 98,0 e máximo 102,0', exigido: true },
+          { rotulo: 'Método e especificação', valor: 'Método interno 001, versão 1' },
+          { rotulo: 'Unidade', valor: '%' },
+        ],
+        garantia:
+          'O mínimo é sempre menor ou igual ao máximo, inclusive com zero e números negativos. Regra duplicada é recusada.',
+        tentativa: {
+          acao: 'Salvar mínimo 0 e máximo -5',
+          resposta:
+            'Recusado: "O mínimo não pode ser maior que o máximo." (No sistema antigo isto passava quando um dos valores era zero.)',
+        },
+      },
+      {
+        titulo: 'Aprovar a versão da regra',
+        tela: 'Controle da Qualidade › Regras › Aprovação (tela nova)',
+        quem: 'Chefe do Controle da Qualidade',
+        situacao: 'Regra aprovada, versão 1',
+        campos: [
+          { rotulo: 'Versão', valor: '1', exigido: true },
+          { rotulo: 'Aprovador', valor: 'Chefe do CQ (função própria)', exigido: true },
+          {
+            rotulo: 'Assinatura eletrônica',
+            valor: 'Login, senha e significado "aprovo"',
+            exigido: true,
+          },
+        ],
+        garantia:
+          'A regra só vale depois de aprovada. Cada mudança gera uma nova versão, e a análise guarda a versão que usou.',
+        tentativa: {
+          acao: 'Usar na análise uma regra ainda não aprovada',
+          resposta:
+            'Bloqueado: "Esta regra ainda não tem versão aprovada." (No sistema antigo o que era salvo valia na hora.)',
+        },
+      },
+      {
+        titulo: 'Programar a amostragem',
+        tela: 'Controle da Qualidade › Solicitação de Análise › Programação de Amostragem',
+        quem: 'Controle da Qualidade',
+        situacao: 'Aguardando coleta',
+        campos: [
+          { rotulo: 'Solicitação de análise', valor: 'Aberta no recebimento do lote L-2026-001' },
+          { rotulo: 'Responsável', valor: 'Amostrador Exemplo', exigido: true },
+          { rotulo: 'Data de início', valor: 'Hoje (não pode ser anterior)', exigido: true },
+        ],
+        garantia:
+          'Só se programa uma vez por solicitação. Reagendar exige motivo e fica no histórico.',
+        tentativa: {
+          acao: 'Programar a mesma amostragem uma segunda vez',
+          resposta:
+            'Recusado: "Esta solicitação já está programada. Para mudar, reagende com motivo." (No sistema antigo criava duas amostragens.)',
+        },
+      },
+      {
+        titulo: 'Registrar a amostragem',
+        tela: 'Controle da Qualidade › Amostragem › Consultar Amostragem',
+        quem: 'Amostrador e verificador (pessoas diferentes)',
+        situacao: 'Amostra coletada',
+        campos: [
+          {
+            rotulo: 'Amostrador',
+            valor: 'Amostrador Exemplo (função de amostrador)',
+            exigido: true,
+          },
+          { rotulo: 'Verificador', valor: 'Verificador Exemplo (outra pessoa)', exigido: true },
+          { rotulo: 'Quantidades', valor: 'Análise 100 g; retenção 200 g; referência 200 g' },
+          { rotulo: 'Checklist', valor: 'Todas as respostas preenchidas' },
+        ],
+        garantia:
+          'As conferências valem na gravação, não só na tela. Só quem tem a função de amostrador registra. O saldo do lote baixa e o Estoque é chamado a separar.',
+        tentativa: {
+          acao: 'Registrar com o mesmo usuário como amostrador e verificador',
+          resposta: 'Recusado: "Amostrador e verificador devem ser pessoas diferentes."',
+        },
+      },
+      {
+        titulo: 'Programar a análise',
+        tela: 'Controle da Qualidade › Análise e Laudo › Programação de Análise',
+        quem: 'Controle da Qualidade',
+        situacao: 'Análise programada',
+        campos: [
+          {
+            rotulo: 'Analista',
+            valor: 'Renata Exemplo (físico-química, treinada no método)',
+            exigido: true,
+          },
+          { rotulo: 'Data', valor: 'Hoje' },
+        ],
+        garantia:
+          'Só analista com a função e treinado no método. Solicitação cancelada não se programa.',
+        tentativa: {
+          acao: 'Programar a análise de uma solicitação cancelada',
+          resposta: 'Recusado: "Solicitação cancelada não pode ser programada."',
+        },
+      },
+      {
+        titulo: 'Digitar os resultados',
+        tela: 'Controle da Qualidade › Análise e Laudo › Consultar Análise Programada',
+        quem: 'Analista programada',
+        situacao: 'Resultados digitados',
+        campos: [
+          { rotulo: 'Resultado da pureza', valor: '97,2% (limite 98,0 a 102,0)' },
+          {
+            rotulo: 'Classificação',
+            valor: 'Fora do limite (calculada pelo banco)',
+            exigido: true,
+          },
+          {
+            rotulo: 'Equipamento e padrão usados',
+            valor: 'Balança 01; padrão P-12 (validade em dia)',
+            exigido: true,
+          },
+          { rotulo: 'Observação', valor: 'Repetida a leitura, mesmo valor', exigido: true },
+        ],
+        garantia:
+          'O resultado fora do limite é classificado pelo banco e abre investigação, com observação obrigatória. Laudo já liberado não se altera.',
+        tentativa: {
+          acao: 'Corrigir um resultado depois que o laudo foi liberado',
+          resposta: 'Recusado: "Laudo liberado não pode ser alterado. Abra uma investigação."',
+        },
+      },
+      {
+        titulo: 'Decidir e emitir o laudo',
+        tela: 'Controle da Qualidade › Análise e Laudo › Emissão do Laudo Final',
+        quem: 'Chefe do Controle da Qualidade',
+        situacao: 'Reprovado (neste exemplo, pela pureza)',
+        campos: [
+          { rotulo: 'Decisão', valor: 'Reprovado', exigido: true },
+          { rotulo: 'Motivo da reprovação', valor: 'Pureza abaixo do limite', exigido: true },
+          { rotulo: 'Validade do laudo', valor: 'Não maior que a validade do lote' },
+          {
+            rotulo: 'Assinatura eletrônica',
+            valor: 'Login, senha e significado "decido"',
+            exigido: true,
+          },
+        ],
+        garantia:
+          'Quem decide tem a função e não digitou ensaio. Aprovar só com todos os resultados na especificação, conferido na gravação. Reprovar exige motivo. O laudo muda a situação do lote na hora.',
+        tentativa: {
+          acao: 'Aprovar o laudo com um resultado fora do limite',
+          resposta: 'Recusado: "Há resultado fora da especificação. Não é possível aprovar."',
+        },
+      },
+      {
+        titulo: 'Etiqueta',
+        tela: 'Controle da Qualidade › Análise e Laudo › Gerar Etiqueta',
+        quem: 'Estoque',
+        situacao: 'Etiqueta de reprovado emitida',
+        campos: [
+          { rotulo: 'Tipo de etiqueta', valor: 'Reprovado', exigido: true },
+          { rotulo: 'Número do laudo e validade', valor: 'Laudo 2026/001' },
+        ],
+        garantia:
+          'A etiqueta só sai com laudo emitido e decisão gravada, e traz o número do laudo.',
+        tentativa: {
+          acao: 'Gerar etiqueta de aprovado sem laudo emitido',
+          resposta: 'Recusado: "Só se gera etiqueta de um laudo emitido."',
+        },
+      },
+    ],
+  },
+  {
+    id: 'pedido-material',
+    ficha: 'fluxo6',
+    titulo: 'Pedir, separar e entregar o material',
+    rotuloSituacao: 'Situação do pedido',
+    resumo:
+      'Acompanhe um pedido de açúcar da Produção (dados inventados) até a entrega. O ponto central: só sai o saldo disponível, de preferência o que vence primeiro, e cada mudança fica assinada e registrada.',
+    passos: [
+      {
+        titulo: 'Pedir o material',
+        tela: 'Estoque › Estoque › Solicitação de Material',
+        quem: 'Produção, Qualidade ou outro setor',
+        situacao: 'Pedido aberto',
+        campos: [
+          { rotulo: 'Tipo', valor: 'Produção (nasce da ordem de produção)', exigido: true },
+          {
+            rotulo: 'Almoxarifado',
+            valor: 'Almoxarifado Central (do grupo de quem pede)',
+            exigido: true,
+          },
+          { rotulo: 'Item e quantidade', valor: 'Açúcar refinado, 10 kg' },
+          { rotulo: 'Centro de custo', valor: 'Produção' },
+        ],
+        garantia:
+          'O almoxarifado é do grupo de quem pede. O tipo Produção só nasce da ordem de produção. O pedido só existe com tudo preenchido.',
+        tentativa: {
+          acao: 'Pedir de um almoxarifado de outro grupo',
+          resposta:
+            'Recusado: "Este almoxarifado não é do seu grupo." (No sistema antigo a tela oferecia todos e gravava em um que não era seu.)',
+        },
+      },
+      {
+        titulo: 'Aprovar o pedido',
+        tela: 'Estoque › Estoque › Aprovação de Solicitação',
+        quem: 'Quem tem a função, do grupo do almoxarifado',
+        situacao: 'Aprovado',
+        campos: [
+          {
+            rotulo: 'Almoxarifado exige aprovação?',
+            valor: 'Sim (parâmetro do almoxarifado)',
+            exigido: true,
+          },
+          { rotulo: 'Aprovador', valor: 'Supervisor Exemplo (função de aprovador)', exigido: true },
+          { rotulo: 'Decisão', valor: 'Aprovado, com assinatura eletrônica', exigido: true },
+        ],
+        garantia:
+          'Quem aprova não é quem pediu. A decisão fica assinada, e cancelar a aprovação exige justificativa.',
+        tentativa: {
+          acao: 'Quem pediu aprovar o próprio pedido',
+          resposta:
+            'Recusado: "Quem fez o pedido não pode aprová-lo." (No sistema antigo a mesma pessoa criava e aprovava.)',
+        },
+      },
+      {
+        titulo: 'Separar o lote',
+        tela: 'Estoque › Estoque › Separação de Material',
+        quem: 'Estoque',
+        situacao: 'Separado',
+        campos: [
+          {
+            rotulo: 'Lotes oferecidos',
+            valor: 'Só disponíveis e dentro da validade',
+            exigido: true,
+          },
+          { rotulo: 'Ordem da lista', valor: 'O que vence primeiro aparece primeiro' },
+          { rotulo: 'Lote escolhido', valor: 'L-2026-001, validade 30/11/2027' },
+        ],
+        garantia:
+          'Fora da lista ficam quarentena, refugo, bloqueio, reanálise e vencido. A lista sugere o que vence primeiro; escolher outro lote é permitido e fica registrado, e a empresa pode exigir justificativa assinada (parâmetro).',
+        tentativa: {
+          acao: 'Escolher um lote que vence depois do sugerido',
+          resposta:
+            'Aviso: "Há um lote disponível que vence antes. Sua escolha ficará registrada." Se a empresa ligou o parâmetro, pede também a justificativa assinada. (A escolha é livre; o registro é obrigatório.)',
+        },
+      },
+      {
+        titulo: 'Pesar o material',
+        tela: 'Estoque › Estoque › Central de Pesagem',
+        quem: 'Estoque',
+        situacao: 'Pesado',
+        campos: [
+          { rotulo: 'Balança', valor: 'Balança 01 (calibração válida)', exigido: true },
+          { rotulo: 'Lacre', valor: 'Número registrado' },
+          { rotulo: 'Peso bruto, tara e líquido', valor: '10,4 kg, 0,4 kg, 10,0 kg' },
+          { rotulo: 'Volumes A e B', valor: '6,0 kg + 4,0 kg' },
+        ],
+        garantia:
+          'A balança é um equipamento cadastrado, a soma dos volumes bate com o total, e a divergência além da diferença permitida do subgrupo não finaliza a pesagem.',
+        tentativa: {
+          acao: 'Finalizar com volumes que somam 9,5 kg em vez de 10,0 kg',
+          resposta: 'Recusado: "A soma dos volumes não confere com o total pesado."',
+        },
+      },
+      {
+        titulo: 'Atender (entregar)',
+        tela: 'Estoque › Estoque › Atendimento de Solicitação',
+        quem: 'Estoque',
+        situacao: 'Atendido',
+        campos: [
+          {
+            rotulo: 'Lote e quantidade entregue',
+            valor: 'L-2026-001, 10 kg (pedido: 10 kg)',
+            exigido: true,
+          },
+          { rotulo: 'Justificativa', valor: 'Exigida se houver diferença ou troca de lote' },
+          { rotulo: 'Assinatura', valor: 'Feita agora', exigido: true },
+        ],
+        garantia:
+          'A quantidade não passa da pedida. Uma só transação baixa o lote e o endereço e muda a situação do pedido. O pedido de produção volta à ordem de produção com o que foi entregue.',
+        tentativa: {
+          acao: 'Entregar 12 kg para um pedido de 10 kg',
+          resposta: 'Recusado: "A quantidade entregue não pode passar da solicitada."',
+        },
+      },
+      {
+        titulo: 'Saída avulsa (sem pedido)',
+        tela: 'Estoque › Estoque › Saída de Material (Outras)',
+        quem: 'Estoque',
+        situacao: 'Saída registrada com justificativa',
+        campos: [
+          {
+            rotulo: 'Tipo e motivo',
+            valor: 'De lista cadastrada: "Amostra para teste"',
+            exigido: true,
+          },
+          { rotulo: 'Lote e quantidade', valor: 'L-2026-001, 1 kg' },
+          { rotulo: 'Justificativa assinada', valor: 'Preenchida', exigido: true },
+        ],
+        garantia:
+          'Só sai o que está disponível. Sem pedido, só com justificativa assinada. O valor sai do custo do lote, não fica 0,00.',
+        tentativa: {
+          acao: 'Dar saída avulsa de um lote em quarentena',
+          resposta: 'Recusado: "Lote em quarentena não está disponível para saída."',
+        },
+      },
+      {
+        titulo: 'Consultar o histórico',
+        tela: 'Estoque › Estoque › Histórico do Lote',
+        quem: 'Todos',
+        situacao: 'Só leitura',
+        campos: [
+          { rotulo: 'Quem pediu', valor: 'Produção, em 23/11/2026 às 09:10' },
+          { rotulo: 'Quem aprovou', valor: 'Supervisor Exemplo' },
+          { rotulo: 'Quem separou e entregou', valor: 'Estoque, com o motivo de cada escolha' },
+        ],
+        garantia:
+          'O histórico mostra quem pediu, aprovou, separou e entregou, quando e por quê. O saldo reservado nunca passa do saldo disponível.',
+        tentativa: {
+          acao: 'Apagar uma linha do histórico',
+          resposta: 'Recusado: "O histórico não pode ser apagado."',
         },
       },
     ],
