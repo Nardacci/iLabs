@@ -10,6 +10,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { PRATICAS } from './pratica.dados';
 import { MODULOS_DO_ESTUDO, PAGINAS_DO_ESTUDO, type PaginaDoEstudo } from './paginas.gerado';
 
 /** Texto sem acento e em minúsculas, para a busca achar "agregacao" em "agregação". */
@@ -45,6 +46,13 @@ const simples = (s: string): string => s.normalize('NFD').replace(/\p{M}/gu, '')
         }
       </p>
       <h2 id="estudo-titulo" class="estudo-titulo" tabindex="-1">{{ d.pagina.titulo }}</h2>
+      @if (d.pratica; as pr) {
+        <p class="estudo-pratica-chamada">
+          <a class="btn" [routerLink]="['/estudo/pratica', pr.id]"
+            >Ver na prática: telas de exemplo →</a
+          >
+        </p>
+      }
       <div class="panel estudo-texto" [innerHTML]="d.pagina.html"></div>
       <nav class="estudo-anterior-proximo" aria-label="Documento anterior e próximo">
         @if (d.anterior; as a) {
@@ -294,7 +302,12 @@ export class EstudoRoadmap {
     const i = PAGINAS_DO_ESTUDO.findIndex((p) => p.id === this.ficha());
     const pagina = PAGINAS_DO_ESTUDO[i];
     if (!pagina) return undefined;
-    return { pagina, anterior: PAGINAS_DO_ESTUDO[i - 1], proximo: PAGINAS_DO_ESTUDO[i + 1] };
+    return {
+      pagina,
+      anterior: PAGINAS_DO_ESTUDO[i - 1],
+      proximo: PAGINAS_DO_ESTUDO[i + 1],
+      pratica: PRATICAS.find((p) => p.ficha === pagina.id),
+    };
   });
 
   private readonly documento = inject(DOCUMENT);

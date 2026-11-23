@@ -2,6 +2,13 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-23 · Claude · "Na prática": telas de exemplo clicáveis ao lado da teoria
+
+- **Pedido do responsável:** ver a teoria aplicada nas telas, para entender melhor. Escolheu **protótipos clicáveis no site**.
+- **Entregue:** página **Na prática** (`/estudo/pratica` e `/estudo/pratica/recebimento`). Primeiro fluxo: **recebimento e quarentena** (ficha 1), em 9 passos (inspeção do veículo até a liberação), cada um com a tela de exemplo, quem faz, a situação do lote, **o que o banco garante** e o botão **"Tentar errar"**, que mostra a recusa. A ficha 1 ganhou o botão "Ver na prática".
+- **Limites:** dados **inventados**; nada é gravado; as mensagens são escritas à mão e **não são regra** (a regra é do banco, descrita na ficha). Os dados ficam em `app/src/app/estudo/pratica.dados.ts`; para um novo fluxo basta acrescentar uma entrada lá.
+- **Próxima etapa:** o responsável vê o primeiro fluxo e diz se o formato serve; então faço os outros (começando por 2, 3 e 6) e, se quiser, coloco as telas também no Word.
+
 ## 2026-11-22 · Claude · RDC 753/2022 (registro de medicamentos) lida
 
 - **Pedido do responsável:** seguir. Achei no `gov.br` a **tradução oficial em inglês da RDC 753/2022** e li o texto: tamanho de lote autorizado (art. 18), local de fabricação (art. 19), validade do importado a granel (art. 17, § 11).
