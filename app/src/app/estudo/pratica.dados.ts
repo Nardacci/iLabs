@@ -754,4 +754,575 @@ export const PRATICAS: readonly PraticaFicha[] = [
       },
     ],
   },
+  {
+    id: 'reprovado-reanalise',
+    ficha: 'fluxo4',
+    titulo: 'O que acontece com o lote depois do laudo',
+    rotuloSituacao: 'Situação do lote',
+    resumo:
+      'Acompanhe dois lotes de açúcar (dados inventados): um aprovado, que vai para o estoque comum, e um reprovado, que vai para o refugo. Depois, a reanálise e a revalidação de lotes que ficaram velhos. O ponto central: o destino é conferido pelo banco, e a validade só muda com um laudo.',
+    passos: [
+      {
+        titulo: 'Destino do lote aprovado',
+        tela: 'Estoque › Estoque › Movimentação de Quarentena',
+        quem: 'Estoque',
+        situacao: 'Disponível',
+        campos: [
+          { rotulo: 'Laudo', valor: 'Aprovado e emitido', exigido: true },
+          { rotulo: 'Destino', valor: 'Estoque comum, rua 3, coluna 1', exigido: true },
+          { rotulo: 'Quantidade', valor: '25 kg (o pendente)' },
+        ],
+        garantia:
+          'Só vai para local comum, nunca para quarentena nem refugo, conferido no servidor. A quantidade não passa do pendente.',
+        tentativa: {
+          acao: 'Forçar o destino para outra quarentena',
+          resposta:
+            'Recusado: "Lote aprovado só pode ir para local comum." (No sistema antigo só a lista da tela impedia; o servidor aceitava.)',
+        },
+      },
+      {
+        titulo: 'Destino do lote reprovado',
+        tela: 'Estoque › Estoque › Movimentação de Quarentena',
+        quem: 'Estoque',
+        situacao: 'Reprovado, em refugo',
+        campos: [
+          {
+            rotulo: 'Laudo',
+            valor: 'Reprovado, com motivo "pureza abaixo do limite"',
+            exigido: true,
+          },
+          { rotulo: 'Destino', valor: 'Local de refugo', exigido: true },
+          { rotulo: 'Quantidade', valor: '25 kg' },
+        ],
+        garantia:
+          'Só vai para refugo. O saldo passa a reprovado e sai de tudo: separação, remessa e movimentação.',
+        tentativa: {
+          acao: 'Separar o lote reprovado para a produção',
+          resposta: 'Recusado: "Lote reprovado não está disponível."',
+        },
+      },
+      {
+        titulo: 'Destino final do reprovado',
+        tela: 'Estoque › Reprovados › Destino final (tela nova)',
+        quem: 'Estoque e Qualidade',
+        situacao: 'Reprovado, destino final registrado',
+        campos: [
+          { rotulo: 'Destino', valor: 'Destruição', exigido: true },
+          { rotulo: 'Documento', valor: 'Termo de destruição anexado', exigido: true },
+          { rotulo: 'Assinaturas', valor: 'Estoque e Qualidade', exigido: true },
+        ],
+        garantia:
+          'O lote só deixa o refugo com o destino final registrado e assinado, e isso fica no histórico. (No sistema antigo o reprovado ficava no refugo, sem baixa.)',
+        tentativa: {
+          acao: 'Dar baixa no refugo sem registrar o destino',
+          resposta:
+            'Recusado: "Informe o destino final (devolução ao fornecedor ou destruição), com documento e assinatura."',
+        },
+      },
+      {
+        titulo: 'Agenda de reanálise',
+        tela: 'Estoque › Estoque › Agenda de Reanálise',
+        quem: 'Estoque (aviso) e Qualidade',
+        situacao: 'Disponível, reanálise em 30 dias',
+        campos: [
+          { rotulo: 'Classificação de reanálise', valor: 'Do cadastro do material', exigido: true },
+          { rotulo: 'Próxima reanálise', valor: '23/12/2026' },
+          { rotulo: 'Aviso', valor: 'Enviado antes do vencimento' },
+        ],
+        garantia:
+          'O prazo vem do material. O sistema avisa antes de vencer, e a reanálise vencida e não feita bloqueia o lote sozinha.',
+        tentativa: {
+          acao: 'Usar um lote cuja reanálise venceu ontem',
+          resposta: 'Bloqueado: "Reanálise vencida. O lote saiu do disponível até um novo laudo."',
+        },
+      },
+      {
+        titulo: 'Agendar e concluir a reanálise',
+        tela: 'Estoque › Agenda de Reanálise; Controle da Qualidade › Emissão do Laudo Final',
+        quem: 'Estoque pede; Qualidade conclui',
+        situacao: 'Em reanálise, depois disponível com nova data',
+        campos: [
+          { rotulo: 'Justificativa', valor: 'Reanálise de rotina', exigido: true },
+          { rotulo: 'Análise aberta', valor: 'Tipo reanálise, no CQ' },
+          { rotulo: 'Resultado', valor: 'Aprovado: nova data de reanálise 23/06/2027' },
+        ],
+        garantia:
+          'Abre uma análise do tipo reanálise sem duplicar, e o lote sai do disponível até o laudo. Aprovada, volta com nova data; reprovada, segue o destino do reprovado.',
+        tentativa: {
+          acao: 'Abrir uma segunda reanálise enquanto a primeira está aberta',
+          resposta: 'Recusado: "Já existe uma reanálise aberta para este lote."',
+        },
+      },
+      {
+        titulo: 'Revalidar a validade',
+        tela: 'Estoque › Estoque › Revalidação de Lote',
+        quem: 'Estoque e Qualidade',
+        situacao: 'Vencido, em revalidação, depois disponível',
+        campos: [
+          { rotulo: 'Lote', valor: 'L-2025-014, vencido ontem' },
+          { rotulo: 'Pedido', valor: 'Revalidação, com justificativa', exigido: true },
+          { rotulo: 'Nova validade', valor: 'Só muda com o laudo de revalidação', exigido: true },
+        ],
+        garantia:
+          'Abre uma análise de revalidação. A validade só muda com o laudo, e só pede quem tem a função.',
+        tentativa: {
+          acao: 'Estender a validade do lote direto, sem laudo',
+          resposta: 'Recusado: "A validade só pode mudar por laudo de revalidação aprovado."',
+        },
+      },
+      {
+        titulo: 'Lote vencido',
+        tela: 'Estoque › Estoque › Disponibilidade do Lote (automático)',
+        quem: 'Sistema',
+        situacao: 'Vencido: fora do disponível',
+        campos: [
+          { rotulo: 'Validade', valor: '22/11/2026 (menor que hoje)', exigido: true },
+          { rotulo: 'Saldo disponível', valor: 'Zero, na hora' },
+        ],
+        garantia:
+          'O lote vencido sai do disponível na hora, conforme o banco, e não entra por nenhuma porta: recebimento, produção ou devolução.',
+        tentativa: {
+          acao: 'Dar entrada em um lote já vencido',
+          resposta:
+            'Recusado: "A validade do lote é menor que a data de hoje." (No sistema antigo a entrada aceitava.)',
+        },
+      },
+    ],
+  },
+  {
+    id: 'movimentacao',
+    ficha: 'fluxo5',
+    titulo: 'Guardar e movimentar o material dentro do estoque',
+    rotuloSituacao: 'Situação do saldo',
+    resumo:
+      'Acompanhe 25 kg de açúcar (dados inventados) sendo endereçados e depois movidos de uma prateleira para outra. O ponto central: a movimentação é "tudo ou nada", o destino é conferido pelo banco e nada se apaga, só se estorna.',
+    passos: [
+      {
+        titulo: 'Cadastrar o endereço',
+        tela: 'Estoque › Estoque › Endereço do Estoque',
+        quem: 'Estoque',
+        situacao: 'Endereço criado, vazio',
+        campos: [
+          { rotulo: 'Local', valor: 'Estoque comum', exigido: true },
+          { rotulo: 'Rua, coluna e andar', valor: '3 · 1 · 2', exigido: true },
+          {
+            rotulo: 'Capacidade',
+            valor: 'Altura 1,2 m; largura 1,0 m; profundidade 1,0 m; peso máximo 500 kg',
+          },
+        ],
+        garantia:
+          'O endereço é único dentro do local. Só se exclui endereço vazio, com justificativa e histórico.',
+        tentativa: {
+          acao: 'Excluir um endereço que ainda tem saldo',
+          resposta: 'Recusado: "Só é possível excluir endereço vazio, com justificativa."',
+        },
+      },
+      {
+        titulo: 'Endereçar o lote',
+        tela: 'Estoque › Estoque › Endereçamento de Material',
+        quem: 'Estoque',
+        situacao: 'Endereçado',
+        campos: [
+          { rotulo: 'Item e lote', valor: 'Açúcar refinado, L-2026-001' },
+          { rotulo: 'Quantidade', valor: '25 kg (o pendente)', exigido: true },
+          { rotulo: 'Endereço', valor: 'Quarentena, rua 1, coluna 2, andar 1', exigido: true },
+        ],
+        garantia:
+          'A quantidade não passa do pendente, o local é compatível com o tipo do material e a gravação é "tudo ou nada".',
+        tentativa: {
+          acao: 'Endereçar 30 kg quando só há 25 kg pendentes',
+          resposta:
+            'Recusado: "A quantidade passa do pendente de endereçamento." (No sistema antigo a tela dizia "sucesso" e não gravava.)',
+        },
+      },
+      {
+        titulo: 'Movimentar entre endereços',
+        tela: 'Estoque › Estoque › Movimentação de Material',
+        quem: 'Estoque',
+        situacao: 'Movido, uma só transação',
+        campos: [
+          { rotulo: 'Origem', valor: 'Estoque comum, 3 · 1 · 2 (saldo 25 kg)' },
+          { rotulo: 'Quantidade', valor: '10 kg', exigido: true },
+          { rotulo: 'Destino', valor: 'Estoque comum, 3 · 2 · 1', exigido: true },
+          { rotulo: 'Justificativa', valor: 'Reorganização do estoque' },
+        ],
+        garantia:
+          'Sai da origem e entra no destino, ou nada acontece. A quantidade não passa do saldo da origem.',
+        tentativa: {
+          acao: 'Mover 40 kg de uma origem com 25 kg',
+          resposta: 'Recusado: "A quantidade passa do saldo da origem." Nada foi movido.',
+        },
+      },
+      {
+        titulo: 'Conferir o destino',
+        tela: 'Estoque › Estoque › Movimentação de Material (automático)',
+        quem: 'Sistema',
+        situacao: 'Destino conferido',
+        campos: [
+          { rotulo: 'Destino vazio ou com o mesmo material', valor: 'Sim', exigido: true },
+          {
+            rotulo: 'Cabe em altura, largura, profundidade e peso',
+            valor: 'Sim (peso × quantidade)',
+            exigido: true,
+          },
+          { rotulo: 'Tipo do local compatível', valor: 'Comum com comum', exigido: true },
+          { rotulo: 'Almoxarifado do grupo do usuário', valor: 'Sim' },
+        ],
+        garantia:
+          'Tudo conferido no servidor: destino, tamanho, peso, tipo do local e grupo do usuário.',
+        tentativa: {
+          acao: 'Mover açúcar para um endereço que já guarda outro material',
+          resposta: 'Recusado: "O destino está ocupado por outro material."',
+        },
+      },
+      {
+        titulo: 'Impedir movimentação simultânea',
+        tela: 'Estoque › Estoque › Movimentação de Material (automático)',
+        quem: 'Sistema',
+        situacao: 'Uma movimentação por vez',
+        campos: [
+          { rotulo: 'Pessoa A', valor: 'Move 20 kg da origem (saldo 25 kg)' },
+          { rotulo: 'Pessoa B, ao mesmo tempo', valor: 'Tenta mover 20 kg da mesma origem' },
+          { rotulo: 'Saldo final', valor: 'Nunca negativo', exigido: true },
+        ],
+        garantia:
+          'Duas pessoas não movem o mesmo saldo ao mesmo tempo: a segunda espera ou é recusada, e o saldo nunca fica negativo.',
+        tentativa: {
+          acao: 'Salvar a mesma origem em duas janelas ao mesmo tempo',
+          resposta:
+            'Recusado na segunda janela: "O saldo desta origem acabou de mudar. Confira e tente de novo."',
+        },
+      },
+      {
+        titulo: 'Quem vê e quem move',
+        tela: 'Estoque › Cadastros › Grupo de Usuário – Almoxarifado',
+        quem: 'Administrador',
+        situacao: 'Acesso por grupo',
+        campos: [
+          { rotulo: 'Grupo da usuária', valor: 'Almoxarifado Central' },
+          { rotulo: 'Almoxarifados que ela vê', valor: 'Só o do grupo dela', exigido: true },
+        ],
+        garantia:
+          'Cada pessoa só enxerga e move os almoxarifados do seu grupo, em toda consulta e gravação. Abrir a tela sem permissão é recusado.',
+        tentativa: {
+          acao: 'Usuário de outro grupo abrir a Movimentação pelo endereço da tela',
+          resposta:
+            'Recusado: "Você não tem permissão para esta tela." (No sistema antigo, o usuário de consulta abria pelo endereço.)',
+        },
+      },
+      {
+        titulo: 'Consultar saldo e histórico',
+        tela: 'Estoque › Estoque › Disponibilidade do Lote; Histórico do Lote',
+        quem: 'Todos',
+        situacao: 'Só leitura',
+        campos: [
+          {
+            rotulo: 'Saldo por item, lote e local',
+            valor: 'Igual à soma das movimentações',
+            exigido: true,
+          },
+          {
+            rotulo: 'Histórico',
+            valor: 'Quem, quando, de onde para onde, por quê; com análise, laudo e aprovador',
+          },
+        ],
+        garantia:
+          'O saldo é a soma das movimentações. O histórico mostra quem fez, quando e por quê, e junta análise, laudo e aprovador.',
+        tentativa: {
+          acao: 'Alterar o saldo direto na tela de consulta',
+          resposta: 'Recusado: "O saldo só muda por movimentação."',
+        },
+      },
+      {
+        titulo: 'Corrigir um engano',
+        tela: 'Estoque › Estoque › Estorno de Movimentação (tela nova)',
+        quem: 'Estoque, com a Qualidade',
+        situacao: 'Corrigido por estorno',
+        campos: [
+          { rotulo: 'Movimentação errada', valor: '10 kg para o endereço trocado' },
+          { rotulo: 'Estorno', valor: 'Volta os 10 kg à origem', exigido: true },
+          { rotulo: 'Motivo e assinatura', valor: 'Preenchidos', exigido: true },
+        ],
+        garantia:
+          'Não se edita nem se apaga. Corrige-se com um estorno assinado, que também fica no histórico.',
+        tentativa: {
+          acao: 'Apagar a movimentação errada',
+          resposta:
+            'Recusado: "Movimentações não se apagam. Faça um estorno com motivo e assinatura."',
+        },
+      },
+    ],
+  },
+  {
+    id: 'amostras-cq',
+    ficha: 'fluxo7',
+    titulo: 'Guardar as amostras do Controle da Qualidade',
+    rotuloSituacao: 'Situação da amostra',
+    resumo:
+      'Acompanhe as amostras de referência e de retenção de um lote de açúcar (dados inventados) desde a entrada até a saída. O ponto central: a amostra não conta como estoque disponível e só sai depois do prazo de guarda, ou com justificativa assinada pela Qualidade.',
+    passos: [
+      {
+        titulo: 'Preparar o almoxarifado e o item',
+        tela: 'Estoque › Cadastros › Almoxarifado; Item',
+        quem: 'Estoque',
+        situacao: 'Estrutura pronta',
+        campos: [
+          {
+            rotulo: 'Almoxarifado especial',
+            valor: 'Amostras do CQ (referência, retenção, estabilidade)',
+            exigido: true,
+          },
+          { rotulo: 'No item: amostras que guarda', valor: 'Referência e retenção', exigido: true },
+        ],
+        garantia:
+          'Saldo de almoxarifado especial nunca conta como disponível, e o item só guarda o que está marcado.',
+        tentativa: {
+          acao: 'Guardar amostra de estabilidade em item que não marcou estabilidade',
+          resposta: 'Recusado: "Este item não guarda amostra de estabilidade."',
+        },
+      },
+      {
+        titulo: 'Guardar a amostra (entrada)',
+        tela: 'Estoque › Regulatório › Movimentações (Entrada)',
+        quem: 'Estoque ou Qualidade',
+        situacao: 'Amostra guardada',
+        campos: [
+          { rotulo: 'Lote', valor: 'L-2026-001, liberado', exigido: true },
+          { rotulo: 'Tipo', valor: 'Referência', exigido: true },
+          { rotulo: 'Quantidade', valor: '200 g (duas análises completas)' },
+          { rotulo: 'Endereço', valor: 'Amostras do CQ, 1 · 1 · 1' },
+        ],
+        garantia:
+          'Só entra amostra de lote liberado. A quantidade não passa da disponível e o endereço serve ao lote. A quantidade mínima é a de duas análises completas (IN 139/2022, orientação da ANVISA).',
+        tentativa: {
+          acao: 'Guardar amostra de um lote ainda em quarentena',
+          resposta: 'Recusado: "Só se guarda amostra de lote liberado."',
+        },
+      },
+      {
+        titulo: 'Abrir o acompanhamento de estabilidade',
+        tela: 'Estoque › Regulatório › Movimentações; Controle da Qualidade › Acompanhamento de Estabilidade',
+        quem: 'Qualidade',
+        situacao: 'Estabilidade em acompanhamento',
+        campos: [
+          {
+            rotulo: 'Tipo de estabilidade',
+            valor: '25 °C e 60% de umidade, 24 meses',
+            exigido: true,
+          },
+          { rotulo: 'Pontos do estudo', valor: '0, 3, 6, 12 e 24 meses (do protocolo aprovado)' },
+          { rotulo: 'Acompanhamento', valor: 'Aberto sozinho' },
+        ],
+        garantia:
+          'A amostra de estabilidade exige o tipo e abre o acompanhamento sozinha, com os pontos do estudo aprovado.',
+        tentativa: {
+          acao: 'Guardar amostra de estabilidade sem informar o tipo',
+          resposta:
+            'Recusado: "Informe o tipo de estabilidade." (No sistema antigo a tela nem tinha o campo.)',
+        },
+      },
+      {
+        titulo: 'Consultar o que está guardado',
+        tela: 'Estoque › Regulatório › Consulta de Disponibilidade',
+        quem: 'Estoque e Qualidade',
+        situacao: 'Só leitura',
+        campos: [
+          { rotulo: 'Por item, lote e tipo', valor: 'Referência 200 g; retenção 200 g' },
+          { rotulo: 'Prazo de guarda restante', valor: '1 ano e 11 meses', exigido: true },
+          { rotulo: 'Conta no disponível?', valor: 'Não' },
+        ],
+        garantia:
+          'Um só relatório de amostras por item, lote, tipo e prazo de guarda restante. A amostra não entra no disponível do atendimento.',
+        tentativa: {
+          acao: 'Atender um pedido de produção usando a amostra guardada',
+          resposta: 'Recusado: "O saldo de amostra não está disponível para atendimento."',
+        },
+      },
+      {
+        titulo: 'Dar saída da amostra',
+        tela: 'Estoque › Regulatório › Movimentações (Saída)',
+        quem: 'Qualidade',
+        situacao: 'Amostra consumida, descartada ou devolvida',
+        campos: [
+          { rotulo: 'Motivo', valor: 'Consumo em análise (de lista cadastrada)', exigido: true },
+          { rotulo: 'Quantidade', valor: '50 g' },
+          {
+            rotulo: 'Justificativa assinada da Qualidade',
+            valor: 'Exigida antes do fim do prazo de guarda',
+            exigido: true,
+          },
+        ],
+        garantia:
+          'Só sai depois do prazo de guarda; antes, só com justificativa assinada pela Qualidade. O prazo mínimo é o da norma e não se reduz.',
+        tentativa: {
+          acao: 'Dar saída da amostra antes do fim do prazo de guarda, sem justificativa',
+          resposta:
+            'Recusado: "A amostra ainda está no prazo de guarda. A saída exige justificativa assinada pela Qualidade." (No sistema antigo foi aceita sem aviso.)',
+        },
+      },
+      {
+        titulo: 'Registrar o destino',
+        tela: 'Estoque › Estoque › Histórico do Lote',
+        quem: 'Todos',
+        situacao: 'Só leitura',
+        campos: [
+          { rotulo: 'Quem deu a saída', valor: 'Qualidade, em 23/11/2026 às 10:05' },
+          { rotulo: 'Quanto e por quê', valor: '50 g, consumo em análise' },
+        ],
+        garantia:
+          'O histórico mostra quem deu a saída, quando, quanto e por quê, inclusive para a amostra.',
+        tentativa: {
+          acao: 'Apagar o registro da saída',
+          resposta: 'Recusado: "O histórico não pode ser apagado."',
+        },
+      },
+    ],
+  },
+  {
+    id: 'devolucao-entradas',
+    ficha: 'fluxo8',
+    titulo: 'Devolução e as outras portas de entrada do lote',
+    rotuloSituacao: 'Situação do lote',
+    resumo:
+      'Acompanhe as três formas de um lote entrar no estoque além da compra: o produto acabado que vem da produção, a sobra devolvida e a entrada avulsa (dados inventados). O ponto central: o lote nunca é inventado na tela e todo lote novo entra em quarentena.',
+    passos: [
+      {
+        titulo: 'Dar entrada ao produto acabado',
+        tela: 'Estoque › Estoque › Entrada de Material - Produção',
+        quem: 'Estoque',
+        situacao: 'Em quarentena',
+        campos: [
+          { rotulo: 'Ordem de produção', valor: 'OP-2026-050, liberada', exigido: true },
+          { rotulo: 'Lote', valor: 'Vem da ordem, não é digitado', exigido: true },
+          { rotulo: 'Validade', valor: '30/11/2028 (maior que hoje)', exigido: true },
+          { rotulo: 'Destino', valor: 'Quarentena, quando o item exige' },
+        ],
+        garantia:
+          'O lote nasce de uma ordem de produção e vem dela. A validade é maior que hoje, e o destino é só de quarentena quando o item exige.',
+        tentativa: {
+          acao: 'Dar entrada em um lote digitado, sem ordem de produção',
+          resposta:
+            'Recusado: "O lote de produto acabado deve vir de uma ordem de produção liberada." (No sistema antigo aceitava lote inventado.)',
+        },
+      },
+      {
+        titulo: 'Abrir a análise e a etiqueta',
+        tela: 'Controle da Qualidade › Solicitação de Análise (automático)',
+        quem: 'Sistema',
+        situacao: 'Em quarentena, análise aberta',
+        campos: [
+          { rotulo: 'Tipo da análise', valor: 'Produto acabado', exigido: true },
+          { rotulo: 'Situação do lote', valor: 'Em quarentena, fora do disponível' },
+          { rotulo: 'Etiqueta', valor: 'Sai do lote' },
+        ],
+        garantia:
+          'A análise nasce com o tipo produto acabado. O lote fica em quarentena, sem aparecer como disponível.',
+        tentativa: {
+          acao: 'Separar o lote recém-entrado para uma venda',
+          resposta: 'Recusado: "O lote está em quarentena e não está disponível."',
+        },
+      },
+      {
+        titulo: 'Devolver a sobra da produção',
+        tela: 'Estoque › Estoque › Devolução da Produção',
+        quem: 'Estoque',
+        situacao: 'Sobra devolvida, em quarentena',
+        campos: [
+          { rotulo: 'Lote devolvido', valor: 'L-2026-001, atendido à produção', exigido: true },
+          { rotulo: 'Quantidade', valor: '2 kg (saíram 10 kg)', exigido: true },
+          { rotulo: 'Justificativa assinada', valor: 'Sobra da ordem OP-2026-050', exigido: true },
+        ],
+        garantia:
+          'A quantidade não passa do que saiu para a produção. O destino respeita quarentena, umidade e refrigeração. A sobra volta ao saldo e fica no histórico.',
+        tentativa: {
+          acao: 'Devolver 15 kg de um pedido que entregou 10 kg',
+          resposta: 'Recusado: "A quantidade devolvida passa do que saiu para a produção."',
+        },
+      },
+      {
+        titulo: 'Devolver material de outra origem',
+        tela: 'Estoque › Estoque › Devolução de Material',
+        quem: 'Estoque',
+        situacao: 'Em quarentena, análise aberta',
+        campos: [
+          {
+            rotulo: 'Lote',
+            valor: 'Já existe, com o mesmo item, validade e fabricante',
+            exigido: true,
+          },
+          { rotulo: 'Quantidade', valor: '5 kg' },
+          { rotulo: 'Justificativa', valor: 'Devolução de cliente' },
+        ],
+        garantia:
+          'O lote precisa existir, com o mesmo item, validade e fabricante. O total endereçado não passa da quantidade. Entra em quarentena e abre análise.',
+        tentativa: {
+          acao: 'Devolver um lote que não existe no estoque',
+          resposta: 'Recusado: "Lote não encontrado. Devolução só de lote existente."',
+        },
+      },
+      {
+        titulo: 'Entrada avulsa',
+        tela: 'Estoque › Estoque › Entrada de Material - Outras',
+        quem: 'Estoque',
+        situacao: 'Em quarentena, análise aberta',
+        campos: [
+          { rotulo: 'Tipo e motivo', valor: 'Ativos, de lista cadastrada', exigido: true },
+          { rotulo: 'Item, lote e fabricante', valor: 'Não se repetem na lista', exigido: true },
+          { rotulo: 'Justificativa', valor: 'Doação de amostra do fornecedor' },
+        ],
+        garantia:
+          'Item, lote e fabricante não se repetem. Só tipo e motivo ativos. Entra em quarentena e abre análise.',
+        tentativa: {
+          acao: 'Escolher um motivo de movimentação inativo',
+          resposta:
+            'Recusado: "Este motivo está inativo." (No sistema antigo o motivo inativo ainda era oferecido.)',
+        },
+      },
+      {
+        titulo: 'Entrada de produção de serviço',
+        tela: 'Estoque › Estoque › Entrada de Produção',
+        quem: 'Estoque',
+        situacao: 'Em quarentena',
+        campos: [
+          { rotulo: 'Ordem e serviço terceirizado', valor: 'OP-2026-051, serviço Exemplo' },
+          {
+            rotulo: 'Custos adicionais',
+            valor: 'De lista cadastrada (a validar: o que são FR170 e FR180)',
+            exigido: true,
+          },
+          { rotulo: 'Lote', valor: 'Mesma regra da entrada de produto acabado' },
+        ],
+        garantia:
+          'Os custos vêm de lista cadastrada e o lote segue a mesma regra do produto acabado. O código do lote não é cortado em silêncio.',
+        tentativa: {
+          acao: 'Gravar um código de lote maior que o campo aceita',
+          resposta:
+            'Recusado: "O código do lote é maior que o permitido." (No sistema antigo era cortado em 10 caracteres, sem aviso.)',
+        },
+      },
+      {
+        titulo: 'Consultar',
+        tela: 'Estoque › Estoque › Histórico do Lote; Relatórios › Quarentena de Produto Acabado',
+        quem: 'Todos',
+        situacao: 'Só leitura',
+        campos: [
+          {
+            rotulo: 'Histórico',
+            valor: 'Entrada, análise, laudo, aprovador, usuário e hora',
+            exigido: true,
+          },
+          {
+            rotulo: 'Relatório de quarentena',
+            valor: 'Um só, mesmo quando não há resultado (mostra "nenhum lote")',
+          },
+        ],
+        garantia:
+          'O histórico mostra a entrada, a análise, o laudo, o aprovador, o usuário e a hora. O relatório de quarentena é um só e avisa quando está vazio.',
+        tentativa: {
+          acao: 'Apagar uma entrada do histórico',
+          resposta: 'Recusado: "O histórico não pode ser apagado."',
+        },
+      },
+    ],
+  },
 ];

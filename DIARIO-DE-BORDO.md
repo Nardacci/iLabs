@@ -2,6 +2,14 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-24 · Claude · "Na prática": fluxos 4, 5, 7 e 8 (Estoque completo)
+
+- **Pedido do responsável:** seguir. Com estes, **todo o Estoque** (fichas 1 a 8) tem telas de exemplo.
+- **Entregue:** quatro novas práticas: **reprovado, reanálise e revalidação** (ficha 4, 7 passos), **movimentação interna** (ficha 5, 8 passos), **amostras do CQ** (ficha 7, 6 passos) e **devolução e entradas** (ficha 8, 7 passos). Endereços: `/estudo/pratica/reprovado-reanalise`, `movimentacao`, `amostras-cq`, `devolucao-entradas`. As fichas ganharam o botão "Ver na prática".
+- **Norma aplicada:** na prática da ficha 7, a quantidade mínima da amostra (duas análises completas) e o prazo mínimo de guarda vêm da IN 139/2022, lida pela orientação da ANVISA (texto integral ainda não lido).
+- **Limites:** dados inventados, mensagens escritas à mão, nenhuma regra no front.
+- **Próxima etapa:** Controle da Qualidade, Garantia da Qualidade e os outros módulos, na mesma ordem das fichas; ou as telas também no Word.
+
 ## 2026-11-23 · Claude · "Na prática": fluxos 2, 3 e 6
 
 - **Pedido do responsável:** seguir com os outros fluxos (o botão da ficha 1 apareceu depois de limpar o cache do navegador).
