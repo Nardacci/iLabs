@@ -59,7 +59,9 @@ test.describe('Estudo do roadmap', () => {
     await conferirAcessibilidade(page, 'na prática, recebimento');
   });
 
-  test('as fichas 2 a 8, 11, 12 e 13 também têm o botão "Ver na prática"', async ({ page }) => {
+  test('as fichas 2 a 8, 11, 12, 13 e a ordem de cadastro também têm o botão "Ver na prática"', async ({
+    page,
+  }) => {
     await entrarComSessaoDeTeste(page);
     await simularSupabase(page, {
       rpc: { meu_estado: ESTADO_NORMAL, minhas_permissoes: PERMISSOES_DO_ADMIN },

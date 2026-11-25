@@ -2,6 +2,14 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-28 · Claude · Foco em cinco módulos: base na norma e integrações em todas as telas de exemplo; prática do Principal
+
+- **Pedido do responsável:** focar em **Principal, Estoque, Controle da Qualidade, Garantia da Qualidade e Controle de Documentos**; as telas de exemplo devem trazer as normas da ANVISA e as integrações.
+- **Entregue:** os **133 passos** das 16 práticas desses módulos (fichas 2 a 8, 11a, 11b, 12a, 12b, 13a a 13e) ganharam **"Integra com"**; **"Base na norma"** foi preenchida onde o artigo está na classificação das perguntas (RDC 658/2022; IN 139/2022 e RDC 753/2022 marcadas como lidas só pela orientação da ANVISA ou pela tradução). Onde não há artigo identificado, a tela diz isso. Nova prática do **Principal** (ficha "Ordem de cadastro", 9 passos): ordem de cadastro, funções e perfis, profissional, estrutura organizacional, empresa, almoxarifado, material, equipamento e assinatura com histórico. Endereço: `/estudo/pratica/principal`.
+- **Fora de foco por ora:** Produção, Comercial, Rastreabilidade, OPE e Inventário (sem telas de exemplo ainda).
+- **Limites:** os artigos vêm da classificação das perguntas e não foram conferidos de novo um a um no texto da norma; a etiqueta "Base na norma" não substitui a conferência do analista. Passos sem artigo identificado: inspeção do veículo, programar amostragem, etiqueta, saída avulsa, entre outros.
+- **Próxima etapa:** o responsável revisa a coluna "Base na norma" dos cinco módulos; conferir artigos duvidosos no texto da RDC 658/2022; depois, o Word com as telas de exemplo.
+
 ## 2026-11-27 · Claude · "Na prática": base na norma e integrações em cada passo (piloto na ficha 1)
 
 - **Pedido do responsável:** as telas de exemplo restantes não podem deixar de fora **as normas da ANVISA** nem **as integrações entre módulos**.

@@ -29,7 +29,7 @@ describe('Na prática (telas de exemplo)', () => {
   });
 
   it('todo passo tem tela, campos, garantia e tentativa', () => {
-    expect(PRATICAS.length).toBeGreaterThanOrEqual(17);
+    expect(PRATICAS.length).toBeGreaterThanOrEqual(18);
     for (const p of PRATICAS)
       for (const passo of p.passos) {
         expect(passo.campos.length).toBeGreaterThan(0);
@@ -38,12 +38,10 @@ describe('Na prática (telas de exemplo)', () => {
       }
   });
 
-  it('o recebimento (ficha 1) traz a base na norma e as integrações de todos os passos', () => {
+  it('todo passo diz com quais módulos se integra, e o recebimento traz a base na norma em todos', () => {
+    for (const p of PRATICAS) for (const passo of p.passos) expect(passo.integra).toBeTruthy();
     const ficha1 = PRATICAS.find((p) => p.id === 'recebimento');
-    for (const passo of ficha1?.passos ?? []) {
-      expect(passo.base).toBeTruthy();
-      expect(passo.integra).toBeTruthy();
-    }
+    for (const passo of ficha1?.passos ?? []) expect(passo.base).toBeTruthy();
   });
 
   it('mostra a base e as integrações na tela do recebimento', () => {
