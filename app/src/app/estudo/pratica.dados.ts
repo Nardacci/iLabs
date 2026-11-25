@@ -275,6 +275,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
           { rotulo: 'O que fornece', valor: 'Açúcar refinado' },
         ],
         garantia: 'O CNPJ é único e empresa inativa não é escolhida em nenhuma tela.',
+        integra: 'Principal (cadastro de pessoa jurídica) → Estoque e Garantia da Qualidade',
         tentativa: {
           acao: 'Cadastrar o mesmo CNPJ pela segunda vez',
           resposta:
@@ -298,6 +299,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A avaliação fica ligada ao par fornecedor + material e guarda as respostas. Ser qualificado para um material não vale para outro.',
+        base: 'RDC 658/2022, art. 179 (qualificação do fornecedor, por fornecedor e material) e art. 8º, VI (quem audita é independente).',
+        integra: 'Garantia da Qualidade ↔ Estoque (material) ↔ Principal (fornecedor)',
         tentativa: {
           acao: 'Usar a avaliação do açúcar para qualificar o mesmo fornecedor em outro material',
           resposta:
@@ -321,6 +324,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só quem tem a função aprova, e quem avaliou não aprova. Sem validade não qualifica. Fica o histórico de cada decisão.',
+        base: 'RDC 658/2022, art. 179 (documentar a qualificação). A nota de corte e a validade são parâmetros da empresa.',
+        integra: 'Garantia da Qualidade → Estoque (o recebimento consulta a decisão)',
         tentativa: {
           acao: 'A própria avaliadora aprovar a qualificação',
           resposta:
@@ -339,6 +344,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O recebimento consulta a qualificação. Fornecedor sem qualificação, ou com qualificação vencida, é recusado (ou exige decisão registrada da Qualidade).',
+        base: 'RDC 658/2022, art. 179 (só se recebe de fornecedor qualificado).',
+        integra: 'Estoque ← Garantia da Qualidade',
         tentativa: {
           acao: 'Receber de fornecedor com qualificação vencida',
           resposta:
@@ -358,6 +365,9 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A nota fica ligada ao lote. Uma nota abaixo do limite abre a requalificação. Depois de gravada, a nota não se altera sem histórico.',
+        base: 'RDC 658/2022, art. 179 (acompanhar o fornecedor). A nota de corte é parâmetro da empresa.',
+        integra:
+          'Estoque ↔ Controle da Qualidade (lote recusado ou reprovado) → Garantia da Qualidade',
         tentativa: {
           acao: 'Mudar a nota de uma entrega já gravada, sem deixar rastro',
           resposta:
@@ -380,6 +390,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Qualificação vencida bloqueia como a de fornecedor não qualificado. Há aviso antes do vencimento. Desqualificar exige assinatura.',
+        base: 'RDC 658/2022, art. 8º, XII (mudança de fornecedor ou fabricante abre uma mudança e exige requalificação antes).',
+        integra: 'Garantia da Qualidade ↔ Controle de Mudanças (ficha 13c)',
         tentativa: {
           acao: 'Desqualificar sem assinar',
           resposta: 'Recusado: "A desqualificação exige assinatura eletrônica e motivo."',
@@ -401,6 +413,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A lista só oferece fornecedor qualificado para aquele material. Sem fornecedor, o sistema diz o motivo com clareza.',
+        base: 'Sem artigo da RDC 658/2022 identificado: a compra é função comercial do Estoque e ficou fora da primeira fatia (escolha de escopo).',
+        integra: 'Estoque ← Garantia da Qualidade (só fornecedor qualificado)',
         tentativa: {
           acao: 'Gerar pedido para um material sem nenhum fornecedor qualificado',
           resposta:
@@ -419,6 +433,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A baixa vem do próprio recebimento, com a quantidade recebida. A baixa manual só existe com justificativa e assinatura.',
+        base: 'Sem artigo da RDC 658/2022 identificado: compra fora da primeira fatia (escolha de escopo).',
+        integra: 'Estoque (recebimento) → compras',
         tentativa: {
           acao: 'Dar baixa manual no pedido, sem justificativa',
           resposta: 'Recusado: "A baixa manual exige justificativa e assinatura."',
@@ -451,6 +467,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só uma regra ativa por material e tipo de análise. Quantidade e tolerância inválidas são recusadas, não viram zero em silêncio.',
+        base: 'RDC 658/2022, art. 14, I (critério de amostragem). O art. 247 também é citado pela ficha para o conteúdo da regra.',
+        integra: 'Controle da Qualidade ← Estoque (material e unidade)',
         tentativa: {
           acao: 'Salvar quantidade "0" ou tolerância negativa',
           resposta:
@@ -470,6 +488,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O mínimo é sempre menor ou igual ao máximo, inclusive com zero e números negativos. Regra duplicada é recusada.',
+        base: 'RDC 658/2022, art. 14 (especificação por material).',
+        integra: 'Controle da Qualidade ← Estoque (material) e Principal (unidade)',
         tentativa: {
           acao: 'Salvar mínimo 0 e máximo -5',
           resposta:
@@ -492,6 +512,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A regra só vale depois de aprovada. Cada mudança gera uma nova versão, e a análise guarda a versão que usou.',
+        base: 'RDC 658/2022, art. 119 (documento com versão e aprovação por função).',
+        integra: 'Controle da Qualidade ↔ Controle de Documentos',
         tentativa: {
           acao: 'Usar na análise uma regra ainda não aprovada',
           resposta:
@@ -510,6 +532,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só se programa uma vez por solicitação. Reagendar exige motivo e fica no histórico.',
+        integra: 'Estoque → Controle da Qualidade (solicitação de análise)',
         tentativa: {
           acao: 'Programar a mesma amostragem uma segunda vez',
           resposta:
@@ -533,6 +556,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'As conferências valem na gravação, não só na tela. Só quem tem a função de amostrador registra. O saldo do lote baixa e o Estoque é chamado a separar.',
+        base: 'RDC 658/2022, art. 14, I (amostragem). Quantidades de retenção e referência: IN 139/2022, lida só pela orientação da ANVISA.',
+        integra: 'Controle da Qualidade → Estoque (baixa o saldo e pede a separação)',
         tentativa: {
           acao: 'Registrar com o mesmo usuário como amostrador e verificador',
           resposta: 'Recusado: "Amostrador e verificador devem ser pessoas diferentes."',
@@ -553,6 +578,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só analista com a função e treinado no método. Solicitação cancelada não se programa.',
+        base: 'RDC 658/2022, arts. 12 e 14 (quem executa a tarefa precisa estar treinado).',
+        integra: 'Controle da Qualidade ← Garantia da Qualidade (analista treinado no método)',
         tentativa: {
           acao: 'Programar a análise de uma solicitação cancelada',
           resposta: 'Recusado: "Solicitação cancelada não pode ser programada."',
@@ -579,6 +606,9 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O resultado fora do limite é classificado pelo banco e abre investigação, com observação obrigatória. Laudo já liberado não se altera.',
+        base: 'RDC 658/2022, art. 245 (resultado fora do limite abre investigação), art. 110 (equipamento calibrado) e art. 124 (padrão com lote e validade).',
+        integra:
+          'Controle da Qualidade → Garantia da Qualidade (investigação) ↔ Principal (equipamentos)',
         tentativa: {
           acao: 'Corrigir um resultado depois que o laudo foi liberado',
           resposta: 'Recusado: "Laudo liberado não pode ser alterado. Abra uma investigação."',
@@ -601,6 +631,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Quem decide tem a função e não digitou ensaio. Aprovar só com todos os resultados na especificação, conferido na gravação. Reprovar exige motivo. O laudo muda a situação do lote na hora.',
+        base: 'RDC 658/2022, art. 125 (laudo emitido não se apaga; reabrir só com justificativa assinada) e art. 189 (só se usa material liberado).',
+        integra: 'Controle da Qualidade → Estoque (o laudo muda a situação do lote)',
         tentativa: {
           acao: 'Aprovar o laudo com um resultado fora do limite',
           resposta: 'Recusado: "Há resultado fora da especificação. Não é possível aprovar."',
@@ -617,6 +649,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A etiqueta só sai com laudo emitido e decisão gravada, e traz o número do laudo.',
+        integra: 'Controle da Qualidade → Estoque (etiqueta de aprovado ou reprovado)',
         tentativa: {
           acao: 'Gerar etiqueta de aprovado sem laudo emitido',
           resposta: 'Recusado: "Só se gera etiqueta de um laudo emitido."',
@@ -649,6 +682,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O almoxarifado é do grupo de quem pede. O tipo Produção só nasce da ordem de produção. O pedido só existe com tudo preenchido.',
+        base: 'RDC 658/2022, art. 137 (o pedido de produção nasce da ordem de produção).',
+        integra: 'Produção (ordem de produção) → Estoque',
         tentativa: {
           acao: 'Pedir de um almoxarifado de outro grupo',
           resposta:
@@ -671,6 +706,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Quem aprova não é quem pediu. A decisão fica assinada, e cancelar a aprovação exige justificativa.',
+        base: 'Decisão do responsável de 05/11/2026 (não é artigo da ANVISA): a aprovação por almoxarifado e a separação entre quem pede e quem aprova.',
+        integra: 'Estoque ← Principal (funções e grupos)',
         tentativa: {
           acao: 'Quem pediu aprovar o próprio pedido',
           resposta:
@@ -693,6 +730,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Fora da lista ficam quarentena, refugo, bloqueio, reanálise e vencido. A lista sugere o que vence primeiro; escolher outro lote é permitido e fica registrado, e a empresa pode exigir justificativa assinada (parâmetro).',
+        base: 'RDC 658/2022, arts. 159 e 189 (só sai lote liberado e dentro da validade). O que vence primeiro é sugerido, não obrigatório (decisão de 22/11/2026).',
+        integra: 'Estoque ← Controle da Qualidade (só lote liberado)',
         tentativa: {
           acao: 'Escolher um lote que vence depois do sugerido',
           resposta:
@@ -712,6 +751,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A balança é um equipamento cadastrado, a soma dos volumes bate com o total, e a divergência além da diferença permitida do subgrupo não finaliza a pesagem.',
+        base: 'RDC 658/2022, art. 160 (pesagem; a diferença permitida por subgrupo é parâmetro) e art. 110 (balança calibrada).',
+        integra: 'Estoque ↔ Principal (equipamentos) ↔ Garantia da Qualidade (treinamento)',
         tentativa: {
           acao: 'Finalizar com volumes que somam 9,5 kg em vez de 10,0 kg',
           resposta: 'Recusado: "A soma dos volumes não confere com o total pesado."',
@@ -733,6 +774,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A quantidade não passa da pedida. Uma só transação baixa o lote e o endereço e muda a situação do pedido. O pedido de produção volta à ordem de produção com o que foi entregue.',
+        base: 'RDC 658/2022, art. 125 (registro assinado; cancelar um atendimento gera devolução).',
+        integra: 'Estoque → Produção (o pedido volta à ordem com o que foi entregue)',
         tentativa: {
           acao: 'Entregar 12 kg para um pedido de 10 kg',
           resposta: 'Recusado: "A quantidade entregue não pode passar da solicitada."',
@@ -754,6 +797,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só sai o que está disponível. Sem pedido, só com justificativa assinada. O valor sai do custo do lote, não fica 0,00.',
+        integra: 'Estoque ← Controle da Qualidade (só lote disponível)',
         tentativa: {
           acao: 'Dar saída avulsa de um lote em quarentena',
           resposta: 'Recusado: "Lote em quarentena não está disponível para saída."',
@@ -771,6 +815,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O histórico mostra quem pediu, aprovou, separou e entregou, quando e por quê. O saldo reservado nunca passa do saldo disponível.',
+        base: 'RDC 658/2022, art. 125 (registro de quem fez, quando e por quê).',
+        integra: 'Estoque ← Controle da Qualidade e Produção (análise, laudo e aprovador)',
         tentativa: {
           acao: 'Apagar uma linha do histórico',
           resposta: 'Recusado: "O histórico não pode ser apagado."',
@@ -798,6 +844,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só vai para local comum, nunca para quarentena nem refugo, conferido no servidor. A quantidade não passa do pendente.',
+        base: 'RDC 658/2022, arts. 157 e 159 (quarentena só se move por fluxo próprio).',
+        integra: 'Estoque ← Controle da Qualidade (laudo)',
         tentativa: {
           acao: 'Forçar o destino para outra quarentena',
           resposta:
@@ -820,6 +868,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só vai para refugo. O saldo passa a reprovado e sai de tudo: separação, remessa e movimentação.',
+        base: 'RDC 658/2022, art. 189 (material reprovado não é usado) e arts. 124 e 125 (destino registrado, com assinatura).',
+        integra: 'Estoque ← Controle da Qualidade (laudo)',
         tentativa: {
           acao: 'Separar o lote reprovado para a produção',
           resposta: 'Recusado: "Lote reprovado não está disponível."',
@@ -837,6 +887,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O lote só deixa o refugo com o destino final registrado e assinado, e isso fica no histórico. (No sistema antigo o reprovado ficava no refugo, sem baixa.)',
+        base: 'RDC 658/2022, arts. 124 e 125 (destino obrigatório, com assinatura e documento).',
+        integra: 'Estoque ↔ Garantia da Qualidade (desvio, quando for produção)',
         tentativa: {
           acao: 'Dar baixa no refugo sem registrar o destino',
           resposta:
@@ -855,6 +907,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O prazo vem do material. O sistema avisa antes de vencer, e a reanálise vencida e não feita bloqueia o lote sozinha.',
+        base: 'RDC 658/2022, art. 189 (depois da data de reteste o material é reanalisado, e o vencido bloqueia).',
+        integra: 'Estoque → Controle da Qualidade',
         tentativa: {
           acao: 'Usar um lote cuja reanálise venceu ontem',
           resposta: 'Bloqueado: "Reanálise vencida. O lote saiu do disponível até um novo laudo."',
@@ -872,6 +926,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Abre uma análise do tipo reanálise sem duplicar, e o lote sai do disponível até o laudo. Aprovada, volta com nova data; reprovada, segue o destino do reprovado.',
+        base: 'RDC 658/2022, art. 189 (reanálise do material).',
+        integra: 'Estoque ↔ Controle da Qualidade',
         tentativa: {
           acao: 'Abrir uma segunda reanálise enquanto a primeira está aberta',
           resposta: 'Recusado: "Já existe uma reanálise aberta para este lote."',
@@ -889,6 +945,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Abre uma análise de revalidação. A validade só muda com o laudo, e só pede quem tem a função.',
+        base: 'RDC 658/2022, art. 189 (revalidação só com análise que a sustente, por função com assinatura).',
+        integra: 'Estoque ↔ Controle da Qualidade',
         tentativa: {
           acao: 'Estender a validade do lote direto, sem laudo',
           resposta: 'Recusado: "A validade só pode mudar por laudo de revalidação aprovado."',
@@ -905,6 +963,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O lote vencido sai do disponível na hora, conforme o banco, e não entra por nenhuma porta: recebimento, produção ou devolução.',
+        base: 'RDC 658/2022, art. 189 (lote vencido bloqueia).',
+        integra: 'Estoque → Produção e Comercial (não entra por nenhuma porta)',
         tentativa: {
           acao: 'Dar entrada em um lote já vencido',
           resposta:
@@ -936,6 +996,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O endereço é único dentro do local. Só se exclui endereço vazio, com justificativa e histórico.',
+        base: 'RDC 658/2022, art. 159 (armazenamento: capacidade e um material por endereço, parâmetro).',
+        integra: 'Estoque ← Principal (estrutura física)',
         tentativa: {
           acao: 'Excluir um endereço que ainda tem saldo',
           resposta: 'Recusado: "Só é possível excluir endereço vazio, com justificativa."',
@@ -953,6 +1015,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A quantidade não passa do pendente, o local é compatível com o tipo do material e a gravação é "tudo ou nada".',
+        base: 'RDC 658/2022, arts. 157 e 159 (quarentena e armazenamento).',
+        integra: 'Estoque ← Controle da Qualidade (quarentena)',
         tentativa: {
           acao: 'Endereçar 30 kg quando só há 25 kg pendentes',
           resposta:
@@ -972,6 +1036,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Sai da origem e entra no destino, ou nada acontece. A quantidade não passa do saldo da origem.',
+        base: 'RDC 658/2022, art. 159 (armazenamento).',
+        integra: 'Estoque',
         tentativa: {
           acao: 'Mover 40 kg de uma origem com 25 kg',
           resposta: 'Recusado: "A quantidade passa do saldo da origem." Nada foi movido.',
@@ -994,6 +1060,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Tudo conferido no servidor: destino, tamanho, peso, tipo do local e grupo do usuário.',
+        base: 'RDC 658/2022, art. 159 (capacidade e compatibilidade do local).',
+        integra: 'Estoque ← Principal (estrutura física)',
         tentativa: {
           acao: 'Mover açúcar para um endereço que já guarda outro material',
           resposta: 'Recusado: "O destino está ocupado por outro material."',
@@ -1011,6 +1079,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Duas pessoas não movem o mesmo saldo ao mesmo tempo: a segunda espera ou é recusada, e o saldo nunca fica negativo.',
+        integra: 'Estoque',
         tentativa: {
           acao: 'Salvar a mesma origem em duas janelas ao mesmo tempo',
           resposta:
@@ -1028,6 +1097,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Cada pessoa só enxerga e move os almoxarifados do seu grupo, em toda consulta e gravação. Abrir a tela sem permissão é recusado.',
+        integra: 'Principal (grupos de usuários) → Estoque',
         tentativa: {
           acao: 'Usuário de outro grupo abrir a Movimentação pelo endereço da tela',
           resposta:
@@ -1052,6 +1122,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O saldo é a soma das movimentações. O histórico mostra quem fez, quando e por quê, e junta análise, laudo e aprovador.',
+        integra: 'Estoque ← Controle da Qualidade (análise, laudo e aprovador)',
         tentativa: {
           acao: 'Alterar o saldo direto na tela de consulta',
           resposta: 'Recusado: "O saldo só muda por movimentação."',
@@ -1069,6 +1140,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Não se edita nem se apaga. Corrige-se com um estorno assinado, que também fica no histórico.',
+        base: 'RDC 658/2022, art. 125 (estorno só por função própria, com motivo e assinatura).',
+        integra: 'Estoque',
         tentativa: {
           acao: 'Apagar a movimentação errada',
           resposta:
@@ -1100,6 +1173,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Saldo de almoxarifado especial nunca conta como disponível, e o item só guarda o que está marcado.',
+        integra: 'Estoque ← Principal (estrutura física)',
         tentativa: {
           acao: 'Guardar amostra de estabilidade em item que não marcou estabilidade',
           resposta: 'Recusado: "Este item não guarda amostra de estabilidade."',
@@ -1118,6 +1192,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só entra amostra de lote liberado. A quantidade não passa da disponível e o endereço serve ao lote. A quantidade mínima é a de duas análises completas (IN 139/2022, orientação da ANVISA).',
+        base: 'IN 139/2022, arts. 5 e 13 (duas análises completas; a retenção pode substituir a referência), lida só pela orientação da ANVISA. RDC 658/2022, art. 14, VIII.',
+        integra: 'Estoque ← Controle da Qualidade (lote liberado)',
         tentativa: {
           acao: 'Guardar amostra de um lote ainda em quarentena',
           resposta: 'Recusado: "Só se guarda amostra de lote liberado."',
@@ -1139,6 +1215,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A amostra de estabilidade exige o tipo e abre o acompanhamento sozinha, com os pontos do estudo aprovado.',
+        base: 'RDC 658/2022, arts. 275 e 277 (protocolo aprovado, pontos e condições).',
+        integra: 'Estoque → Controle da Qualidade (estudo de estabilidade)',
         tentativa: {
           acao: 'Guardar amostra de estabilidade sem informar o tipo',
           resposta:
@@ -1157,6 +1235,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Um só relatório de amostras por item, lote, tipo e prazo de guarda restante. A amostra não entra no disponível do atendimento.',
+        base: 'IN 139/2022, art. 10 (prazo de guarda), lida só pela orientação da ANVISA.',
+        integra: 'Estoque ↔ Controle da Qualidade',
         tentativa: {
           acao: 'Atender um pedido de produção usando a amostra guardada',
           resposta: 'Recusado: "O saldo de amostra não está disponível para atendimento."',
@@ -1178,6 +1258,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só sai depois do prazo de guarda; antes, só com justificativa assinada pela Qualidade. O prazo mínimo é o da norma e não se reduz.',
+        base: 'IN 139/2022, arts. 10 e 11 (prazo de guarda; matéria-prima até a validade), lida só pela orientação da ANVISA. Saída antes do prazo só com assinatura da Qualidade: parâmetro (RDC 658/2022, art. 14, VIII).',
+        integra: 'Estoque ↔ Controle da Qualidade',
         tentativa: {
           acao: 'Dar saída da amostra antes do fim do prazo de guarda, sem justificativa',
           resposta:
@@ -1195,6 +1277,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O histórico mostra quem deu a saída, quando, quanto e por quê, inclusive para a amostra.',
+        base: 'RDC 658/2022, art. 124 (registro do destino).',
+        integra: 'Estoque',
         tentativa: {
           acao: 'Apagar o registro da saída',
           resposta: 'Recusado: "O histórico não pode ser apagado."',
@@ -1223,6 +1307,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O lote nasce de uma ordem de produção e vem dela. A validade é maior que hoje, e o destino é só de quarentena quando o item exige.',
+        base: 'RDC 658/2022, art. 220 (o lote do acabado nasce da ordem de produção) e art. 157 (quarentena).',
+        integra: 'Produção → Estoque → Controle da Qualidade',
         tentativa: {
           acao: 'Dar entrada em um lote digitado, sem ordem de produção',
           resposta:
@@ -1241,6 +1327,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A análise nasce com o tipo produto acabado. O lote fica em quarentena, sem aparecer como disponível.',
+        base: 'RDC 658/2022, art. 157 (quarentena até a análise).',
+        integra: 'Estoque → Controle da Qualidade',
         tentativa: {
           acao: 'Separar o lote recém-entrado para uma venda',
           resposta: 'Recusado: "O lote está em quarentena e não está disponível."',
@@ -1258,6 +1346,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A quantidade não passa do que saiu para a produção. O destino respeita quarentena, umidade e refrigeração. A sobra volta ao saldo e fica no histórico.',
+        base: 'RDC 658/2022, arts. 157 e 189 (a sobra volta à quarentena e só retorna ao saldo com liberação do CQ).',
+        integra: 'Produção → Estoque → Controle da Qualidade',
         tentativa: {
           acao: 'Devolver 15 kg de um pedido que entregou 10 kg',
           resposta: 'Recusado: "A quantidade devolvida passa do que saiu para a produção."',
@@ -1279,6 +1369,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O lote precisa existir, com o mesmo item, validade e fabricante. O total endereçado não passa da quantidade. Entra em quarentena e abre análise.',
+        base: 'RDC 658/2022, art. 157 (lote devolvido volta à quarentena).',
+        integra: 'Estoque → Controle da Qualidade',
         tentativa: {
           acao: 'Devolver um lote que não existe no estoque',
           resposta: 'Recusado: "Lote não encontrado. Devolução só de lote existente."',
@@ -1296,6 +1388,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Item, lote e fabricante não se repetem. Só tipo e motivo ativos. Entra em quarentena e abre análise.',
+        base: 'RDC 658/2022, art. 157 (entrada em quarentena).',
+        integra: 'Estoque → Controle da Qualidade',
         tentativa: {
           acao: 'Escolher um motivo de movimentação inativo',
           resposta:
@@ -1318,6 +1412,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Os custos vêm de lista cadastrada e o lote segue a mesma regra do produto acabado. O código do lote não é cortado em silêncio.',
+        base: 'Sem artigo identificado: depende de o cliente usar produção de serviço (fora da primeira fatia).',
+        integra: 'Produção (terceirização, ficha 14e) → Estoque',
         tentativa: {
           acao: 'Gravar um código de lote maior que o campo aceita',
           resposta:
@@ -1342,6 +1438,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O histórico mostra a entrada, a análise, o laudo, o aprovador, o usuário e a hora. O relatório de quarentena é um só e avisa quando está vazio.',
+        integra: 'Estoque ← Controle da Qualidade',
         tentativa: {
           acao: 'Apagar uma entrada do histórico',
           resposta: 'Recusado: "O histórico não pode ser apagado."',
@@ -1374,6 +1471,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O ponto e a sala têm tag única, classe de limpeza e frequência. Só o cadastro ativo é oferecido.',
+        base: 'A RDC 658/2022 não fixa a frequência de coleta: é parâmetro da empresa.',
+        integra: 'Principal (equipamentos e estrutura) → Controle da Qualidade',
         tentativa: {
           acao: 'Cadastrar uma sala sem classe de limpeza',
           resposta:
@@ -1392,6 +1491,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O programa gera as coletas do período. Ambiente só aceita análise microbiológica, não repete horário, e hoje e o passado são recusados.',
+        base: 'A RDC 658/2022 não fixa a frequência de coleta: é parâmetro da empresa.',
+        integra: 'Controle da Qualidade',
         tentativa: {
           acao: 'Agendar análise físico-química para uma sala',
           resposta: 'Recusado: "Ambiente só aceita análise microbiológica."',
@@ -1413,6 +1514,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Não há pedido ao Estoque. O verificador é diferente do amostrador, e as condições reais da sala (vazia, em atividade, fluxo, ar) são registradas.',
+        base: 'RDC 658/2022, art. 198 (registrar as condições da sala na coleta).',
+        integra: 'Controle da Qualidade',
         tentativa: {
           acao: 'Registrar sem informar as condições da sala',
           resposta: 'Recusado: "Informe as condições da sala no momento da coleta."',
@@ -1439,6 +1542,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Os ensaios vêm da regra de análise do ponto ou da sala. O resultado é conferido contra os limites de alerta e de ação, e fora do limite de ação abre desvio.',
+        base: 'RDC 658/2022, art. 245 (limites de alerta e de ação; fora do limite abre desvio).',
+        integra: 'Controle da Qualidade → Garantia da Qualidade (desvio)',
         tentativa: {
           acao: 'Digitar resultado e a tela dizer "sucesso" sem gravar',
           resposta:
@@ -1461,6 +1566,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O laudo é assinado por quem tem a função e é diferente do analista. Reprovar abre desvio. O laudo vale por um prazo.',
+        base: 'RDC 658/2022, art. 245 (acima do limite de ação abre desvio e bloqueia o ponto ou a sala). A validade do laudo é parâmetro: a norma não fixa.',
+        integra: 'Controle da Qualidade → Garantia da Qualidade e Produção',
         tentativa: {
           acao: 'Aprovar com resultado acima do limite de ação',
           resposta:
@@ -1482,6 +1589,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O boletim traz as condições reais da sala e o resultado. A etiqueta traz os dados da instituição certa.',
+        integra: 'Controle da Qualidade',
         tentativa: {
           acao: 'Imprimir o boletim com campos em branco',
           resposta:
@@ -1499,6 +1607,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A Produção só autoriza o ponto ou a sala com laudo aprovado do CQ e dentro do prazo. O banco bloqueia o resto, sem controle paralelo.',
+        base: 'Decisão do responsável de 02/11/2026: o dono do dado é o CQ; a Produção consulta o laudo e não o digita.',
+        integra: 'Controle da Qualidade → Produção',
         tentativa: {
           acao: 'Autorizar um ponto de água com laudo reprovado ou vencido',
           resposta: 'Bloqueado: "Não há laudo aprovado e válido do CQ para este ponto."',
@@ -1515,6 +1625,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A justificativa é obrigatória e fica no histórico. Coleta que já tem laudo não se cancela.',
+        base: 'RDC 658/2022, art. 125 (repetir ou cancelar só com autorização e motivo).',
+        integra: 'Controle da Qualidade',
         tentativa: {
           acao: 'Cancelar uma coleta com laudo já liberado',
           resposta:
@@ -1548,6 +1660,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Os dias são positivos e em ordem crescente. Há uma regra aprovada por produto e tipo de análise.',
+        base: 'RDC 658/2022, art. 277 (protocolo com lotes, métodos, critérios e condições).',
+        integra: 'Controle da Qualidade ← Estoque (produto acabado)',
         tentativa: {
           acao: 'Salvar tempos fora de ordem (T1 = 180 e T2 = 90)',
           resposta: 'Recusado: "Os tempos devem estar em ordem crescente."',
@@ -1568,6 +1682,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A justificativa é obrigatória e o log é campo a campo. Regra com estudo aberto só muda por nova versão. A regra não se exclui, só se desativa.',
+        base: 'RDC 658/2022, art. 125 (mudança com motivo e assinatura).',
+        integra: 'Controle da Qualidade',
         tentativa: {
           acao: 'Alterar o protocolo sem justificativa',
           resposta:
@@ -1587,6 +1703,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O estudo só abre com protocolo aprovado. Sem protocolo, o Estoque recebe a recusa. O sistema calcula a data prevista de cada tempo.',
+        base: 'RDC 658/2022, arts. 275 e 277 (estudo a partir do protocolo aprovado).',
+        integra: 'Estoque → Controle da Qualidade',
         tentativa: {
           acao: 'Dar entrada de estabilidade de um produto sem protocolo aprovado',
           resposta: 'Recusado: "Não há protocolo de estabilidade aprovado para este produto."',
@@ -1608,6 +1726,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A análise do tempo nasce na data prevista, sozinha, com lote, validade e quantidade do T0. Há aviso de tempo próximo e atrasado, e o atraso exige justificativa.',
+        base: 'RDC 658/2022, art. 277 (os tempos vêm do protocolo).',
+        integra: 'Controle da Qualidade → Estoque (separação da amostra)',
         tentativa: {
           acao: 'Deixar o tempo T1 passar da data sem análise e sem justificar',
           resposta:
@@ -1629,6 +1749,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A justificativa é obrigatória e assinada. Com análise pendente, o banco recusa, não só a tela. A função é conferida na gravação.',
+        base: 'RDC 658/2022, art. 125 (interrupção com motivo e assinatura da Qualidade).',
+        integra: 'Controle da Qualidade → Garantia da Qualidade',
         tentativa: {
           acao: 'Interromper o estudo com uma análise ainda pendente',
           resposta: 'Recusado: "Há solicitação de análise pendente. Conclua ou cancele antes."',
@@ -1647,6 +1769,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Não conclui como aprovado com resultado reprovado nem fora da especificação sem investigação. A conclusão tem assinatura.',
+        base: 'RDC 658/2022, art. 125 (conclusão por função, com segunda assinatura) e art. 276 (câmara com qualificação vigente).',
+        integra: 'Controle da Qualidade ← Principal (equipamento: câmara qualificada)',
         tentativa: {
           acao: 'Concluir como aprovado com um laudo reprovado',
           resposta:
@@ -1668,6 +1792,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O relatório traz o protocolo, a condição, os métodos, os resultados por tempo, as datas, a conclusão e quem assinou.',
+        integra: 'Controle da Qualidade',
         tentativa: {
           acao: 'Imprimir o relatório de um estudo que não existe',
           resposta: 'Aviso: "Estudo não encontrado." (No sistema antigo aparecia um erro técnico.)',
@@ -1685,6 +1810,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
           { rotulo: 'Comunicação', valor: 'Investigação e comunicação registradas' },
         ],
         garantia: 'O estudo fica retido, abre desvio, e a conclusão só vem depois da investigação.',
+        base: 'RDC 658/2022, arts. 245, 283 e 284 (investigação e comunicação).',
+        integra: 'Controle da Qualidade → Garantia da Qualidade (desvio)',
         tentativa: {
           acao: 'Concluir o estudo enquanto a investigação está aberta',
           resposta:
@@ -1718,6 +1845,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O treinamento liga ao POP vigente. Treinamento externo exige instituição e CNPJ. Não se exclui com programação aberta.',
+        base: 'RDC 658/2022, art. 41 (treinamento e avaliação; nota mínima é parâmetro). A validade é parâmetro da empresa.',
+        integra: 'Garantia da Qualidade ← Controle de Documentos (POP vigente)',
         tentativa: {
           acao: 'Cadastrar treinamento ligado a um POP que não está vigente',
           resposta: 'Recusado: "O documento escolhido não está vigente."',
@@ -1734,6 +1863,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só funcionário da função e do setor. A solicitação nasce pendente, com histórico, e cancelar também grava histórico.',
+        integra: 'Garantia da Qualidade ← Principal (funções e setores)',
         tentativa: {
           acao: 'Solicitar treinamento para alguém de outra função e outro setor',
           resposta: 'Recusado: "O funcionário não é da função e do setor deste treinamento."',
@@ -1760,6 +1890,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A programação precisa de aprovação do responsável. As datas são coerentes e o máximo é maior que um.',
+        base: 'RDC 658/2022, art. 42 (aprova o programa o Responsável pela Produção ou pelo CQ, conforme a área).',
+        integra: 'Garantia da Qualidade ← Produção e Controle da Qualidade',
         tentativa: {
           acao: 'Programar com fim antes do início',
           resposta: 'Recusado: "A data final deve ser depois da inicial."',
@@ -1776,6 +1908,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Respeita as vagas, aceita só funcionário ativo com setor e grava Log de cada alocação e mudança de situação.',
+        integra: 'Garantia da Qualidade ← Principal (profissionais)',
         tentativa: {
           acao: 'Alocar um 11º treinando como "avulso"',
           resposta:
@@ -1795,6 +1928,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O desempenho vem da nota e da presença, não é escolhido à mão. Ausente não pode ser suficiente. Só o instrutor designado conclui, e assina.',
+        base: 'RDC 658/2022, art. 41 (avaliação do treinamento; a nota mínima é parâmetro por treinamento).',
+        integra: 'Garantia da Qualidade',
         tentativa: {
           acao: 'Marcar como suficiente quem faltou',
           resposta: 'Recusado: "Ausente não pode ter desempenho suficiente."',
@@ -1815,6 +1950,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A validade conta da conclusão de cada treinando, pelo prazo do treinamento, e só quem ficou suficiente a recebe.',
+        base: 'Parâmetro da empresa: a norma não fixa a validade do treinamento (nenhum artigo identificado).',
+        integra: 'Garantia da Qualidade',
         tentativa: {
           acao: 'Dar validade à turma inteira, mesmo com todos insuficientes',
           resposta:
@@ -1836,6 +1973,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Uma linha por pessoa e treinamento, com a situação guardada pelo banco e aviso antes de vencer.',
+        base: 'Parâmetro da empresa: dias de antecedência do aviso.',
+        integra: 'Garantia da Qualidade → Central de Notificações',
         tentativa: {
           acao: 'Consultar treinamentos ligados a uma função',
           resposta:
@@ -1853,6 +1992,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Quem tem treinamento obrigatório vencido ou pendente não executa a tarefa da função. O banco recusa, com o motivo.',
+        base: 'RDC 658/2022, arts. 12 e 14 (quem executa a tarefa precisa estar treinado).',
+        integra: 'Garantia da Qualidade → Estoque, Produção e Controle da Qualidade',
         tentativa: {
           acao: 'Pesar material com o treinamento obrigatório vencido',
           resposta:
@@ -1873,6 +2014,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O documento entra em vigor quando as pessoas da função estão treinadas e suficientes, não só quando existe uma turma concluída.',
+        base: 'RDC 658/2022, art. 119, §2º (treinamento antes da vigência do documento).',
+        integra: 'Garantia da Qualidade ↔ Controle de Documentos',
         tentativa: {
           acao: 'Colocar o documento em vigor com uma turma toda insuficiente',
           resposta:
@@ -1902,6 +2045,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O número é sequencial por ano, a data e a hora são do servidor e o lote fica ligado ao desvio. A edição só vai até a ação imediata, com justificativa e histórico.',
+        base: 'RDC 658/2022, art. 332 (desvio e investigação).',
+        integra: 'Garantia da Qualidade ← Estoque e Produção (lote)',
         tentativa: {
           acao: 'Editar o desvio depois da ação imediata',
           resposta: 'Recusado: "O desvio só pode ser editado até a ação imediata."',
@@ -1922,6 +2067,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A contenção inclui o lote, com bloqueio ou aviso. Uma gravação por vez: ninguém sobrescreve o trabalho do outro.',
+        base: 'RDC 658/2022, arts. 8º, XV e 332 (desvio aberto bloqueia o lote até a contenção e a decisão).',
+        integra: 'Garantia da Qualidade → Estoque, Controle da Qualidade e Produção',
         tentativa: {
           acao: 'Duas pessoas salvarem ações diferentes ao mesmo tempo',
           resposta:
@@ -1944,6 +2091,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O método é obrigatório (com texto se "outros"). O risco é classificado já aqui. Sem áreas, segue direto; com áreas, espera cada uma.',
+        base: 'RDC 658/2022, art. 332 (níveis cadastráveis: crítico, maior, menor).',
+        integra: 'Garantia da Qualidade',
         tentativa: {
           acao: 'Escolher método "outros" sem descrever',
           resposta: 'Recusado: "Descreva o método de detecção."',
@@ -1964,6 +2113,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só quem é da área avalia, conferido na gravação. O parecer é obrigatório e tem conteúdo. Salvar ao mesmo tempo não trava o desvio.',
+        integra:
+          'Garantia da Qualidade ← Produção, Estoque e Controle da Qualidade (áreas envolvidas)',
         tentativa: {
           acao: 'Salvar o parecer só com espaços em branco',
           resposta: 'Recusado: "O parecer precisa ter conteúdo."',
@@ -1981,6 +2132,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Sem CAPA, o motivo tem conteúdo e é assinado. Com CAPA, segue. A necessidade de mudança abre a solicitação de mudança.',
+        base: 'RDC 658/2022, art. 332 (investigação e decisão).',
+        integra: 'Garantia da Qualidade ↔ Controle de Mudanças',
         tentativa: {
           acao: 'Decidir não abrir CAPA sem informar o motivo',
           resposta: 'Recusado: "Informe o motivo de não abrir CAPA, e assine."',
@@ -2002,6 +2155,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A causa raiz é obrigatória. Erro humano só com justificativa. A criticidade é obrigatória.',
+        base: 'RDC 658/2022, art. 340 (erro humano exige justificativa formal e abre plano de treinamento).',
+        integra: 'Garantia da Qualidade → Treinamento (ficha 13a)',
         tentativa: {
           acao: 'Apontar "erro humano" como causa sem justificar',
           resposta: 'Recusado: "Erro humano como causa exige justificativa."',
@@ -2023,6 +2178,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O plano tem ao menos uma ação, é aprovado antes de executar, e a execução é de quem não escreveu o plano. Prazo vencido exige justificativa.',
+        base: 'Decisão do responsável de 05/11/2026 (não é artigo da ANVISA): quem aprova o plano é diferente de quem o escreve e de quem o monitora.',
+        integra: 'Garantia da Qualidade',
         tentativa: {
           acao: 'Quem escreveu o plano executá-lo',
           resposta: 'Recusado: "Quem escreveu o plano não pode executá-lo."',
@@ -2039,6 +2196,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só aprova com todas as ações concluídas e implementadas. Reprovar volta ao plano. A assinatura é de quem não escreveu o plano.',
+        base: 'RDC 658/2022, art. 341 (verificação de eficácia com prazo; quem verifica é diferente).',
+        integra: 'Garantia da Qualidade',
         tentativa: {
           acao: 'Aprovar com uma ação ainda pendente',
           resposta:
@@ -2060,6 +2219,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'As mesmas travas da corretiva. Só conclui com a eficácia provada. Reprovar volta ao plano.',
+        base: 'RDC 658/2022, art. 341 (eficácia provada).',
+        integra: 'Garantia da Qualidade',
         tentativa: {
           acao: 'Concluir a preventiva sem provar a eficácia',
           resposta: 'Recusado: "A conclusão exige a prova de eficácia."',
@@ -2081,6 +2242,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Desvio aberto com lote retém o lote no Estoque, no CQ e na Produção. Só a Qualidade o libera, com assinatura.',
+        base: 'RDC 658/2022, art. 332, II (a investigação registra se outros lotes são afetados) e art. 8º, XV.',
+        integra: 'Garantia da Qualidade → Estoque, Controle da Qualidade e Produção',
         tentativa: {
           acao: 'Separar o lote retido para a produção',
           resposta:
@@ -2113,6 +2276,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só mudança temporária tem validade. Os itens a alterar e as áreas de impacto são obrigatórios.',
+        base: 'RDC 658/2022, art. 8º, XII (controle de mudanças).',
+        integra: 'Qualquer área → Garantia da Qualidade',
         tentativa: {
           acao: 'Solicitar mudança temporária sem validade',
           resposta: 'Recusado: "Mudança temporária exige data de validade."',
@@ -2129,6 +2294,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Aceitar ou não aceitar, com motivo assinado. Ajustes na revisão gravam histórico. Nível 1 não revisa.',
+        base: 'RDC 658/2022, art. 125 (recusa com justificativa assinada).',
+        integra: 'Garantia da Qualidade',
         tentativa: {
           acao: 'Quem tem nível 1 tentar revisar',
           resposta:
@@ -2149,6 +2316,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só área ativa e responsável ativo, e ao menos uma área. Adicionar e remover a mesma área não deixa a mudança sem área.',
+        integra: 'Garantia da Qualidade ← Principal (áreas e responsáveis)',
         tentativa: {
           acao: 'Salvar a mudança sem nenhuma área',
           resposta: 'Recusado: "Escolha ao menos uma área para avaliar."',
@@ -2169,6 +2337,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só quem é da área avalia. O parecer é imutável depois de gravado, e mudar exige nova versão com justificativa. O anexo só pode ser do próprio autor.',
+        base: 'RDC 658/2022, art. 8º, XII (a mudança só avança com todas as áreas avaliadas).',
+        integra: 'Garantia da Qualidade ← Produção, Estoque e Assuntos Regulatórios',
         tentativa: {
           acao: 'Trocar "Não aceito" para "Aceito" sem justificar',
           resposta:
@@ -2187,6 +2357,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A liberação só existe com todos os pareceres. Um "não aceito" impede a aprovação. A decisão é assinada e do nível 3, conferido na gravação.',
+        base: 'RDC 658/2022, art. 8º, XII (não se aprova com área em "não aceito"; exceção só com justificativa, parâmetro).',
+        integra: 'Garantia da Qualidade',
         tentativa: {
           acao: 'Aprovar a mudança com uma área em "não aceito"',
           resposta:
@@ -2209,6 +2381,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Ao menos uma ação. O prazo não é anterior à solicitação. O plano é aprovado antes de executar. Consultar não cria nada.',
+        base: 'Decisão do responsável de 05/11/2026 (não é artigo da ANVISA): aprovador diferente de quem escreve o plano, e antes da execução.',
+        integra: 'Garantia da Qualidade',
         tentativa: {
           acao: 'Aprovar um plano sem nenhuma ação',
           resposta: 'Recusado: "O plano precisa de ao menos uma ação."',
@@ -2229,6 +2403,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só o responsável da ação conclui. A data não é futura nem anterior à solicitação. Ação concluída não reabre sem justificativa. Prazo vencido é marcado e exige justificativa.',
+        integra: 'Garantia da Qualidade',
         tentativa: {
           acao: 'O responsável de outra área concluir a ação',
           resposta: 'Recusado: "Só o responsável por esta ação pode concluí-la."',
@@ -2246,6 +2421,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só finaliza com todas as ações concluídas. Há verificação de eficácia antes de aceitar. Reprovar existe. Aprovada, a mudança com produto vai à aprovação do produto.',
+        base: 'RDC 658/2022, art. 8º, XIII (verificação de eficácia) e arts. 12, §2º, II e 177 (mudança significativa exige validação).',
+        integra: 'Garantia da Qualidade ↔ Controle de Documentos (documentos a revisar vigentes)',
         tentativa: {
           acao: 'Finalizar com uma ação ainda aberta',
           resposta: 'Recusado: "Há ação em aberto."',
@@ -2266,6 +2443,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O lote vem do Estoque e da Produção. A justificativa é obrigatória, com assinatura, e fica no histórico. O lote liga ao desvio e ao documento novo.',
+        base: 'RDC 658/2022, art. 8º, XII (registra o lote a partir do qual a mudança vale).',
+        integra: 'Garantia da Qualidade ← Estoque e Produção (lote) → Assuntos Regulatórios',
         tentativa: {
           acao: 'Confirmar sem escolher lote e sem justificativa',
           resposta:
@@ -2284,6 +2463,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A validade vencida encerra a mudança sozinha, com aviso antes e registro. A mudança volta ao padrão.',
+        base: 'RDC 658/2022, art. 8º, XII (mudança temporária tem data de término).',
+        integra: 'Garantia da Qualidade → Central de Notificações',
         tentativa: {
           acao: 'Manter uma mudança temporária depois da validade',
           resposta:
@@ -2311,6 +2492,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A sigla é única. A classificação (crítico, maior, menor) é definida pela empresa.',
+        base: 'RDC 658/2022, art. 365 (classificação crítico, maior, menor).',
+        integra: 'Garantia da Qualidade',
         tentativa: {
           acao: 'Cadastrar a mesma sigla duas vezes',
           resposta: 'Recusado: "Esta sigla já existe." (No sistema antigo aceitava.)',
@@ -2329,6 +2512,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O título é único. A pergunta pode gerar desvio. A exclusão exige justificativa e histórico. Roteiro em uso só se revisa.',
+        integra: 'Garantia da Qualidade',
         tentativa: {
           acao: 'Editar direto um roteiro em uso',
           resposta: 'Recusado: "Roteiro em uso só muda por nova revisão."',
@@ -2346,6 +2530,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O nome é único. Os tipos incluem a auditoria de fornecedor, com o fornecedor auditado.',
+        base: 'RDC 658/2022, arts. 179 e 363 (tipos, incluindo auditoria de fornecedor).',
+        integra: 'Garantia da Qualidade ↔ Estoque (fornecedor)',
         tentativa: {
           acao: 'Cadastrar dois itens com o mesmo nome',
           resposta: 'Recusado: "Já existe uma autoinspeção ou auditoria com este nome."',
@@ -2366,6 +2552,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O planejamento anual mostra o calendário e o que falta fazer, por período e situação.',
+        base: 'RDC 658/2022, art. 362 (programa anual com responsável e aviso de vencimento).',
+        integra: 'Garantia da Qualidade → Central de Notificações',
         tentativa: {
           acao: 'Pedir o planejamento de um período e receber lista vazia',
           resposta:
@@ -2385,6 +2573,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O inspetor é independente da área auditada (de qualquer pessoa da área, não só do responsável). O coordenador é obrigatório. O período é futuro e coerente.',
+        base: 'RDC 658/2022, art. 363 (o auditor não pertence à área auditada).',
+        integra: 'Garantia da Qualidade ← Principal (profissionais e departamentos)',
         tentativa: {
           acao: 'Escolher como inspetor alguém do próprio Estoque',
           resposta: 'Recusado: "O inspetor não pode ser da área auditada."',
@@ -2400,6 +2590,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
           { rotulo: 'Editar e Cancelar', valor: 'Somem depois de iniciar' },
         ],
         garantia: 'Ao iniciar, cada departamento recebe seus roteiros, e Editar e Cancelar somem.',
+        integra: 'Garantia da Qualidade',
         tentativa: {
           acao: 'Cancelar uma auditoria já em curso',
           resposta: 'Recusado: "Auditoria em curso não pode ser cancelada pela programação."',
@@ -2417,6 +2608,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só o inspetor designado responde, e a área auditada só vê. O roteiro só avança com todas as respostas, conferido no banco. A resposta liga ao desvio.',
+        base: 'RDC 658/2022, art. 363 (independência de quem inspeciona).',
+        integra: 'Garantia da Qualidade → Desvios e CAPA (ficha 13b)',
         tentativa: {
           acao: 'Concluir o roteiro com perguntas sem resposta',
           resposta: 'Recusado: "Há perguntas sem resposta."',
@@ -2435,6 +2628,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O período real não é futuro. Evidências, conclusões e resultado são obrigatórios, com assinatura. Reabrir só com justificativa.',
+        base: 'RDC 658/2022, art. 125 (reabrir só com justificativa).',
+        integra: 'Garantia da Qualidade',
         tentativa: {
           acao: 'Concluir sem evidências',
           resposta: 'Recusado: "Informe as evidências e as conclusões."',
@@ -2451,6 +2646,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O resultado "não conforme" abre o desvio e a CAPA, ligados à auditoria. Excluir desvio exige justificativa e histórico.',
+        base: 'RDC 658/2022, art. 366 (todo "não conforme" abre desvio, com nível).',
+        integra: 'Garantia da Qualidade → Desvios e CAPA (ficha 13b)',
         tentativa: {
           acao: 'Concluir "não conforme" sem abrir desvio',
           resposta:
@@ -2477,6 +2674,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
           { rotulo: 'Órgão', valor: 'ANVISA' },
         ],
         garantia: 'A descrição é única e tem conteúdo. A exclusão exige justificativa e histórico.',
+        integra: 'Garantia da Qualidade',
         tentativa: {
           acao: 'Cadastrar uma descrição só com espaços',
           resposta: 'Recusado: "A descrição precisa ter conteúdo."',
@@ -2498,6 +2696,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O prazo não é anterior à data programada, e a validade não é anterior ao prazo. O produto vem da Produção e o documento, do Controle de Documentos.',
+        base: 'Parâmetro da empresa: dias de antecedência do aviso.',
+        integra: 'Garantia da Qualidade ← Produção (produto) e Controle de Documentos',
         tentativa: {
           acao: 'Programar com validade anterior ao prazo',
           resposta: 'Recusado: "A validade não pode ser anterior ao prazo."',
@@ -2514,6 +2714,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Há aviso antes do prazo e da validade. Vencida sem monitoramento aparece como pendência.',
+        base: 'Parâmetro da empresa: dias de antecedência do aviso.',
+        integra: 'Garantia da Qualidade → Início e Central de Notificações',
         tentativa: {
           acao: 'Deixar a validade vencer sem ninguém perceber',
           resposta:
@@ -2531,6 +2733,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só finaliza com evidência anexada. Cancelar e finalizar exigem justificativa assinada. O anexo fica no histórico. Atraso exige justificativa.',
+        base: 'RDC 658/2022, art. 125 (finalizar com evidência e justificativa assinadas).',
+        integra: 'Garantia da Qualidade',
         tentativa: {
           acao: 'Finalizar sem anexar a evidência',
           resposta:
@@ -2548,6 +2752,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
           { rotulo: 'Histórico', valor: 'De cada mudança' },
         ],
         garantia: 'O check-list é por tipo de processo, com histórico de cada mudança.',
+        base: 'Norma de registro (RDC 753/2022, lida só na tradução em inglês): documentos exigidos por tipo de processo ainda a conferir.',
+        integra: 'Garantia da Qualidade',
         tentativa: {
           acao: 'Remover um documento do check-list sem registrar',
           resposta: 'Recusado: "Toda mudança no check-list fica no histórico, com motivo."',
@@ -2565,6 +2771,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só envia com todos os documentos do check-list concluídos. O envio e o fechamento ficam no histórico, assinados.',
+        base: 'RDC 658/2022, art. 125 (envio só com todos os documentos concluídos e assinatura). RDC 753/2022, lida só na tradução.',
+        integra: 'Garantia da Qualidade ← Produção (produto)',
         tentativa: {
           acao: 'Enviar com um documento do check-list pendente',
           resposta: 'Recusado: "Há documento do check-list pendente."',
@@ -2585,6 +2793,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A validade e a revalidação são calculadas pelo sistema, a partir da publicação. A exigência registra o motivo.',
+        base: 'Prazo de resposta e exigências vêm da norma de registro (RDC 753/2022, lida só na tradução). A RDC 948/2024 não foi lida.',
+        integra: 'Garantia da Qualidade',
         tentativa: {
           acao: 'Digitar à mão uma data de revalidação diferente da calculada',
           resposta: 'Recusado: "A data de revalidação é calculada pelo sistema."',
@@ -2601,6 +2811,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Produto com registro indeferido, vencido ou em exigência não entra em ordem de produção, não é expedido e não é vendido. O banco recusa, com o motivo.',
+        base: 'RDC 658/2022, arts. 4º, 12 e 8º, XV (registro vencido ou indeferido bloqueia novas ordens de produção e a expedição).',
+        integra: 'Garantia da Qualidade → Produção, Estoque e Comercial',
         tentativa: {
           acao: 'Abrir uma ordem de produção de um produto com registro vencido',
           resposta:
@@ -2625,6 +2837,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A mudança com item regulatório abre a obrigação em Assuntos Regulatórios, com a mudança de origem.',
+        base: 'RDC 658/2022, art. 8º, XII (toda mudança com item regulatório abre uma obrigação).',
+        integra: 'Controle de Mudanças → Garantia da Qualidade',
         tentativa: {
           acao: 'Aprovar uma mudança regulatória sem abrir a obrigação',
           resposta:
@@ -2657,6 +2871,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O caminho tem ao menos uma aprovação. O nome não se repete. Só se exclui tipo sem documento ativo. Mudar o caminho fica no histórico.',
+        base: 'RDC 658/2022, art. 119 (nenhum tipo vai à vigência sem aprovação).',
+        integra: 'Controle de Documentos ← Principal (setores)',
         tentativa: {
           acao: 'Criar um tipo cujo caminho só tem a etapa "Vigente"',
           resposta:
@@ -2680,6 +2896,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O documento só segue com anexo, ao menos um revisor e uma aplicação. A exclusão só vale em inclusão, com justificativa, e não apaga.',
+        base: 'RDC 658/2022, art. 119 (documento controlado).',
+        integra: 'Controle de Documentos ← Principal (setores e aplicações)',
         tentativa: {
           acao: 'Enviar o documento sem anexo e sem revisor',
           resposta:
@@ -2698,6 +2916,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Cada setor revisor decide. A decisão leva senha e fica assinada. A devolução volta ao autor.',
+        base: 'RDC 658/2022, art. 119 (aprovação por pessoa autorizada).',
+        integra: 'Controle de Documentos',
         tentativa: {
           acao: 'Devolver o documento sem senha',
           resposta:
@@ -2714,6 +2934,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
           { rotulo: 'Quem pré-aprova', valor: 'Diferente de quem elaborou', exigido: true },
         ],
         garantia: 'Quem pré-aprova é diferente de quem elaborou, e o anexo final é obrigatório.',
+        base: 'RDC 658/2022, art. 119. Decisão do responsável de 05/11/2026 (não é artigo da ANVISA): pré-aprovação e aprovação por pessoas diferentes.',
+        integra: 'Controle de Documentos',
         tentativa: {
           acao: 'O próprio autor pré-aprovar',
           resposta: 'Recusado: "Quem elaborou o documento não pode pré-aprová-lo."',
@@ -2734,6 +2956,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Quem aprova é diferente de quem elaborou e de quem pré-aprovou, conferido na gravação. A senha é de quem decide e a assinatura vai para o histórico.',
+        base: 'RDC 658/2022, art. 119. Decisão do responsável de 05/11/2026 (não é artigo da ANVISA): aprovador diferente de quem elaborou e de quem pré-aprovou.',
+        integra: 'Controle de Documentos',
         tentativa: {
           acao: 'Quem pré-aprovou também aprovar',
           resposta:
@@ -2759,6 +2983,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A emissão e a validade são calculadas pelo sistema, e a emissão não é anterior à aprovação. Com treinamento exigido e não concluído, não entra em vigor. É uma só transação.',
+        base: 'RDC 658/2022, art. 119, §2º (a emissão é a data da aprovação; a vigência tem data própria; treinamento antes).',
+        integra: 'Controle de Documentos ↔ Garantia da Qualidade (treinamento)',
         tentativa: {
           acao: 'Digitar uma data de emissão anterior à aprovação',
           resposta:
@@ -2777,6 +3003,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só se abre revisão de documento vigente. A revisão soma 1. O anterior segue vigente até a nova entrar em vigor, e os dois ficam ligados.',
+        base: 'RDC 658/2022, art. 121 (nova revisão sem aprovação é rascunho; o vigente segue vigente).',
+        integra: 'Controle de Documentos',
         tentativa: {
           acao: 'Abrir nova revisão de um documento que ainda não está vigente',
           resposta: 'Recusado: "Só se abre nova revisão de documento vigente."',
@@ -2794,6 +3022,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só documento vigente. A justificativa é obrigatória, com assinatura. Recolhe as cópias.',
+        base: 'RDC 658/2022, art. 121 (obsoletar é função própria, com justificativa).',
+        integra: 'Controle de Documentos → cópias em papel (ficha 12b)',
         tentativa: {
           acao: 'Obsoletar sem justificativa',
           resposta:
@@ -2815,6 +3045,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O histórico mostra toda ação, justificativa, data e assinante. Só o documento vigente aparece para uso nos outros módulos.',
+        integra: 'Controle de Documentos → todos os módulos (só o vigente é usado)',
         tentativa: {
           acao: 'Abrir pela lista de uso um documento já substituído',
           resposta: 'Não aparece: "Só documentos vigentes da sua aplicação estão disponíveis."',
@@ -2846,6 +3077,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só documento vigente. A controlada recebe o número seguinte e a não controlada fica sem número. Cada inclusão fica no histórico, com quem incluiu.',
+        base: 'RDC 658/2022, art. 121 (cópia em papel só como cópia controlada e numerada).',
+        integra: 'Controle de Documentos',
         tentativa: {
           acao: 'Pedir cópia de um documento obsoleto',
           resposta: 'Recusado: "Só se emitem cópias de documento vigente."',
@@ -2866,6 +3099,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A impressão leva número, setor, "cópia controlada" e marca d\'água. Registra quem imprimiu, quando e para quem, e recusa documento que não é vigente.',
+        base: 'RDC 658/2022, art. 121 (texto "cópia controlada"; configurável pela empresa).',
+        integra: 'Controle de Documentos',
         tentativa: {
           acao: 'Imprimir uma cópia de documento que deixou de ser vigente',
           resposta:
@@ -2884,6 +3119,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Substituir ou obsoletar o documento abre o recolhimento de cada cópia ativa, com aviso ao setor e baixa assinada. Sem baixa, o documento fica pendente.',
+        base: 'RDC 658/2022, art. 121 (a cópia antiga é recolhida quando o documento muda).',
+        integra: 'Controle de Documentos ↔ setores com cópia',
         tentativa: {
           acao: 'Dar o recolhimento por concluído sem a baixa do setor',
           resposta:
@@ -2901,6 +3138,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A justificativa é obrigatória e fica no histórico. Cada cópia pode ser desfeita, e nada é apagado.',
+        integra: 'Controle de Documentos',
         tentativa: {
           acao: 'Cancelar a cópia sem justificar',
           resposta: 'Recusado: "Informe a justificativa."',
@@ -2918,6 +3156,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O código não se repete. Há análise de aceitação antes de pôr em uso. A validade é obrigatória, a validade vencida impede o uso e há aviso antes de vencer.',
+        base: 'RDC 658/2022, art. 119 (análise de aceitação antes do uso).',
+        integra: 'Controle de Documentos ← Principal (empresa de origem)',
         tentativa: {
           acao: 'Pôr em uso um externo sem análise de aceitação',
           resposta: 'Recusado: "O documento externo precisa de análise de aceitação antes do uso."',
@@ -2934,6 +3174,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Os dias a vencer aparecem na lista e no relatório. O documento vencido sai de uso.',
+        integra: 'Controle de Documentos',
         tentativa: {
           acao: 'Usar um externo cuja validade acabou ontem',
           resposta:
@@ -2950,6 +3191,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
           { rotulo: 'Histórico', valor: 'Consultável depois da exclusão' },
         ],
         garantia: 'A justificativa é obrigatória e o histórico continua consultável.',
+        integra: 'Controle de Documentos',
         tentativa: {
           acao: 'Excluir sem justificativa',
           resposta: 'Recusado: "Informe a justificativa da exclusão."',
@@ -2971,6 +3213,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só quem tem a função põe em vigor, com senha e assinatura. Exige o original assinado anexado. Fica marcado como legado e grava no histórico.',
+        base: 'RDC 658/2022, art. 125 (original assinado anexado). Decisão do responsável de 05/11/2026 (não é artigo da ANVISA): só a função da Qualidade, com assinatura e senha.',
+        integra: 'Controle de Documentos',
         tentativa: {
           acao: 'Pôr o documento legado em vigor sem anexar o original assinado',
           resposta: 'Recusado: "Anexe o original assinado."',
@@ -2986,9 +3230,230 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só o documento vigente e da aplicação do usuário. Substituído e obsoleto não abrem.',
+        integra: 'Controle de Documentos → todos os módulos',
         tentativa: {
           acao: 'Abrir um documento substituído',
           resposta: 'Não aparece: "Só documentos vigentes da sua aplicação estão disponíveis."',
+        },
+      },
+    ],
+  },
+  {
+    id: 'principal',
+    ficha: 'ordem',
+    titulo: 'Preparar o Principal: cadastros-base e acesso',
+    rotuloSituacao: 'Situação do cadastro',
+    resumo:
+      'Acompanhe a preparação do cadastro-base de uma fábrica fictícia: quem pode fazer o quê, as áreas, as empresas, os locais do estoque, os materiais e os equipamentos. O ponto central: tudo que os outros módulos usam nasce aqui, na ordem certa, e cada ação tem um dono identificado.',
+    passos: [
+      {
+        titulo: 'Respeitar a ordem de cadastro',
+        tela: 'Principal › Cadastros (ordem em quatro fases)',
+        quem: 'Administrador',
+        situacao: 'Fase 0 pronta: listas de apoio',
+        campos: [
+          {
+            rotulo: 'Fase 0',
+            valor:
+              'Função, grupo de usuários, estrutura organizacional, unidade de medida, centro de custo',
+          },
+          {
+            rotulo: 'Unidade de medida',
+            valor: 'kg, g, L (cadastradas antes do material)',
+            exigido: true,
+          },
+          {
+            rotulo: 'Fases seguintes',
+            valor: 'Profissional e empresa → material e equipamento → fórmula e lote',
+          },
+        ],
+        garantia:
+          'Cada cadastro só grava se o que ele exige antes já existe. O material exige a unidade de medida; a fórmula exige material, unidade e produto.',
+        base: 'Sem artigo da RDC 658/2022 identificado: a ordem vem das ligações obrigatórias do banco (ficha "Ordem de cadastro").',
+        integra: 'Principal → todos os módulos',
+        tentativa: {
+          acao: 'Cadastrar um material sem unidade de medida',
+          resposta: 'Recusado: "Escolha a unidade de medida. Ela precisa estar cadastrada antes."',
+        },
+      },
+      {
+        titulo: 'Funções, perfis e grupos de usuários',
+        tela: 'Principal › Administração › Funções profissionais e Grupos de usuários',
+        quem: 'Administrador',
+        situacao: 'Catálogo de funções e perfis pronto',
+        campos: [
+          {
+            rotulo: 'Função',
+            valor: 'Conferente, Autorizador, Revisor da Qualidade (nomes de exemplo)',
+            exigido: true,
+          },
+          { rotulo: 'Perfil', valor: 'Quais telas e ações cada perfil pode usar', exigido: true },
+          { rotulo: 'Grupo', valor: 'Almoxarifado Central' },
+        ],
+        garantia:
+          'O catálogo de funções é um só, sem números fixos no código. Quem pode o quê é conferido no banco, em toda gravação, e não só escondendo o botão.',
+        base: 'RDC 658/2022, arts. 124 e 125 (cada ação tem dono identificado); Guia 33/2020, item 11.12 (controle de acesso e lista de pessoas autorizadas).',
+        integra: 'Principal → todos os módulos (cada tela consulta a permissão)',
+        tentativa: {
+          acao: 'Abrir uma tela sem permissão digitando o endereço dela',
+          resposta:
+            'Recusado: "Você não tem permissão para esta tela." (No sistema antigo, o usuário de consulta abria telas pelo endereço.)',
+        },
+      },
+      {
+        titulo: 'Profissional e suas funções',
+        tela: 'Principal › Administração › Profissional (aba Funções)',
+        quem: 'Administrador',
+        situacao: 'Profissional ativo, com funções',
+        campos: [
+          { rotulo: 'Pessoa', valor: 'Maria Exemplo', exigido: true },
+          { rotulo: 'Ocupação principal', valor: 'Auxiliar de almoxarifado' },
+          { rotulo: 'Funções', valor: 'Conferente', exigido: true },
+          { rotulo: 'Situação', valor: 'Ativo (nunca se exclui, só se inativa)' },
+        ],
+        garantia:
+          'A função do profissional vale em toda gravação dos outros módulos, não só na tela. Profissional não é excluído: é inativado, e o histórico fica.',
+        base: 'RDC 658/2022, arts. 124 e 125 (dono identificado de cada ação).',
+        integra:
+          'Principal → Estoque, Controle da Qualidade, Produção e Garantia da Qualidade (treinamento por função)',
+        tentativa: {
+          acao: 'Gravar uma conferência de recebimento com quem não tem a função de conferente',
+          resposta:
+            'Recusado: "Este usuário não tem a função de conferente." (No sistema antigo só a tela escondia o botão.)',
+        },
+      },
+      {
+        titulo: 'Estrutura organizacional',
+        tela: 'Principal › Cadastros › Estrutura organizacional',
+        quem: 'Administrador',
+        situacao: 'Áreas e setores cadastrados',
+        campos: [
+          { rotulo: 'Área', valor: 'Qualidade', exigido: true },
+          { rotulo: 'Setores', valor: 'Controle da Qualidade, Garantia da Qualidade' },
+          { rotulo: 'Responsável', valor: 'Profissional ativo' },
+        ],
+        garantia:
+          'As áreas e setores são um só cadastro para todos os módulos. Área inativa não é oferecida nas outras telas.',
+        integra:
+          'Principal → Garantia da Qualidade (áreas que avaliam), Controle de Documentos (setores revisores) e Produção',
+        tentativa: {
+          acao: 'Escolher como responsável um profissional inativo',
+          resposta: 'Recusado: "O profissional está inativo."',
+        },
+      },
+      {
+        titulo: 'Empresa (pessoa jurídica) com papéis',
+        tela: 'Principal › Cadastros › Pessoa jurídica',
+        quem: 'Compras ou Comercial',
+        situacao: 'Empresa ativa, com papéis',
+        campos: [
+          { rotulo: 'Razão social', valor: 'Fornecedora Exemplo Ltda.' },
+          { rotulo: 'CNPJ', valor: '00.000.000/0001-00 (fictício)', exigido: true },
+          { rotulo: 'Papéis', valor: 'Fornecedor e fabricante', exigido: true },
+        ],
+        garantia:
+          'Uma empresa só tem um cadastro, com vários papéis (fornecedor, fabricante, cliente, transportadora). O CNPJ é único.',
+        base: 'RDC 658/2022, art. 179 (qualificação de fornecedor): o cadastro único é a base para qualificar fornecedor e fabricante.',
+        integra:
+          'Principal → Estoque (recebimento), Garantia da Qualidade (qualificação) e Comercial',
+        tentativa: {
+          acao: 'Cadastrar a mesma empresa duas vezes, uma como fornecedor e outra como cliente',
+          resposta:
+            'Recusado: "Já existe uma empresa com este CNPJ. Acrescente o papel no cadastro existente." (No sistema antigo havia quatro cadastros diferentes.)',
+        },
+      },
+      {
+        titulo: 'Almoxarifado, locais e endereços',
+        tela: 'Principal › Cadastros › Almoxarifado, locais e endereços',
+        quem: 'Estoque',
+        situacao: 'Estrutura física cadastrada',
+        campos: [
+          {
+            rotulo: 'Condição de armazenagem',
+            valor: 'Ambiente, refrigerado, controlado (antes do local)',
+            exigido: true,
+          },
+          { rotulo: 'Local', valor: 'Quarentena, estoque comum, refugo', exigido: true },
+          { rotulo: 'Endereço', valor: 'Rua 1, coluna 2, andar 1, com capacidade' },
+        ],
+        garantia:
+          'O local depende da condição de armazenagem. O endereço é único dentro do local. Só se exclui endereço vazio, com justificativa.',
+        base: 'RDC 658/2022, arts. 157 e 159 (quarentena e armazenamento).',
+        integra:
+          'Principal → Estoque (endereçamento e movimentação) e Controle da Qualidade (almoxarifado das amostras)',
+        tentativa: {
+          acao: 'Criar um local sem informar a condição de armazenagem',
+          resposta: 'Recusado: "Escolha a condição de armazenagem."',
+        },
+      },
+      {
+        titulo: 'Material (item)',
+        tela: 'Principal › Cadastros › Material',
+        quem: 'Estoque e Qualidade',
+        situacao: 'Material ativo, com controles',
+        campos: [
+          { rotulo: 'Unidade de medida', valor: 'kg', exigido: true },
+          { rotulo: 'Controles', valor: 'Lote, validade e quarentena', exigido: true },
+          { rotulo: 'Tipos de análise', valor: 'Físico-química' },
+          { rotulo: 'Condição de armazenagem', valor: 'Ambiente' },
+        ],
+        garantia:
+          'Material de quarentena exige lote, validade e pelo menos um tipo de análise. O Item é cadastrado uma vez e usado por todos os módulos.',
+        base: 'RDC 658/2022, art. 157 (quarentena).',
+        integra:
+          'Principal → Estoque, Controle da Qualidade (regras de amostragem e análise) e Produção (fórmula)',
+        tentativa: {
+          acao: 'Marcar o material como de quarentena sem controlar lote e validade',
+          resposta:
+            'Recusado: "Material de quarentena exige controle de lote, de validade e um tipo de análise." (No sistema antigo só a unidade era obrigatória.)',
+        },
+      },
+      {
+        titulo: 'Equipamento, calibração e limpeza',
+        tela: 'Principal › Cadastros › Equipamento',
+        quem: 'Qualidade e Manutenção',
+        situacao: 'Equipamento ativo, calibração em dia',
+        campos: [
+          { rotulo: 'Equipamento', valor: 'Balança 01', exigido: true },
+          { rotulo: 'Categoria', valor: 'Medição e pesagem' },
+          { rotulo: 'Calibração', valor: 'Válida até 15/03/2027', exigido: true },
+          { rotulo: 'Fabricante', valor: 'Empresa cadastrada' },
+        ],
+        garantia:
+          'Equipamento de medição e pesagem só é usado com calibração válida. O uso aparece no histórico do equipamento.',
+        base: 'RDC 658/2022, art. 110 (equipamentos de medição calibrados) e art. 105 (equipamentos de fabricação limpos).',
+        integra:
+          'Principal → Estoque (pesagem), Controle da Qualidade (análise e estabilidade) e Produção',
+        tentativa: {
+          acao: 'Usar a balança depois do vencimento da calibração',
+          resposta: 'Recusado: "Balança com calibração vencida. Use outra ou recalibre."',
+        },
+      },
+      {
+        titulo: 'Assinatura eletrônica e histórico de alterações',
+        tela: 'Principal › Segurança › Histórico de alterações e Assinatura eletrônica',
+        quem: 'Todos os módulos (serviço comum)',
+        situacao: 'Registro permanente',
+        campos: [
+          {
+            rotulo: 'Assinatura',
+            valor: 'Login, senha e significado ("conferi", "aprovo")',
+            exigido: true,
+          },
+          {
+            rotulo: 'Histórico',
+            valor: 'Quem, quando, o que mudou, de quê para quê, e por quê',
+            exigido: true,
+          },
+          { rotulo: 'Senha', valor: 'Nunca aparece nem é guardada em texto' },
+        ],
+        garantia:
+          'O histórico é gravado por gatilhos do banco e não pode ser apagado nem editado. A assinatura confere a senha de novo na hora de assinar.',
+        base: 'RDC 658/2022, arts. 124 e 125 (registro de quem fez e quando); Guia 33/2020, item 11.12 (trilha de auditoria e proteção contra alteração não autorizada).',
+        integra: 'Principal → todos os módulos (toda assinatura e toda alteração passam por aqui)',
+        tentativa: {
+          acao: 'Apagar uma linha do histórico de alterações',
+          resposta: 'Recusado: "O histórico não pode ser apagado nem alterado."',
         },
       },
     ],
