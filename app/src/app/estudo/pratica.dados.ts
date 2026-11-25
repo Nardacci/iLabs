@@ -1669,4 +1669,944 @@ export const PRATICAS: readonly PraticaFicha[] = [
       },
     ],
   },
+  {
+    id: 'treinamento',
+    ficha: 'fluxo13a',
+    titulo: 'Treinar e habilitar quem executa a tarefa',
+    rotuloSituacao: 'Situação do treinamento',
+    resumo:
+      'Acompanhe o treinamento de uma funcionária no procedimento de pesagem (dados inventados), do cadastro ao bloqueio da tarefa quando o treinamento vence. O ponto central: a validade vem da nota e da presença, e quem está sem treinamento obrigatório não executa a tarefa.',
+    passos: [
+      {
+        titulo: 'Cadastrar o treinamento',
+        tela: 'Garantia da Qualidade › Treinamento Técnico › Cadastro de Treinamento',
+        quem: 'Qualidade',
+        situacao: 'Cadastrado',
+        campos: [
+          { rotulo: 'POP e revisão', valor: 'POP-EST-012, revisão 3 (vigente)', exigido: true },
+          { rotulo: 'Origem', valor: 'Interna' },
+          {
+            rotulo: 'Obrigatório e validade',
+            valor: 'Sim, 12 meses (parâmetro da empresa)',
+            exigido: true,
+          },
+          { rotulo: 'Funções e setores', valor: 'Auxiliar de pesagem, Estoque' },
+        ],
+        garantia:
+          'O treinamento liga ao POP vigente. Treinamento externo exige instituição e CNPJ. Não se exclui com programação aberta.',
+        tentativa: {
+          acao: 'Cadastrar treinamento ligado a um POP que não está vigente',
+          resposta: 'Recusado: "O documento escolhido não está vigente."',
+        },
+      },
+      {
+        titulo: 'Solicitar treinamento',
+        tela: 'Garantia da Qualidade › Treinamento Técnico › Solicitação de Treinamento',
+        quem: 'Chefia do setor',
+        situacao: 'Pendente',
+        campos: [
+          { rotulo: 'Treinamento e motivo', valor: 'Pesagem; motivo "novo procedimento"' },
+          { rotulo: 'Funcionários', valor: 'Só da função e do setor', exigido: true },
+        ],
+        garantia:
+          'Só funcionário da função e do setor. A solicitação nasce pendente, com histórico, e cancelar também grava histórico.',
+        tentativa: {
+          acao: 'Solicitar treinamento para alguém de outra função e outro setor',
+          resposta: 'Recusado: "O funcionário não é da função e do setor deste treinamento."',
+        },
+      },
+      {
+        titulo: 'Programar a turma',
+        tela: 'Garantia da Qualidade › Treinamento Técnico › Programação de Treinamento',
+        quem: 'Qualidade',
+        situacao: 'Programada, aprovada',
+        campos: [
+          {
+            rotulo: 'Período e horário',
+            valor: 'Início 01/12, fim 02/12; 08:00 às 12:00',
+            exigido: true,
+          },
+          { rotulo: 'Instrutor', valor: 'Instrutor Exemplo' },
+          { rotulo: 'Máximo de treinandos', valor: '10 (maior que um)', exigido: true },
+          {
+            rotulo: 'Aprovação do programa',
+            valor: 'Responsável da Produção ou do CQ',
+            exigido: true,
+          },
+        ],
+        garantia:
+          'A programação precisa de aprovação do responsável. As datas são coerentes e o máximo é maior que um.',
+        tentativa: {
+          acao: 'Programar com fim antes do início',
+          resposta: 'Recusado: "A data final deve ser depois da inicial."',
+        },
+      },
+      {
+        titulo: 'Alocar na matriz e iniciar',
+        tela: 'Garantia da Qualidade › Treinamento Técnico › Matriz de Treinamento',
+        quem: 'Qualidade',
+        situacao: 'Em curso',
+        campos: [
+          { rotulo: 'Treinandos', valor: '10 vindos das solicitações' },
+          { rotulo: 'Vagas', valor: '10 de 10 ocupadas', exigido: true },
+        ],
+        garantia:
+          'Respeita as vagas, aceita só funcionário ativo com setor e grava Log de cada alocação e mudança de situação.',
+        tentativa: {
+          acao: 'Alocar um 11º treinando como "avulso"',
+          resposta:
+            'Recusado: "Não há vagas nesta turma." (No sistema antigo o avulso ignorava as vagas.)',
+        },
+      },
+      {
+        titulo: 'Concluir com a avaliação',
+        tela: 'Garantia da Qualidade › Treinamento Técnico › Conclusão do Treinamento',
+        quem: 'Instrutor designado',
+        situacao: 'Concluído',
+        campos: [
+          { rotulo: 'Nota mínima', valor: '7,0 (definida pela empresa)', exigido: true },
+          { rotulo: 'Treinanda', valor: 'Nota 8,5; presente → suficiente' },
+          { rotulo: 'Ausente', valor: 'Sem nota; insuficiente', exigido: true },
+          { rotulo: 'Assinatura', valor: 'Do instrutor', exigido: true },
+        ],
+        garantia:
+          'O desempenho vem da nota e da presença, não é escolhido à mão. Ausente não pode ser suficiente. Só o instrutor designado conclui, e assina.',
+        tentativa: {
+          acao: 'Marcar como suficiente quem faltou',
+          resposta: 'Recusado: "Ausente não pode ter desempenho suficiente."',
+        },
+      },
+      {
+        titulo: 'Calcular a validade',
+        tela: 'Automático, ao concluir',
+        quem: 'Sistema',
+        situacao: 'Vigente até 01/12/2027',
+        campos: [
+          {
+            rotulo: 'Conta da data de conclusão',
+            valor: 'Da pessoa, pelo prazo do treinamento',
+            exigido: true,
+          },
+          { rotulo: 'Quem recebe validade', valor: 'Só quem ficou suficiente' },
+        ],
+        garantia:
+          'A validade conta da conclusão de cada treinando, pelo prazo do treinamento, e só quem ficou suficiente a recebe.',
+        tentativa: {
+          acao: 'Dar validade à turma inteira, mesmo com todos insuficientes',
+          resposta:
+            'Recusado: "Só quem ficou suficiente recebe validade." (No sistema antigo a turma toda recebia.)',
+        },
+      },
+      {
+        titulo: 'Acompanhar vigentes, vencendo e vencidos',
+        tela: 'Garantia da Qualidade › Treinamento Técnico › Acompanhamento dos Treinamentos',
+        quem: 'Qualidade e chefias',
+        situacao: 'Vencendo em 30 dias',
+        campos: [
+          {
+            rotulo: 'Uma linha por pessoa e treinamento',
+            valor: 'Maria Exemplo, pesagem, vence em 14 dias',
+            exigido: true,
+          },
+          { rotulo: 'Aviso', valor: 'Enviado antes de vencer' },
+        ],
+        garantia:
+          'Uma linha por pessoa e treinamento, com a situação guardada pelo banco e aviso antes de vencer.',
+        tentativa: {
+          acao: 'Consultar treinamentos ligados a uma função',
+          resposta:
+            'Funciona: "1 treinamento vencendo." (No sistema antigo dava erro de servidor e dizia "nenhum resultado".)',
+        },
+      },
+      {
+        titulo: 'Habilitar ou bloquear a tarefa',
+        tela: 'Estoque, Produção e Controle da Qualidade (automático)',
+        quem: 'Sistema',
+        situacao: 'Bloqueada para quem está sem treinamento',
+        campos: [
+          { rotulo: 'Treinamento obrigatório da função', valor: 'Pesagem: vencido', exigido: true },
+          { rotulo: 'Tarefa', valor: 'Pesar material na Central de Pesagem' },
+        ],
+        garantia:
+          'Quem tem treinamento obrigatório vencido ou pendente não executa a tarefa da função. O banco recusa, com o motivo.',
+        tentativa: {
+          acao: 'Pesar material com o treinamento obrigatório vencido',
+          resposta:
+            'Bloqueado: "Treinamento obrigatório de pesagem vencido. A tarefa não pode ser executada." (No sistema antigo nenhum módulo consultava o treinamento.)',
+        },
+      },
+      {
+        titulo: 'Liberar o documento só com treinamento efetivo',
+        tela: 'Controle de Documentos › Documento › Vigência de Documento',
+        quem: 'Sistema',
+        situacao: 'Documento aprovado, aguardando treinamento efetivo',
+        campos: [
+          { rotulo: 'Pessoas da função', valor: '10 treinadas; 8 suficientes', exigido: true },
+          {
+            rotulo: 'Entra em vigor quando',
+            valor: 'As pessoas da função estiverem treinadas e suficientes',
+          },
+        ],
+        garantia:
+          'O documento entra em vigor quando as pessoas da função estão treinadas e suficientes, não só quando existe uma turma concluída.',
+        tentativa: {
+          acao: 'Colocar o documento em vigor com uma turma toda insuficiente',
+          resposta:
+            'Recusado: "Há pessoas da função sem treinamento suficiente." (No sistema antigo bastava uma turma "concluída".)',
+        },
+      },
+    ],
+  },
+  {
+    id: 'desvios-capa',
+    ficha: 'fluxo13b',
+    titulo: 'Do desvio à ação corretiva e preventiva provadas',
+    rotuloSituacao: 'Situação do desvio',
+    resumo:
+      'Acompanhe um desvio na produção de um lote (dados inventados), do registro à retenção do lote e à prova de que a ação funcionou. O ponto central: o lote fica ligado ao desvio e retido, cada área avalia o que é seu, e a CAPA só fecha com a eficácia provada.',
+    passos: [
+      {
+        titulo: 'Registrar o desvio',
+        tela: 'Garantia da Qualidade › Controle de Desvios › Relatório de Desvios',
+        quem: 'Qualquer área',
+        situacao: 'Registrado',
+        campos: [
+          { rotulo: 'Número', valor: 'DV-2026-0042 (sequencial por ano)', exigido: true },
+          { rotulo: 'Data e hora', valor: 'Do servidor, não do navegador', exigido: true },
+          { rotulo: 'Item e lote', valor: 'Açúcar refinado, L-2026-001', exigido: true },
+          { rotulo: 'Descrição e local', valor: 'Balança fora de nível na sala de pesagem' },
+        ],
+        garantia:
+          'O número é sequencial por ano, a data e a hora são do servidor e o lote fica ligado ao desvio. A edição só vai até a ação imediata, com justificativa e histórico.',
+        tentativa: {
+          acao: 'Editar o desvio depois da ação imediata',
+          resposta: 'Recusado: "O desvio só pode ser editado até a ação imediata."',
+        },
+      },
+      {
+        titulo: 'Conter (ação imediata)',
+        tela: 'Garantia da Qualidade › Controle de Desvios › Registro de Ação Corretiva Imediata',
+        quem: 'Área do desvio',
+        situacao: 'Contido, lote retido',
+        campos: [
+          {
+            rotulo: 'Ação imediata',
+            valor: 'Balança isolada e lote L-2026-001 retido',
+            exigido: true,
+          },
+          { rotulo: 'Data e hora', valor: 'Do servidor' },
+        ],
+        garantia:
+          'A contenção inclui o lote, com bloqueio ou aviso. Uma gravação por vez: ninguém sobrescreve o trabalho do outro.',
+        tentativa: {
+          acao: 'Duas pessoas salvarem ações diferentes ao mesmo tempo',
+          resposta:
+            'Aviso na segunda: "Esta ação já foi alterada por outra pessoa. Recarregue." (No sistema antigo uma sobrescrevia a outra.)',
+        },
+      },
+      {
+        titulo: 'Pré-avaliar',
+        tela: 'Garantia da Qualidade › Controle de Desvios › Pré-Avaliação',
+        quem: 'Garantia da Qualidade',
+        situacao: 'Aguardando as áreas',
+        campos: [
+          { rotulo: 'Método de detecção', valor: 'Inspeção de rotina', exigido: true },
+          { rotulo: 'Áreas envolvidas', valor: 'Produção e Estoque' },
+          {
+            rotulo: 'Classificação de risco',
+            valor: 'Maior (já classificado aqui)',
+            exigido: true,
+          },
+        ],
+        garantia:
+          'O método é obrigatório (com texto se "outros"). O risco é classificado já aqui. Sem áreas, segue direto; com áreas, espera cada uma.',
+        tentativa: {
+          acao: 'Escolher método "outros" sem descrever',
+          resposta: 'Recusado: "Descreva o método de detecção."',
+        },
+      },
+      {
+        titulo: 'Avaliar por área',
+        tela: 'Garantia da Qualidade › Controle de Desvios › Avaliação por Área',
+        quem: 'Cada área envolvida',
+        situacao: 'Avaliado pelas áreas',
+        campos: [
+          {
+            rotulo: 'Parecer da Produção',
+            valor: 'Descreve causa provável e impacto',
+            exigido: true,
+          },
+          { rotulo: 'Parecer do Estoque', valor: 'Nenhum lote movimentado no período' },
+        ],
+        garantia:
+          'Só quem é da área avalia, conferido na gravação. O parecer é obrigatório e tem conteúdo. Salvar ao mesmo tempo não trava o desvio.',
+        tentativa: {
+          acao: 'Salvar o parecer só com espaços em branco',
+          resposta: 'Recusado: "O parecer precisa ter conteúdo."',
+        },
+      },
+      {
+        titulo: 'Decidir sobre a CAPA',
+        tela: 'Garantia da Qualidade › Controle de Desvios › Avaliação do Desvio',
+        quem: 'Garantia da Qualidade',
+        situacao: 'CAPA necessária',
+        campos: [
+          { rotulo: 'Abrir CAPA?', valor: 'Sim', exigido: true },
+          { rotulo: 'Se não, motivo', valor: 'Com conteúdo e assinado' },
+          { rotulo: 'Necessidade de mudança', valor: 'Abre a solicitação de mudança (ficha 13c)' },
+        ],
+        garantia:
+          'Sem CAPA, o motivo tem conteúdo e é assinado. Com CAPA, segue. A necessidade de mudança abre a solicitação de mudança.',
+        tentativa: {
+          acao: 'Decidir não abrir CAPA sem informar o motivo',
+          resposta: 'Recusado: "Informe o motivo de não abrir CAPA, e assine."',
+        },
+      },
+      {
+        titulo: 'Escrever o relatório de CAPA',
+        tela: 'Garantia da Qualidade › Controle de Desvios › Relatório de CAPA',
+        quem: 'Garantia da Qualidade',
+        situacao: 'CAPA escrita',
+        campos: [
+          { rotulo: 'Diagrama de causa e efeito', valor: '7 campos preenchidos', exigido: true },
+          {
+            rotulo: 'Causa raiz',
+            valor: 'Nivelamento da balança não verificado na rotina',
+            exigido: true,
+          },
+          { rotulo: 'Criticidade', valor: 'Maior', exigido: true },
+        ],
+        garantia:
+          'A causa raiz é obrigatória. Erro humano só com justificativa. A criticidade é obrigatória.',
+        tentativa: {
+          acao: 'Apontar "erro humano" como causa sem justificar',
+          resposta: 'Recusado: "Erro humano como causa exige justificativa."',
+        },
+      },
+      {
+        titulo: 'Planejar e executar a ação corretiva',
+        tela: 'Garantia da Qualidade › Controle de Desvios › Plano e Execução da Ação Corretiva',
+        quem: 'Garantia da Qualidade (nível 3) e responsáveis',
+        situacao: 'Ação corretiva em execução',
+        campos: [
+          {
+            rotulo: 'Ação',
+            valor: 'Instalar verificação de nível no início de cada turno',
+            exigido: true,
+          },
+          { rotulo: 'Responsável e prazo', valor: 'Supervisor Exemplo, 15 dias' },
+          { rotulo: 'Aprovação do plano', valor: 'Antes de executar', exigido: true },
+        ],
+        garantia:
+          'O plano tem ao menos uma ação, é aprovado antes de executar, e a execução é de quem não escreveu o plano. Prazo vencido exige justificativa.',
+        tentativa: {
+          acao: 'Quem escreveu o plano executá-lo',
+          resposta: 'Recusado: "Quem escreveu o plano não pode executá-lo."',
+        },
+      },
+      {
+        titulo: 'Monitorar a ação corretiva',
+        tela: 'Garantia da Qualidade › Controle de Desvios › Monitoramento do Plano Corretivo',
+        quem: 'Garantia da Qualidade (nível 3)',
+        situacao: 'Corretiva aprovada',
+        campos: [
+          { rotulo: 'Ações concluídas e implementadas', valor: 'Todas', exigido: true },
+          { rotulo: 'Assinatura', valor: 'De quem não escreveu o plano', exigido: true },
+        ],
+        garantia:
+          'Só aprova com todas as ações concluídas e implementadas. Reprovar volta ao plano. A assinatura é de quem não escreveu o plano.',
+        tentativa: {
+          acao: 'Aprovar com uma ação ainda pendente',
+          resposta:
+            'Recusado: "Há ação pendente. Não é possível aprovar." (No sistema antigo aprovava.)',
+        },
+      },
+      {
+        titulo: 'Ação preventiva e prova de eficácia',
+        tela: 'Garantia da Qualidade › Controle de Desvios › Plano de Ação Preventiva',
+        quem: 'Garantia da Qualidade (nível 3) e responsáveis',
+        situacao: 'Preventiva concluída, eficácia provada',
+        campos: [
+          { rotulo: 'Ação preventiva', valor: 'Estender a verificação a todas as balanças' },
+          {
+            rotulo: 'Eficácia',
+            valor: 'Nenhum novo desvio de nivelamento em 90 dias',
+            exigido: true,
+          },
+        ],
+        garantia:
+          'As mesmas travas da corretiva. Só conclui com a eficácia provada. Reprovar volta ao plano.',
+        tentativa: {
+          acao: 'Concluir a preventiva sem provar a eficácia',
+          resposta: 'Recusado: "A conclusão exige a prova de eficácia."',
+        },
+      },
+      {
+        titulo: 'Reter e liberar o lote',
+        tela: 'Estoque, Controle da Qualidade e Produção (automático)',
+        quem: 'Sistema e Qualidade',
+        situacao: 'Lote retido até a liberação assinada',
+        campos: [
+          { rotulo: 'Lote ligado ao desvio', valor: 'L-2026-001: retido', exigido: true },
+          {
+            rotulo: 'Liberação',
+            valor: 'Só a Qualidade, com assinatura, depois da contenção ou da conclusão',
+            exigido: true,
+          },
+          { rotulo: 'Outros lotes', valor: 'A investigação alcança os lotes afetados' },
+        ],
+        garantia:
+          'Desvio aberto com lote retém o lote no Estoque, no CQ e na Produção. Só a Qualidade o libera, com assinatura.',
+        tentativa: {
+          acao: 'Separar o lote retido para a produção',
+          resposta:
+            'Bloqueado: "Lote retido por desvio aberto." (No sistema antigo os lotes eram copiados como texto e nada era bloqueado.)',
+        },
+      },
+    ],
+  },
+  {
+    id: 'mudancas',
+    ficha: 'fluxo13c',
+    titulo: 'Mudar algo com avaliação, plano e prova de eficácia',
+    rotuloSituacao: 'Situação da mudança',
+    resumo:
+      'Acompanhe uma mudança de fornecedor de embalagem (dados inventados), da solicitação ao lote aprovado. O ponto central: nenhuma área é pulada, um "não aceito" impede a aprovação, e a mudança só termina com o plano provado.',
+    passos: [
+      {
+        titulo: 'Solicitar a mudança',
+        tela: 'Garantia da Qualidade › Controle de Mudanças › Solicitação de Mudanças',
+        quem: 'Qualquer área',
+        situacao: 'Pendente de revisão',
+        campos: [
+          { rotulo: 'Tipo', valor: 'Definitiva', exigido: true },
+          { rotulo: 'Itens a alterar', valor: 'Material de embalagem e produto', exigido: true },
+          {
+            rotulo: 'Motivo e impacto',
+            valor: 'Troca de fornecedor da caixa; impacto na rotulagem',
+          },
+          { rotulo: 'Áreas de impacto', valor: 'Produção, Estoque, Assuntos Regulatórios' },
+        ],
+        garantia:
+          'Só mudança temporária tem validade. Os itens a alterar e as áreas de impacto são obrigatórios.',
+        tentativa: {
+          acao: 'Solicitar mudança temporária sem validade',
+          resposta: 'Recusado: "Mudança temporária exige data de validade."',
+        },
+      },
+      {
+        titulo: 'Revisar a solicitação',
+        tela: 'Garantia da Qualidade › Controle de Mudanças › Pré-Avaliação',
+        quem: 'Qualidade (nível 2 ou 3)',
+        situacao: 'Aceita na revisão',
+        campos: [
+          { rotulo: 'Decisão', valor: 'Aceita', exigido: true },
+          { rotulo: 'Se não aceita', valor: 'Motivo assinado' },
+        ],
+        garantia:
+          'Aceitar ou não aceitar, com motivo assinado. Ajustes na revisão gravam histórico. Nível 1 não revisa.',
+        tentativa: {
+          acao: 'Quem tem nível 1 tentar revisar',
+          resposta:
+            'Recusado: "Seu nível não permite revisar solicitações." (No sistema antigo o botão Reprovar nunca aparecia.)',
+        },
+      },
+      {
+        titulo: 'Definir as áreas que avaliam',
+        tela: 'Garantia da Qualidade › Controle de Mudanças › Pré-Avaliação (áreas)',
+        quem: 'Qualidade',
+        situacao: 'Áreas definidas',
+        campos: [
+          {
+            rotulo: 'Áreas e responsáveis',
+            valor: 'Produção, Estoque e Assuntos Regulatórios, cada uma com responsável ativo',
+            exigido: true,
+          },
+        ],
+        garantia:
+          'Só área ativa e responsável ativo, e ao menos uma área. Adicionar e remover a mesma área não deixa a mudança sem área.',
+        tentativa: {
+          acao: 'Salvar a mudança sem nenhuma área',
+          resposta: 'Recusado: "Escolha ao menos uma área para avaliar."',
+        },
+      },
+      {
+        titulo: 'Avaliar pelas áreas',
+        tela: 'Garantia da Qualidade › Controle de Mudanças › Avaliação de Mudanças',
+        quem: 'Cada área escolhida',
+        situacao: 'Avaliada (uma área não aceitou)',
+        campos: [
+          { rotulo: 'Parecer da Produção', valor: 'Aceito' },
+          {
+            rotulo: 'Parecer de Assuntos Regulatórios',
+            valor: 'Não aceito: falta atualizar a rotulagem',
+            exigido: true,
+          },
+        ],
+        garantia:
+          'Só quem é da área avalia. O parecer é imutável depois de gravado, e mudar exige nova versão com justificativa. O anexo só pode ser do próprio autor.',
+        tentativa: {
+          acao: 'Trocar "Não aceito" para "Aceito" sem justificar',
+          resposta:
+            'Recusado: "O parecer gravado não muda. Faça uma nova versão com justificativa."',
+        },
+      },
+      {
+        titulo: 'Liberar a avaliação',
+        tela: 'Garantia da Qualidade › Controle de Mudanças › Liberação da Avaliação',
+        quem: 'Qualidade (nível 3)',
+        situacao: 'Reprovada, por um "não aceito"',
+        campos: [
+          { rotulo: 'Pareceres', valor: 'Todas as áreas avaliaram', exigido: true },
+          { rotulo: 'Decisão', valor: 'Só reprovar, enquanto houver "não aceito"', exigido: true },
+          { rotulo: 'Assinatura', valor: 'Nível 3, conferido na gravação' },
+        ],
+        garantia:
+          'A liberação só existe com todos os pareceres. Um "não aceito" impede a aprovação. A decisão é assinada e do nível 3, conferido na gravação.',
+        tentativa: {
+          acao: 'Aprovar a mudança com uma área em "não aceito"',
+          resposta:
+            'Recusado: "Há parecer não aceito. A mudança só pode ser reprovada ou reavaliada." (No sistema antigo aprovava.)',
+        },
+      },
+      {
+        titulo: 'Planejar as ações',
+        tela: 'Garantia da Qualidade › Controle de Mudanças › Plano de Ação',
+        quem: 'Qualidade e responsáveis',
+        situacao: 'Plano aprovado',
+        campos: [
+          {
+            rotulo: 'Ações',
+            valor: 'Atualizar rotulagem; qualificar o novo fornecedor',
+            exigido: true,
+          },
+          { rotulo: 'Prazo', valor: 'Não anterior à data da solicitação', exigido: true },
+          { rotulo: 'Aprovação do plano', valor: 'Antes de executar' },
+        ],
+        garantia:
+          'Ao menos uma ação. O prazo não é anterior à solicitação. O plano é aprovado antes de executar. Consultar não cria nada.',
+        tentativa: {
+          acao: 'Aprovar um plano sem nenhuma ação',
+          resposta: 'Recusado: "O plano precisa de ao menos uma ação."',
+        },
+      },
+      {
+        titulo: 'Executar as ações',
+        tela: 'Garantia da Qualidade › Controle de Mudanças › Execução do Plano de Ação',
+        quem: 'Responsáveis',
+        situacao: 'Ações concluídas',
+        campos: [
+          {
+            rotulo: 'Data de conclusão',
+            valor: 'Hoje (nem futura, nem anterior à solicitação)',
+            exigido: true,
+          },
+          { rotulo: 'Quem conclui', valor: 'Só o responsável da ação', exigido: true },
+        ],
+        garantia:
+          'Só o responsável da ação conclui. A data não é futura nem anterior à solicitação. Ação concluída não reabre sem justificativa. Prazo vencido é marcado e exige justificativa.',
+        tentativa: {
+          acao: 'O responsável de outra área concluir a ação',
+          resposta: 'Recusado: "Só o responsável por esta ação pode concluí-la."',
+        },
+      },
+      {
+        titulo: 'Finalizar o plano',
+        tela: 'Garantia da Qualidade › Controle de Mudanças › Finalização do Plano de Ação',
+        quem: 'Qualidade (nível 3)',
+        situacao: 'Plano finalizado, eficácia verificada',
+        campos: [
+          { rotulo: 'Ações concluídas', valor: 'Todas', exigido: true },
+          { rotulo: 'Verificação de eficácia', valor: 'Prazo e responsável definidos' },
+          { rotulo: 'Decisão', valor: 'Aprovado, segue para a aprovação do produto' },
+        ],
+        garantia:
+          'Só finaliza com todas as ações concluídas. Há verificação de eficácia antes de aceitar. Reprovar existe. Aprovada, a mudança com produto vai à aprovação do produto.',
+        tentativa: {
+          acao: 'Finalizar com uma ação ainda aberta',
+          resposta: 'Recusado: "Há ação em aberto."',
+        },
+      },
+      {
+        titulo: 'Aprovar o produto e ligar o lote',
+        tela: 'Garantia da Qualidade › Controle de Mudanças › Controle de Mudança de Produto',
+        quem: 'Qualidade (nível 3)',
+        situacao: 'Produto aprovado, lote ligado',
+        campos: [
+          {
+            rotulo: 'Lote',
+            valor: 'Escolhido do Estoque e da Produção, não digitado',
+            exigido: true,
+          },
+          { rotulo: 'Justificativa e assinatura', valor: 'Obrigatórias', exigido: true },
+        ],
+        garantia:
+          'O lote vem do Estoque e da Produção. A justificativa é obrigatória, com assinatura, e fica no histórico. O lote liga ao desvio e ao documento novo.',
+        tentativa: {
+          acao: 'Confirmar sem escolher lote e sem justificativa',
+          resposta:
+            'Recusado: "Escolha o lote e informe a justificativa." (No sistema antigo confirmava assim mesmo.)',
+        },
+      },
+      {
+        titulo: 'Encerrar a mudança temporária',
+        tela: 'Garantia da Qualidade › Controle de Mudanças (automático)',
+        quem: 'Sistema',
+        situacao: 'Temporária encerrada, volta ao padrão',
+        campos: [
+          { rotulo: 'Validade', valor: 'Vencida em 30/11/2026', exigido: true },
+          { rotulo: 'Aviso', valor: 'Enviado antes do vencimento' },
+          { rotulo: 'Registro', valor: 'Encerramento fica no histórico' },
+        ],
+        garantia:
+          'A validade vencida encerra a mudança sozinha, com aviso antes e registro. A mudança volta ao padrão.',
+        tentativa: {
+          acao: 'Manter uma mudança temporária depois da validade',
+          resposta:
+            'Impossível: "Mudança temporária vencida é encerrada pelo sistema." (No sistema antigo a validade era só um filtro da lista.)',
+        },
+      },
+    ],
+  },
+  {
+    id: 'auditoria',
+    ficha: 'fluxo13d',
+    titulo: 'Inspecionar e auditar com independência',
+    rotuloSituacao: 'Situação da auditoria',
+    resumo:
+      'Acompanhe uma auditoria interna (dados inventados), dos roteiros ao tratamento do que foi achado. O ponto central: o inspetor é independente da área auditada, o roteiro só avança com todas as respostas e uma não conformidade abre o desvio.',
+    passos: [
+      {
+        titulo: 'Classificar as perguntas',
+        tela: 'Garantia da Qualidade › Autoinspeção e Auditoria › Tipo de Qualificação',
+        quem: 'Qualidade',
+        situacao: 'Cadastrado',
+        campos: [
+          { rotulo: 'Sigla', valor: 'CRI (crítico)', exigido: true },
+          { rotulo: 'Classificação', valor: 'Crítico, maior e menor, definida pela empresa' },
+        ],
+        garantia:
+          'A sigla é única. A classificação (crítico, maior, menor) é definida pela empresa.',
+        tentativa: {
+          acao: 'Cadastrar a mesma sigla duas vezes',
+          resposta: 'Recusado: "Esta sigla já existe." (No sistema antigo aceitava.)',
+        },
+      },
+      {
+        titulo: 'Escrever os roteiros',
+        tela: 'Garantia da Qualidade › Autoinspeção e Auditoria › Cadastro de Roteiro',
+        quem: 'Qualidade',
+        situacao: 'Roteiro cadastrado',
+        campos: [
+          { rotulo: 'Título', valor: 'Roteiro de auditoria do Estoque', exigido: true },
+          { rotulo: 'Pergunta', valor: 'A quarentena é separada fisicamente?' },
+          { rotulo: 'Item da norma', valor: 'Art. 123 da RDC 658/2022 (exemplo)' },
+          { rotulo: 'Gera desvio?', valor: 'Sim, se a resposta for não', exigido: true },
+        ],
+        garantia:
+          'O título é único. A pergunta pode gerar desvio. A exclusão exige justificativa e histórico. Roteiro em uso só se revisa.',
+        tentativa: {
+          acao: 'Editar direto um roteiro em uso',
+          resposta: 'Recusado: "Roteiro em uso só muda por nova revisão."',
+        },
+      },
+      {
+        titulo: 'Cadastrar a autoinspeção ou a auditoria',
+        tela: 'Garantia da Qualidade › Autoinspeção e Auditoria › Cadastro',
+        quem: 'Qualidade',
+        situacao: 'Cadastrada',
+        campos: [
+          { rotulo: 'Nome', valor: 'Auditoria interna do Estoque', exigido: true },
+          { rotulo: 'Tipo', valor: 'Interna (a lista inclui auditoria de fornecedor)' },
+          { rotulo: 'Frequência', valor: 'Anual (parâmetro da empresa)' },
+        ],
+        garantia:
+          'O nome é único. Os tipos incluem a auditoria de fornecedor, com o fornecedor auditado.',
+        tentativa: {
+          acao: 'Cadastrar dois itens com o mesmo nome',
+          resposta: 'Recusado: "Já existe uma autoinspeção ou auditoria com este nome."',
+        },
+      },
+      {
+        titulo: 'Planejar o ano',
+        tela: 'Garantia da Qualidade › Autoinspeção e Auditoria › Planejamento',
+        quem: 'Qualidade',
+        situacao: 'Calendário anual',
+        campos: [
+          { rotulo: 'Período e situação', valor: '2027, todas as situações' },
+          {
+            rotulo: 'O que falta',
+            valor: 'Estoque (março), Produção (junho), CQ (setembro)',
+            exigido: true,
+          },
+        ],
+        garantia:
+          'O planejamento anual mostra o calendário e o que falta fazer, por período e situação.',
+        tentativa: {
+          acao: 'Pedir o planejamento de um período e receber lista vazia',
+          resposta:
+            'Não ocorre: "O relatório respeita o período e a situação pedidos." (No sistema antigo ignorava ambos.)',
+        },
+      },
+      {
+        titulo: 'Programar a execução',
+        tela: 'Garantia da Qualidade › Autoinspeção e Auditoria › Programação',
+        quem: 'Qualidade',
+        situacao: 'Programada',
+        campos: [
+          { rotulo: 'Período', valor: '15 a 17/03/2027 (futuro e coerente)' },
+          { rotulo: 'Inspetores', valor: 'Do CQ, independentes do Estoque', exigido: true },
+          { rotulo: 'Coordenador', valor: 'Obrigatório', exigido: true },
+          { rotulo: 'Departamento auditado', valor: 'Estoque' },
+        ],
+        garantia:
+          'O inspetor é independente da área auditada (de qualquer pessoa da área, não só do responsável). O coordenador é obrigatório. O período é futuro e coerente.',
+        tentativa: {
+          acao: 'Escolher como inspetor alguém do próprio Estoque',
+          resposta: 'Recusado: "O inspetor não pode ser da área auditada."',
+        },
+      },
+      {
+        titulo: 'Iniciar',
+        tela: 'Garantia da Qualidade › Autoinspeção e Auditoria › Programação',
+        quem: 'Qualidade',
+        situacao: 'Em curso',
+        campos: [
+          { rotulo: 'Roteiros', valor: 'Cada departamento recebe os seus', exigido: true },
+          { rotulo: 'Editar e Cancelar', valor: 'Somem depois de iniciar' },
+        ],
+        garantia: 'Ao iniciar, cada departamento recebe seus roteiros, e Editar e Cancelar somem.',
+        tentativa: {
+          acao: 'Cancelar uma auditoria já em curso',
+          resposta: 'Recusado: "Auditoria em curso não pode ser cancelada pela programação."',
+        },
+      },
+      {
+        titulo: 'Registrar as respostas',
+        tela: 'Garantia da Qualidade › Autoinspeção e Auditoria › Registro',
+        quem: 'Inspetores do departamento',
+        situacao: 'Roteiro respondido',
+        campos: [
+          { rotulo: 'Resposta de cada pergunta', valor: 'Todas respondidas', exigido: true },
+          { rotulo: 'Quem responde', valor: 'Só o inspetor designado; a área auditada só vê' },
+          { rotulo: 'Desvio ligado', valor: 'DV-2026-0050 (gerado pela resposta "não")' },
+        ],
+        garantia:
+          'Só o inspetor designado responde, e a área auditada só vê. O roteiro só avança com todas as respostas, conferido no banco. A resposta liga ao desvio.',
+        tentativa: {
+          acao: 'Concluir o roteiro com perguntas sem resposta',
+          resposta: 'Recusado: "Há perguntas sem resposta."',
+        },
+      },
+      {
+        titulo: 'Avaliar e concluir',
+        tela: 'Garantia da Qualidade › Autoinspeção e Auditoria › Avaliação',
+        quem: 'Qualidade (avaliador)',
+        situacao: 'Concluída, não conforme',
+        campos: [
+          { rotulo: 'Período real', valor: 'Não futuro', exigido: true },
+          { rotulo: 'Evidências e conclusões', valor: 'Obrigatórias', exigido: true },
+          { rotulo: 'Resultado', valor: 'Não conforme', exigido: true },
+          { rotulo: 'Assinatura', valor: 'Do avaliador' },
+        ],
+        garantia:
+          'O período real não é futuro. Evidências, conclusões e resultado são obrigatórios, com assinatura. Reabrir só com justificativa.',
+        tentativa: {
+          acao: 'Concluir sem evidências',
+          resposta: 'Recusado: "Informe as evidências e as conclusões."',
+        },
+      },
+      {
+        titulo: 'Tratar o que foi achado',
+        tela: 'Garantia da Qualidade › Controle de Desvios (ficha 13b)',
+        quem: 'Qualidade',
+        situacao: 'Desvio e CAPA abertos, ligados à auditoria',
+        campos: [
+          { rotulo: 'Resultado "não conforme"', valor: 'Abre o desvio e a CAPA', exigido: true },
+          { rotulo: 'Ligação', valor: 'Do desvio à auditoria de origem' },
+        ],
+        garantia:
+          'O resultado "não conforme" abre o desvio e a CAPA, ligados à auditoria. Excluir desvio exige justificativa e histórico.',
+        tentativa: {
+          acao: 'Concluir "não conforme" sem abrir desvio',
+          resposta:
+            'Impossível: "O resultado não conforme abre o desvio automaticamente." (No sistema antigo a auditoria não abria desvio.)',
+        },
+      },
+    ],
+  },
+  {
+    id: 'regulatorio',
+    ficha: 'fluxo13e',
+    titulo: 'Manter o produto e a empresa em dia com os órgãos reguladores',
+    rotuloSituacao: 'Situação da obrigação ou do registro',
+    resumo:
+      'Acompanhe uma renovação de registro de produto e uma obrigação da empresa (dados inventados). O ponto central: o aviso vem antes do vencimento, e produto com registro vencido, indeferido ou em exigência não é produzido, expedido nem vendido.',
+    passos: [
+      {
+        titulo: 'Cadastrar o processo regulatório',
+        tela: 'Garantia da Qualidade › Assuntos Regulatórios › Processo Regulatório',
+        quem: 'Assuntos Regulatórios',
+        situacao: 'Cadastrado',
+        campos: [
+          { rotulo: 'Descrição', valor: 'Renovação do registro do Produto Exemplo', exigido: true },
+          { rotulo: 'Órgão', valor: 'ANVISA' },
+        ],
+        garantia: 'A descrição é única e tem conteúdo. A exclusão exige justificativa e histórico.',
+        tentativa: {
+          acao: 'Cadastrar uma descrição só com espaços',
+          resposta: 'Recusado: "A descrição precisa ter conteúdo."',
+        },
+      },
+      {
+        titulo: 'Programar a obrigação',
+        tela: 'Garantia da Qualidade › Assuntos Regulatórios › Programação',
+        quem: 'Assuntos Regulatórios',
+        situacao: 'Programada',
+        campos: [
+          {
+            rotulo: 'Data programada, prazo e validade',
+            valor: '10/01/2027, 31/01/2027, 31/03/2027',
+            exigido: true,
+          },
+          { rotulo: 'Produto', valor: 'Vem do cadastro da Produção' },
+          { rotulo: 'Documento', valor: 'Vem do Controle de Documentos' },
+        ],
+        garantia:
+          'O prazo não é anterior à data programada, e a validade não é anterior ao prazo. O produto vem da Produção e o documento, do Controle de Documentos.',
+        tentativa: {
+          acao: 'Programar com validade anterior ao prazo',
+          resposta: 'Recusado: "A validade não pode ser anterior ao prazo."',
+        },
+      },
+      {
+        titulo: 'Avisar o prazo e a validade',
+        tela: 'Início e Central de Notificações (automático)',
+        quem: 'Sistema',
+        situacao: 'Vencendo em 30 dias',
+        campos: [
+          { rotulo: 'Aviso', valor: 'Na tela inicial e nas notificações', exigido: true },
+          { rotulo: 'Vencida sem monitoramento', valor: 'Aparece como pendência' },
+        ],
+        garantia:
+          'Há aviso antes do prazo e da validade. Vencida sem monitoramento aparece como pendência.',
+        tentativa: {
+          acao: 'Deixar a validade vencer sem ninguém perceber',
+          resposta:
+            'Não ocorre: "A obrigação vencida aparece na tela inicial como pendência." (No sistema antigo não havia nenhum aviso.)',
+        },
+      },
+      {
+        titulo: 'Monitorar e finalizar',
+        tela: 'Garantia da Qualidade › Assuntos Regulatórios › Monitoramento',
+        quem: 'Assuntos Regulatórios',
+        situacao: 'Finalizada',
+        campos: [
+          { rotulo: 'Anexo de evidência', valor: 'Protocolo de renovação anexado', exigido: true },
+          { rotulo: 'Justificativa assinada', valor: 'Para cancelar ou finalizar' },
+        ],
+        garantia:
+          'Só finaliza com evidência anexada. Cancelar e finalizar exigem justificativa assinada. O anexo fica no histórico. Atraso exige justificativa.',
+        tentativa: {
+          acao: 'Finalizar sem anexar a evidência',
+          resposta:
+            'Recusado: "Anexe a evidência antes de finalizar." (No sistema antigo finalizava sem anexo e sem monitorar.)',
+        },
+      },
+      {
+        titulo: 'Montar o check-list do registro',
+        tela: 'Garantia da Qualidade › Assuntos Regulatórios › Check-list',
+        quem: 'Assuntos Regulatórios',
+        situacao: 'Check-list em montagem',
+        campos: [
+          { rotulo: 'Tipo de processo', valor: 'Renovação de registro', exigido: true },
+          { rotulo: 'Documentos exigidos', valor: 'Lista por tipo, com responsável e prazo' },
+          { rotulo: 'Histórico', valor: 'De cada mudança' },
+        ],
+        garantia: 'O check-list é por tipo de processo, com histórico de cada mudança.',
+        tentativa: {
+          acao: 'Remover um documento do check-list sem registrar',
+          resposta: 'Recusado: "Toda mudança no check-list fica no histórico, com motivo."',
+        },
+      },
+      {
+        titulo: 'Solicitar o registro e enviar à ANVISA',
+        tela: 'Garantia da Qualidade › Assuntos Regulatórios › Solicitação de Registro',
+        quem: 'Assuntos Regulatórios',
+        situacao: 'Enviado à ANVISA',
+        campos: [
+          { rotulo: 'Tipo', valor: 'Renovação', exigido: true },
+          { rotulo: 'Check-list', valor: 'Todos os documentos concluídos', exigido: true },
+          { rotulo: 'Produto', valor: 'Vem da Produção' },
+        ],
+        garantia:
+          'Só envia com todos os documentos do check-list concluídos. O envio e o fechamento ficam no histórico, assinados.',
+        tentativa: {
+          acao: 'Enviar com um documento do check-list pendente',
+          resposta: 'Recusado: "Há documento do check-list pendente."',
+        },
+      },
+      {
+        titulo: 'Registrar a decisão da ANVISA',
+        tela: 'Garantia da Qualidade › Assuntos Regulatórios › Controle de Produtos Enviados para Registro',
+        quem: 'Assuntos Regulatórios',
+        situacao: 'Deferido, com nova validade',
+        campos: [
+          { rotulo: 'Situação', valor: 'Deferida (ou indeferida, ou em exigência)', exigido: true },
+          {
+            rotulo: 'Publicação no DOU e validade',
+            valor: 'Data e meses; revalidação calculada pelo sistema',
+          },
+          { rotulo: 'Se exigência', valor: 'Motivo e prazo de resposta' },
+        ],
+        garantia:
+          'A validade e a revalidação são calculadas pelo sistema, a partir da publicação. A exigência registra o motivo.',
+        tentativa: {
+          acao: 'Digitar à mão uma data de revalidação diferente da calculada',
+          resposta: 'Recusado: "A data de revalidação é calculada pelo sistema."',
+        },
+      },
+      {
+        titulo: 'Proteger o produto',
+        tela: 'Produção, Estoque e Comercial (automático)',
+        quem: 'Sistema',
+        situacao: 'Bloqueado enquanto o registro não estiver regular',
+        campos: [
+          { rotulo: 'Registro', valor: 'Vencido (ou indeferido, ou em exigência)', exigido: true },
+          { rotulo: 'Produção, expedição e venda', valor: 'Recusadas, com o motivo' },
+        ],
+        garantia:
+          'Produto com registro indeferido, vencido ou em exigência não entra em ordem de produção, não é expedido e não é vendido. O banco recusa, com o motivo.',
+        tentativa: {
+          acao: 'Abrir uma ordem de produção de um produto com registro vencido',
+          resposta:
+            'Bloqueado: "Registro vencido. O produto não pode ser produzido." (No sistema antigo a situação do registro não chegava a nenhum outro módulo.)',
+        },
+      },
+      {
+        titulo: 'Receber a mudança regulatória',
+        tela: 'Garantia da Qualidade › Controle de Mudanças → Assuntos Regulatórios (automático)',
+        quem: 'Sistema',
+        situacao: 'Obrigação aberta a partir de uma mudança',
+        campos: [
+          {
+            rotulo: 'Mudança com item "regulatórios"',
+            valor: 'Troca de fornecedor da caixa (ficha 13c)',
+            exigido: true,
+          },
+          {
+            rotulo: 'Obrigação aberta',
+            valor: 'Atualizar a rotulagem junto à ANVISA, com a mudança de origem',
+          },
+        ],
+        garantia:
+          'A mudança com item regulatório abre a obrigação em Assuntos Regulatórios, com a mudança de origem.',
+        tentativa: {
+          acao: 'Aprovar uma mudança regulatória sem abrir a obrigação',
+          resposta:
+            'Impossível: "A mudança com item regulatório abre a obrigação automaticamente." (No sistema antigo não havia ligação.)',
+        },
+      },
+    ],
+  },
 ];
