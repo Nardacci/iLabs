@@ -2,6 +2,14 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-25 · Claude · "Na prática": Controle da Qualidade (11a e 11b)
+
+- **Pedido do responsável:** seguir, no Controle da Qualidade.
+- **Entregue:** duas práticas: **água e ambiente** (ficha 11a, 8 passos: ponto e sala, agenda de coleta, amostragem com condições da sala, resultado contra limites de alerta e de ação, laudo, boletim, autorização da Produção, cancelamento) e **estabilidade** (ficha 11b, 8 passos: protocolo, nova versão, abertura do estudo, análise de cada tempo, interrupção, conclusão, relatório, resultado fora da especificação). Endereços: `/estudo/pratica/agua-ambiente` e `/estudo/pratica/estabilidade`. As fichas ganharam o botão.
+- **Observação:** o roteiro de análise e laudo do CQ (ficha 3) já tinha prática desde 23/11.
+- **Limites:** dados inventados, mensagens à mão, nenhuma regra no front. Valores como "limite de ação 10" e "frequência semanal" são exemplos; na vida real são parâmetros da empresa.
+- **Próxima etapa:** Garantia da Qualidade (13a a 13e), depois Controle de Documentos, Produção, Comercial e Rastreabilidade.
+
 ## 2026-11-24 · Claude · "Na prática": fluxos 4, 5, 7 e 8 (Estoque completo)
 
 - **Pedido do responsável:** seguir. Com estes, **todo o Estoque** (fichas 1 a 8) tem telas de exemplo.

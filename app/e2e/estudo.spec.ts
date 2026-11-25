@@ -59,13 +59,23 @@ test.describe('Estudo do roadmap', () => {
     await conferirAcessibilidade(page, 'na prática, recebimento');
   });
 
-  test('as fichas 2 a 8 também têm o botão "Ver na prática"', async ({ page }) => {
+  test('as fichas 2 a 8, 11a e 11b também têm o botão "Ver na prática"', async ({ page }) => {
     await entrarComSessaoDeTeste(page);
     await simularSupabase(page, {
       rpc: { meu_estado: ESTADO_NORMAL, minhas_permissoes: PERMISSOES_DO_ADMIN },
       tabelas: {},
     });
-    for (const ficha of ['fluxo2', 'fluxo3', 'fluxo4', 'fluxo5', 'fluxo6', 'fluxo7', 'fluxo8']) {
+    for (const ficha of [
+      'fluxo2',
+      'fluxo3',
+      'fluxo4',
+      'fluxo5',
+      'fluxo6',
+      'fluxo7',
+      'fluxo8',
+      'fluxo11a',
+      'fluxo11b',
+    ]) {
       await page.goto(`/estudo/roadmap/${ficha}`);
       await expect(page.getByRole('link', { name: /Ver na prática/ })).toBeVisible();
     }

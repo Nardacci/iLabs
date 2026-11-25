@@ -1325,4 +1325,348 @@ export const PRATICAS: readonly PraticaFicha[] = [
       },
     ],
   },
+  {
+    id: 'agua-ambiente',
+    ficha: 'fluxo11a',
+    titulo: 'Monitorar a água e as salas',
+    rotuloSituacao: 'Situação da coleta',
+    resumo:
+      'Acompanhe o monitoramento de um ponto de água e de uma sala limpa (dados inventados), da agenda de coleta à liberação para a produção. O ponto central: o resultado é conferido contra os limites de alerta e de ação, e a Produção só usa o ponto ou a sala com laudo aprovado e dentro do prazo.',
+    passos: [
+      {
+        titulo: 'Cadastrar o ponto ou a sala',
+        tela: 'Principal › Cadastros › Pontos de água, Ambientes',
+        quem: 'Qualidade',
+        situacao: 'Cadastrado',
+        campos: [
+          { rotulo: 'Tag', valor: 'PA-01 (ponto de água) e SL-03 (sala)', exigido: true },
+          { rotulo: 'Tipo da água', valor: 'Purificada' },
+          { rotulo: 'Classe de limpeza da sala', valor: 'Classe C', exigido: true },
+          {
+            rotulo: 'Frequência de coleta',
+            valor: 'Semanal (parâmetro da empresa)',
+            exigido: true,
+          },
+        ],
+        garantia:
+          'O ponto e a sala têm tag única, classe de limpeza e frequência. Só o cadastro ativo é oferecido.',
+        tentativa: {
+          acao: 'Cadastrar uma sala sem classe de limpeza',
+          resposta:
+            'Recusado: "Informe a classe de limpeza da sala." (No sistema antigo o CQ nem tinha esse campo.)',
+        },
+      },
+      {
+        titulo: 'Agendar a coleta',
+        tela: 'Controle da Qualidade › Solicitação de Análise › Programação de Solicitação de Análise',
+        quem: 'Qualidade',
+        situacao: 'Coletas programadas',
+        campos: [
+          { rotulo: 'Tipo', valor: 'Ambiente', exigido: true },
+          { rotulo: 'Tipo de análise', valor: 'Microbiológica', exigido: true },
+          { rotulo: 'Dia e horário', valor: 'Segundas, 08:00 (o programa gera as coletas do mês)' },
+        ],
+        garantia:
+          'O programa gera as coletas do período. Ambiente só aceita análise microbiológica, não repete horário, e hoje e o passado são recusados.',
+        tentativa: {
+          acao: 'Agendar análise físico-química para uma sala',
+          resposta: 'Recusado: "Ambiente só aceita análise microbiológica."',
+        },
+      },
+      {
+        titulo: 'Programar e registrar a amostragem',
+        tela: 'Controle da Qualidade › Amostragem › Registro de Amostragem',
+        quem: 'Amostrador e verificador',
+        situacao: 'Amostra coletada',
+        campos: [
+          { rotulo: 'Amostrador', valor: 'Amostrador Exemplo', exigido: true },
+          { rotulo: 'Verificador', valor: 'Outra pessoa', exigido: true },
+          {
+            rotulo: 'Condições da sala na coleta',
+            valor: 'Em atividade, fluxo de ar ligado',
+            exigido: true,
+          },
+        ],
+        garantia:
+          'Não há pedido ao Estoque. O verificador é diferente do amostrador, e as condições reais da sala (vazia, em atividade, fluxo, ar) são registradas.',
+        tentativa: {
+          acao: 'Registrar sem informar as condições da sala',
+          resposta: 'Recusado: "Informe as condições da sala no momento da coleta."',
+        },
+      },
+      {
+        titulo: 'Programar e digitar a análise',
+        tela: 'Controle da Qualidade › Análise e Laudo › Consultar Análise Programada',
+        quem: 'Analista',
+        situacao: 'Resultado digitado',
+        campos: [
+          { rotulo: 'Ensaio', valor: 'Contagem de microrganismos (da regra do ponto ou sala)' },
+          {
+            rotulo: 'Resultado',
+            valor: '12 UFC (limite de alerta 5; limite de ação 10)',
+            exigido: true,
+          },
+          {
+            rotulo: 'Classificação',
+            valor: 'Acima do limite de ação (calculada pelo banco)',
+            exigido: true,
+          },
+          { rotulo: 'Desvio', valor: 'Aberto automaticamente' },
+        ],
+        garantia:
+          'Os ensaios vêm da regra de análise do ponto ou da sala. O resultado é conferido contra os limites de alerta e de ação, e fora do limite de ação abre desvio.',
+        tentativa: {
+          acao: 'Digitar resultado e a tela dizer "sucesso" sem gravar',
+          resposta:
+            'Impossível: "A gravação só termina depois de confirmada no banco." (No sistema antigo a tela dizia "sucesso" e os dados sumiam.)',
+        },
+      },
+      {
+        titulo: 'Aprovar e emitir o laudo',
+        tela: 'Controle da Qualidade › Análise e Laudo › Emissão do Laudo Final',
+        quem: 'Quem tem a função de aprovar',
+        situacao: 'Reprovado',
+        campos: [
+          { rotulo: 'Decisão', valor: 'Reprovado (acima do limite de ação)', exigido: true },
+          {
+            rotulo: 'Assinatura',
+            valor: 'Função de aprovador, diferente do analista',
+            exigido: true,
+          },
+          { rotulo: 'Prazo de validade do laudo', valor: 'Só no laudo aprovado' },
+        ],
+        garantia:
+          'O laudo é assinado por quem tem a função e é diferente do analista. Reprovar abre desvio. O laudo vale por um prazo.',
+        tentativa: {
+          acao: 'Aprovar com resultado acima do limite de ação',
+          resposta:
+            'Recusado: "Há resultado fora do limite de ação. Não é possível aprovar." (No sistema antigo só aparecia a opção Aprovar.)',
+        },
+      },
+      {
+        titulo: 'Boletim e etiqueta',
+        tela: 'Controle da Qualidade › Análise e Laudo › Gerar Etiqueta',
+        quem: 'Qualidade',
+        situacao: 'Boletim emitido',
+        campos: [
+          {
+            rotulo: 'Boletim',
+            valor: 'Data da exposição, ambiente, condições reais e resultado preenchidos',
+            exigido: true,
+          },
+          { rotulo: 'Etiqueta', valor: 'Com os dados da empresa certificada', exigido: true },
+        ],
+        garantia:
+          'O boletim traz as condições reais da sala e o resultado. A etiqueta traz os dados da instituição certa.',
+        tentativa: {
+          acao: 'Imprimir o boletim com campos em branco',
+          resposta:
+            'Recusado: "O boletim só imprime com data, ambiente, condições e resultado preenchidos."',
+        },
+      },
+      {
+        titulo: 'Liberar o uso na Produção',
+        tela: 'Produção › Autorizações › Autorização de ponto de água',
+        quem: 'Produção',
+        situacao: 'Autorizado, só com laudo aprovado e dentro do prazo',
+        campos: [
+          { rotulo: 'Laudo do CQ', valor: 'Aprovado e dentro do prazo', exigido: true },
+          { rotulo: 'Autorização', valor: 'Liberada pela função da Produção' },
+        ],
+        garantia:
+          'A Produção só autoriza o ponto ou a sala com laudo aprovado do CQ e dentro do prazo. O banco bloqueia o resto, sem controle paralelo.',
+        tentativa: {
+          acao: 'Autorizar um ponto de água com laudo reprovado ou vencido',
+          resposta: 'Bloqueado: "Não há laudo aprovado e válido do CQ para este ponto."',
+        },
+      },
+      {
+        titulo: 'Excluir ou cancelar uma coleta',
+        tela: 'Controle da Qualidade › Programação de Solicitação de Análise',
+        quem: 'Qualidade',
+        situacao: 'Cancelada, com justificativa',
+        campos: [
+          { rotulo: 'Justificativa', valor: 'Sala em manutenção', exigido: true },
+          { rotulo: 'Histórico', valor: 'Quem, quando e por quê' },
+        ],
+        garantia:
+          'A justificativa é obrigatória e fica no histórico. Coleta que já tem laudo não se cancela.',
+        tentativa: {
+          acao: 'Cancelar uma coleta com laudo já liberado',
+          resposta:
+            'Recusado: "Depois do laudo não se cancela. Abra uma investigação." (No sistema antigo podia.)',
+        },
+      },
+    ],
+  },
+  {
+    id: 'estabilidade',
+    ficha: 'fluxo11b',
+    titulo: 'Acompanhar a estabilidade do produto acabado',
+    rotuloSituacao: 'Situação do estudo',
+    resumo:
+      'Acompanhe o estudo de estabilidade de um lote de produto acabado (dados inventados), do protocolo ao relatório final. O ponto central: o estudo só abre com protocolo aprovado, cada tempo gera sua análise na data prevista e um resultado fora da especificação segura o estudo até a investigação.',
+    passos: [
+      {
+        titulo: 'Escrever o protocolo',
+        tela: 'Controle da Qualidade › Tabelas de Apoio › Regra de Estabilidade',
+        quem: 'Qualidade',
+        situacao: 'Protocolo em elaboração',
+        campos: [
+          {
+            rotulo: 'Produto e tipo de análise',
+            valor: 'Comprimido Exemplo 500 mg, físico-química',
+            exigido: true,
+          },
+          { rotulo: 'Tempos (dias)', valor: 'T0 = 0; T1 = 90; T2 = 180; T3 = 365', exigido: true },
+          { rotulo: 'Condição de armazenamento', valor: '30 °C e 75% de umidade' },
+          { rotulo: 'Número de lotes', valor: '3' },
+        ],
+        garantia:
+          'Os dias são positivos e em ordem crescente. Há uma regra aprovada por produto e tipo de análise.',
+        tentativa: {
+          acao: 'Salvar tempos fora de ordem (T1 = 180 e T2 = 90)',
+          resposta: 'Recusado: "Os tempos devem estar em ordem crescente."',
+        },
+      },
+      {
+        titulo: 'Mudar o protocolo',
+        tela: 'Controle da Qualidade › Tabelas de Apoio › Regra de Estabilidade (editar)',
+        quem: 'Qualidade',
+        situacao: 'Nova versão do protocolo',
+        campos: [
+          { rotulo: 'Justificativa', valor: 'Inclusão do ponto de 9 meses', exigido: true },
+          {
+            rotulo: 'Histórico',
+            valor: 'Campo a campo: o que mudou, de quê para quê, quem e quando',
+          },
+          { rotulo: 'Estudo aberto?', valor: 'Se houver, só muda por nova versão' },
+        ],
+        garantia:
+          'A justificativa é obrigatória e o log é campo a campo. Regra com estudo aberto só muda por nova versão. A regra não se exclui, só se desativa.',
+        tentativa: {
+          acao: 'Alterar o protocolo sem justificativa',
+          resposta:
+            'Recusado: "Informe a justificativa da alteração." (No sistema antigo não pedia e o log dizia "não existe log de alteração".)',
+        },
+      },
+      {
+        titulo: 'Abrir o estudo',
+        tela: 'Estoque › Regulatório › Movimentações (Entrada de Estabilidade)',
+        quem: 'Estoque (entrada)',
+        situacao: 'Estudo aberto',
+        campos: [
+          { rotulo: 'Lote liberado', valor: 'L-2026-120', exigido: true },
+          { rotulo: 'Protocolo aprovado', valor: 'Versão 2', exigido: true },
+          { rotulo: 'Quantidade reservada e data de início', valor: '300 unidades, hoje' },
+          { rotulo: 'Data prevista de cada tempo', valor: 'Calculada pelo sistema' },
+        ],
+        garantia:
+          'O estudo só abre com protocolo aprovado. Sem protocolo, o Estoque recebe a recusa. O sistema calcula a data prevista de cada tempo.',
+        tentativa: {
+          acao: 'Dar entrada de estabilidade de um produto sem protocolo aprovado',
+          resposta: 'Recusado: "Não há protocolo de estabilidade aprovado para este produto."',
+        },
+      },
+      {
+        titulo: 'Gerar a análise de cada tempo',
+        tela: 'Controle da Qualidade › Estabilidade › Acompanhamento de Estabilidade',
+        quem: 'Sistema e Qualidade',
+        situacao: 'Tempo T1 em análise',
+        campos: [
+          {
+            rotulo: 'Data prevista de T1',
+            valor: '23/02/2027 (a análise nasce sozinha)',
+            exigido: true,
+          },
+          { rotulo: 'Aviso', valor: 'Tempo próximo e tempo atrasado' },
+          { rotulo: 'Atraso', valor: 'Exige justificativa' },
+        ],
+        garantia:
+          'A análise do tempo nasce na data prevista, sozinha, com lote, validade e quantidade do T0. Há aviso de tempo próximo e atrasado, e o atraso exige justificativa.',
+        tentativa: {
+          acao: 'Deixar o tempo T1 passar da data sem análise e sem justificar',
+          resposta:
+            'Aviso: "Tempo T1 atrasado. Informe a justificativa do atraso." (No sistema antigo não havia aviso.)',
+        },
+      },
+      {
+        titulo: 'Interromper o estudo',
+        tela: 'Controle da Qualidade › Estabilidade › Interromper Estudo',
+        quem: 'Quem tem a função de estabilidade',
+        situacao: 'Interrompido, com justificativa assinada',
+        campos: [
+          { rotulo: 'Justificativa', valor: 'Lote retirado do mercado', exigido: true },
+          {
+            rotulo: 'Assinatura',
+            valor: 'Função de estabilidade, conferida na gravação',
+            exigido: true,
+          },
+        ],
+        garantia:
+          'A justificativa é obrigatória e assinada. Com análise pendente, o banco recusa, não só a tela. A função é conferida na gravação.',
+        tentativa: {
+          acao: 'Interromper o estudo com uma análise ainda pendente',
+          resposta: 'Recusado: "Há solicitação de análise pendente. Conclua ou cancele antes."',
+        },
+      },
+      {
+        titulo: 'Concluir o estudo',
+        tela: 'Controle da Qualidade › Estabilidade › Final de Estabilidade',
+        quem: 'Qualidade (função de aprovar)',
+        situacao: 'Concluído',
+        campos: [
+          { rotulo: 'Todos os tempos com laudo liberado', valor: 'T0 a T3', exigido: true },
+          { rotulo: 'Temperatura', valor: '30 °C (valor numérico, não texto livre)' },
+          { rotulo: 'Conclusão', valor: 'Aprovado', exigido: true },
+          { rotulo: 'Assinatura', valor: 'De quem conclui', exigido: true },
+        ],
+        garantia:
+          'Não conclui como aprovado com resultado reprovado nem fora da especificação sem investigação. A conclusão tem assinatura.',
+        tentativa: {
+          acao: 'Concluir como aprovado com um laudo reprovado',
+          resposta:
+            'Recusado: "Há laudo reprovado. A conclusão aprovada exige investigação concluída." (No sistema antigo permitia.)',
+        },
+      },
+      {
+        titulo: 'Imprimir o relatório final',
+        tela: 'Controle da Qualidade › Estabilidade › Final de Estabilidade (Imprimir)',
+        quem: 'Qualidade',
+        situacao: 'Relatório emitido',
+        campos: [
+          {
+            rotulo: 'Conteúdo',
+            valor:
+              'Protocolo, condição, métodos, resultados por tempo, data prevista e realizada, conclusão e quem assinou',
+            exigido: true,
+          },
+        ],
+        garantia:
+          'O relatório traz o protocolo, a condição, os métodos, os resultados por tempo, as datas, a conclusão e quem assinou.',
+        tentativa: {
+          acao: 'Imprimir o relatório de um estudo que não existe',
+          resposta: 'Aviso: "Estudo não encontrado." (No sistema antigo aparecia um erro técnico.)',
+        },
+      },
+      {
+        titulo: 'Resultado fora da especificação',
+        tela: 'Controle da Qualidade › Estabilidade › Investigação (tela nova)',
+        quem: 'Qualidade',
+        situacao: 'Estudo retido, em investigação',
+        campos: [
+          { rotulo: 'Laudo do tempo T2', valor: 'Reprovado (dissolução abaixo do limite)' },
+          { rotulo: 'Estudo', valor: 'Retido', exigido: true },
+          { rotulo: 'Desvio', valor: 'Aberto automaticamente', exigido: true },
+          { rotulo: 'Comunicação', valor: 'Investigação e comunicação registradas' },
+        ],
+        garantia: 'O estudo fica retido, abre desvio, e a conclusão só vem depois da investigação.',
+        tentativa: {
+          acao: 'Concluir o estudo enquanto a investigação está aberta',
+          resposta:
+            'Recusado: "Há investigação aberta. Conclua-a antes de concluir o estudo." (No sistema antigo o resultado fora da especificação não mudava nada.)',
+        },
+      },
+    ],
+  },
 ];
