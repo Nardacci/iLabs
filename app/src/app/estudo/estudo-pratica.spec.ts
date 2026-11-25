@@ -29,7 +29,7 @@ describe('Na prática (telas de exemplo)', () => {
   });
 
   it('todo passo tem tela, campos, garantia e tentativa', () => {
-    expect(PRATICAS.length).toBeGreaterThanOrEqual(15);
+    expect(PRATICAS.length).toBeGreaterThanOrEqual(17);
     for (const p of PRATICAS)
       for (const passo of p.passos) {
         expect(passo.campos.length).toBeGreaterThan(0);

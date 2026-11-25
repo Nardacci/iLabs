@@ -2,6 +2,12 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-27 · Claude · "Na prática": Controle de Documentos (12a e 12b) e aviso sobre o que é norma
+
+- **Pergunta do responsável:** as telas de exemplo mostram o ideal conforme as normas da ANVISA? **Resposta registrada:** mostram o **modelo ideal proposto pelo iLabs**, que corrige as falhas do legado; **nem tudo é exigência da ANVISA** (na classificação das 219 perguntas, 70 são "a norma manda" e 109 são parâmetro da empresa), vários textos de norma ainda não foram lidos por inteiro e **nada foi validado por quem opera uma fábrica**. O aviso no alto de cada página "Na prática" agora diz isso.
+- **Entregue:** duas práticas: **ciclo do documento** (12a, 9 passos) e **cópias, externo e legado** (12b, 9 passos). Endereços: `/estudo/pratica/ciclo-documento` e `/estudo/pratica/copias-externo-legado`.
+- **Próxima etapa:** Produção (14a a 14e), Comercial (15a a 15c), Rastreabilidade (16a, 16b), OPE (17) e Inventário (10).
+
 ## 2026-11-26 · Claude · "Na prática": Garantia da Qualidade (13a a 13e)
 
 - **Pedido do responsável:** seguir, na Garantia da Qualidade.

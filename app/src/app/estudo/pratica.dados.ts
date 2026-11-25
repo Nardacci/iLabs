@@ -2609,4 +2609,364 @@ export const PRATICAS: readonly PraticaFicha[] = [
       },
     ],
   },
+  {
+    id: 'ciclo-documento',
+    ficha: 'fluxo12a',
+    titulo: 'O documento até ficar em vigor',
+    rotuloSituacao: 'Situação do documento',
+    resumo:
+      'Acompanhe um procedimento operacional (POP, dados inventados) da criação à vigência, com nova revisão e obsolescência. O ponto central: ninguém aprova o que escreveu, cada decisão é assinada e só o documento vigente é usado.',
+    passos: [
+      {
+        titulo: 'Definir o tipo de documento',
+        tela: 'Controle de Documentos › Tabelas de Apoio › Tipo de Documento',
+        quem: 'Qualidade documental',
+        situacao: 'Tipo cadastrado',
+        campos: [
+          { rotulo: 'Nome e código', valor: 'POP, código automático', exigido: true },
+          {
+            rotulo: 'Validade e alerta',
+            valor: '24 meses, alerta 60 dias antes (parâmetros da empresa)',
+          },
+          { rotulo: 'Exige treinamento', valor: 'Sim' },
+          { rotulo: 'Caminho', valor: 'Revisão → pré-aprovação → aprovação', exigido: true },
+        ],
+        garantia:
+          'O caminho tem ao menos uma aprovação. O nome não se repete. Só se exclui tipo sem documento ativo. Mudar o caminho fica no histórico.',
+        tentativa: {
+          acao: 'Criar um tipo cujo caminho só tem a etapa "Vigente"',
+          resposta:
+            'Recusado: "O caminho precisa ter ao menos uma aprovação." (No sistema antigo o documento entrava em vigor já no envio.)',
+        },
+      },
+      {
+        titulo: 'Incluir o documento',
+        tela: 'Controle de Documentos › Documento › Documento',
+        quem: 'Autor',
+        situacao: 'Em elaboração',
+        campos: [
+          {
+            rotulo: 'Tipo, título e setor',
+            valor: 'POP, "Pesagem de matéria-prima", Estoque',
+            exigido: true,
+          },
+          { rotulo: 'Anexo', valor: 'Arquivo do POP', exigido: true },
+          { rotulo: 'Setores revisores', valor: 'Qualidade e Produção', exigido: true },
+          { rotulo: 'Aplicações', valor: 'Estoque', exigido: true },
+        ],
+        garantia:
+          'O documento só segue com anexo, ao menos um revisor e uma aplicação. A exclusão só vale em inclusão, com justificativa, e não apaga.',
+        tentativa: {
+          acao: 'Enviar o documento sem anexo e sem revisor',
+          resposta:
+            'Recusado, com todas as pendências de uma vez: "Falta o anexo e ao menos um setor revisor." (No sistema antigo as mensagens vinham uma por vez.)',
+        },
+      },
+      {
+        titulo: 'Revisar (análise crítica)',
+        tela: 'Controle de Documentos › Documento › Revisão de Documento',
+        quem: 'Setores revisores',
+        situacao: 'Revisado',
+        campos: [
+          { rotulo: 'Decisão do setor', valor: 'Revisado', exigido: true },
+          { rotulo: 'Senha', valor: 'De quem decide, conferida', exigido: true },
+          { rotulo: 'Se devolver', valor: 'Volta ao autor, com justificativa e senha' },
+        ],
+        garantia:
+          'Cada setor revisor decide. A decisão leva senha e fica assinada. A devolução volta ao autor.',
+        tentativa: {
+          acao: 'Devolver o documento sem senha',
+          resposta:
+            'Recusado: "Para devolver, informe sua senha e a justificativa." (No sistema antigo devolvia sem assinar.)',
+        },
+      },
+      {
+        titulo: 'Pré-aprovar',
+        tela: 'Controle de Documentos › Documento › Pré-Aprovação',
+        quem: 'Aprovador inicial',
+        situacao: 'Pré-aprovado',
+        campos: [
+          { rotulo: 'Anexo final', valor: 'Versão final do POP', exigido: true },
+          { rotulo: 'Quem pré-aprova', valor: 'Diferente de quem elaborou', exigido: true },
+        ],
+        garantia: 'Quem pré-aprova é diferente de quem elaborou, e o anexo final é obrigatório.',
+        tentativa: {
+          acao: 'O próprio autor pré-aprovar',
+          resposta: 'Recusado: "Quem elaborou o documento não pode pré-aprová-lo."',
+        },
+      },
+      {
+        titulo: 'Aprovar',
+        tela: 'Controle de Documentos › Documento › Aprovação',
+        quem: 'Aprovador final',
+        situacao: 'Aprovado',
+        campos: [
+          { rotulo: 'Aprovador', valor: 'Diferente do autor e de quem pré-aprovou', exigido: true },
+          {
+            rotulo: 'Senha e assinatura',
+            valor: 'Gravam aprovador, data e assinante',
+            exigido: true,
+          },
+        ],
+        garantia:
+          'Quem aprova é diferente de quem elaborou e de quem pré-aprovou, conferido na gravação. A senha é de quem decide e a assinatura vai para o histórico.',
+        tentativa: {
+          acao: 'Quem pré-aprovou também aprovar',
+          resposta:
+            'Recusado: "Quem pré-aprovou não pode aprovar." (No sistema antigo a mesma pessoa pré-aprovava e aprovava.)',
+        },
+      },
+      {
+        titulo: 'Pôr em vigor',
+        tela: 'Controle de Documentos › Documento › Vigência',
+        quem: 'Quem tem a função',
+        situacao: 'Vigente (revisão anterior: substituída)',
+        campos: [
+          { rotulo: 'Emissão e validade', valor: 'Calculadas pelo sistema', exigido: true },
+          {
+            rotulo: 'Treinamento exigido',
+            valor: 'Concluído e suficiente (ficha 13a)',
+            exigido: true,
+          },
+          {
+            rotulo: 'Uma só transação',
+            valor: 'Nova vigente, anterior substituída, histórico assinado',
+          },
+        ],
+        garantia:
+          'A emissão e a validade são calculadas pelo sistema, e a emissão não é anterior à aprovação. Com treinamento exigido e não concluído, não entra em vigor. É uma só transação.',
+        tentativa: {
+          acao: 'Digitar uma data de emissão anterior à aprovação',
+          resposta:
+            'Recusado: "A emissão é calculada pelo sistema e não pode ser anterior à aprovação."',
+        },
+      },
+      {
+        titulo: 'Nova revisão',
+        tela: 'Controle de Documentos › Documento › Nova Revisão de Documento',
+        quem: 'Autor',
+        situacao: 'Revisão 01 em elaboração; a 00 segue vigente',
+        campos: [
+          { rotulo: 'Documento vigente', valor: 'POP-EST-012, revisão 00', exigido: true },
+          { rotulo: 'Motivo', valor: 'Atualização do procedimento', exigido: true },
+          { rotulo: 'Ligação', valor: 'A 00 e a 01 ficam ligadas' },
+        ],
+        garantia:
+          'Só se abre revisão de documento vigente. A revisão soma 1. O anterior segue vigente até a nova entrar em vigor, e os dois ficam ligados.',
+        tentativa: {
+          acao: 'Abrir nova revisão de um documento que ainda não está vigente',
+          resposta: 'Recusado: "Só se abre nova revisão de documento vigente."',
+        },
+      },
+      {
+        titulo: 'Obsoletar',
+        tela: 'Controle de Documentos › Documento › Obsolescência de Documento',
+        quem: 'Quem tem a função',
+        situacao: 'Obsoleto; cópias recolhidas',
+        campos: [
+          { rotulo: 'Justificativa', valor: 'Procedimento extinto', exigido: true },
+          { rotulo: 'Senha e confirmação', valor: 'Assinatura', exigido: true },
+          { rotulo: 'Cópias', valor: 'Recolhimento aberto (ficha 12b)' },
+        ],
+        garantia:
+          'Só documento vigente. A justificativa é obrigatória, com assinatura. Recolhe as cópias.',
+        tentativa: {
+          acao: 'Obsoletar sem justificativa',
+          resposta:
+            'Recusado: "Informe a justificativa da obsolescência." (No sistema antigo não pedia.)',
+        },
+      },
+      {
+        titulo: 'Consultar e histórico',
+        tela: 'Controle de Documentos › Documento › Visualizar Documento',
+        quem: 'Todos',
+        situacao: 'Só leitura',
+        campos: [
+          {
+            rotulo: 'Histórico',
+            valor: 'Toda ação, justificativa, data e assinante, inclusive criação e substituição',
+            exigido: true,
+          },
+          { rotulo: 'Uso nos outros módulos', valor: 'Só o vigente aparece' },
+        ],
+        garantia:
+          'O histórico mostra toda ação, justificativa, data e assinante. Só o documento vigente aparece para uso nos outros módulos.',
+        tentativa: {
+          acao: 'Abrir pela lista de uso um documento já substituído',
+          resposta: 'Não aparece: "Só documentos vigentes da sua aplicação estão disponíveis."',
+        },
+      },
+    ],
+  },
+  {
+    id: 'copias-externo-legado',
+    ficha: 'fluxo12b',
+    titulo: 'Cópias em papel, documento externo e documento legado',
+    rotuloSituacao: 'Situação',
+    resumo:
+      'Acompanhe as cópias em papel de um POP, um documento externo (norma) e um documento anterior ao sistema (dados inventados). O ponto central: toda cópia é numerada e rastreada, e quando o documento muda, as cópias antigas são recolhidas com baixa assinada.',
+    passos: [
+      {
+        titulo: 'Pedir cópias',
+        tela: 'Controle de Documentos › Cópias › Controle de Cópias',
+        quem: 'Qualidade documental',
+        situacao: 'Cópias controladas emitidas',
+        campos: [
+          { rotulo: 'Documento', valor: 'POP-EST-012, vigente, com anexo final', exigido: true },
+          {
+            rotulo: 'Tipo da cópia',
+            valor: 'Controlada: recebe o número seguinte (003)',
+            exigido: true,
+          },
+          { rotulo: 'Setor e quantidade', valor: 'Estoque, 2 cópias' },
+        ],
+        garantia:
+          'Só documento vigente. A controlada recebe o número seguinte e a não controlada fica sem número. Cada inclusão fica no histórico, com quem incluiu.',
+        tentativa: {
+          acao: 'Pedir cópia de um documento obsoleto',
+          resposta: 'Recusado: "Só se emitem cópias de documento vigente."',
+        },
+      },
+      {
+        titulo: 'Imprimir a cópia',
+        tela: 'Controle de Documentos › Cópias › Imprimir Selecionados',
+        quem: 'Qualidade documental',
+        situacao: 'Cópia impressa',
+        campos: [
+          {
+            rotulo: 'Na cópia',
+            valor: 'Número, setor, "cópia controlada" e marca d\'água',
+            exigido: true,
+          },
+          { rotulo: 'Registro', valor: 'Quem imprimiu, quando e para quem' },
+        ],
+        garantia:
+          'A impressão leva número, setor, "cópia controlada" e marca d\'água. Registra quem imprimiu, quando e para quem, e recusa documento que não é vigente.',
+        tentativa: {
+          acao: 'Imprimir uma cópia de documento que deixou de ser vigente',
+          resposta:
+            'Recusado: "O documento não é vigente. A impressão foi recusada." (No sistema antigo disse "salvo" e abriu uma página em branco.)',
+        },
+      },
+      {
+        titulo: 'Recolher a cópia',
+        tela: 'Controle de Documentos › Cópias › Recolhimento (tela nova)',
+        quem: 'Qualidade documental e setor',
+        situacao: 'Recolhimento pendente, depois baixado',
+        campos: [
+          { rotulo: 'Gatilho', valor: 'Documento substituído ou obsoletado', exigido: true },
+          { rotulo: 'Aviso', valor: 'Enviado ao setor com cópia ativa' },
+          { rotulo: 'Baixa', valor: 'Confirmação do setor, data e quem recebeu', exigido: true },
+        ],
+        garantia:
+          'Substituir ou obsoletar o documento abre o recolhimento de cada cópia ativa, com aviso ao setor e baixa assinada. Sem baixa, o documento fica pendente.',
+        tentativa: {
+          acao: 'Dar o recolhimento por concluído sem a baixa do setor',
+          resposta:
+            'Recusado: "Falta a confirmação do setor e a data de recebimento." (No sistema antigo não havia aviso nem recolhimento.)',
+        },
+      },
+      {
+        titulo: 'Remover ou cancelar uma cópia',
+        tela: 'Controle de Documentos › Cópias › Controle de Cópias',
+        quem: 'Qualidade documental',
+        situacao: 'Cópia cancelada, com justificativa',
+        campos: [
+          { rotulo: 'Justificativa', valor: 'Cópia danificada', exigido: true },
+          { rotulo: 'Histórico', valor: 'Quem, quando e por quê' },
+        ],
+        garantia:
+          'A justificativa é obrigatória e fica no histórico. Cada cópia pode ser desfeita, e nada é apagado.',
+        tentativa: {
+          acao: 'Cancelar a cópia sem justificar',
+          resposta: 'Recusado: "Informe a justificativa."',
+        },
+      },
+      {
+        titulo: 'Cadastrar o documento externo',
+        tela: 'Controle de Documentos › Externo e Legado › Documento Externo',
+        quem: 'Qualidade documental',
+        situacao: 'Em análise de aceitação, depois em uso',
+        campos: [
+          { rotulo: 'Código e título', valor: 'EXT-001, norma do fornecedor', exigido: true },
+          { rotulo: 'Empresa de origem', valor: 'Do cadastro de pessoa jurídica' },
+          { rotulo: 'Emissão e validade', valor: '01/01/2026 a 31/12/2027', exigido: true },
+        ],
+        garantia:
+          'O código não se repete. Há análise de aceitação antes de pôr em uso. A validade é obrigatória, a validade vencida impede o uso e há aviso antes de vencer.',
+        tentativa: {
+          acao: 'Pôr em uso um externo sem análise de aceitação',
+          resposta: 'Recusado: "O documento externo precisa de análise de aceitação antes do uso."',
+        },
+      },
+      {
+        titulo: 'Consultar e relatar o externo',
+        tela: 'Controle de Documentos › Externo e Legado › Documento Externo (lista e relatório)',
+        quem: 'Todos',
+        situacao: 'Só leitura',
+        campos: [
+          { rotulo: 'Dias a vencer', valor: '400 dias, na lista e no relatório', exigido: true },
+          { rotulo: 'Vencido', valor: 'Sai de uso' },
+        ],
+        garantia:
+          'Os dias a vencer aparecem na lista e no relatório. O documento vencido sai de uso.',
+        tentativa: {
+          acao: 'Usar um externo cuja validade acabou ontem',
+          resposta:
+            'Bloqueado: "Documento externo vencido." (No sistema antigo nada avisava nem bloqueava.)',
+        },
+      },
+      {
+        titulo: 'Excluir o externo',
+        tela: 'Controle de Documentos › Externo e Legado › Documento Externo',
+        quem: 'Qualidade documental',
+        situacao: 'Excluído, com histórico consultável',
+        campos: [
+          { rotulo: 'Justificativa', valor: 'Substituído por norma nova', exigido: true },
+          { rotulo: 'Histórico', valor: 'Consultável depois da exclusão' },
+        ],
+        garantia: 'A justificativa é obrigatória e o histórico continua consultável.',
+        tentativa: {
+          acao: 'Excluir sem justificativa',
+          resposta: 'Recusado: "Informe a justificativa da exclusão."',
+        },
+      },
+      {
+        titulo: 'Cadastrar o documento legado',
+        tela: 'Controle de Documentos › Externo e Legado › Documento Legado',
+        quem: 'Qualidade documental',
+        situacao: 'Vigente, marcado como legado',
+        campos: [
+          {
+            rotulo: 'Dados e etapas',
+            valor:
+              'Análise, pré-aprovação, aprovação e vigência: quem e quando, de usuários cadastrados',
+          },
+          { rotulo: 'Original assinado', valor: 'Anexado', exigido: true },
+          { rotulo: 'Senha e assinatura', valor: 'De quem tem a função', exigido: true },
+        ],
+        garantia:
+          'Só quem tem a função põe em vigor, com senha e assinatura. Exige o original assinado anexado. Fica marcado como legado e grava no histórico.',
+        tentativa: {
+          acao: 'Pôr o documento legado em vigor sem anexar o original assinado',
+          resposta: 'Recusado: "Anexe o original assinado."',
+        },
+      },
+      {
+        titulo: 'Visualizar o documento em uso',
+        tela: 'Controle de Documentos › Documento › Visualizar Documento',
+        quem: 'Todos',
+        situacao: 'Só leitura',
+        campos: [
+          { rotulo: 'O que aparece', valor: 'Só vigente e da aplicação do usuário', exigido: true },
+        ],
+        garantia:
+          'Só o documento vigente e da aplicação do usuário. Substituído e obsoleto não abrem.',
+        tentativa: {
+          acao: 'Abrir um documento substituído',
+          resposta: 'Não aparece: "Só documentos vigentes da sua aplicação estão disponíveis."',
+        },
+      },
+    ],
+  },
 ];

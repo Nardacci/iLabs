@@ -30,8 +30,11 @@ import { PRATICAS } from './pratica.dados';
       </nav>
       <h2 id="pratica-titulo" class="estudo-titulo">{{ p.titulo }}</h2>
       <p class="pratica-aviso" role="note">
-        <strong>Tela de exemplo.</strong> Dados inventados; nada é gravado. Serve para enxergar o
-        que a ficha pede. As regras de verdade ficam no banco.
+        <strong>Tela de exemplo do modelo ideal proposto.</strong> Dados inventados; nada é gravado.
+        Mostra o que a ficha propõe, corrigindo as falhas do sistema antigo.
+        <strong>Nem tudo é exigência da ANVISA:</strong> parte vem da norma e parte é parâmetro da
+        empresa (veja a classificação das perguntas). Ainda não foi validado por quem opera uma
+        fábrica. As regras de verdade ficam no banco.
       </p>
       <p class="estudo-intro">{{ p.resumo }}</p>
 
