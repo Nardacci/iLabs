@@ -2,6 +2,14 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-26 · Claude · "Na prática": Garantia da Qualidade (13a a 13e)
+
+- **Pedido do responsável:** seguir, na Garantia da Qualidade.
+- **Entregue:** cinco práticas: **treinamento** (13a, 9 passos), **desvios e CAPA** (13b, 10), **controle de mudanças** (13c, 10), **autoinspeção e auditoria** (13d, 9) e **assuntos regulatórios** (13e, 9). Endereços: `/estudo/pratica/treinamento`, `desvios-capa`, `mudancas`, `auditoria`, `regulatorio`. As cinco fichas ganharam o botão "Ver na prática".
+- **Ligações mostradas:** treinamento vencido bloqueia a tarefa no Estoque, Produção e CQ; desvio com lote retém o lote; mudança regulatória abre obrigação em Assuntos Regulatórios; auditoria "não conforme" abre desvio; registro vencido bloqueia produção, expedição e venda.
+- **Limites:** dados inventados, mensagens à mão, nenhuma regra no front. Notas mínimas, prazos e frequências nos exemplos são parâmetros da empresa. O item da norma citado no roteiro de auditoria é só exemplo.
+- **Próxima etapa:** Controle de Documentos (12a, 12b), Produção (14a a 14e), Comercial (15a a 15c), Rastreabilidade (16a, 16b) e OPE (17), além do Inventário (10).
+
 ## 2026-11-25 · Claude · "Na prática": Controle da Qualidade (11a e 11b)
 
 - **Pedido do responsável:** seguir, no Controle da Qualidade.
