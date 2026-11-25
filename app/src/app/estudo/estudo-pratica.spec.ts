@@ -46,12 +46,15 @@ describe('Na prática (telas de exemplo)', () => {
     }
   });
 
-  it('mostra a base e as integrações na tela, ou o aviso quando o artigo não foi identificado', () => {
+  it('mostra a base e as integrações na tela do recebimento', () => {
     const f = abrir('recebimento');
     expect(raiz(f).textContent).toContain('Base na norma:');
     expect(raiz(f).textContent).toContain('Integra com:');
-    const sem = abrir('fornecedor');
-    expect(raiz(sem).textContent).toContain('ainda não identificada');
+  });
+
+  it('avisa quando o artigo da norma ainda não foi identificado', () => {
+    const f = abrir('fornecedor');
+    expect(raiz(f).textContent).toContain('ainda não identificada');
   });
 
   it('sem id, lista as práticas', () => {
