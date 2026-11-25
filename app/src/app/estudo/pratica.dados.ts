@@ -19,6 +19,10 @@ export interface PassoPratica {
   campos: readonly Campo[];
   /** O que o banco garante neste passo (da ficha). */
   garantia: string;
+  /** Base na norma (RDC 658/2022 etc.) só quando o artigo foi identificado; senão, fica o aviso padrão da tela. */
+  base?: string;
+  /** Com quais outros módulos este passo conversa. */
+  integra?: string;
   /** Tentativa de burlar a regra e a resposta que o sistema dá. */
   tentativa: { acao: string; resposta: string };
 }
@@ -56,6 +60,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O parecer só pode ser "Aprovado" com todas as perguntas respondidas. Checklist reprovado não pode ser ligado a um recebimento.',
+        base: 'Proposta do iLabs: nenhum artigo da RDC 658/2022 foi identificado para este passo.',
+        integra: 'Estoque (portaria) → Recebimento',
         tentativa: {
           acao: 'Salvar "Aprovado" com 15 perguntas em branco',
           resposta:
@@ -81,6 +87,9 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Fornecedor sem qualificação para este material bloqueia o recebimento. Lote e validade são obrigatórios para material de quarentena.',
+        base: 'RDC 658/2022, art. 179 (qualificação do fornecedor) e art. 157 (todo lote nasce em quarentena).',
+        integra:
+          'Garantia da Qualidade (qualificação do fornecedor) e Principal (cadastro da empresa) → Estoque',
         tentativa: {
           acao: 'Receber de um fornecedor desqualificado',
           resposta:
@@ -104,6 +113,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Quem confere precisa da função de conferente e não pode ser quem cadastrou o recebimento. A divergência real é registrada, não só bloqueada.',
+        base: 'RDC 658/2022, arts. 124 e 125 (registrar a quantidade recebida; diferença com justificativa assinada). A separação entre quem registra e quem confere é proposta do iLabs.',
+        integra: 'Principal (profissionais e funções) → Estoque',
         tentativa: {
           acao: 'Conferir usando o mesmo login de quem registrou',
           resposta:
@@ -125,6 +136,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Função específica e diferente de quem conferiu. Fica registrado quem assinou, quando e com que significado.',
+        base: 'RDC 658/2022, art. 8º, XV (função com responsabilidade definida); quem ocupa a função é decisão do cliente.',
+        integra: 'Principal (funções) → Estoque',
         tentativa: {
           acao: 'Autorizar com um login qualquer, sem a função',
           resposta:
@@ -144,6 +157,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Material de quarentena só aceita local de quarentena, conferido no servidor. A solicitação de análise nasce sozinha.',
+        base: 'RDC 658/2022, art. 157 (todo lote nasce em quarentena).',
+        integra: 'Estoque → Controle da Qualidade (a solicitação de análise nasce sozinha)',
         tentativa: {
           acao: 'Guardar direto no estoque comum',
           resposta:
@@ -167,6 +182,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só pesa em balança com calibração válida, e o peso fica registrado. A quantidade da amostra vem da regra do material.',
+        base: 'RDC 658/2022, art. 110 (só pesa com balança de calibração válida).',
+        integra: 'Estoque ↔ Principal (equipamentos e calibração) ↔ Controle da Qualidade',
         tentativa: {
           acao: 'Pesar em balança com calibração vencida',
           resposta: 'Recusado: "Balança com calibração vencida. Use outra ou recalibre."',
@@ -189,6 +206,9 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O resultado fora do intervalo é classificado pelo banco, não pela tela. O analista precisa estar treinado no método.',
+        base: 'RDC 658/2022, art. 110 (equipamento calibrado) e art. 245 (resultado fora do limite abre investigação).',
+        integra:
+          'Controle da Qualidade ↔ Garantia da Qualidade (treinamento do analista, ficha 13a)',
         tentativa: {
           acao: 'Registrar resultado com analista sem treinamento no método',
           resposta:
@@ -207,6 +227,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O revisor tem função própria e é diferente de quem analisou. A validade do laudo não pode estar no passado. O laudo muda a situação do lote na hora.',
+        base: 'RDC 658/2022, art. 119 (regra com versão e aprovação). A separação entre analista e revisor é proposta do iLabs.',
+        integra: 'Controle da Qualidade → Estoque (o laudo muda a situação do lote na hora)',
         tentativa: {
           acao: 'O próprio analista aprovar o laudo',
           resposta:
@@ -224,6 +246,8 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Aprovado só vai para local comum; reprovado só vai para refugo. Conferido no servidor, não só na tela.',
+        base: 'RDC 658/2022, art. 189 (só se usa material liberado).',
+        integra: 'Estoque ↔ Produção (só lote liberado é usado)',
         tentativa: {
           acao: 'Mandar um lote reprovado para o estoque comum',
           resposta: 'Recusado: "Lote reprovado só pode ir para local de refugo."',

@@ -82,6 +82,16 @@ import { PRATICAS } from './pratica.dados';
             <div class="pratica-garantia">
               <h4>O que o banco garante</h4>
               <p>{{ s.garantia }}</p>
+              <p class="pratica-base">
+                <strong>Base na norma:</strong>
+                {{
+                  s.base ??
+                    'ainda não identificada nesta tela; vale como proposta do iLabs até conferir o artigo.'
+                }}
+              </p>
+              @if (s.integra) {
+                <p class="pratica-base"><strong>Integra com:</strong> {{ s.integra }}</p>
+              }
               <button
                 type="button"
                 class="btn"
@@ -220,6 +230,10 @@ import { PRATICAS } from './pratica.dados';
       padding: 0.75rem 1rem;
       border: 1px dashed var(--line);
       border-radius: 10px;
+    }
+    .pratica-base {
+      font-size: 0.92rem;
+      margin: 0.4rem 0;
     }
     .pratica-garantia h4 {
       margin: 0 0 0.3rem;

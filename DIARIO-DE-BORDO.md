@@ -2,6 +2,13 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-27 · Claude · "Na prática": base na norma e integrações em cada passo (piloto na ficha 1)
+
+- **Pedido do responsável:** as telas de exemplo restantes não podem deixar de fora **as normas da ANVISA** nem **as integrações entre módulos**.
+- **Entregue:** cada passo ganhou duas linhas, **"Base na norma"** (artigo da RDC 658/2022 quando identificado; senão, aviso de que ainda não foi identificado e que vale como proposta) e **"Integra com"** (quais módulos conversam). **Piloto completo na ficha 1** (9 passos), com artigos tirados da classificação das perguntas (arts. 8º XV, 110, 119, 124, 125, 157, 179, 189 e 245). Nas demais telas aparece o aviso "ainda não identificada" até serem preenchidas.
+- **Honestidade:** a RDC 658/2022 foi lida; a IN 139/2022, a RDC 430/2020 e a RDC 625/2022 não foram lidas por inteiro. Onde só há a orientação da ANVISA, a tela deve dizer isso.
+- **Próxima etapa:** preencher base e integrações nas práticas já feitas (fichas 2 a 8, 11, 12 e 13) e já fazer assim nas novas (Produção, Comercial, Rastreabilidade, OPE e Inventário).
+
 ## 2026-11-27 · Claude · "Na prática": Controle de Documentos (12a e 12b) e aviso sobre o que é norma
 
 - **Pergunta do responsável:** as telas de exemplo mostram o ideal conforme as normas da ANVISA? **Resposta registrada:** mostram o **modelo ideal proposto pelo iLabs**, que corrige as falhas do legado; **nem tudo é exigência da ANVISA** (na classificação das 219 perguntas, 70 são "a norma manda" e 109 são parâmetro da empresa), vários textos de norma ainda não foram lidos por inteiro e **nada foi validado por quem opera uma fábrica**. O aviso no alto de cada página "Na prática" agora diz isso.

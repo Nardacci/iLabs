@@ -38,6 +38,25 @@ describe('Na prática (telas de exemplo)', () => {
       }
   });
 
+  it('o recebimento (ficha 1) traz a base na norma e as integrações de todos os passos', () => {
+    const ficha1 = PRATICAS.find((p) => p.id === 'recebimento');
+    for (const passo of ficha1?.passos ?? []) {
+      expect(passo.base).toBeTruthy();
+      expect(passo.integra).toBeTruthy();
+    }
+  });
+
+  it('mostra a base e as integrações na tela do recebimento', () => {
+    const f = abrir('recebimento');
+    expect(raiz(f).textContent).toContain('Base na norma:');
+    expect(raiz(f).textContent).toContain('Integra com:');
+  });
+
+  it('avisa quando o artigo da norma ainda não foi identificado', () => {
+    const f = abrir('fornecedor');
+    expect(raiz(f).textContent).toContain('ainda não identificada');
+  });
+
   it('sem id, lista as práticas', () => {
     const f = abrir();
     expect(raiz(f).querySelectorAll('.estudo-linha').length).toBe(PRATICAS.length);
