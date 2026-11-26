@@ -56,6 +56,7 @@ Este documento é do **analista de negócios** que conduz o estudo. Reúne, em u
 
 !!! Como está organizado
 - **Guia do analista:** o resumo, módulo por módulo (hoje, a norma espera, o iLabs deve).
+- **Matriz de permissões do iLabs** e **Segurança e acesso**: quem pode o quê, quem não pode ser a mesma pessoa e onde o banco confere.
 - **Situação da norma:** os textos oficiais lidos e os que ainda faltam.
 - **Os módulos e a ANVISA**, **a Garantia da Qualidade e os outros módulos**, **os cadastros globais** e **os fluxos do legado**.
 - **As telas de exemplo** (Principal, Estoque, Controle da Qualidade, Garantia da Qualidade e Controle de Documentos): a teoria aplicada passo a passo, com a base na norma e as integrações.
@@ -182,6 +183,16 @@ def montar_fonte(estados_dir, praticas_md=None):
     partes.append("\\pagebreak\n# Os cadastros globais e a ordem de cadastro\n")
     for nome in ("cadastros-repetidos.md", "ordem-de-cadastro.md", "funcoes-do-profissional.md"):
         partes.append(normalizar(lido(nome), 1))
+    # acesso e permissões: a matriz do iLabs e o desenho de segurança e acesso (este último está em docs/, fora de docs/roadmap)
+    partes.append(cap("matriz-de-permissoes-ilabs.md", "Matriz de permissões do iLabs"))
+    seg = normalizar((RAIZ / "docs" / "seguranca-e-acesso.md").read_text(encoding="utf-8"), 0).split("\n")
+    seg[1:1] = [
+        "",
+        "!!! Atenção",
+        "Este capítulo foi escrito em 02/11/2026 e atualizado em 05/11/2026. As frases sobre migrações do banco, protótipos e pendências de publicação descrevem aquele dia e **podem estar desatualizadas**. As decisões e as regras de acesso continuam valendo.",
+        "",
+    ]
+    partes.append("\\pagebreak\n" + "\n".join(seg))
     partes.append(cap("fluxos-do-legado.md", "Os fluxos do legado e a ordem de análise"))
     fichas = ler_ficha_arquivos()
     for modulo in dict.fromkeys(m for _, m, _, _ in fichas):

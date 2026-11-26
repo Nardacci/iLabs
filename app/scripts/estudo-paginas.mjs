@@ -157,6 +157,14 @@ const PAGINAS_SEM_ORDEM = [
     arquivo: 'ordem-de-cadastro.md',
   },
   {
+    id: 'matriz',
+    codigo: '',
+    titulo: 'Matriz de permissões do iLabs',
+    modulo: 'Cadastros',
+    tipo: 'Estudo',
+    arquivo: 'matriz-de-permissoes-ilabs.md',
+  },
+  {
     id: 'funcoes',
     codigo: '',
     titulo: 'Funções do profissional',

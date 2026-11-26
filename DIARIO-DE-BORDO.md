@@ -2,6 +2,14 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-26 · Claude · Matriz de permissões do iLabs; Word v0.5
+
+- **Pergunta do responsável:** não tínhamos feito um documento com as permissões, as funções e os níveis? **Resposta:** havia "Funções do profissional" (o que cada função autoriza no sistema atual e os níveis 1, 2 e 3 da GQ), as matrizes por módulo no repositório do legado e o desenho "Segurança e acesso"; **faltava a matriz do iLabs**, e as matrizes do legado e "Segurança e acesso" não estavam no Word.
+- **Entregue:** `docs/roadmap/matriz-de-permissoes-ilabs.md` (site: `/estudo/roadmap/matriz`, grupo Cadastros): como o acesso funciona (decisões de 02, 05 e 06/11/2026), regras para todos, **segregação de funções** (quem não pode ser a mesma pessoa), os **22 perfis de teste que já estão no banco** com os seis tipos de assinatura, a tradução dos **níveis da GQ** para esses papéis, e a **matriz por módulo** (Principal, Estoque, CQ, GQ e Controle de Documentos) com base na norma e o que o banco confere.
+- **Word v0.5** (382 páginas): capítulos novos "Matriz de permissões do iLabs" e "Segurança e acesso" (com aviso de que o texto é de 02 a 05/11), além do capítulo das telas de exemplo com as 21 bases novas.
+- **Pontos para validar:** nomes e número de papéis; níveis da GQ; empresa pequena (exceção à regra de que ninguém aprova o que elaborou); 2FA para administradores; aprovação da versão da regra do CQ; administrador sem poder de aprovar; funções da cadeia do lote (conferente, autorizador etc.) ainda não existem nos perfis de teste.
+- **Limites:** a coluna "Base na norma" cita artigos conferidos no texto em inglês da RDC 658/2022; o que é "proposta do iLabs" não é exigência da ANVISA; nada foi validado por quem opera uma fábrica.
+
 ## 2026-11-26 · Claude · Lacunas de "Base na norma" fechadas nos cinco módulos
 
 - **Pedido do responsável:** seguir.
