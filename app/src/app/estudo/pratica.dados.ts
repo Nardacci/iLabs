@@ -136,7 +136,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Função específica e diferente de quem conferiu. Fica registrado quem assinou, quando e com que significado.',
-        base: 'RDC 658/2022, art. 8º, XV (função com responsabilidade definida); quem ocupa a função é decisão do cliente.',
+        base: 'RDC 658/2022, art. 8º, XV (a certificação do lote é de uma pessoa delegada pelo sistema da qualidade). Quem ocupa a função é decisão do cliente.',
         integra: 'Principal (funções) → Estoque',
         tentativa: {
           acao: 'Autorizar com um login qualquer, sem a função',
@@ -299,7 +299,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A avaliação fica ligada ao par fornecedor + material e guarda as respostas. Ser qualificado para um material não vale para outro.',
-        base: 'RDC 658/2022, art. 179 (qualificação do fornecedor, por fornecedor e material) e art. 8º, VI (quem audita é independente).',
+        base: 'RDC 658/2022, art. 179 (seleção, qualificação e aprovação do fornecedor, documentadas) e art. 8º, VI (seleção e monitoramento de fornecedores e conferência de cada recebimento).',
         integra: 'Garantia da Qualidade ↔ Estoque (material) ↔ Principal (fornecedor)',
         tentativa: {
           acao: 'Usar a avaliação do açúcar para qualificar o mesmo fornecedor em outro material',
@@ -467,7 +467,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só uma regra ativa por material e tipo de análise. Quantidade e tolerância inválidas são recusadas, não viram zero em silêncio.',
-        base: 'RDC 658/2022, art. 14, I (critério de amostragem). O art. 247 também é citado pela ficha para o conteúdo da regra.',
+        base: 'RDC 658/2022, art. 247 (procedimento de amostragem: método, equipamento, quantidade, subdivisão da amostra) e art. 14, I (procedimentos aprovados).',
         integra: 'Controle da Qualidade ← Estoque (material e unidade)',
         tentativa: {
           acao: 'Salvar quantidade "0" ou tolerância negativa',
@@ -488,7 +488,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O mínimo é sempre menor ou igual ao máximo, inclusive com zero e números negativos. Regra duplicada é recusada.',
-        base: 'RDC 658/2022, art. 14 (especificação por material).',
+        base: 'RDC 658/2022, art. 14, I (procedimentos aprovados para os ensaios). A especificação por material é do registro do produto.',
         integra: 'Controle da Qualidade ← Estoque (material) e Principal (unidade)',
         tentativa: {
           acao: 'Salvar mínimo 0 e máximo -5',
@@ -606,7 +606,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O resultado fora do limite é classificado pelo banco e abre investigação, com observação obrigatória. Laudo já liberado não se altera.',
-        base: 'RDC 658/2022, art. 245 (resultado fora do limite abre investigação), art. 110 (equipamento calibrado) e art. 124 (padrão com lote e validade).',
+        base: 'RDC 658/2022, art. 245 (resultado fora do limite é investigado), art. 110 (equipamento calibrado) e art. 124 (rastreabilidade do que foi usado no ensaio).',
         integra:
           'Controle da Qualidade → Garantia da Qualidade (investigação) ↔ Principal (equipamentos)',
         tentativa: {
@@ -682,7 +682,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O almoxarifado é do grupo de quem pede. O tipo Produção só nasce da ordem de produção. O pedido só existe com tudo preenchido.',
-        base: 'RDC 658/2022, art. 137 (o pedido de produção nasce da ordem de produção).',
+        base: 'RDC 658/2022, art. 137 (registro de produção de cada lote). Que o pedido de produção nasça da ordem de produção é proposta do iLabs.',
         integra: 'Produção (ordem de produção) → Estoque',
         tentativa: {
           acao: 'Pedir de um almoxarifado de outro grupo',
@@ -1307,7 +1307,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O lote nasce de uma ordem de produção e vem dela. A validade é maior que hoje, e o destino é só de quarentena quando o item exige.',
-        base: 'RDC 658/2022, art. 220 (o lote do acabado nasce da ordem de produção) e art. 157 (quarentena).',
+        base: 'RDC 658/2022, arts. 157 e 220 (produto acabado fica em quarentena até a liberação final). Que o lote nasça da ordem de produção é proposta do iLabs, apoiada no art. 137.',
         integra: 'Produção → Estoque → Controle da Qualidade',
         tentativa: {
           acao: 'Dar entrada em um lote digitado, sem ordem de produção',
@@ -1810,7 +1810,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
           { rotulo: 'Comunicação', valor: 'Investigação e comunicação registradas' },
         ],
         garantia: 'O estudo fica retido, abre desvio, e a conclusão só vem depois da investigação.',
-        base: 'RDC 658/2022, arts. 245, 283 e 284 (investigação e comunicação).',
+        base: 'RDC 658/2022, art. 245 (dado fora da especificação é investigado), art. 284 (resultados ao pessoal-chave e ao Responsável Técnico) e art. 283 (lotes adicionais em caso de desvio).',
         integra: 'Controle da Qualidade → Garantia da Qualidade (desvio)',
         tentativa: {
           acao: 'Concluir o estudo enquanto a investigação está aberta',
@@ -2067,7 +2067,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A contenção inclui o lote, com bloqueio ou aviso. Uma gravação por vez: ninguém sobrescreve o trabalho do outro.',
-        base: 'RDC 658/2022, arts. 8º, XV e 332 (desvio aberto bloqueia o lote até a contenção e a decisão).',
+        base: 'RDC 658/2022, art. 332 (investigação do desvio) e art. 8º, XV (nada é distribuído antes da certificação do lote).',
         integra: 'Garantia da Qualidade → Estoque, Controle da Qualidade e Produção',
         tentativa: {
           acao: 'Duas pessoas salvarem ações diferentes ao mesmo tempo',
@@ -2091,7 +2091,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O método é obrigatório (com texto se "outros"). O risco é classificado já aqui. Sem áreas, segue direto; com áreas, espera cada uma.',
-        base: 'RDC 658/2022, art. 332 (níveis cadastráveis: crítico, maior, menor).',
+        base: 'RDC 658/2022, art. 332 (procedimentos de investigação do desvio). Os níveis crítico, maior e menor são proposta do iLabs.',
         integra: 'Garantia da Qualidade',
         tentativa: {
           acao: 'Escolher método "outros" sem descrever',
@@ -2132,7 +2132,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Sem CAPA, o motivo tem conteúdo e é assinado. Com CAPA, segue. A necessidade de mudança abre a solicitação de mudança.',
-        base: 'RDC 658/2022, art. 332 (investigação e decisão).',
+        base: 'RDC 658/2022, art. 341 (ações corretivas e preventivas adequadas ao desvio).',
         integra: 'Garantia da Qualidade ↔ Controle de Mudanças',
         tentativa: {
           acao: 'Decidir não abrir CAPA sem informar o motivo',
@@ -2196,7 +2196,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só aprova com todas as ações concluídas e implementadas. Reprovar volta ao plano. A assinatura é de quem não escreveu o plano.',
-        base: 'RDC 658/2022, art. 341 (verificação de eficácia com prazo; quem verifica é diferente).',
+        base: 'RDC 658/2022, art. 341, parágrafo único (a eficácia das ações é monitorada e avaliada). O prazo e quem verifica são parâmetros do iLabs.',
         integra: 'Garantia da Qualidade',
         tentativa: {
           acao: 'Aprovar com uma ação ainda pendente',
@@ -2219,7 +2219,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'As mesmas travas da corretiva. Só conclui com a eficácia provada. Reprovar volta ao plano.',
-        base: 'RDC 658/2022, art. 341 (eficácia provada).',
+        base: 'RDC 658/2022, art. 341, parágrafo único (a eficácia das ações é monitorada e avaliada).',
         integra: 'Garantia da Qualidade',
         tentativa: {
           acao: 'Concluir a preventiva sem provar a eficácia',
@@ -2242,7 +2242,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Desvio aberto com lote retém o lote no Estoque, no CQ e na Produção. Só a Qualidade o libera, com assinatura.',
-        base: 'RDC 658/2022, art. 332, II (a investigação registra se outros lotes são afetados) e art. 8º, XV.',
+        base: 'RDC 658/2022, art. 332, II (determinar a extensão do desvio) e art. 8º, XV (nada é distribuído antes da certificação do lote).',
         integra: 'Garantia da Qualidade → Estoque, Controle da Qualidade e Produção',
         tentativa: {
           acao: 'Separar o lote retido para a produção',
@@ -2463,7 +2463,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A validade vencida encerra a mudança sozinha, com aviso antes e registro. A mudança volta ao padrão.',
-        base: 'RDC 658/2022, art. 8º, XII (mudança temporária tem data de término).',
+        base: 'RDC 658/2022, art. 8º, XII (avaliação e aprovação prévia da mudança). A data de término da mudança temporária é parâmetro do iLabs.',
         integra: 'Garantia da Qualidade → Central de Notificações',
         tentativa: {
           acao: 'Manter uma mudança temporária depois da validade',
@@ -2492,7 +2492,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A sigla é única. A classificação (crítico, maior, menor) é definida pela empresa.',
-        base: 'RDC 658/2022, art. 365 (classificação crítico, maior, menor).',
+        base: 'RDC 658/2022, art. 365 (relatório com todas as observações e propostas de ação corretiva). A classificação crítico, maior e menor é proposta do iLabs: a norma não a define.',
         integra: 'Garantia da Qualidade',
         tentativa: {
           acao: 'Cadastrar a mesma sigla duas vezes',
@@ -2552,7 +2552,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O planejamento anual mostra o calendário e o que falta fazer, por período e situação.',
-        base: 'RDC 658/2022, art. 362 (programa anual com responsável e aviso de vencimento).',
+        base: 'RDC 658/2022, art. 362 (programa pré-estabelecido de exame regular). Responsável designado e aviso de vencimento são propostas do iLabs.',
         integra: 'Garantia da Qualidade → Central de Notificações',
         tentativa: {
           acao: 'Pedir o planejamento de um período e receber lista vazia',
@@ -2573,7 +2573,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O inspetor é independente da área auditada (de qualquer pessoa da área, não só do responsável). O coordenador é obrigatório. O período é futuro e coerente.',
-        base: 'RDC 658/2022, art. 363 (o auditor não pertence à área auditada).',
+        base: 'RDC 658/2022, art. 363 (autoinspeção independente, por pessoas competentes designadas pela empresa).',
         integra: 'Garantia da Qualidade ← Principal (profissionais e departamentos)',
         tentativa: {
           acao: 'Escolher como inspetor alguém do próprio Estoque',
@@ -2608,7 +2608,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só o inspetor designado responde, e a área auditada só vê. O roteiro só avança com todas as respostas, conferido no banco. A resposta liga ao desvio.',
-        base: 'RDC 658/2022, art. 363 (independência de quem inspeciona).',
+        base: 'RDC 658/2022, arts. 363 e 364 (autoinspeção independente e toda autoinspeção registrada).',
         integra: 'Garantia da Qualidade → Desvios e CAPA (ficha 13b)',
         tentativa: {
           acao: 'Concluir o roteiro com perguntas sem resposta',
@@ -2646,7 +2646,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O resultado "não conforme" abre o desvio e a CAPA, ligados à auditoria. Excluir desvio exige justificativa e histórico.',
-        base: 'RDC 658/2022, art. 366 (todo "não conforme" abre desvio, com nível).',
+        base: 'RDC 658/2022, art. 365 (propostas de ação corretiva) e art. 366 (registrar as ações tomadas depois). Abrir o desvio automaticamente é proposta do iLabs.',
         integra: 'Garantia da Qualidade → Desvios e CAPA (ficha 13b)',
         tentativa: {
           acao: 'Concluir "não conforme" sem abrir desvio',
@@ -2896,7 +2896,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O documento só segue com anexo, ao menos um revisor e uma aplicação. A exclusão só vale em inclusão, com justificativa, e não apaga.',
-        base: 'RDC 658/2022, art. 119 (documento controlado).',
+        base: 'RDC 658/2022, art. 119, §1º (conteúdo claro e identificação única).',
         integra: 'Controle de Documentos ← Principal (setores e aplicações)',
         tentativa: {
           acao: 'Enviar o documento sem anexo e sem revisor',
@@ -2983,7 +2983,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A emissão e a validade são calculadas pelo sistema, e a emissão não é anterior à aprovação. Com treinamento exigido e não concluído, não entra em vigor. É uma só transação.',
-        base: 'RDC 658/2022, art. 119, §2º (a emissão é a data da aprovação; a vigência tem data própria; treinamento antes).',
+        base: 'RDC 658/2022, art. 119, §2º (a data de vigência do documento deve ser definida). Exigir treinamento antes da vigência é proposta do iLabs.',
         integra: 'Controle de Documentos ↔ Garantia da Qualidade (treinamento)',
         tentativa: {
           acao: 'Digitar uma data de emissão anterior à aprovação',
@@ -3077,7 +3077,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só documento vigente. A controlada recebe o número seguinte e a não controlada fica sem número. Cada inclusão fica no histórico, com quem incluiu.',
-        base: 'RDC 658/2022, art. 121 (cópia em papel só como cópia controlada e numerada).',
+        base: 'RDC 658/2022, art. 121, parágrafo único (evitar o uso de documento obsoleto). A cópia numerada é proposta do iLabs.',
         integra: 'Controle de Documentos',
         tentativa: {
           acao: 'Pedir cópia de um documento obsoleto',
@@ -3099,7 +3099,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A impressão leva número, setor, "cópia controlada" e marca d\'água. Registra quem imprimiu, quando e para quem, e recusa documento que não é vigente.',
-        base: 'RDC 658/2022, art. 121 (texto "cópia controlada"; configurável pela empresa).',
+        base: 'RDC 658/2022, art. 121, parágrafo único (evitar o uso de documento obsoleto). O texto "cópia controlada" e a marca d\'água são propostas do iLabs.',
         integra: 'Controle de Documentos',
         tentativa: {
           acao: 'Imprimir uma cópia de documento que deixou de ser vigente',
@@ -3119,7 +3119,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Substituir ou obsoletar o documento abre o recolhimento de cada cópia ativa, com aviso ao setor e baixa assinada. Sem baixa, o documento fica pendente.',
-        base: 'RDC 658/2022, art. 121 (a cópia antiga é recolhida quando o documento muda).',
+        base: 'RDC 658/2022, art. 121, parágrafo único (evitar o uso de documento obsoleto).',
         integra: 'Controle de Documentos ↔ setores com cópia',
         tentativa: {
           acao: 'Dar o recolhimento por concluído sem a baixa do setor',
@@ -3449,7 +3449,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O histórico é gravado por gatilhos do banco e não pode ser apagado nem editado. A assinatura confere a senha de novo na hora de assinar.',
-        base: 'RDC 658/2022, arts. 124 e 125 (registro de quem fez e quando); Guia 33/2020, item 11.12 (trilha de auditoria e proteção contra alteração não autorizada).',
+        base: 'RDC 658/2022, arts. 124 e 125 (registro de quem fez e quando; alteração assinada, datada e com o original legível). Guia 33/2020, itens 9.8.1.3.9 (registros e assinaturas eletrônicos) e 11.14 (gerenciamento de registros).',
         integra: 'Principal → todos os módulos (toda assinatura e toda alteração passam por aqui)',
         tentativa: {
           acao: 'Apagar uma linha do histórico de alterações',
