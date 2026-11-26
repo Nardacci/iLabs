@@ -2,6 +2,13 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-26 · Claude · Matriz de permissões em Excel
+
+- **Pedido do responsável:** só a parte de permissões, em Excel.
+- **Entregue:** planilha `iLabs - Matriz de permissões.xlsx` com 7 abas: Leia-me; **Matriz por módulo** (54 ações dos cinco módulos, com filtro e as colunas em branco "Situação" e "Observação do responsável" para a revisão); Papéis (os 22 perfis do banco); Níveis da GQ; Segregação de funções (10 pares); Regras para todos; Pontos a validar (8).
+- **Como gerar de novo:** `python3 docs/roadmap/ferramentas/gerar-matriz-excel.py <saida.xlsx>`. A planilha é lida do documento `matriz-de-permissoes-ilabs.md` (a fonte); nada é digitado à mão, e as contagens batem com o documento. O `.xlsx` não vai para o git.
+- **Limites:** os mesmos do documento da matriz (modelo proposto, base na norma conferida no texto em inglês, nada validado por quem opera uma fábrica).
+
 ## 2026-11-26 · Claude · Matriz de permissões do iLabs; Word v0.5
 
 - **Pergunta do responsável:** não tínhamos feito um documento com as permissões, as funções e os níveis? **Resposta:** havia "Funções do profissional" (o que cada função autoriza no sistema atual e os níveis 1, 2 e 3 da GQ), as matrizes por módulo no repositório do legado e o desenho "Segurança e acesso"; **faltava a matriz do iLabs**, e as matrizes do legado e "Segurança e acesso" não estavam no Word.
