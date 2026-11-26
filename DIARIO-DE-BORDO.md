@@ -2,6 +2,14 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-26 · Claude · Word v0.4: telas de exemplo dos cinco módulos
+
+- **Pedido do responsável:** seguir, levando as telas de exemplo para o Word.
+- **Entregue:** novo capítulo **"Telas de exemplo: a teoria aplicada, passo a passo"** (capítulo 17 do Word, cerca de 110 páginas): **18 práticas** (Principal, Estoque, Controle da Qualidade, Garantia da Qualidade e Controle de Documentos), cada passo com tela, quem faz, o que o banco garante, **base na norma**, **integrações** e "tentar errar". O Word passou de 340 para 366 páginas.
+- **Como gerar de novo:** `node docs/roadmap/ferramentas/exportar-praticas.mjs <saida.md>` lê a fonte das telas (`app/src/app/estudo/pratica.dados.ts`) e `montar-word.py --praticas <saida.md>` as inclui. Nada é copiado à mão: ao mudar a fonte, gera-se de novo. O `.docx` não vai para o git.
+- **Limites:** os mesmos das telas (modelo ideal proposto, dados fictícios, não validado por quem opera uma fábrica). Produção, Comercial, Rastreabilidade, OPE e Inventário continuam sem telas de exemplo, como combinado.
+- **Próxima etapa:** o responsável revisa o Word (capítulo 17 e a coluna "Base na norma"); depois, decidir se volta ao foco nos demais módulos.
+
 ## 2026-11-26 · Claude · Artigos citados conferidos no texto da RDC 658/2022
 
 - **Pedido do responsável:** seguir (conferência dos artigos dos cinco módulos). **Nota:** as duas entradas anteriores de hoje saíram datadas 27 e 28/11 por engano; foram corrigidas para 26/11.
