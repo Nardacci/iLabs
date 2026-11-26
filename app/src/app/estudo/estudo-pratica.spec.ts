@@ -51,7 +51,7 @@ describe('Na prática (telas de exemplo)', () => {
   });
 
   it('avisa quando o artigo da norma ainda não foi identificado', () => {
-    const f = abrir('fornecedor');
+    const f = abrir('regulatorio');
     expect(raiz(f).textContent).toContain('ainda não identificada');
   });
 

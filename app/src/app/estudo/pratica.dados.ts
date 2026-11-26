@@ -275,6 +275,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
           { rotulo: 'O que fornece', valor: 'Açúcar refinado' },
         ],
         garantia: 'O CNPJ é único e empresa inativa não é escolhida em nenhuma tela.',
+        base: 'RDC 658/2022, art. 179 (a seleção e a qualificação do fornecedor são documentadas).',
         integra: 'Principal (cadastro de pessoa jurídica) → Estoque e Garantia da Qualidade',
         tentativa: {
           acao: 'Cadastrar o mesmo CNPJ pela segunda vez',
@@ -532,6 +533,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só se programa uma vez por solicitação. Reagendar exige motivo e fica no histórico.',
+        base: 'RDC 658/2022, art. 247 (amostragem feita e registrada conforme procedimentos escritos e aprovados).',
         integra: 'Estoque → Controle da Qualidade (solicitação de análise)',
         tentativa: {
           acao: 'Programar a mesma amostragem uma segunda vez',
@@ -797,6 +799,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só sai o que está disponível. Sem pedido, só com justificativa assinada. O valor sai do custo do lote, não fica 0,00.',
+        base: 'RDC 658/2022, art. 124 (registro de toda ação, com rastreabilidade). A exigência de justificativa assinada é proposta do iLabs.',
         integra: 'Estoque ← Controle da Qualidade (só lote disponível)',
         tentativa: {
           acao: 'Dar saída avulsa de um lote em quarentena',
@@ -1097,6 +1100,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Cada pessoa só enxerga e move os almoxarifados do seu grupo, em toda consulta e gravação. Abrir a tela sem permissão é recusado.',
+        base: 'Guia 33/2020, item 11.12 (papéis e responsabilidades; lista de pessoas autorizadas a acessar o sistema).',
         integra: 'Principal (grupos de usuários) → Estoque',
         tentativa: {
           acao: 'Usuário de outro grupo abrir a Movimentação pelo endereço da tela',
@@ -1122,6 +1126,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O saldo é a soma das movimentações. O histórico mostra quem fez, quando e por quê, e junta análise, laudo e aprovador.',
+        base: 'RDC 658/2022, art. 124 (rastreabilidade das atividades).',
         integra: 'Estoque ← Controle da Qualidade (análise, laudo e aprovador)',
         tentativa: {
           acao: 'Alterar o saldo direto na tela de consulta',
@@ -1173,6 +1178,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Saldo de almoxarifado especial nunca conta como disponível, e o item só guarda o que está marcado.',
+        base: 'RDC 658/2022, arts. 157 e 159 (quarentena e armazenamento).',
         integra: 'Estoque ← Principal (estrutura física)',
         tentativa: {
           acao: 'Guardar amostra de estabilidade em item que não marcou estabilidade',
@@ -1438,6 +1444,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O histórico mostra a entrada, a análise, o laudo, o aprovador, o usuário e a hora. O relatório de quarentena é um só e avisa quando está vazio.',
+        base: 'RDC 658/2022, art. 124 (rastreabilidade das atividades).',
         integra: 'Estoque ← Controle da Qualidade',
         tentativa: {
           acao: 'Apagar uma entrada do histórico',
@@ -1792,6 +1799,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O relatório traz o protocolo, a condição, os métodos, os resultados por tempo, as datas, a conclusão e quem assinou.',
+        base: 'RDC 658/2022, art. 284 (resultados ao pessoal-chave e ao Responsável Técnico) e art. 286 (resultados disponíveis no local de fabricação).',
         integra: 'Controle da Qualidade',
         tentativa: {
           acao: 'Imprimir o relatório de um estudo que não existe',
@@ -1863,6 +1871,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só funcionário da função e do setor. A solicitação nasce pendente, com histórico, e cancelar também grava histórico.',
+        base: 'RDC 658/2022, arts. 41 e 43 (treinamento contínuo; registros de treinamento mantidos).',
         integra: 'Garantia da Qualidade ← Principal (funções e setores)',
         tentativa: {
           acao: 'Solicitar treinamento para alguém de outra função e outro setor',
@@ -1908,6 +1917,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Respeita as vagas, aceita só funcionário ativo com setor e grava Log de cada alocação e mudança de situação.',
+        base: 'RDC 658/2022, art. 43 (registros de treinamento mantidos).',
         integra: 'Garantia da Qualidade ← Principal (profissionais)',
         tentativa: {
           acao: 'Alocar um 11º treinando como "avulso"',
@@ -2113,6 +2123,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só quem é da área avalia, conferido na gravação. O parecer é obrigatório e tem conteúdo. Salvar ao mesmo tempo não trava o desvio.',
+        base: 'RDC 658/2022, art. 332, V (avaliação do risco do desvio, por gravidade e extensão).',
         integra:
           'Garantia da Qualidade ← Produção, Estoque e Controle da Qualidade (áreas envolvidas)',
         tentativa: {
@@ -2316,6 +2327,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só área ativa e responsável ativo, e ao menos uma área. Adicionar e remover a mesma área não deixa a mudança sem área.',
+        base: 'RDC 658/2022, art. 8º, XII (avaliação prospectiva da mudança antes de aprovar).',
         integra: 'Garantia da Qualidade ← Principal (áreas e responsáveis)',
         tentativa: {
           acao: 'Salvar a mudança sem nenhuma área',
@@ -2403,6 +2415,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só o responsável da ação conclui. A data não é futura nem anterior à solicitação. Ação concluída não reabre sem justificativa. Prazo vencido é marcado e exige justificativa.',
+        base: 'RDC 658/2022, art. 8º, XII e XIII (aprovar antes de executar e avaliar depois).',
         integra: 'Garantia da Qualidade',
         tentativa: {
           acao: 'O responsável de outra área concluir a ação',
@@ -2512,6 +2525,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O título é único. A pergunta pode gerar desvio. A exclusão exige justificativa e histórico. Roteiro em uso só se revisa.',
+        base: 'RDC 658/2022, art. 362 (itens examinados: pessoal, instalações, equipamentos, documentação, produção, controle de qualidade e outros).',
         integra: 'Garantia da Qualidade',
         tentativa: {
           acao: 'Editar direto um roteiro em uso',
@@ -2590,6 +2604,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
           { rotulo: 'Editar e Cancelar', valor: 'Somem depois de iniciar' },
         ],
         garantia: 'Ao iniciar, cada departamento recebe seus roteiros, e Editar e Cancelar somem.',
+        base: 'RDC 658/2022, art. 362 (exame regular, conforme programa pré-estabelecido).',
         integra: 'Garantia da Qualidade',
         tentativa: {
           acao: 'Cancelar uma auditoria já em curso',
@@ -3045,6 +3060,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'O histórico mostra toda ação, justificativa, data e assinante. Só o documento vigente aparece para uso nos outros módulos.',
+        base: 'RDC 658/2022, arts. 124 e 125 (rastreabilidade; alteração assinada, datada, com o original legível).',
         integra: 'Controle de Documentos → todos os módulos (só o vigente é usado)',
         tentativa: {
           acao: 'Abrir pela lista de uso um documento já substituído',
@@ -3138,6 +3154,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'A justificativa é obrigatória e fica no histórico. Cada cópia pode ser desfeita, e nada é apagado.',
+        base: 'RDC 658/2022, art. 125 (alteração assinada e datada; motivo registrado).',
         integra: 'Controle de Documentos',
         tentativa: {
           acao: 'Cancelar a cópia sem justificar',
@@ -3174,6 +3191,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Os dias a vencer aparecem na lista e no relatório. O documento vencido sai de uso.',
+        base: 'RDC 658/2022, art. 121 (documentos atualizados; evitar o uso de documento obsoleto).',
         integra: 'Controle de Documentos',
         tentativa: {
           acao: 'Usar um externo cuja validade acabou ontem',
@@ -3191,6 +3209,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
           { rotulo: 'Histórico', valor: 'Consultável depois da exclusão' },
         ],
         garantia: 'A justificativa é obrigatória e o histórico continua consultável.',
+        base: 'RDC 658/2022, art. 125 (alteração assinada e datada, com o original legível; motivo registrado).',
         integra: 'Controle de Documentos',
         tentativa: {
           acao: 'Excluir sem justificativa',
@@ -3230,6 +3249,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'Só o documento vigente e da aplicação do usuário. Substituído e obsoleto não abrem.',
+        base: 'RDC 658/2022, art. 121, parágrafo único (evitar o uso de documento obsoleto).',
         integra: 'Controle de Documentos → todos os módulos',
         tentativa: {
           acao: 'Abrir um documento substituído',
@@ -3334,6 +3354,7 @@ export const PRATICAS: readonly PraticaFicha[] = [
         ],
         garantia:
           'As áreas e setores são um só cadastro para todos os módulos. Área inativa não é oferecida nas outras telas.',
+        base: 'RDC 658/2022, art. 29 (organograma com as relações entre os responsáveis pela Produção, pelo Controle da Qualidade e demais responsáveis).',
         integra:
           'Principal → Garantia da Qualidade (áreas que avaliam), Controle de Documentos (setores revisores) e Produção',
         tentativa: {
