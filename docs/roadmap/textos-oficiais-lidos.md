@@ -57,6 +57,12 @@
 - **Lido o texto** (21 páginas): âmbito (novos, inovadores, genéricos, similares); **art. 17, § 11** validade do produto importado a granel conta da fabricação no exterior; **art. 18** tamanho de lote autorizado e faixa só por alteração pós-registro; **art. 19** inclusão de local de fabricação exige documentação pós-registro.
 - **Limite:** é **tradução** (o original em português vale); a página da ANVISA cita a **RDC 948/2024** como norma geral de regularização, **não lida**.
 
+### RDC 658/2022 e Guia 33/2020 (cópias do repositório do legado), conferência dos artigos citados
+- **Lido o texto** da RDC 658/2022 (tradução oficial em inglês, 30/03/2022) e o sumário do Guia 33/2020. Conferi os artigos usados nas telas "Na prática" e na classificação: **a maioria confere** (arts. 105, 110, 119, 121, 124, 125, 157, 159, 177, 179, 189, 198, 245, 247, 275 a 277, 284, 332, 340, 341, 362, 363).
+- **Corrigidos por não dizerem o que se atribuía:** art. 137 (é o registro de produção do lote, não a ordem de produção), art. 220 (quarentena do acabado, não a origem do lote), art. 8º, VI (seleção e monitoramento de fornecedores, não a independência do auditor), art. 8º, XV (certificação do lote pela pessoa delegada, não "função de revisor"), arts. 365 e 366 (relatório de autoinspeção e registro das ações, não classificação nem desvio automático), art. 283 (lotes adicionais na estabilidade) e art. 332 (não define níveis de desvio). Esses pontos viraram **proposta do iLabs**, marcada como tal.
+- **Guia 33/2020:** o item 11.12 trata de segurança do sistema (acesso); registros e assinaturas eletrônicos aparecem no item 9.8.1.3.9 e o gerenciamento de registros, no 11.14.
+- **Limite:** o texto é tradução; o original em português é o que vale. A conferência foi feita contra o texto, não por especialista em regulatório.
+
 ## 3. Ainda falta ler
 1. **Regulamentação em vigor do mapa de distribuição** (se já existe) e o **cronograma**.
 2. **O ato que revogou a RDC 157/2017** (número e data corretos, no Diário Oficial de 12/07/2024) e o status da **IN 19/2017** e da **IN 100/2021**.

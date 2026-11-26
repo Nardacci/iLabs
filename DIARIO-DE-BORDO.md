@@ -2,7 +2,15 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
-## 2026-11-28 · Claude · Foco em cinco módulos: base na norma e integrações em todas as telas de exemplo; prática do Principal
+## 2026-11-26 · Claude · Artigos citados conferidos no texto da RDC 658/2022
+
+- **Pedido do responsável:** seguir (conferência dos artigos dos cinco módulos). **Nota:** as duas entradas anteriores de hoje saíram datadas 27 e 28/11 por engano; foram corrigidas para 26/11.
+- **O que fiz:** abri o texto da RDC 658/2022 (tradução oficial em inglês, cópia no repositório do legado) e o Guia 33/2020 e conferi cada artigo citado nas telas "Na prática" e na classificação das perguntas.
+- **Resultado:** a maioria confere. **Corrigi 26 textos de "Base na norma"** e 8 linhas da classificação: arts. 137, 220, 8º VI, 8º XV, 283, 365, 366 e 332 não diziam o que se atribuía; esses pontos agora aparecem como **proposta do iLabs**. O item 11.12 do Guia 33 é segurança do sistema; assinatura eletrônica e registros estão no 9.8.1.3.9 e 11.14.
+- **Limite:** texto em inglês (o original em português vale) e conferência feita por mim, não por especialista em regulatório.
+- **Próxima etapa:** o responsável revisa; depois, as telas de exemplo no Word.
+
+## 2026-11-26 · Claude · Foco em cinco módulos: base na norma e integrações em todas as telas de exemplo; prática do Principal
 
 - **Pedido do responsável:** focar em **Principal, Estoque, Controle da Qualidade, Garantia da Qualidade e Controle de Documentos**; as telas de exemplo devem trazer as normas da ANVISA e as integrações.
 - **Entregue:** os **133 passos** das 16 práticas desses módulos (fichas 2 a 8, 11a, 11b, 12a, 12b, 13a a 13e) ganharam **"Integra com"**; **"Base na norma"** foi preenchida onde o artigo está na classificação das perguntas (RDC 658/2022; IN 139/2022 e RDC 753/2022 marcadas como lidas só pela orientação da ANVISA ou pela tradução). Onde não há artigo identificado, a tela diz isso. Nova prática do **Principal** (ficha "Ordem de cadastro", 9 passos): ordem de cadastro, funções e perfis, profissional, estrutura organizacional, empresa, almoxarifado, material, equipamento e assinatura com histórico. Endereço: `/estudo/pratica/principal`.
@@ -10,14 +18,14 @@ Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê
 - **Limites:** os artigos vêm da classificação das perguntas e não foram conferidos de novo um a um no texto da norma; a etiqueta "Base na norma" não substitui a conferência do analista. Passos sem artigo identificado: inspeção do veículo, programar amostragem, etiqueta, saída avulsa, entre outros.
 - **Próxima etapa:** o responsável revisa a coluna "Base na norma" dos cinco módulos; conferir artigos duvidosos no texto da RDC 658/2022; depois, o Word com as telas de exemplo.
 
-## 2026-11-27 · Claude · "Na prática": base na norma e integrações em cada passo (piloto na ficha 1)
+## 2026-11-26 · Claude · "Na prática": base na norma e integrações em cada passo (piloto na ficha 1)
 
 - **Pedido do responsável:** as telas de exemplo restantes não podem deixar de fora **as normas da ANVISA** nem **as integrações entre módulos**.
 - **Entregue:** cada passo ganhou duas linhas, **"Base na norma"** (artigo da RDC 658/2022 quando identificado; senão, aviso de que ainda não foi identificado e que vale como proposta) e **"Integra com"** (quais módulos conversam). **Piloto completo na ficha 1** (9 passos), com artigos tirados da classificação das perguntas (arts. 8º XV, 110, 119, 124, 125, 157, 179, 189 e 245). Nas demais telas aparece o aviso "ainda não identificada" até serem preenchidas.
 - **Honestidade:** a RDC 658/2022 foi lida; a IN 139/2022, a RDC 430/2020 e a RDC 625/2022 não foram lidas por inteiro. Onde só há a orientação da ANVISA, a tela deve dizer isso.
 - **Próxima etapa:** preencher base e integrações nas práticas já feitas (fichas 2 a 8, 11, 12 e 13) e já fazer assim nas novas (Produção, Comercial, Rastreabilidade, OPE e Inventário).
 
-## 2026-11-27 · Claude · "Na prática": Controle de Documentos (12a e 12b) e aviso sobre o que é norma
+## 2026-11-26 · Claude · "Na prática": Controle de Documentos (12a e 12b) e aviso sobre o que é norma
 
 - **Pergunta do responsável:** as telas de exemplo mostram o ideal conforme as normas da ANVISA? **Resposta registrada:** mostram o **modelo ideal proposto pelo iLabs**, que corrige as falhas do legado; **nem tudo é exigência da ANVISA** (na classificação das 219 perguntas, 70 são "a norma manda" e 109 são parâmetro da empresa), vários textos de norma ainda não foram lidos por inteiro e **nada foi validado por quem opera uma fábrica**. O aviso no alto de cada página "Na prática" agora diz isso.
 - **Entregue:** duas práticas: **ciclo do documento** (12a, 9 passos) e **cópias, externo e legado** (12b, 9 passos). Endereços: `/estudo/pratica/ciclo-documento` e `/estudo/pratica/copias-externo-legado`.
