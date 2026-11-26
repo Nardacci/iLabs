@@ -2,6 +2,13 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-26 · Claude · Lacunas de "Base na norma" fechadas nos cinco módulos
+
+- **Pedido do responsável:** seguir.
+- **O que fiz:** dos 151 passos das telas de exemplo, 25 estavam sem artigo. Procurei apoio no texto da RDC 658/2022 e no Guia 33/2020 e **preenchi 21**: arts. 29 (organograma), 43 (registros de treinamento), 124 e 125 (rastreabilidade e alterações), 179, 247, 284 e 286, 332 V, 362 e 8º XII/XIII, e o item 11.12 do Guia 33 (lista de pessoas autorizadas). **Restam 4 sem artigo identificado:** etiqueta (laudo), boletim e etiqueta (água e ambiente), impedir movimentação simultânea e cadastrar o processo regulatório; a tela continua dizendo isso.
+- **Limite:** os artigos foram conferidos por mim no texto em inglês; a revisão por especialista em regulatório continua pendente.
+- **Próxima etapa:** gerar o Word v0.5 com essas bases (quando o responsável quiser) ou voltar aos módulos fora de foco.
+
 ## 2026-11-26 · Claude · Word v0.4: telas de exemplo dos cinco módulos
 
 - **Pedido do responsável:** seguir, levando as telas de exemplo para o Word.
