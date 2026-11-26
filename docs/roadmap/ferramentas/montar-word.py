@@ -10,7 +10,9 @@ Passos (a partir da pasta docs/roadmap):
        python3 ferramentas/montar-word.py --extrair-estados /tmp/estados
   2. Transformá-los em imagens (mesmo renderizador dos fluxos, apontando para a outra pasta):
        cd ferramentas && PASTA_MMD=/tmp/estados MERMAID_JS=<mermaid.min.js> PLAYWRIGHT_DIR=<pasta do playwright> node renderizar-diagramas.mjs
-  3. Montar o Word:
+  2b. (opcional) Exportar as telas de exemplo do site para Markdown:
+       node ferramentas/exportar-praticas.mjs /tmp/praticas.md
+  3. Montar o Word (acrescente --praticas /tmp/praticas.md para incluir as telas de exemplo):
        python3 ferramentas/montar-word.py --modelo "<modelo .docx do legado>" --gerador "<gerar_docx.py do legado>" \
            --estados /tmp/estados --saida "/tmp/iLabs - Estudo do roadmap.docx"
 O arquivo .docx (cerca de 10 MB) não vai para o git: é gerado a cada vez a partir dos .md e do modelo do legado.
@@ -56,6 +58,7 @@ Este documento é do **analista de negócios** que conduz o estudo. Reúne, em u
 - **Guia do analista:** o resumo, módulo por módulo (hoje, a norma espera, o iLabs deve).
 - **Situação da norma:** os textos oficiais lidos e os que ainda faltam.
 - **Os módulos e a ANVISA**, **a Garantia da Qualidade e os outros módulos**, **os cadastros globais** e **os fluxos do legado**.
+- **As telas de exemplo** (Principal, Estoque, Controle da Qualidade, Garantia da Qualidade e Controle de Documentos): a teoria aplicada passo a passo, com a base na norma e as integrações.
 - **As 30 fichas de fluxo**, agrupadas por módulo, cada uma com o diagrama, a tabela etapa a etapa e os pontos a decidir.
 - **Como decidimos sem área para perguntar** e **a classificação das 219 perguntas**, com a proposta para cada uma.
 - **O roteiro de implantação** e os **anexos** (glossário, o que a norma diz, decisões registradas).
@@ -165,7 +168,7 @@ def normalizar(md, deslocar, estados_dir=None, stem=""):
     return "\n".join(saida) + "\n"
 
 
-def montar_fonte(estados_dir):
+def montar_fonte(estados_dir, praticas_md=None):
     partes = [INTRO]
     lido = lambda nome: (PASTA / nome).read_text(encoding="utf-8")
     cap = lambda nome, titulo=None: (
@@ -187,6 +190,9 @@ def montar_fonte(estados_dir):
             if m != modulo:
                 continue
             partes.append("\\pagebreak\n" + normalizar(lido(arq), 1, estados_dir, arq.replace(".md", "")))
+    if praticas_md:
+        # telas de exemplo ("Na prática") dos cinco módulos em foco, geradas por exportar-praticas.mjs
+        partes.append("\\pagebreak\n" + normalizar(Path(praticas_md).read_text(encoding="utf-8"), 0))
     partes.append(cap("como-decidir-sem-a-area.md", "Como decidimos sem área para perguntar"))
     partes.append(cap("classificacao-das-perguntas.md", "Classificação das 219 perguntas das fichas"))
     partes.append(cap("roteiro-de-implantacao.md", "Roteiro de implantação"))
@@ -203,6 +209,7 @@ def main():
     ap.add_argument("--modelo")
     ap.add_argument("--gerador", help="caminho de gerar_docx.py (repositório do legado, somente leitura)")
     ap.add_argument("--estados", default=None, help="pasta com os .png dos diagramas de situação (um por ficha)")
+    ap.add_argument("--praticas", default=None, help="Markdown das telas de exemplo (saída de exportar-praticas.mjs)")
     ap.add_argument("--saida")
     ap.add_argument("--versao", default="0.1")
     ap.add_argument("--descricao", default="Rascunho para validação do responsável")
@@ -224,7 +231,7 @@ def main():
 
     leg = carregar_modulo(a.gerador, "gerar_docx_legado")
     leg.ACRONIMOS_EXTRA = ACRONIMOS_ILABS
-    fonte = montar_fonte(a.estados)
+    fonte = montar_fonte(a.estados, a.praticas)
     if a.fonte_md:
         Path(a.fonte_md).write_text(fonte, encoding="utf-8")
 
