@@ -19,6 +19,9 @@ O arquivo .docx (cerca de 10 MB) não vai para o git: é gerado a cada vez a par
 Ao abrir no Word, ele pergunta se atualiza os campos: responda Sim, para montar o sumário.
 
 O documento é gerado; para mudar o conteúdo, edite os .md e gere de novo.
+
+Documento de um módulo (exemplo, Garantia da Qualidade): acrescente `--modulo gq --titulo-doc "Garantia da Qualidade" --sigla GQ`
+e exporte as telas de exemplo só do módulo: node ferramentas/exportar-praticas.mjs /tmp/praticas-gq.md "Garantia da Qualidade".
 """
 import argparse
 import importlib.util
@@ -214,12 +217,144 @@ def montar_fonte(estados_dir, praticas_md=None):
     return "\n".join(partes)
 
 
+# ---------------------------------------------------------------------------------------------------------------------
+# Documento por módulo (por enquanto, a Garantia da Qualidade): reúne o que o estudo tem sobre o módulo.
+# ---------------------------------------------------------------------------------------------------------------------
+INTRO_GQ = """# Como ler este documento
+
+!!! Para quem é
+Este documento reúne, em um só arquivo, **tudo o que o estudo produziu sobre o módulo Garantia da Qualidade (GQ)** do iLabs: para que serve, o que a ANVISA espera, os cinco fluxos (treinamento, desvios e CAPA, mudanças, autoinspeção e auditoria, assuntos regulatórios), as telas de exemplo, as permissões, as perguntas em aberto e o roteiro de implantação.
+
+!!! Como está organizado
+- **Para que serve e o que a ANVISA espera:** o resumo do módulo e os trechos da norma sobre ele.
+- **A GQ e os outros módulos:** o que cada módulo entrega à GQ e recebe dela.
+- **Os cinco fluxos**, cada um com diagrama, tabela etapa a etapa e pontos a decidir.
+- **Telas de exemplo:** a teoria aplicada passo a passo, com base na norma e integrações.
+- **Permissões:** a matriz da GQ, os perfis do banco e a matriz tela por tela do sistema atual.
+- **Perguntas e reunião com a Qualidade:** as 37 perguntas classificadas e a pauta.
+- **Roteiro de implantação** e **anexos** (textos oficiais lidos, glossário e decisões).
+
+!!! Limites
+- É o **modelo ideal proposto pelo iLabs**: nem tudo é exigência da ANVISA. Onde a norma deixa a escolha para a empresa, a proposta é um **parâmetro** que o cliente confirma na implantação.
+- O que vem do **sistema atual (LabMedSys)** foi lido do código; só o que tem código de defeito (`DV-...`) vem de teste de tela.
+- **Nada foi validado** por quem opera uma fábrica de medicamentos.
+- Este arquivo é **gerado** a partir dos documentos do estudo. Para mudar o conteúdo, mude esses documentos e gere de novo.
+"""
+
+
+def secao(md, inicio, nivel):
+    """Texto da seção cujo título (no `nivel`) começa com `inicio`, até o próximo título do mesmo nível ou acima."""
+    linhas = md.splitlines()
+    marca = "#" * nivel + " " + inicio
+    ini = next(i for i, l in enumerate(linhas) if l.startswith(marca))
+    fim = len(linhas)
+    for j in range(ini + 1, len(linhas)):
+        m = re.match(r"(#+) ", linhas[j])
+        if m and len(m.group(1)) <= nivel:
+            fim = j
+            break
+    return "\n".join(linhas[ini:fim]) + "\n"
+
+
+def tabela_filtrada(md, padrao):
+    """Todas as tabelas do texto, só com as linhas que casam com `padrao`; cada uma com o título (## ou ###) mais próximo."""
+    saida, titulo, bloco = [], "", []
+
+    def fecha():
+        if not bloco:
+            return
+        cab, linhas = bloco[:2], [l for l in bloco[2:] if re.search(padrao, l, re.I)]
+        if linhas:
+            if titulo:
+                saida.extend(["", titulo, ""])
+            saida.extend(cab + linhas)
+        bloco.clear()
+
+    for l in md.splitlines():
+        if l.startswith("|"):
+            bloco.append(l)
+            continue
+        fecha()
+        if re.match(r"#{2,3} ", l):
+            titulo = l
+    fecha()
+    return "\n".join(saida) + "\n"
+
+
+def montar_fonte_gq(estados_dir, praticas_md):
+    lido = lambda nome: (PASTA / nome).read_text(encoding="utf-8")
+    partes = [INTRO_GQ]
+    pg = "\\pagebreak\n"
+
+    # 1. Para que serve e o que a ANVISA espera
+    partes.append(pg + "# Para que serve a Garantia da Qualidade e o que a ANVISA espera\n")
+    partes.append(normalizar(secao(lido("resumo-para-o-analista.md"), "3.4 Garantia da Qualidade", 3), -1))
+    partes.append(normalizar(secao(lido("os-modulos-e-a-anvisa.md"), "Garantia da Qualidade", 3), -1))
+    norma = lido("o-que-a-norma-diz.md")
+    for ini in ("1. Treinamento", "2. Desvios", "3. Controle de mudanças", "4. Autoinspeção", "8. Registro do produto", "10. Assinatura"):
+        partes.append(normalizar(secao(norma, ini, 2), 0))
+
+    # 2. A GQ e os outros módulos
+    gq = lido("garantia-da-qualidade-e-os-outros-modulos.md")
+    partes.append(pg + normalizar(gq, 0).replace(normalizar(gq, 0).splitlines()[0], "# A Garantia da Qualidade e os outros módulos", 1))
+
+    # 3. Os cinco fluxos
+    partes.append(pg + "# Os fluxos da Garantia da Qualidade\n")
+    for arq in ("fluxo-13a-treinamento.md", "fluxo-13b-desvios-e-capa.md", "fluxo-13c-controle-de-mudancas.md",
+                "fluxo-13d-autoinspecao-e-auditoria.md", "fluxo-13e-assuntos-regulatorios.md"):
+        partes.append(pg + normalizar(lido(arq), 1, estados_dir, arq.replace(".md", "")))
+
+    # 4. Telas de exemplo
+    if praticas_md:
+        partes.append(pg + normalizar(Path(praticas_md).read_text(encoding="utf-8"), 0))
+
+    # 5. Permissões
+    partes.append(pg + "# Permissões da Garantia da Qualidade\n")
+    matriz = lido("matriz-de-permissoes-ilabs.md")
+    for sec in ("5.1 Principal", "5.2 Estoque", "5.3 Controle da Qualidade", "5.5 Controle de Documentos"):
+        matriz = matriz.replace(secao(matriz, sec, 3), "")
+    matriz = matriz.replace("## 5. A matriz por módulo\n", "## 5. A matriz por módulo\n\nNesta versão aparece só a tabela da Garantia da Qualidade; as outras quatro estão no documento completo do estudo.\n", 1)
+    matriz = "\n".join(matriz.splitlines()[1:])  # tira o título do documento (o capítulo já tem o seu)
+    partes.append(normalizar(matriz, 0))
+    partes.append(normalizar(secao(lido("funcoes-do-profissional.md"), "6. Garantia da Qualidade", 2), 0))
+
+    # 6. Perguntas e reunião com a Qualidade
+    partes.append(pg + "# Perguntas, classificação e reunião com a Qualidade\n")
+    classif = lido("classificacao-das-perguntas.md")
+    intro = classif.split("\n## ", 1)[0]
+    intro = "\n".join(intro.splitlines()[1:])
+    partes.append(normalizar("## Como ler a classificação\n" + intro, 0))
+    partes.append(normalizar(secao(classif, "Garantia da Qualidade", 2), 0))
+    partes.append(normalizar(secao(lido("pauta-reuniao-qualidade.md"), "Reunião 3", 2), 0))
+
+    # 7. Roteiro de implantação
+    partes.append(pg + "# Roteiro de implantação: as etapas da Garantia da Qualidade\n")
+    rot = lido("roteiro-de-implantacao.md")
+    for ini in ("Detalhe das etapas 1, 7 e 9: treinar", "Detalhe das etapas 1, 5, 7 e 9: desvios", "Detalhe das etapas 1, 5, 7 e 9: controle de mudanças",
+                "Detalhe das etapas 1, 5, 7 e 9: autoinspeção", "Detalhe das etapas 1, 6, 7 e 9: assuntos regulatórios"):
+        partes.append(normalizar(secao(rot, ini, 3), -1))
+
+    # 8. Anexos
+    partes.append(pg + "# Anexos\n")
+    partes.append(normalizar(lido("textos-oficiais-lidos.md"), 1).replace("## Textos oficiais lidos e o que ainda falta", "## Anexo A: Textos oficiais lidos e o que ainda falta", 1))
+    partes.append(normalizar(lido("glossario.md"), 1).replace("## Glossário", "## Anexo B: Glossário", 1))
+    dec = (RAIZ / "docs" / "decisoes.md").read_text(encoding="utf-8")
+    filtro = r"GQ|Garantia da Qualidade|desvio|CAPA|mudan|treinamento|auditoria|autoinspe|regulat|n[ií]veis|perfil|assinatura|segrega|elabora"
+    partes.append("## Anexo C: Decisões que citam a Garantia da Qualidade ou seus temas\n\nSelecionadas do registro de decisões do projeto pelas palavras: GQ, desvio, CAPA, mudança, treinamento, auditoria, regulatório, níveis, perfil, assinatura e segregação.\n")
+    partes.append(normalizar(tabela_filtrada(dec, filtro).replace("`", ""), 1))
+    return "\n".join(partes)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--extrair-estados", default=None, help="só extrai os blocos mermaid das fichas para esta pasta (.mmd) e termina")
     ap.add_argument("--modelo")
     ap.add_argument("--gerador", help="caminho de gerar_docx.py (repositório do legado, somente leitura)")
     ap.add_argument("--estados", default=None, help="pasta com os .png dos diagramas de situação (um por ficha)")
+    ap.add_argument("--modulo", default=None, help='gera o documento de um módulo (por enquanto: "gq")')
+    ap.add_argument("--titulo-doc", default=None)
+    ap.add_argument("--subtitulo", default=None)
+    ap.add_argument("--sigla", default=None)
     ap.add_argument("--praticas", default=None, help="Markdown das telas de exemplo (saída de exportar-praticas.mjs)")
     ap.add_argument("--saida")
     ap.add_argument("--versao", default="0.1")
@@ -242,7 +377,7 @@ def main():
 
     leg = carregar_modulo(a.gerador, "gerar_docx_legado")
     leg.ACRONIMOS_EXTRA = ACRONIMOS_ILABS
-    fonte = montar_fonte(a.estados, a.praticas)
+    fonte = montar_fonte_gq(a.estados, a.praticas) if a.modulo == "gq" else montar_fonte(a.estados, a.praticas)
     if a.fonte_md:
         Path(a.fonte_md).write_text(fonte, encoding="utf-8")
 
@@ -270,8 +405,8 @@ def main():
                 x = x.replace(f"<w:t>{nome}</w:t>", "<w:t></w:t>")
             return x
 
-    titulo_doc = "Estudo do roadmap"
-    subtitulo = "Sistema atual, normas e o que o iLabs precisa fazer"
+    titulo_doc = a.titulo_doc or "Estudo do roadmap"
+    subtitulo = a.subtitulo or "Sistema atual, normas e o que o iLabs precisa fazer"
     with tempfile.TemporaryDirectory() as tmp:
         with zipfile.ZipFile(a.modelo) as z:
             for item in z.infolist():
@@ -281,7 +416,7 @@ def main():
         doc = DocIlabs(tmp, str(RAIZ))
         corpo = doc.converter(fonte)
         doc.modulo = titulo_doc
-        doc.sigla = "PRI"
+        doc.sigla = a.sigla or "PRI"
         data = date.today().strftime("%d/%m/%Y")
         doc.montar(corpo, subtitulo, a.versao, data, a.descricao, a.autor, False, False)
         # identidade: rodapé e propriedades do arquivo

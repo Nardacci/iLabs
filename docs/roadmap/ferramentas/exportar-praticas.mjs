@@ -1,6 +1,6 @@
 // Exporta as telas de exemplo ("Na prática") do site para Markdown, para entrar no documento Word.
 // Lê app/src/app/estudo/pratica.dados.ts (a fonte), sem copiar nada à mão.
-//   node exportar-praticas.mjs <saida.md>
+//   node exportar-praticas.mjs <saida.md> [módulo]      (sem módulo, exporta os cinco em foco)
 // Precisa que app/node_modules exista (usa o compilador TypeScript do app).
 import { createRequire } from 'node:module';
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -42,7 +42,9 @@ saida.push(
 
 const porId = new Map(PRATICAS.map((p) => [p.id, p]));
 const usados = new Set();
+const so = process.argv[3];
 for (const [modulo, ids] of MODULOS) {
+  if (so && modulo !== so) continue;
   saida.push(`## ${modulo}`, '');
   for (const id of ids) {
     const p = porId.get(id);
@@ -65,6 +67,7 @@ for (const [modulo, ids] of MODULOS) {
   }
 }
 const fora = PRATICAS.filter((p) => !usados.has(p.id)).map((p) => p.id);
-if (fora.length) console.error('Práticas fora dos módulos em foco (não exportadas):', fora.join(', '));
+if (so && usados.size === 0) throw new Error(`módulo sem práticas: ${so}`);
+if (fora.length && !so) console.error('Práticas fora dos módulos em foco (não exportadas):', fora.join(', '));
 writeFileSync(process.argv[2], saida.join('\n') + '\n');
-console.log(`${PRATICAS.length - fora.length} práticas exportadas para ${process.argv[2]}`);
+console.log(`${usados.size} práticas exportadas para ${process.argv[2]}`);

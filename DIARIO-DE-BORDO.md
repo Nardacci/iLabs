@@ -2,6 +2,14 @@
 
 Quem termina uma sessão acrescenta a sua entrada **no topo**. Quem começa, lê a primeira.
 
+## 2026-11-27 · Claude · Teste: Word do módulo Garantia da Qualidade
+
+- **Pedido do responsável:** um teste: reunir tudo o que temos do módulo Garantia da Qualidade em um Word chamado "Garantia da Qualidade".
+- **Entregue:** `Garantia da Qualidade.docx` (96 páginas, 10 figuras), com: como ler; para que serve a GQ e o que a ANVISA espera (resumo, trechos da norma sobre treinamento, desvios e CAPA, mudanças, autoinspeção, registro do produto, assinatura); a GQ e os outros módulos; **os cinco fluxos (13a a 13e)** com diagramas; **as cinco telas de exemplo**; **permissões** (matriz da GQ, os 22 perfis do banco e a matriz tela por tela dos níveis do sistema atual); **as 37 perguntas classificadas e a pauta da reunião com a Qualidade**; as cinco etapas do roteiro de implantação; anexos (textos oficiais lidos, glossário, decisões que citam a GQ).
+- **Como foi feito:** `montar-word.py --modulo gq` reaproveita o gerador e as tabelas do estudo completo; as telas de exemplo vêm de `exportar-praticas.mjs <saida> "Garantia da Qualidade"`. Nada digitado à mão: tudo é extraído dos documentos. O `.docx` não vai para o git.
+- **Fora do documento:** a análise do **sistema atual** (LabMedSys) sobre a GQ, que está no repositório do legado (regras de negócio, matriz de permissões, achados, conformidade, testes, dossiê e manual). Não foi incluída porque é do legado.
+- **Próxima etapa:** o responsável avalia o teste (estrutura, o que entra e o que sai); se servir, o mesmo modelo vale para os outros módulos.
+
 ## 2026-11-26 · Claude · Matriz de permissões em Excel
 
 - **Pedido do responsável:** só a parte de permissões, em Excel.
